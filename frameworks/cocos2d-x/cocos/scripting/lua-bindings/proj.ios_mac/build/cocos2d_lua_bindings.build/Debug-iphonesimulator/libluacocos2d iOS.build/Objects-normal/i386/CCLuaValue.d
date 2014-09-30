@@ -1,0 +1,32 @@
+dependencies: \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/manual/CCLuaValue.cpp \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/manual/CCLuaValue.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../../external/lua/luajit/include/lua.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../../external/lua/luajit/include/luaconf.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../base/ccTypes.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/CCGeometry.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../platform/CCPlatformMacros.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../base/ccConfig.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../platform/CCPlatformConfig.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../platform/CCPlatformDefine.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../platform/ios/CCPlatformDefine-ios.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../base/ccMacros.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../base/CCConsole.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../base/CCRef.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../platform/CCStdC.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../platform/ios/CCStdC-ios.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../base/ccRandom.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/CCMath.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/Vec2.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/CCMathBase.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/Vec2.inl \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/Vec3.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/Vec3.inl \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/Mat4.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/Vec4.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/Vec4.inl \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/Mat4.inl \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/Quaternion.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../math/Quaternion.inl \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../platform/CCGL.h \
+  /Users/kirito/Desktop/Projects/CocosCodeIDE/FantasyWarrior3D/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/../../../platform/ios/CCGL-ios.h
