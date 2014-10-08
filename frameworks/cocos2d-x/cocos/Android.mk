@@ -184,7 +184,7 @@ physics/chipmunk/CCPhysicsWorldInfo_chipmunk.cpp \
 ../external/xxhash/xxhash.c \
 custom/EffectSprite3D.cpp \
 custom/DrawNode3D.cpp \
-BillboardParticleSystem.cpp
+custom/BillboardParticleSystem.cpp
 
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
