@@ -33,6 +33,8 @@ local Base3D = class ("Base3D", function ()
 end)
 
 function Base3D:ctor()
+    self._radius = 50
+    self._attackRadius = 50*1.25
 	self._isalive = true
 	self._blood = 1000
 	self._attack = 100
@@ -62,7 +64,7 @@ function Base3D:addCircle()
 	
     self._attackZone = cc.ProgressTimer:create(cc.Sprite:create("btn_circle_normal.png"))
     self:addChild(self._attackZone)
-    self._attackZone:setScale(1.5)
+    self._attackZone:setScale(2.5)
     self._attackZone:setColor(cc.c3b(255, 0, 0))
     self._attackZone:setType(cc.PROGRESS_TIMER_TYPE_RADIAL)
     self._attackZone:runAction(cc.ProgressTo:create(0, 25))	
@@ -89,8 +91,7 @@ function Base3D:setState(type)
         else 
             rotateAngle = -90.0
         end
-        --self._sprite3d:runAction(cc.RotateTo:create(0.02, rotateAngle)) 
-        self._sprite3d:runAction(cc.ScaleBy:create(0.2, 0.2))            
+        self._sprite3d:runAction(cc.RotateTo:create(0.5, cc.V3(0, 0, rotateAngle))) 
     end 
 
     if type == EnumStateType.WALK then
@@ -132,7 +133,7 @@ function Base3D:setState(type)
             local action = cc.Sequence:create(cc.MoveBy:create(0.05, cc.p(5,5)),  cc.MoveBy:create(0.05, cc.p(-5,-5)))
             self._sprite3d:runAction(action)
         else 
-            self._sprite3d:runAction(cc.RotateBy:create(0.5, 360.0))
+            self._sprite3d:runAction(cc.RotateBy:create(0.2, 360.0))
         end 
     end
 end
@@ -158,7 +159,12 @@ end
 
 function Base3D:setTarget(target)
     if self._target ~= target and target ~= 0 and target._isalive then
-        self._target = target
+        self._target = target    
+    end
+    
+    if self._target ~=0 then
+        local angle = getAngleFrom2Point(cc.p(self._target:getPosition()), cc.p(self:getPosition()))
+        self:runAction(cc.RotateTo:create(0.1, angle))
     end
 end
 
