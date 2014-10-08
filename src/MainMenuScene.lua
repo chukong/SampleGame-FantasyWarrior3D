@@ -158,6 +158,12 @@ function MainMenuScene:addBg(layer)
     --test
     self:showBloodLossNum(layer)
     
+    --test billboardparticlesysytem
+    local particle = cc.BillboardParticleSystem:create("toonSmoke.plist")
+    particle:setPosition({x=200,y=200})
+    particle:setDuration(-1)
+    particle:setStartColor({r=234,g=123,b=245,a=255})
+    layer:addChild(particle,5)
 end
 
 function MainMenuScene:showBloodLossNum(layer)
