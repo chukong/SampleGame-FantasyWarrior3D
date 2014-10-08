@@ -11,46 +11,14 @@ local gloableZOrder = 1
 local camera = nil 
 local touchPos = nil
 local beginUpdate = false
-local chosenOne = nil
+local chosenOne = 0
 local currentLayer = nil
-
-local function isOutOfBound(object)
-    local currentPos = cc.p(object:getPosition());
-    local state = false;
-
-    if currentPos.x < 0 then
-        currentPos.x = 0
-        state = true
-        beginUpdate = false
-    end    
-
-    if currentPos.x > size.width then
-        currentPos.x = size.width
-        state = true
-        beginUpdate = false
-    end
-
-    if currentPos.y < 0 then
-        currentPos.y = 0
-        state = true
-        beginUpdate = false
-    end
-
-    if currentPos.y > size.height then
-        currentPos.y = size.height
-        state = true
-        beginUpdate = false
-    end
-
-    object:setPosition(currentPos)
-    return state
-end
 
 local function collisionDetect()
     for val = 1, List.getSize(HeroManager) do
         local sprite = HeroManager[val-1]
         if sprite._isalive == true then
-            collisionDetectHero(sprite)
+            collision(sprite)
             isOutOfBound(sprite)            
         end
     end
@@ -58,7 +26,7 @@ local function collisionDetect()
     for val = 1, List.getSize(MonsterManager) do
         local sprite = MonsterManager[val-1]
         if sprite._isalive == true then
-            collisionDetectHero(sprite)
+            collision(sprite)
             isOutOfBound(sprite)            
         end
     end    
@@ -66,7 +34,7 @@ local function collisionDetect()
     for val = 1, List.getSize(BossManager) do
         local sprite = BossManager[val-1]
         if sprite._isalive == true then
-            collisionDetectHero(sprite)
+            collision(sprite)
             isOutOfBound(sprite)            
         end
     end        
@@ -76,7 +44,7 @@ end
 local function update(dt)
     collisionDetect()
 
-    if chosenOne == 0 then return end
+    if chosenOne == 0  then return end
 
     --change camera angle
     if beginUpdate then
@@ -92,19 +60,13 @@ local function update(dt)
             end
         end
 
-        --if endPos.y < 0 then endPos.y = 0 end
-
         chosenOne:setPosition3D(endPos)
         local aspect = cc.V3Dot(dir, cc.V3(0.0, 0.0, 1.0))
         aspect = math.acos(aspect)
         if dir.x < 0.0 then aspect = -aspect end 
                
-        local roate3d = cc.V3(0.0, aspect * 57.29577951 +180.0, 0.0)
-        chosenOne._sprite3d:setRotation3D(roate3d)
---        local aaaaa = math.deg(roate3d.y)
---        chosenOne:getChildByTag(1):setRotation3D(cc.V3(0, 0, aaaaa))
-        --cclog("%.2f %.2f %.2f", roate3d.x, roate3d.y, roate3d.z)
-        
+        chosenOne._sprite3d:setRotation(aspect * 57.29577951)
+
         if camera then
             local position = chosenOne:getPosition3D()
             camera:lookAt(position, cc.V3(0.0, 1.0, 0.0))
@@ -158,13 +120,13 @@ end
 local function createRole()
  
     addNewSprite(size.width/2, size.height/2, EnumRaceType.DEBUG)
-    addNewSprite(size.width/2 - 200, size.height/2, EnumRaceType.DEBUG)
-    addNewSprite(size.width/2 - 100, size.height/2 + 50, EnumRaceType.DEBUG)
+--    addNewSprite(size.width/2 - 200, size.height/2, EnumRaceType.DEBUG)
+--    addNewSprite(size.width/2 - 100, size.height/2 + 50, EnumRaceType.DEBUG)
     
     addNewSprite(size.width/2-200, size.height/2-200, EnumRaceType.MONSTER)
-    addNewSprite(size.width/2-300, size.height/2-200, EnumRaceType.MONSTER)
-    addNewSprite(size.width/2-300, size.height/2-100, EnumRaceType.MONSTER)
-    addNewSprite(size.width/2+300, size.height/2-100, EnumRaceType.BOSS)
+--    addNewSprite(size.width/2-300, size.height/2-200, EnumRaceType.MONSTER)
+--    addNewSprite(size.width/2-300, size.height/2-100, EnumRaceType.MONSTER)
+--    addNewSprite(size.width/2+300, size.height/2-100, EnumRaceType.BOSS)
 
     chosenOne = findAliveHero() --Assume it is the selected people
     --chosenOne = findAliveBoss() --Assume it is the selected people
@@ -196,11 +158,12 @@ function BattleFieldScene.create()
     return_Button:loadTextures("btn_circle_normal.png", "btn_circle_normal.png", "")
     return_Button:setTitleText("Return")
     return_Button:setAnchorPoint(0,1)
-
-    return_Button:setPosition(size.width / 2 - 300, size.height  - 200)
+    return_Button:setPosition(cc.V3(size.width / 2 - 300, size.height / 2))
+    --return_Button:setPosition3D(cc.V3(size.width / 2 - 300, size.height / 2, 300))
+    --return_Button:setRotation3D(cc.V3(90, 0, 0))
     return_Button:addTouchEventListener(touchEvent_return)        
     currentLayer:addChild(return_Button, 10)
-    return_Button:setScale(0.5)
+    --return_Button:setScale(0.5)
 
     local function battle_success(event)
         BattleFieldScene.success()
@@ -229,7 +192,6 @@ function BattleFieldScene.create()
         if touch == nil then return end
 
         local location = touch:getLocationInView()
-        cclog("%f %f", location.x, location.y)
         local nearP = cc.V3(location.x, location.y, -1.0)
         local farP = cc.V3(location.x, location.y, 1.0)
         nearP = camera:unproject(size, nearP, nearP)
@@ -245,11 +207,14 @@ function BattleFieldScene.create()
         local ndo = cc.V3Dot(temp, nearP)
         dist = (0 - ndo) / ndd
 
-        local tt = cc.V3MulEx(dir, dist)
-        touchPos =  cc.V3Add(nearP, tt)
-
+        temp = cc.V3MulEx(dir, dist)
+        touchPos =  cc.V3Add(nearP, temp)
+        
+        local angle = getAngleFrom2Point(cc.p(touchPos.x, touchPos.y), cc.p(chosenOne:getPosition()))
+        chosenOne:runAction(cc.RotateTo:create(0.2, angle))
         chosenOne:runAction(cc.MoveTo:create(0.5, touchPos))
-        --beginUpdate = true;          
+        --beginUpdate = true;
+
     end
 
     local listener = cc.EventListenerTouchOneByOne:create()
