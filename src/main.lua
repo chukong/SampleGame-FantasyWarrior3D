@@ -42,8 +42,8 @@ local function main()
 
     --create scene
     --    local scene = require("ChooseRoleScene")
-    local scene = require("BattleFieldScene")
-    -- local scene = require("MainMenuScene")
+--    local scene = require("BattleFieldScene")
+    local scene = require("MainMenuScene")
     local activateGameScene = scene.create()
     --activateGameScene:playBgMusic()
     

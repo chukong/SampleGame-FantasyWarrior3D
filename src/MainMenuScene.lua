@@ -10,6 +10,8 @@ end
 function MainMenuScene:ctor()
     --get win size
     self.size = cc.Director:getInstance():getVisibleSize()
+    self._isBloodLabelShowing = false
+    math.randomseed(os.time())
 end
 
 function MainMenuScene.create()
@@ -152,6 +154,63 @@ function MainMenuScene:addBg(layer)
     bg_front:setPosition(self.size.width/2,self.size.height/2)
     layer:addChild(bg_back,1)
     layer:addChild(bg_front,3)
+    
+    --test
+    self:showBloodLossNum(layer)
+    
+end
+
+function MainMenuScene:showBloodLossNum(layer)
+    local time = math.random(0,300)
+    
+    local function getRandomXYZ()
+        local rand_x = 20*math.sin(math.rad(time*0.5+4356))
+        local rand_y = 20*math.sin(math.rad(time*0.37+5436)) 
+        local rand_z = 20*math.sin(math.rad(time*0.2+54325))
+        time = time+1
+        return {x=rand_x,y=rand_y,z=rand_z}
+    end
+     
+    if not self._isBloodLabelShowing then
+        self._isBloodLabelShowing = true
+        local ttfconfig = {outlineSize=7,fontSize=50,fontFilePath="fonts/britanic bold.ttf"}
+        local num = time
+        local blood = cc.Label:createWithTTF(ttfconfig,"-"..num,cc.TEXT_ALIGNMENT_CENTER,400)
+        blood:enableOutline(cc.c4b(0,0,0,255))
+--        blood:setOpacity(50)
+        blood:setScale(0)
+        blood:setPosition3D({x=400,y=200,z=0})
+        blood:setRotation3D(getRandomXYZ())
+        
+        local targetScale = 1
+        if num > 200 then 
+            blood:setColor(cc.c3b(255,0,0))
+        elseif num > 100 then
+            blood:setColor(cc.c3b(250,121,65))
+            targetScale = 0.75
+        else
+            blood:setColor(cc.c3b(250,191,65))
+            targetScale = 0.85
+        end
+--        blood:runAction(cc.FadeIn:create(0.3))
+        local sequence = cc.Sequence:create(cc.EaseElasticOut:create(cc.ScaleTo:create(0.5,targetScale),0.4),
+            cc.FadeOut:create(0.5),
+            cc.RemoveSelf:create(),
+            cc.CallFunc:create(function()self._isBloodLabelShowing = false 
+                self:showBloodLossNum(layer)
+            end)
+            )
+        local spawn = cc.Spawn:create(sequence,
+            cc.MoveBy:create(1,cc.p(0,150)),
+            cc.RotateBy:create(1,math.random(-40,40)))
+        blood:runAction(spawn)
+            
+        layer:addChild(blood,5)
+    else
+    
+    end
+   
+
 end
 
 return MainMenuScene
