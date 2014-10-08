@@ -73,7 +73,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 #else
     engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
 #endif
-
+    
+    
     return true;
 }
 
