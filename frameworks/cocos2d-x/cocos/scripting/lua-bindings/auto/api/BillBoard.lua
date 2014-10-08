@@ -38,12 +38,4 @@
 -- @param #int mode
 -- @return BillBoard#BillBoard ret (return value: cc.BillBoard)
         
---------------------------------
---  draw BillBoard object 
--- @function [parent=#BillBoard] draw 
--- @param self
--- @param #cc.Renderer renderer
--- @param #mat4_table transform
--- @param #unsigned int flags
-        
 return nil
