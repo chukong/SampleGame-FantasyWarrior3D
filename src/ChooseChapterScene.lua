@@ -32,10 +32,33 @@ function ChooseChapter:addElement()
 
     -- add hero
     self:addHero()
-
+    
+    --test 3D camera
+    self:testJump3D()
+    
     --addCamera
     self:addCamera()
     self:setCameraMask(2)
+    
+    
+end
+
+function ChooseChapter:testJump3D()
+    local hero = require("Hero3D").create(0)
+    hero:setRotation3D({x=0,y=0,z=-90})
+    hero:setScale(10)
+    hero:setPosition3D({x=self.size.width*0.65, y=self.size.height*0.01,z=10})
+    
+    local action = cc.JumpBy3D:create(2,{x=100,y=400,z=10},100,3)
+    local reverse = action:reverse()
+    local clone = action:clone()
+    
+    local jumpTo = cc.JumpTo3D:create(2,{x=self.size.width*0.65, y=self.size.height*0.01,z=10},100,4)
+    local cloneJump = jumpTo:clone()
+    
+    hero:runAction(cc.Sequence:create(action,reverse,clone,jumpTo,cloneJump)) 
+    
+    self:addChild(hero)
 end
 
 function ChooseChapter:addBg()
@@ -60,7 +83,7 @@ function ChooseChapter:addCamera()
     --add camera
     local camera = cc.Camera:createPerspective(60,self.size.width/self.size.height,1,1000)
     local point = self._hero:getPosition3D()
-    camera:setPosition3D({x=point.x,y=-point.y-300,z=100+point.z})
+    camera:setPosition3D({x=point.x,y=-point.y-300,z=250+point.z})
     camera:lookAt(point,{x=0,y=1,z=0})
     camera:setCameraFlag(2)
     self:addChild(camera)
@@ -83,7 +106,7 @@ function ChooseChapter:addHero()
     local hero = require("Hero3D").create(0)
     hero:setRotation3D({x=0,y=0,z=0})
     hero:setScale(10)
-    hero:setPosition({x=self.size.width*0.95, y=self.size.height*0.15})   
+    hero:setPosition3D({x=self.size.width*0.95, y=self.size.height*0.15,z=10})   
     self:addChild(hero)
     self._hero = hero
     self._prePosition = hero:getPositionX()
@@ -96,8 +119,8 @@ function ChooseChapter:addHero()
         {x=-self.size.width*0.59,y=self.size.height*0.17},
         {x=-self.size.width*0.73,y=self.size.height*0.28}}
     local cardinalSpline = cc.CardinalSplineBy:create(3,controlPoint,0)
-    hero:runAction(cardinalSpline)
-end
+--    hero:runAction(cardinalSpline)
 
+end
 
 return ChooseChapter
