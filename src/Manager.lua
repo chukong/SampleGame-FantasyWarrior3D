@@ -37,6 +37,7 @@ function findAliveBoss()
 end
 
 function tooClose(object1, object2)
+
     local miniDistance = object1._radius + object2._radius
     local obj1Pos = cc.p(object1:getPosition())
     local obj2Pos = cc.p(object2:getPosition())
@@ -55,14 +56,14 @@ function tooClose(object1, object2)
             object1:setTarget(object2)
         end
     else
-        if object1._target == 0 then 
-            object1:setState(EnumStateType.STAND)
-        else
-            if object1._target == object2 then
-                object1:setTarget(0)
-                object1:setState(EnumStateType.STAND)
-            end
-        end        
+--        if object1._target == 0 then 
+--            object1:setState(EnumStateType.STAND)
+--        else
+--            if object1._target == object2 then
+--                object1:setTarget(0)
+--                object1:setState(EnumStateType.STAND)
+--            end
+--        end        
     end  
 end
 
@@ -87,6 +88,17 @@ function collision(object)
             tooClose(sprite, object)
         end
     end     
+end
+
+function getFocusPointOfHeros()
+    local ptFocus ={x=0, y=0}
+    for var =1, List.getSize(HeroManager) do
+        ptFocus.x=ptFocus.x+HeroManager[var-1]:getPositionX()
+        ptFocus.y=ptFocus.y+HeroManager[var-1]:getPositionY()
+    end
+    ptFocus.x = ptFocus.x/List.getSize(HeroManager)
+    ptFocus.y = ptFocus.y/List.getSize(HeroManager)
+    return ptFocus
 end
 
 function isOutOfBound(object)
@@ -139,9 +151,9 @@ function isInCircleSector(object1, object2)
             rotation = rotation + 360
         end    	
     	
-        cclog("%d %f %f", object1._racetype, angle, rotation)
+        --cclog("%d %f %f", object1._racetype, angle, rotation)
         if angle >= rotation  and angle <= rotation + 25 then
-            cclog("11111")
+            --cclog("11111")
     		return true
     	end
     end 
@@ -169,4 +181,3 @@ function getAngleFrom2Point(p1, p2)
     
     return angle
 end
-

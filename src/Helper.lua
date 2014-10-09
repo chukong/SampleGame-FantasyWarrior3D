@@ -26,6 +26,20 @@ function printTab(tab)
   end
 end
 
+-- getpostable
+function getPosTable(obj)
+	local posX,posY = obj:getPosition()
+	return {x= posX,y=posY} 
+end
+
+--getnextpos
+function getNextStepPos(obj,targetPos)
+	local curPos = getPosTable(obj)
+	local angel = math.atan2(targetPos.y-curPos.y,targetPos.x-curPos.x)
+	return {x = curPos.x+math.cos(angel)*obj._speed, y = curPos.y+math.sin(angel)*obj._speed}
+end
+
+
 -- cclog
 cclog = function(...)
     print(string.format(...))
