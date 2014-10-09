@@ -1,9 +1,9 @@
 #include "lua_cocos2dx_custom.hpp"
 #include "custom/EffectSprite3D.h"
 #include "custom/DrawNode3D.h"
-#include "BillboardParticleSystem.h"
+#include "custom/BillboardParticleSystem.h"
 #include "tolua_fix.h"
-#include "custom\LuaBasicConversions.h"
+#include "LuaBasicConversions.h"
 
 
 
