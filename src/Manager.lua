@@ -35,7 +35,7 @@ function findAliveBoss()
 end
 
 function tooClose(object1, object2)
-    local miniDistance = 100
+    local miniDistance = 1
     local startP = cc.p(object1:getPosition())
     local endP = cc.p(object2:getPosition())
 
@@ -84,11 +84,11 @@ function tooClose(object1, object2)
             object1:setTarget(object2)
         end
     else
-        if object1._target == 0 then 
-            object1:setState(EnumStateType.STAND)
-        elseif object1._target._isalive == false then
-            object1:setState(EnumStateType.STAND)
-        end
+--        if object1._target == 0 then 
+--            object1:setState(EnumStateType.STAND)
+--        elseif object1._target._isalive == false then
+--            object1:setState(EnumStateType.STAND)
+--        end
     end  
 end
 
@@ -113,4 +113,15 @@ function collisionDetectHero(Object)
             tooClose(sprite, Object)
         end
     end     
+end
+
+function getFocusPointOfHeros()
+    local ptFocus ={x=0, y=0}
+    for var =1, List.getSize(HeroManager) do
+        ptFocus.x=ptFocus.x+HeroManager[var-1]:getPositionX()
+        ptFocus.y=ptFocus.y+HeroManager[var-1]:getPositionY()
+    end
+    ptFocus.x = ptFocus.x/List.getSize(HeroManager)
+    ptFocus.y = ptFocus.y/List.getSize(HeroManager)
+    return ptFocus
 end

@@ -23,11 +23,17 @@ function Monster3D:AddSprite3D(type)
 	
     local filename = "Sprite3DTest/orc.c3b";
     self._sprite3d = cc.EffectSprite3D:create(filename)
+    self._sprite3d:addEffect(cc.V3(0,0,0),0.01, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
-    self._sprite3d:setRotation(180)
+    self._sprite3d:setRotation(0)
       
     self._action.attack = filename
+    
+    local animation3d = cc.Animation3D:create(filename)
+    local animate3d = cc.Animate3D:create(animation3d)
+    self._sprite3d:runAction(cc.RepeatForever:create(animate3d))
+
 end
 
 local scheduler = cc.Director:getInstance():getScheduler()
