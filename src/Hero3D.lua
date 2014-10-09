@@ -2,6 +2,7 @@ Hero3D = class("Hero3D", function()
     return require "Base3D".create()
 end)
 
+local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
 
 function Hero3D:ctor()
@@ -19,24 +20,54 @@ function Hero3D.create(type)
     
     -- base
     hero:setRaceType(type)
-
     --self
     hero._weapon = math.random() .. ""
+
+    local function MainLoop(dt)
+        if EnumStateType.WALK == hero._statetype then
+            --move
+            local targetPos = {x=3000, y=0}
+            if nil ~= hero._target then
+                targetPos = getPosTable(hero._target)               
+            end
+            local curPos = getPosTable(hero)
+            local dis = cc.pGetDistance(curPos,targetPos)
+            if cc.pGetDistance(curPos,targetPos)>(hero._attackRadius+hero._target._radius) then
+                hero:setPosition(getNextStepPos(hero,targetPos))
+            end
+            
+            --rotate
+            local curPos = getPosTable(hero)
+            local angel = -math.atan2(targetPos.y-curPos.y,targetPos.x-curPos.x)*180/math.pi;
+            local curRotation = hero:getRotation()
+            if math.abs(angel-curRotation)>=hero._rotatehead then
+                if angel < 0 then
+                    hero:setRotation(curRotation-hero._rotatehead)
+                else
+                    hero:setRotation(curRotation+hero._rotatehead)
+                end
+            end
+        end
+    end
     
+    --mainloop
+    scheduler:scheduleScriptFunc(MainLoop, 0, false)    
+        
     local function update(dt)
-        hero:FindEnemy2Attack()
+        if hero.FindEnemy2Attack == nil then return  end
+        hero:FindEnemy2Attack()        
     end
 
     scheduler:scheduleScriptFunc(update, 0.5, false)    
-    
     return hero
 end
+
 
 function Hero3D:AddSprite3D(type)
     
     local filename;
     if type == EnumRaceType.WARRIOR then --warrior
-        filename = "Sprite3DTest/ReskinGirl.c3b"
+        filename = "Model/zhanshi_pao.c3b"
     elseif type == EnumRaceType.ARCHER then --archer
         filename = "Sprite3DTest/ReskinGirl.c3b"
     elseif type == EnumRaceType.WAGE then --wage
@@ -44,17 +75,23 @@ function Hero3D:AddSprite3D(type)
     else
         filename = "Sprite3DTest/orc.c3b" 
     end
-    self._sprite3d = cc.Sprite3D:create(filename)
+    self._sprite3d = cc.EffectSprite3D:create(filename)
+    self._sprite3d:addEffect(cc.V3(0,0,0),0.01, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
-    self._sprite3d:setRotation(180)
+    self._sprite3d:setRotation(-90)
             
     self._action.attack = filename
     
+    local animation3d = cc.Animation3D:create(filename)
+    local animate3d = cc.Animate3D:create(animation3d)
+    animate3d:setSpeed(1.0)
+    self._sprite3d:runAction(cc.RepeatForever:create(animate3d))
+
     --set default equipment
-    if type ~= EnumRaceType.DEBUG then
-        self:setDefaultEqt()
-    end
+    --if type ~= EnumRaceType.DEBUG then
+    --    self:setDefaultEqt()
+    --end
 end
 
 -- set default equipments
@@ -138,18 +175,23 @@ end
 
 -- find enemy
 function Hero3D:FindEnemy2Attack()
-    if self._isalive == false then return end 
+    if self._isalive == false then
+        if self._scheduleAttackId ~= 0 then
+            scheduler:unscheduleScriptEntry(self._scheduleAttackId)
+            self._scheduleAttackId = 0
+        end
+        return
+    end 
 
-    local fjksd = self._statetype
-    local bbbb = self._scheduleAttackId
     if self._statetype == EnumStateType.ATTACK and self._scheduleAttackId == 0 then
         local function scheduleAttack(dt)
-            if self._isalive == false or (self._target == 0 and self.target._isalive == false) then
+            if self._target == nil or self._target == 0 or self._target._isalive == false then
                 scheduler:unscheduleScriptEntry(self._scheduleAttackId)
                 self._scheduleAttackId = 0
-                return          
+                return
             end
-
+            
+            self._attackZone:runAction(cc.Sequence:create(cc.ProgressTo:create(0, 0), cc.ProgressTo:create(0.3, 25))) 
             self._target:hurt(self._attack)
         end    
         self._scheduleAttackId = scheduler:scheduleScriptFunc(scheduleAttack, 1, false)            
@@ -159,6 +201,64 @@ function Hero3D:FindEnemy2Attack()
         scheduler:unscheduleScriptEntry(self._scheduleAttackId)
         self._scheduleAttackId = 0
     end  
+end
+
+function Hero3D:setState(type)
+    if self._statetype == type then
+        return
+        
+    elseif type ~= EnumStateType.KNOCKED then
+        self._sprite3d:stopActionByTag(self._statetype)    
+        self._statetype = type
+        
+
+    elseif type == EnumStateType.STAND then
+        local standAction = cc.RotateTo:create(0.5, 0)
+        standAction:setTag(self._statetype) 
+        self:runAction(standAction) 
+    
+
+    elseif type == EnumStateType.DEAD then
+        local rotateAngle = nil
+        if self._racetype == EnumRaceType.DEBUG then
+            rotateAngle = 90.0
+        else 
+            rotateAngle = -90.0
+        end
+        --self._sprite3d:runAction(cc.RotateTo:create(0.02, rotateAngle)) 
+        self._sprite3d:runAction(cc.ScaleBy:create(0.2, 0.2))            
+     
+
+    elseif type == EnumStateType.WALK then
+        self._statetype = EnumStateType.WALK
+
+    elseif type == EnumStateType.ATTACK then
+        local animation = cc.Animation3D:create(self._action.attack)
+        local animate = cc.Animate3D:create(animation)
+        animate:setSpeed(self._speed)
+        local repeatAction = cc.RepeatForever:create(animate)
+        repeatAction:setTag(self._statetype) 
+        self._sprite3d:runAction(repeatAction)
+
+    elseif type == EnumStateType.DEFEND then
+        local x = 0
+        if self._racetype == EnumRaceType.HERO then
+            x = -15
+        else
+            x = 15
+        end    
+        local defendAction = cc.RotateBy:create(0.5, x)
+        defendAction:setTag(self._statetype) 
+        self._sprite3d:runAction(defendAction)     
+
+    elseif type == EnumStateType.KNOCKED then
+        if self._racetype == EnumRaceType.BOSS then
+            local action = cc.Sequence:create(cc.MoveBy:create(0.05, cc.p(5,5)),  cc.MoveBy:create(0.05, cc.p(-5,-5)))
+            self._sprite3d:runAction(action)
+        else 
+            self._sprite3d:runAction(cc.RotateBy:create(0.5, 360.0))
+        end 
+    end
 end
 
 return Hero3D

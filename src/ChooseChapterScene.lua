@@ -45,7 +45,7 @@ end
 
 function ChooseChapter:testJump3D()
     local hero = require("Hero3D").create(0)
-    hero:setRotation3D({x=0,y=0,z=-90})
+    hero:setRotation3D({x=0,y=0,z=-180})
     hero:setScale(10)
     hero:setPosition3D({x=self.size.width*0.65, y=self.size.height*0.01,z=10})
     
