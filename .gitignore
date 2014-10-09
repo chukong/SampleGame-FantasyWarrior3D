@@ -1,5 +1,6 @@
 # Ignore by Jacky
 runtime/
+src/main.lua
 
 # Ignore thumbnails created by windows
 Thumbs.db

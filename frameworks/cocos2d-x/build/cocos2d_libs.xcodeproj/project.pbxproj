@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04962B2619E63E0A00D7DB93 /* JumpBy3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04962B2419E63E0A00D7DB93 /* JumpBy3D.cpp */; };
+		04962B2719E63E0A00D7DB93 /* JumpBy3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04962B2419E63E0A00D7DB93 /* JumpBy3D.cpp */; };
+		04962B2819E63E0A00D7DB93 /* JumpBy3D.h in Headers */ = {isa = PBXBuildFile; fileRef = 04962B2519E63E0A00D7DB93 /* JumpBy3D.h */; };
+		04962B2919E63E0A00D7DB93 /* JumpBy3D.h in Headers */ = {isa = PBXBuildFile; fileRef = 04962B2519E63E0A00D7DB93 /* JumpBy3D.h */; };
+		04962B3619E65D1100D7DB93 /* JumpTo3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04962B3419E65D1100D7DB93 /* JumpTo3D.cpp */; };
+		04962B3719E65D1100D7DB93 /* JumpTo3D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04962B3419E65D1100D7DB93 /* JumpTo3D.cpp */; };
+		04962B3819E65D1100D7DB93 /* JumpTo3D.h in Headers */ = {isa = PBXBuildFile; fileRef = 04962B3519E65D1100D7DB93 /* JumpTo3D.h */; };
+		04962B3919E65D1100D7DB93 /* JumpTo3D.h in Headers */ = {isa = PBXBuildFile; fileRef = 04962B3519E65D1100D7DB93 /* JumpTo3D.h */; };
 		15AE180619AAD2F700C27E9E /* 3dExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 15AE17E319AAD2F700C27E9E /* 3dExport.h */; };
 		15AE180719AAD2F700C27E9E /* 3dExport.h in Headers */ = {isa = PBXBuildFile; fileRef = 15AE17E319AAD2F700C27E9E /* 3dExport.h */; };
 		15AE180819AAD2F700C27E9E /* CCAABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15AE17E419AAD2F700C27E9E /* CCAABB.cpp */; };
@@ -1830,6 +1838,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		04962B2419E63E0A00D7DB93 /* JumpBy3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JumpBy3D.cpp; sourceTree = "<group>"; };
+		04962B2519E63E0A00D7DB93 /* JumpBy3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JumpBy3D.h; sourceTree = "<group>"; };
+		04962B3419E65D1100D7DB93 /* JumpTo3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JumpTo3D.cpp; sourceTree = "<group>"; };
+		04962B3519E65D1100D7DB93 /* JumpTo3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JumpTo3D.h; sourceTree = "<group>"; };
 		0634A4C5194B19E400E608AF /* CCActionTimeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCActionTimeline.cpp; sourceTree = "<group>"; };
 		0634A4C6194B19E400E608AF /* CCActionTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCActionTimeline.h; sourceTree = "<group>"; };
 		0634A4C7194B19E400E608AF /* CCActionTimelineCache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCActionTimelineCache.cpp; sourceTree = "<group>"; };
@@ -4768,6 +4780,10 @@
 		66AC65DD19DA46B5007478A0 /* custom */ = {
 			isa = PBXGroup;
 			children = (
+				04962B3419E65D1100D7DB93 /* JumpTo3D.cpp */,
+				04962B3519E65D1100D7DB93 /* JumpTo3D.h */,
+				04962B2419E63E0A00D7DB93 /* JumpBy3D.cpp */,
+				04962B2519E63E0A00D7DB93 /* JumpBy3D.h */,
 				66AC65DE19DA46B5007478A0 /* BillboardParticleSystem.cpp */,
 				66AC65DF19DA46B5007478A0 /* BillboardParticleSystem.h */,
 				66AC65E019DA46B5007478A0 /* DrawNode3D.cpp */,
@@ -5269,6 +5285,7 @@
 				15AE188919AAD33D00C27E9E /* CCControlButtonLoader.h in Headers */,
 				66AC65E619DA46B5007478A0 /* BillboardParticleSystem.h in Headers */,
 				15AE19EE19AAD3A700C27E9E /* spine.h in Headers */,
+				04962B3819E65D1100D7DB93 /* JumpTo3D.h in Headers */,
 				15AE189119AAD33D00C27E9E /* CCLayerColorLoader.h in Headers */,
 				15AE19C119AAD3A700C27E9E /* EventData.h in Headers */,
 				50ABBE211925AB6F00A911A9 /* atitc.h in Headers */,
@@ -5303,6 +5320,7 @@
 				50ABBE771925AB6F00A911A9 /* CCEventListenerTouch.h in Headers */,
 				5034CA33191D591100CE6051 /* ccShader_PositionTexture_uColor.frag in Headers */,
 				50ABC0171926664800A911A9 /* CCImage.h in Headers */,
+				04962B2819E63E0A00D7DB93 /* JumpBy3D.h in Headers */,
 				50ABBDA91925AB4100A911A9 /* CCRenderCommand.h in Headers */,
 				50ABBD951925AB4100A911A9 /* CCGLProgramState.h in Headers */,
 				50ABC0091926664800A911A9 /* CCCommon.h in Headers */,
@@ -5526,6 +5544,7 @@
 				15AE1A1E19AAD3A700C27E9E /* SlotData.h in Headers */,
 				1A5701E1180BCB8C0088DEC7 /* CCLayer.h in Headers */,
 				15AE1BEE19AAE01E00C27E9E /* CCControlExtensions.h in Headers */,
+				04962B3919E65D1100D7DB93 /* JumpTo3D.h in Headers */,
 				1A5701E5180BCB8C0088DEC7 /* CCScene.h in Headers */,
 				1A5701E9180BCB8C0088DEC7 /* CCTransition.h in Headers */,
 				15AE198F19AAD36E00C27E9E /* CheckBoxReader.h in Headers */,
@@ -5669,6 +5688,7 @@
 				15AE195819AAD35100C27E9E /* CCInputDelegate.h in Headers */,
 				50ABBDAC1925AB4100A911A9 /* CCRenderCommandPool.h in Headers */,
 				5034CA3C191D591100CE6051 /* ccShader_PositionColor.vert in Headers */,
+				04962B2919E63E0A00D7DB93 /* JumpBy3D.h in Headers */,
 				50ABC0181926664800A911A9 /* CCImage.h in Headers */,
 				15AE1A4E19AAD3D500C27E9E /* b2PolygonShape.h in Headers */,
 				50ABBE8E1925AB6F00A911A9 /* CCNS.h in Headers */,
@@ -5891,6 +5911,7 @@
 				46A170EA1807CECA005B8026 /* CCPhysicsJoint.cpp in Sources */,
 				15AE18DC19AAD35000C27E9E /* CocoLoader.cpp in Sources */,
 				15AE1B4D19AADA9900C27E9E /* UIListView.cpp in Sources */,
+				04962B3619E65D1100D7DB93 /* JumpTo3D.cpp in Sources */,
 				15AE189D19AAD33D00C27E9E /* CCNodeLoader.cpp in Sources */,
 				5027253C190BF1B900AAF4ED /* cocos2d.cpp in Sources */,
 				50ABC0611926664800A911A9 /* CCCommon-mac.mm in Sources */,
@@ -6013,6 +6034,7 @@
 				15AE1BCD19AAE01E00C27E9E /* CCControlColourPicker.cpp in Sources */,
 				1A5701B1180BCB590088DEC7 /* CCFontFNT.cpp in Sources */,
 				15AE181619AAD2F700C27E9E /* CCAttachNode.cpp in Sources */,
+				04962B2619E63E0A00D7DB93 /* JumpBy3D.cpp in Sources */,
 				1A5701B5180BCB590088DEC7 /* CCFontFreeType.cpp in Sources */,
 				1A5701B9180BCB5A0088DEC7 /* CCLabel.cpp in Sources */,
 				1A5701BD180BCB5A0088DEC7 /* CCLabelAtlas.cpp in Sources */,
@@ -6464,6 +6486,7 @@
 				15AE192B19AAD35100C27E9E /* TriggerObj.cpp in Sources */,
 				15AE198519AAD36400C27E9E /* WidgetReader.cpp in Sources */,
 				15AE1AAA19AAD40300C27E9E /* b2World.cpp in Sources */,
+				04962B3719E65D1100D7DB93 /* JumpTo3D.cpp in Sources */,
 				15AE1AB019AAD40300C27E9E /* b2ChainAndPolygonContact.cpp in Sources */,
 				1A5701B2180BCB590088DEC7 /* CCFontFNT.cpp in Sources */,
 				1A5701B6180BCB590088DEC7 /* CCFontFreeType.cpp in Sources */,
@@ -6647,6 +6670,7 @@
 				15AE195719AAD35100C27E9E /* CCInputDelegate.cpp in Sources */,
 				15AE1B8A19AADA9A00C27E9E /* UIImageView.cpp in Sources */,
 				50ABBD391925AB0000A911A9 /* CCAffineTransform.cpp in Sources */,
+				04962B2719E63E0A00D7DB93 /* JumpBy3D.cpp in Sources */,
 				15AE1C1519AAE2C700C27E9E /* CCPhysicsDebugNode.cpp in Sources */,
 				50ABBD841925AB4100A911A9 /* CCBatchCommand.cpp in Sources */,
 				50ABBDA81925AB4100A911A9 /* CCRenderCommand.cpp in Sources */,
