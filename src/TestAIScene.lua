@@ -58,7 +58,7 @@ local function collisionDetect()
     for val = 1, List.getSize(HeroManager) do
         local sprite = HeroManager[val-1]
         if sprite._isalive == true then
-            collisionDetectHero(sprite)
+            collision(sprite)
             isOutOfBound(sprite)            
         end
     end
@@ -66,7 +66,7 @@ local function collisionDetect()
     for val = 1, List.getSize(MonsterManager) do
         local sprite = MonsterManager[val-1]
         if sprite._isalive == true then
-            collisionDetectHero(sprite)
+            collision(sprite)
             isOutOfBound(sprite)            
         end
     end    
@@ -74,7 +74,7 @@ local function collisionDetect()
     for val = 1, List.getSize(BossManager) do
         local sprite = BossManager[val-1]
         if sprite._isalive == true then
-            collisionDetectHero(sprite)
+            collision(sprite)
             isOutOfBound(sprite)            
         end
     end        
@@ -147,7 +147,7 @@ end
 
 local function createRole()
  
-    warrior = addNewSprite(heroOriginPositionX, 500, EnumRaceType.DEBUG)
+    warrior = addNewSprite(heroOriginPositionX, 800, EnumRaceType.DEBUG)
     warrior:setState(EnumStateType.WALK)
     --archer = addNewSprite(heroOriginPositionX, 300, EnumRaceType.DEBUG)
     --mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.DEBUG) 

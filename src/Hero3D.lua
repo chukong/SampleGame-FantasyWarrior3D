@@ -2,6 +2,7 @@ Hero3D = class("Hero3D", function()
     return require "Base3D".create()
 end)
 
+local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
 
 function Hero3D:ctor()
@@ -31,7 +32,7 @@ function Hero3D.create(type)
             end
             local curPos = getPosTable(hero)
             local dis = cc.pGetDistance(curPos,targetPos)
-            if cc.pGetDistance(curPos,targetPos)>200 then
+            if cc.pGetDistance(curPos,targetPos)>(hero._attackRadius+hero._target._radius) then
                 hero:setPosition(getNextStepPos(hero,targetPos))
             end
             
@@ -51,7 +52,13 @@ function Hero3D.create(type)
     
     --mainloop
     scheduler:scheduleScriptFunc(MainLoop, 0, false)    
-    
+        
+    local function update(dt)
+        if hero.FindEnemy2Attack == nil then return  end
+        hero:FindEnemy2Attack()        
+    end
+
+    scheduler:scheduleScriptFunc(update, 0.5, false)    
     return hero
 end
 
@@ -168,18 +175,23 @@ end
 
 -- find enemy
 function Hero3D:FindEnemy2Attack()
-    if self._isalive == false then return end 
+    if self._isalive == false then
+        if self._scheduleAttackId ~= 0 then
+            scheduler:unscheduleScriptEntry(self._scheduleAttackId)
+            self._scheduleAttackId = 0
+        end
+        return
+    end 
 
-    local fjksd = self._statetype
-    local bbbb = self._scheduleAttackId
     if self._statetype == EnumStateType.ATTACK and self._scheduleAttackId == 0 then
         local function scheduleAttack(dt)
-            if self._isalive == false or (self._target == 0 and self.target._isalive == false) then
+            if self._target == nil or self._target == 0 or self._target._isalive == false then
                 scheduler:unscheduleScriptEntry(self._scheduleAttackId)
                 self._scheduleAttackId = 0
-                return          
+                return
             end
-
+            
+            self._attackZone:runAction(cc.Sequence:create(cc.ProgressTo:create(0, 0), cc.ProgressTo:create(0.3, 25))) 
             self._target:hurt(self._attack)
         end    
         self._scheduleAttackId = scheduler:scheduleScriptFunc(scheduleAttack, 1, false)            

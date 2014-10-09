@@ -39,10 +39,6 @@ function getNextStepPos(obj,targetPos)
 	return {x = curPos.x+math.cos(angel)*obj._speed, y = curPos.y+math.sin(angel)*obj._speed}
 end
 
---getnextrotation
-function getNextStepRotation(obj,targetPos)
-    local angel = -math.atan2(touchPos.y-prePosY,touchPos.x-prePosX)*180/math.pi;
-end
 
 -- cclog
 cclog = function(...)
