@@ -11,7 +11,6 @@ local scheduler = cc.Director:getInstance():getScheduler()
 local gloableZOrder = 1
 local touchPos = nil
 local beginUpdate = false
-local chosenOne = nil
 local currentLayer = nil
 local heroOriginPositionX = -2900
 local targetpos = {x=3000,y=0}
@@ -82,46 +81,37 @@ local function collisionDetect()
     
 end
 
-local function findMonster()
-
-    --for warroir
-    local shortest_distance = cc.pGetDistance(getPosTable(warrior),targetpos)
-    for var = 1, List.getSize(MonsterManager) do
-        local dis = cc.pGetDistance(getPosTable(warrior),getPosTable(MonsterManager[var-1]))
-        if dis<shortest_distance then
-            warrior._target = MonsterManager[var-1]
+local function findEnmey(object, manager)
+    local find = false
+    local shortest_distance = cc.pGetDistance(getPosTable(object),targetpos)
+    for var = 1, List.getSize(manager) do
+        local objectTemp = manager[var-1]
+        local dis = cc.pGetDistance(getPosTable(object),getPosTable(objectTemp))
+        if dis < shortest_distance and objectTemp._isalive then
+            object:setTarget(objectTemp)
             shortest_distance = dis
+            find = true
         end
     end
     
-    shortest_distance = cc.pGetDistance(getPosTable(archer),targetpos)
-    for var = 1, List.getSize(MonsterManager) do
-        local dis = cc.pGetDistance(getPosTable(archer),getPosTable(MonsterManager[var-1]))
-        if dis<shortest_distance then
-            archer._target = MonsterManager[var-1]
-            shortest_distance = dis
-        end
+    if find == false then
+        object:setState(EnumStateType.WALK)
+        object:setTarget(nil)
+    elseif isInCircleSector(object, object._target) then
+        object:setState(EnumStateType.STAND)
+        object:setState(EnumStateType.ATTACK)
     end
+end
 
-
-    shortest_distance = cc.pGetDistance(getPosTable(mage),targetpos)
-    for var = 1, List.getSize(MonsterManager) do
-        local dis = cc.pGetDistance(getPosTable(mage),getPosTable(MonsterManager[var-1]))
-        if dis<shortest_distance then
-            mage._target = MonsterManager[var-1]
-            shortest_distance = dis
-        end
-    end
-
-    --cclog(shortest_distance)
+local function findAllMonster()
+    findEnmey(warrior, MonsterManager)
+    findEnmey(archer, MonsterManager)
+    findEnmey(mage, MonsterManager)
 end
 
 local function update(dt)
     collisionDetect()
-    findMonster()
-
-    if chosenOne == 0 then return end
-
+    findAllMonster()
 end
 
 local function addNewSprite(x, y, tag)
@@ -207,9 +197,7 @@ local function createRole()
     mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.DEBUG)
     addParticleToRole(mage)
     mage:setState(EnumStateType.WALK)
-       
-    chosenOne = findAliveHero() --Assume it is the selected people
-    
+           
     scheduler:scheduleScriptFunc(updateParticlePos, 0, false)
 
 end
@@ -229,14 +217,14 @@ local TestAIScene = class("TestAIScene",function()
 end)
 
 local function secondwavw_monster()
-    for var = 1, List.getSize(MonsterManager) do
-        currentLayer:removeChild(MonsterManager[var-1])
-    end
-    List.removeAll(MonsterManager)
-    for var = 1, List.getSize(HeroManager) do
-        HeroManager[var-1]._target = nil
-        HeroManager[var-1]:setState(EnumStateType.WALK)
-    end
+--    for var = 1, List.getSize(MonsterManager) do
+--        currentLayer:removeChild(MonsterManager[var-1])
+--    end
+--    List.removeAll(MonsterManager)
+--    for var = 1, List.getSize(HeroManager) do
+--        HeroManager[var-1]._target = nil
+--        HeroManager[var-1]:setState(EnumStateType.WALK)
+--    end
 end
 
 local function firstwave_monster()
@@ -276,52 +264,6 @@ function TestAIScene.create()
 
     local listener2 = cc.EventListenerCustom:create("battle_fail", battle_fail)
     eventDispatcher:addEventListenerWithFixedPriority(listener2, 2)    
-
---    -- handling touch events   
---    local function onTouchBegan(touch, event)
---        return true
---    end
---
---    local function onTouchMoved(touches, event)     
---    end    
---
---    local function onTouchEnded(touch, event)
---        if touch == nil then return end
---
---        local location = touch:getLocationInView()
---        local nearP = cc.V3(location.x, location.y, -1.0)
---        local farP = cc.V3(location.x, location.y, 1.0)
---        nearP = camera:unproject(size, nearP, nearP)
---        farP = camera:unproject(size, farP, farP)
---
---        local dir = cc.V3Sub(farP, nearP)
---        local dist = 0.0
---        local temp = cc.V3(0.0, 0.0, 1.0)
---        local ndd = cc.V3Dot(temp, dir)
---
---        if ndd == 0 then dist = 0.0 end
---
---        local ndo = cc.V3Dot(temp, nearP)
---        dist = (0 - ndo) / ndd
---
---        local tt = cc.V3MulEx(dir, dist)
---        touchPos =  cc.V3Add(nearP, tt)
---
---        local prePosX,prePosY = chosenOne:getPosition()
---        local prePos = {x = prePosX, y = prePosY}
---        local t = cc.pGetDistance(prePos,touchPos)/500
---        
---        chosenOne:runAction(cc.MoveTo:create(t, touchPos))
---        local angel = -math.atan2(touchPos.y-prePosY,touchPos.x-prePosX)*180/math.pi;
---        chosenOne:setRotation(angel)
---    end
---
---    local listener = cc.EventListenerTouchOneByOne:create()
---    listener:registerScriptHandler(onTouchBegan,cc.Handler.EVENT_TOUCH_BEGAN )
---    listener:registerScriptHandler(onTouchMoved,cc.Handler.EVENT_TOUCHES_MOVED )
---    listener:registerScriptHandler(onTouchEnded,cc.Handler.EVENT_TOUCH_ENDED )
---    local eventDispatcher = currentLayer:getEventDispatcher()
---    eventDispatcher:addEventListenerWithSceneGraphPriority(listener, currentLayer)
 
     -- schedule
     scheduler:scheduleScriptFunc(update, 0, false)
@@ -383,8 +325,6 @@ function TestAIScene.success()
     List.removeAll(MonsterManager)
     
     TestAIScene.restore()
-    
-    TestAIScene.moveForth()
 end
 
 function TestAIScene.restore()

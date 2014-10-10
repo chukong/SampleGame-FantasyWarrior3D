@@ -193,7 +193,7 @@ function Hero3D:FindEnemy2Attack()
             end
             
             self._attackZone:runAction(cc.Sequence:create(cc.ProgressTo:create(0, 0), cc.ProgressTo:create(0.3, 25))) 
-            self._target:hurt(self._attack)
+            --self._target:hurt(self._attack)
         end    
         self._scheduleAttackId = scheduler:scheduleScriptFunc(scheduleAttack, 1, false)            
     end
@@ -205,7 +205,7 @@ function Hero3D:FindEnemy2Attack()
 end
 
 function Hero3D:setState(type)
-
+    --cclog("%d", type)
     if type == EnumStateType.STAND then
         self._statetype = EnumStateType.STAND
         self._sprite3d:stopAllActions()
@@ -229,12 +229,13 @@ function Hero3D:setState(type)
         self._statetype = type
         
     elseif type == EnumStateType.ATTACK then
-        local animation = cc.Animation3D:create(self._action.attack)
-        local animate = cc.Animate3D:create(animation)
-        animate:setSpeed(self._speed)
-        local repeatAction = cc.RepeatForever:create(animate)
-        repeatAction:setTag(self._statetype) 
-        self._sprite3d:runAction(repeatAction)
+        self._statetype = type
+--        local animation = cc.Animation3D:create(self._action.attack)
+--        local animate = cc.Animate3D:create(animation)
+--        animate:setSpeed(self._speed)
+--        local repeatAction = cc.RepeatForever:create(animate)
+--        repeatAction:setTag(self._statetype) 
+--        self._sprite3d:runAction(repeatAction)
 
     elseif type == EnumStateType.DEFEND then
         local x = 0

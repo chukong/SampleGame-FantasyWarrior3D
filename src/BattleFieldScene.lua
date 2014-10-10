@@ -149,7 +149,7 @@ function BattleFieldScene.create()
     local function touchEvent_return(sender,eventType)
         if eventType == ccui.TouchEventType.ended then
             local scene = require("ChooseRoleScene")
-            cc.Director:getInstance():replaceScene(scene.create())
+            --cc.Director:getInstance():replaceScene(scene.create())
         end
     end  
 
@@ -210,9 +210,11 @@ function BattleFieldScene.create()
         temp = cc.V3MulEx(dir, dist)
         touchPos =  cc.V3Add(nearP, temp)
         
+        cclog("%f", chosenOne:getRotation())
         local angle = getAngleFrom2Point(cc.p(touchPos.x, touchPos.y), cc.p(chosenOne:getPosition()))
         chosenOne:runAction(cc.RotateTo:create(0.2, angle))
         chosenOne:runAction(cc.MoveTo:create(0.5, touchPos))
+        cclog("%f", angle)
         --beginUpdate = true;
 
     end
