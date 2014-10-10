@@ -48,7 +48,7 @@ function Base3D:ctor()
     self._circle = nil
     self._attackZone = nil
     self._scheduleAttackId = 0
-    self._target = 0
+    self._target = nil
     self._action = {stand="", attack="", walk="", defend=""}
 end
 
