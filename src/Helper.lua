@@ -1,5 +1,9 @@
 require "Cocos2d"
 
+--global var
+camera =nil
+
+
 CC_CONTENT_SCALE_FACTOR = function()
     return cc.Director:getInstance():getContentScaleFactor()
 end
