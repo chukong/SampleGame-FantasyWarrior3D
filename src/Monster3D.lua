@@ -65,7 +65,7 @@ function Monster3D:FindEnemy2Attack()
             end
             
             self._attackZone:runAction(cc.Sequence:create(cc.ProgressTo:create(0, 0), cc.ProgressTo:create(0.3, 25))) 
-            --self._target:hurt(self._attack)
+            self._target:hurt(self._attack)
         end    
         self._scheduleAttackId = scheduler:scheduleScriptFunc(scheduleAttack, 1, false)            
     end

@@ -193,7 +193,7 @@ function Hero3D:FindEnemy2Attack()
             end
             
             self._attackZone:runAction(cc.Sequence:create(cc.ProgressTo:create(0, 0), cc.ProgressTo:create(0.3, 25))) 
-            --self._target:hurt(self._attack)
+            self._target:hurt(self._attack)
         end    
         self._scheduleAttackId = scheduler:scheduleScriptFunc(scheduleAttack, 1, false)            
     end
@@ -206,14 +206,18 @@ end
 
 function Hero3D:setState(type)
     --cclog("%d", type)
-    if type == self._statetype then return end
+    if type == self._statetype then 
+        return   	
+    elseif type ~= EnumStateType.KNOCKED then
+        self._sprite3d:stopActionByTag(self._statetype)    
+        self._statetype = type
+    end   
+    
     if type == EnumStateType.STAND then
-        self._statetype = EnumStateType.STAND
         self._sprite3d:stopAllActions()
         if self._particle ~= nil then self._particle:setEmissionRate(0) end
 
     elseif type == EnumStateType.WALK then
-        self._statetype = EnumStateType.WALK
         self._sprite3d:stopAllActions()
         local animation3d = cc.Animation3D:create(self._action.walk)
         local animate3d = cc.Animate3D:create(animation3d, 227/30,(246.5-227)/30)
@@ -223,14 +227,8 @@ function Hero3D:setState(type)
         self._particle:setEmissionRate(5)
 
     elseif type == EnumStateType.DEAD then
-        self._statetype = EnumStateType.DEAD
-
-    elseif type == EnumStateType.KNOCKED then
-        self._sprite3d:stopActionByTag(self._statetype)    
-        self._statetype = type
-        
+ 
     elseif type == EnumStateType.ATTACK then
-        self._statetype = type
 --        local animation = cc.Animation3D:create(self._action.attack)
 --        local animate = cc.Animate3D:create(animation)
 --        animate:setSpeed(self._speed)
