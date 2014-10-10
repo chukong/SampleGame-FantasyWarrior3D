@@ -8,6 +8,7 @@ local scheduler = cc.Director:getInstance():getScheduler()
 function Hero3D:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
+    self._particle = nil
     self._arm = ""
     self._chest = ""
     self._weapon = ""
@@ -27,13 +28,16 @@ function Hero3D.create(type)
         if EnumStateType.WALK == hero._statetype then
             --move
             local targetPos = {x=3000, y=0}
+            local dis = hero._attackRadius
             if nil ~= hero._target then
-                targetPos = getPosTable(hero._target)               
+                targetPos = getPosTable(hero._target)
+                dis = hero._attackRadius+hero._target._radius
             end
             local curPos = getPosTable(hero)
-            local dis = cc.pGetDistance(curPos,targetPos)
-            if cc.pGetDistance(curPos,targetPos)>(hero._attackRadius+hero._target._radius) then
-                hero:setPosition(getNextStepPos(hero,targetPos))
+            if cc.pGetDistance(curPos,targetPos)>(dis) then
+                hero:setPosition(getNextStepPos(hero,targetPos,dt))
+            else 
+                hero:setState(EnumStateType.STAND)
             end
             
             --rotate
@@ -47,6 +51,8 @@ function Hero3D.create(type)
                     hero:setRotation(curRotation+hero._rotatehead)
                 end
             end
+        
+        elseif EnumStateType.STAND == hero._statetype then
         end
     end
     
@@ -67,7 +73,7 @@ function Hero3D:AddSprite3D(type)
     
     local filename;
     if type == EnumRaceType.WARRIOR then --warrior
-        filename = "Model/zhanshi_pao.c3b"
+        filename = "Model/zhanshi_all_ani.c3b"
     elseif type == EnumRaceType.ARCHER then --archer
         filename = "Sprite3DTest/ReskinGirl.c3b"
     elseif type == EnumRaceType.WAGE then --wage
@@ -81,13 +87,8 @@ function Hero3D:AddSprite3D(type)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
             
-    self._action.attack = filename
-    
-    local animation3d = cc.Animation3D:create(filename)
-    local animate3d = cc.Animate3D:create(animation3d)
-    animate3d:setSpeed(1.0)
-    self._sprite3d:runAction(cc.RepeatForever:create(animate3d))
-
+    self._action.walk = filename
+        
     --set default equipment
     --if type ~= EnumRaceType.DEBUG then
     --    self:setDefaultEqt()
@@ -204,41 +205,36 @@ function Hero3D:FindEnemy2Attack()
 end
 
 function Hero3D:setState(type)
-    if self._statetype == type then
-        return
-        
+    --cclog("%d", type)
+    if type == self._statetype then 
+        return   	
     elseif type ~= EnumStateType.KNOCKED then
         self._sprite3d:stopActionByTag(self._statetype)    
         self._statetype = type
-        
-
-    elseif type == EnumStateType.STAND then
-        local standAction = cc.RotateTo:create(0.5, 0)
-        standAction:setTag(self._statetype) 
-        self:runAction(standAction) 
+    end   
     
-
-    elseif type == EnumStateType.DEAD then
-        local rotateAngle = nil
-        if self._racetype == EnumRaceType.DEBUG then
-            rotateAngle = 90.0
-        else 
-            rotateAngle = -90.0
-        end
-        --self._sprite3d:runAction(cc.RotateTo:create(0.02, rotateAngle)) 
-        self._sprite3d:runAction(cc.ScaleBy:create(0.2, 0.2))            
-     
+    if type == EnumStateType.STAND then
+        self._sprite3d:stopAllActions()
+        if self._particle ~= nil then self._particle:setEmissionRate(0) end
 
     elseif type == EnumStateType.WALK then
-        self._statetype = EnumStateType.WALK
+        self._sprite3d:stopAllActions()
+        local animation3d = cc.Animation3D:create(self._action.walk)
+        local animate3d = cc.Animate3D:create(animation3d, 227/30,(246.5-227)/30)
+        animate3d:setSpeed(0.7)
+        local act = cc.RepeatForever:create(animate3d)
+        self._sprite3d:runAction(act)
+        self._particle:setEmissionRate(5)
 
+    elseif type == EnumStateType.DEAD then
+ 
     elseif type == EnumStateType.ATTACK then
-        local animation = cc.Animation3D:create(self._action.attack)
-        local animate = cc.Animate3D:create(animation)
-        animate:setSpeed(self._speed)
-        local repeatAction = cc.RepeatForever:create(animate)
-        repeatAction:setTag(self._statetype) 
-        self._sprite3d:runAction(repeatAction)
+--        local animation = cc.Animation3D:create(self._action.attack)
+--        local animate = cc.Animate3D:create(animation)
+--        animate:setSpeed(self._speed)
+--        local repeatAction = cc.RepeatForever:create(animate)
+--        repeatAction:setTag(self._statetype) 
+--        self._sprite3d:runAction(repeatAction)
 
     elseif type == EnumStateType.DEFEND then
         local x = 0

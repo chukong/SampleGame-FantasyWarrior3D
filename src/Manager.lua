@@ -45,17 +45,16 @@ function tooClose(object1, object2)
     
     if tempDistance < miniDistance then
         local angle = cc.pToAngleSelf(cc.pSub(obj1Pos, obj2Pos))
-        local distance = miniDistance - tempDistance
+        local distance = miniDistance - tempDistance + 1 -- Add extra 1 to avoid (tempDistance < miniDistance) is always ture
         object1:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(distance/2,0),obj1Pos), obj1Pos, angle))
         object2:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(-distance/2,0),obj2Pos), obj2Pos, angle))
-    --elseif tempDistance < miniDistance + 1 then
-    elseif isInCircleSector(object1, object2) then           
-        --cclog("i'm ready for attack")
-        if object1:getRaceType() ~= object2:getRaceType() then
-            object1:setState(EnumStateType.ATTACK)
-            object1:setTarget(object2)
-        end
-    else
+--    elseif isInCircleSector(object1, object2) then 
+--        --cclog("i'm ready for attack")
+--        if object1:getRaceType() ~= object2:getRaceType() then
+--            object1:setState(EnumStateType.ATTACK)
+--            object1:setTarget(object2)
+--        end
+--    else
 --        if object1._target == 0 then 
 --            object1:setState(EnumStateType.STAND)
 --        else
@@ -140,22 +139,24 @@ function isInCircleSector(object1, object2)
     local tempDistance = cc.pGetDistance(obj1Pos, obj2Pos)
    
     if tempDistance < attackDistance then
-    	local angle = getAngleFrom2Point(obj2Pos, obj1Pos)
-    	local rotation = object1:getRotation()
-    	
-    	if angle < 0 then
-    		angle = angle + 360
-    	end
-
-        if rotation < 0 then
-            rotation = rotation + 360
-        end    	
-    	
-        --cclog("%d %f %f", object1._racetype, angle, rotation)
-        if angle >= rotation  and angle <= rotation + 25 then
-            --cclog("11111")
-    		return true
-    	end
+        return true
+        
+--    	local angle = getAngleFrom2Point(obj2Pos, obj1Pos)
+--    	local rotation = object1:getRotation()
+--    	
+--    	if angle < 0 then
+--    		angle = angle + 360
+--    	end
+--
+--        if rotation < 0 then
+--            rotation = rotation + 360
+--        end    	
+--    	
+--        --cclog("%d [%f %f] %f", object1._racetype, rotation, rotation+90, angle)
+--        if angle >= rotation  and angle <= rotation + 90 then
+--            cclog("in circle sector")
+--    		return true
+--    	end
     end 
     
     return false
