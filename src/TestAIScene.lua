@@ -82,6 +82,8 @@ local function collisionDetect()
 end
 
 local function findEnmey(object, manager)
+    if object._isalive == false then return end
+
     local find = false
     local shortest_distance = cc.pGetDistance(getPosTable(object),targetpos)
     for var = 1, List.getSize(manager) do
