@@ -26,4 +26,14 @@
 -- @field [parent=#cc] BillboardParticleSystem#BillboardParticleSystem BillboardParticleSystem preloaded module
 
 
+--------------------------------------------------------
+-- the cc JumpBy3D
+-- @field [parent=#cc] JumpBy3D#JumpBy3D JumpBy3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc JumpTo3D
+-- @field [parent=#cc] JumpTo3D#JumpTo3D JumpTo3D preloaded module
+
+
 return nil

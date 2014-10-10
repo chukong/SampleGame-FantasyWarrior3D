@@ -2,6 +2,8 @@
 #include "custom/EffectSprite3D.h"
 #include "custom/DrawNode3D.h"
 #include "custom/BillboardParticleSystem.h"
+#include "custom/JumpBy3D.h"
+#include "custom/JumpTo3D.h"
 #include "tolua_fix.h"
 #include "LuaBasicConversions.h"
 
@@ -4982,6 +4984,124 @@ int lua_register_cocos2dx_custom_BillboardParticleSystem(lua_State* tolua_S)
     g_typeCast["BillboardParticleSystem"] = "cc.BillboardParticleSystem";
     return 1;
 }
+
+int lua_cocos2dx_custom_JumpBy3D_create(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"cc.JumpBy3D",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 4)
+    {
+        double arg0;
+        cocos2d::Vec3 arg1;
+        double arg2;
+        int arg3;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "cc.JumpBy3D:create");
+        ok &= luaval_to_vec3(tolua_S, 3, &arg1, "cc.JumpBy3D:create");
+        ok &= luaval_to_number(tolua_S, 4,&arg2, "cc.JumpBy3D:create");
+        ok &= luaval_to_int32(tolua_S, 5,(int *)&arg3, "cc.JumpBy3D:create");
+        if(!ok)
+            return 0;
+        cocos2d::JumpBy3D* ret = cocos2d::JumpBy3D::create(arg0, arg1, arg2, arg3);
+        object_to_luaval<cocos2d::JumpBy3D>(tolua_S, "cc.JumpBy3D",(cocos2d::JumpBy3D*)ret);
+        return 1;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d\n ", "cc.JumpBy3D:create",argc, 4);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_JumpBy3D_create'.",&tolua_err);
+#endif
+    return 0;
+}
+static int lua_cocos2dx_custom_JumpBy3D_finalize(lua_State* tolua_S)
+{
+    printf("luabindings: finalizing LUA object (JumpBy3D)");
+    return 0;
+}
+
+int lua_register_cocos2dx_custom_JumpBy3D(lua_State* tolua_S)
+{
+    tolua_usertype(tolua_S,"cc.JumpBy3D");
+    tolua_cclass(tolua_S,"JumpBy3D","cc.JumpBy3D","cc.ActionInterval",nullptr);
+
+    tolua_beginmodule(tolua_S,"JumpBy3D");
+        tolua_function(tolua_S,"create", lua_cocos2dx_custom_JumpBy3D_create);
+    tolua_endmodule(tolua_S);
+    std::string typeName = typeid(cocos2d::JumpBy3D).name();
+    g_luaType[typeName] = "cc.JumpBy3D";
+    g_typeCast["JumpBy3D"] = "cc.JumpBy3D";
+    return 1;
+}
+
+int lua_cocos2dx_custom_JumpTo3D_create(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"cc.JumpTo3D",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 4)
+    {
+        double arg0;
+        cocos2d::Vec3 arg1;
+        double arg2;
+        int arg3;
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "cc.JumpTo3D:create");
+        ok &= luaval_to_vec3(tolua_S, 3, &arg1, "cc.JumpTo3D:create");
+        ok &= luaval_to_number(tolua_S, 4,&arg2, "cc.JumpTo3D:create");
+        ok &= luaval_to_int32(tolua_S, 5,(int *)&arg3, "cc.JumpTo3D:create");
+        if(!ok)
+            return 0;
+        cocos2d::JumpTo3D* ret = cocos2d::JumpTo3D::create(arg0, arg1, arg2, arg3);
+        object_to_luaval<cocos2d::JumpTo3D>(tolua_S, "cc.JumpTo3D",(cocos2d::JumpTo3D*)ret);
+        return 1;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d\n ", "cc.JumpTo3D:create",argc, 4);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_JumpTo3D_create'.",&tolua_err);
+#endif
+    return 0;
+}
+static int lua_cocos2dx_custom_JumpTo3D_finalize(lua_State* tolua_S)
+{
+    printf("luabindings: finalizing LUA object (JumpTo3D)");
+    return 0;
+}
+
+int lua_register_cocos2dx_custom_JumpTo3D(lua_State* tolua_S)
+{
+    tolua_usertype(tolua_S,"cc.JumpTo3D");
+    tolua_cclass(tolua_S,"JumpTo3D","cc.JumpTo3D","cc.JumpBy3D",nullptr);
+
+    tolua_beginmodule(tolua_S,"JumpTo3D");
+        tolua_function(tolua_S,"create", lua_cocos2dx_custom_JumpTo3D_create);
+    tolua_endmodule(tolua_S);
+    std::string typeName = typeid(cocos2d::JumpTo3D).name();
+    g_luaType[typeName] = "cc.JumpTo3D";
+    g_typeCast["JumpTo3D"] = "cc.JumpTo3D";
+    return 1;
+}
 TOLUA_API int register_all_cocos2dx_custom(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
@@ -4991,6 +5111,8 @@ TOLUA_API int register_all_cocos2dx_custom(lua_State* tolua_S)
 
 	lua_register_cocos2dx_custom_BillboardParticleSystem(tolua_S);
 	lua_register_cocos2dx_custom_EffectSprite3D(tolua_S);
+	lua_register_cocos2dx_custom_JumpBy3D(tolua_S);
+	lua_register_cocos2dx_custom_JumpTo3D(tolua_S);
 	lua_register_cocos2dx_custom_Effect3D(tolua_S);
 	lua_register_cocos2dx_custom_Effect3DOutline(tolua_S);
 	lua_register_cocos2dx_custom_DrawNode3D(tolua_S);

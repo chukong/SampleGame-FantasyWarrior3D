@@ -164,6 +164,18 @@ function MainMenuScene:addBg(layer)
     particle:setDuration(-1)
     particle:setStartColor({r=234,g=123,b=245,a=255})
     layer:addChild(particle,5)
+    
+    --test jump3D
+    self:testJump3D(layer)
+end
+
+function MainMenuScene:testJump3D(layer)
+    local action = cc.JumpBy:create(2,cc.p(350,400),10,3)
+    local sprite = cc.Sprite:create("dog.png")
+    sprite:runAction(action)
+    sprite:setPosition({x=100,y=100})
+    
+    layer:addChild(sprite,7)
 end
 
 function MainMenuScene:showBloodLossNum(layer)
