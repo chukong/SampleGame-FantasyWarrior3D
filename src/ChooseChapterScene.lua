@@ -34,7 +34,7 @@ function ChooseChapter:addElement()
     self:addHero()
     
     --test 3D camera
-    self:testJump3D()
+--    self:testJump3D()
     
     --addCamera
     self:addCamera()
@@ -119,7 +119,7 @@ function ChooseChapter:addHero()
         {x=-self.size.width*0.59,y=self.size.height*0.17},
         {x=-self.size.width*0.73,y=self.size.height*0.28}}
     local cardinalSpline = cc.CardinalSplineBy:create(3,controlPoint,0)
---    hero:runAction(cardinalSpline)
+    hero:runAction(cardinalSpline)
 
 end
 
