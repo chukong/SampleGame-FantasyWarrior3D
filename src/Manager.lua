@@ -45,25 +45,24 @@ function tooClose(object1, object2)
     
     if tempDistance < miniDistance then
         local angle = cc.pToAngleSelf(cc.pSub(obj1Pos, obj2Pos))
-        local distance = miniDistance - tempDistance
+        local distance = miniDistance - tempDistance + 1 -- Add extra 1 to avoid (tempDistance < miniDistance) is always ture
         object1:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(distance/2,0),obj1Pos), obj1Pos, angle))
         object2:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(-distance/2,0),obj2Pos), obj2Pos, angle))
-    --elseif tempDistance < miniDistance + 1 then
-    elseif isInCircleSector(object1, object2) then           
+    elseif isInCircleSector(object1, object2) then 
         --cclog("i'm ready for attack")
         if object1:getRaceType() ~= object2:getRaceType() then
             object1:setState(EnumStateType.ATTACK)
             object1:setTarget(object2)
         end
     else
---        if object1._target == 0 then 
---            object1:setState(EnumStateType.STAND)
---        else
---            if object1._target == object2 then
---                object1:setTarget(0)
---                object1:setState(EnumStateType.STAND)
---            end
---        end        
+        if object1._target == 0 then 
+            object1:setState(EnumStateType.STAND)
+        else
+            if object1._target == object2 then
+                object1:setTarget(0)
+                object1:setState(EnumStateType.STAND)
+            end
+        end        
     end  
 end
 
@@ -151,9 +150,9 @@ function isInCircleSector(object1, object2)
             rotation = rotation + 360
         end    	
     	
-        --cclog("%d %f %f", object1._racetype, angle, rotation)
-        if angle >= rotation  and angle <= rotation + 25 then
-            --cclog("11111")
+        --cclog("%d [%f %f] %f", object1._racetype, rotation, rotation+90, angle)
+        if angle >= rotation  and angle <= rotation + 90 then
+            cclog("in circle sector")
     		return true
     	end
     end 

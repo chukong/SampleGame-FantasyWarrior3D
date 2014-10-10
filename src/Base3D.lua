@@ -34,7 +34,7 @@ end)
 
 function Base3D:ctor()
     self._radius = 50
-    self._attackRadius = 50*1.25
+    self._attackRadius = 50*1.5
 	self._isalive = true
 	self._blood = 1000
 	self._attack = 100
@@ -159,13 +159,11 @@ function Base3D:setStateType(type)
 end
 
 function Base3D:setTarget(target)
-    if self._target ~= target and target ~= 0 and target._isalive then
-        self._target = target    
-    end
-    
-    if self._target ~=0 then
+    if self._target == target then
         local angle = getAngleFrom2Point(cc.p(self._target:getPosition()), cc.p(self:getPosition()))
-        self:runAction(cc.RotateTo:create(0.1, angle))
+        self:runAction(cc.RotateTo:create(0.1, angle))    	
+    else
+        self._target = target
     end
 end
 
