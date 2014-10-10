@@ -37,10 +37,10 @@ function getPosTable(obj)
 end
 
 --getnextpos
-function getNextStepPos(obj,targetPos)
+function getNextStepPos(obj,targetPos,dt)
 	local curPos = getPosTable(obj)
 	local angel = math.atan2(targetPos.y-curPos.y,targetPos.x-curPos.x)
-	return {x = curPos.x+math.cos(angel)*obj._speed, y = curPos.y+math.sin(angel)*obj._speed}
+	return {x = curPos.x+math.cos(angel)*obj._speed*dt, y = curPos.y+math.sin(angel)*obj._speed*dt}
 end
 
 

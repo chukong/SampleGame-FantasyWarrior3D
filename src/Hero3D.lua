@@ -35,7 +35,7 @@ function Hero3D.create(type)
             end
             local curPos = getPosTable(hero)
             if cc.pGetDistance(curPos,targetPos)>(dis) then
-                hero:setPosition(getNextStepPos(hero,targetPos))
+                hero:setPosition(getNextStepPos(hero,targetPos,dt))
             else 
                 hero:setState(EnumStateType.STAND)
             end
@@ -73,7 +73,7 @@ function Hero3D:AddSprite3D(type)
     
     local filename;
     if type == EnumRaceType.WARRIOR then --warrior
-        filename = "Model/zhanshi_pao.c3b"
+        filename = "Model/zhanshi_all_ani.c3b"
     elseif type == EnumRaceType.ARCHER then --archer
         filename = "Sprite3DTest/ReskinGirl.c3b"
     elseif type == EnumRaceType.WAGE then --wage
@@ -206,6 +206,7 @@ end
 
 function Hero3D:setState(type)
     --cclog("%d", type)
+    if type == self._statetype then return end
     if type == EnumStateType.STAND then
         self._statetype = EnumStateType.STAND
         self._sprite3d:stopAllActions()
@@ -215,7 +216,7 @@ function Hero3D:setState(type)
         self._statetype = EnumStateType.WALK
         self._sprite3d:stopAllActions()
         local animation3d = cc.Animation3D:create(self._action.walk)
-        local animate3d = cc.Animate3D:create(animation3d)
+        local animate3d = cc.Animate3D:create(animation3d, 227/30,(246.5-227)/30)
         animate3d:setSpeed(0.7)
         local act = cc.RepeatForever:create(animate3d)
         self._sprite3d:runAction(act)
