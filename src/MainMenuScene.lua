@@ -169,6 +169,47 @@ function MainMenuScene:addBg(layer)
     self:testJump3D(layer)
 end
 
+function MainMenuScene:testDispatcher()
+    --test MessageDispatchCenter
+    local function test1(v)
+        print(v)
+    end
+
+    local function test2(v)
+        print(v.x,v.y)
+    end
+
+    --register
+    local dispatch1 = require("MessageDispatchCenter")
+    dispatch1:registerMessage(dispatch1.MessageType.BLOOD_DROP,test1)
+
+    local dispatch2 = require("MessageDispatchCenter")
+    dispatch2:registerMessage(dispatch2.MessageType.BLOOD_DROP,test1)
+    --remove messagecenter
+    dispatch2:removeMessage(dispatch2.MessageType.BLOOD_DROP,test1)
+
+    --dispatch
+    local dispatch3 = require("MessageDispatchCenter")
+    dispatch3:dispatchMessage(dispatch2.MessageType.BLOOD_DROP,"test")
+
+    local dispatch4 = require("MessageDispatchCenter")
+    dispatch4:dispatchMessage(dispatch2.MessageType.BLOOD_DROP,"dispatch")
+
+    --register
+    local dispatch5 = require("MessageDispatchCenter")
+    dispatch5:registerMessage(dispatch5.MessageType.REDUCE_SCORE,test2)
+
+    local dispatch6 = require("MessageDispatchCenter")
+    --    dispatch6:registerMessage(dispatch6.MessageType.REDUCE_SCORE,test2)
+
+    --dispatch
+    local dispatch7 = require("MessageDispatchCenter")
+    dispatch7:dispatchMessage(dispatch7.MessageType.REDUCE_SCORE,{x=1,y=2})
+
+    local dispatch8 = require("MessageDispatchCenter")
+    dispatch8:dispatchMessage(dispatch8.MessageType.REDUCE_SCORE,{x=3,y=4})
+end
+
 function MainMenuScene:testJump3D(layer)
     local action = cc.JumpBy:create(2,cc.p(350,400),10,3)
     local sprite = cc.Sprite:create("dog.png")
