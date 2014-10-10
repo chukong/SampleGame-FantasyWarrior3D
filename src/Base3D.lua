@@ -159,7 +159,7 @@ function Base3D:setStateType(type)
 end
 
 function Base3D:setTarget(target)
-    if self._target == target then
+    if target ~= nil and self._target == target then
         local angle = getAngleFrom2Point(cc.p(self._target:getPosition()), cc.p(self:getPosition()))
         self:runAction(cc.RotateTo:create(0.1, angle))    	
     else
