@@ -227,8 +227,14 @@ function Hero3D:setState(type)
         self._particle:setEmissionRate(5)
 
     elseif type == EnumStateType.DEAD then
- 
-    elseif type == EnumStateType.ATTACK then
+        local rotateAngle = nil
+        if self._racetype == EnumRaceType.DEBUG then
+            rotateAngle = 90.0
+        else 
+            rotateAngle = -90.0
+        end
+        self._sprite3d:runAction(cc.RotateTo:create(0.5, cc.V3(0, 0, rotateAngle))) 
+     elseif type == EnumStateType.ATTACK then
 --        local animation = cc.Animation3D:create(self._action.attack)
 --        local animate = cc.Animate3D:create(animation)
 --        animate:setSpeed(self._speed)
@@ -248,12 +254,9 @@ function Hero3D:setState(type)
         self._sprite3d:runAction(defendAction)     
 
     elseif type == EnumStateType.KNOCKED then
-        if self._racetype == EnumRaceType.BOSS then
-            local action = cc.Sequence:create(cc.MoveBy:create(0.05, cc.p(5,5)),  cc.MoveBy:create(0.05, cc.p(-5,-5)))
-            self._sprite3d:runAction(action)
-        else 
-            self._sprite3d:runAction(cc.RotateBy:create(0.5, 360.0))
-        end 
+        local toRed = cc.TintTo:create(0.2, 255, 255, 255)
+        self._sprite3d:setColor(cc.c3b(255, 0, 0))
+        self._sprite3d:runAction(toRed)
     end
 end
 

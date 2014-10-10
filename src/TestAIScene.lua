@@ -14,8 +14,7 @@ local beginUpdate = false
 local currentLayer = nil
 local heroOriginPositionX = -2900
 local targetpos = {x=3000,y=0}
-local scheduleid_1wave;
-local scheduleid_2wave;
+local currentStep = 1;
 
 --hero ref
 local warrior
@@ -59,7 +58,10 @@ local function collisionDetect()
         local sprite = HeroManager[val-1]
         if sprite._isalive == true then
             collision(sprite)
-            isOutOfBound(sprite)            
+            isOutOfBound(sprite)
+        else
+            List.remove(HeroManager, val-1)
+            break
         end
     end
     
@@ -68,6 +70,9 @@ local function collisionDetect()
         if sprite._isalive == true then
             collision(sprite)
             isOutOfBound(sprite)            
+        else
+            List.remove(MonsterManager, val-1)
+            break
         end
     end    
     
@@ -76,6 +81,9 @@ local function collisionDetect()
         if sprite._isalive == true then
             collision(sprite)
             isOutOfBound(sprite)            
+        else
+            List.remove(BossManager, val-1)
+            break
         end
     end        
     
@@ -105,22 +113,6 @@ local function findEnmey(object, manager)
     end
 end
 
-local function findAllMonster()
-    findEnmey(warrior, MonsterManager)
-    findEnmey(archer, MonsterManager)
-    findEnmey(mage, MonsterManager)
-    
-    for var = 1, List.getSize(MonsterManager) do
-        local objectTemp = MonsterManager[var-1]
-        findEnmey(objectTemp, HeroManager)
-    end
-end
-
-local function update(dt)
-    collisionDetect()
-    findAllMonster()
-end
-
 local function addNewSprite(x, y, tag)
     local sprite = nil
     local animation = nil
@@ -145,10 +137,10 @@ local function addNewSprite(x, y, tag)
     gloableZOrder = gloableZOrder + 1
     sprite:setGlobalZOrder(gloableZOrder)
     currentLayer:addChild(sprite)
-   
+
     local rand2 = math.random()
     local speed = 1.0
-    
+
     if rand2 < 1/3 then
         speed =  math.random()  
     elseif rand2 < 2/3 then
@@ -157,26 +149,76 @@ local function addNewSprite(x, y, tag)
 
     sprite.speed =  speed + 0.5
     sprite.priority = sprite.speed        
-    
+
     sprite:setState(EnumStateType.STAND)
-    
+
     return sprite
 end
 
-local function jumpdone()
-	warrior:setState(EnumStateType.WALK)
+local function createEnmey(step)
+    if  step ~= currentStep  then return end
+
+    if currentStep == 1 then
+        addNewSprite(size.width/2-1200, size.height/2-200, EnumRaceType.MONSTER)
+        addNewSprite(size.width/2-1300, size.height/2-200, EnumRaceType.MONSTER)
+        addNewSprite(size.width/2-1300, size.height/2-100, EnumRaceType.MONSTER)
+        currentStep = currentStep + 1    
+    elseif currentStep == 2 then
+        addNewSprite(size.width/2+2000, size.height/2-100, EnumRaceType.BOSS)
+        currentStep = currentStep + 1            
+    end
+end
+
+local function findAllEnemy()
+    local tempSize1 = List.getSize(MonsterManager)
+    findEnmey(warrior, MonsterManager)
+    findEnmey(archer, MonsterManager)
+    findEnmey(mage, MonsterManager)
+        
+    for var = 1, tempSize1 do
+        local objectTemp = MonsterManager[var-1]
+        findEnmey(objectTemp, HeroManager)
+    end
+
+    local tempSize2 = List.getSize(BossManager)
+    if tempSize2 > 0 then        
+        findEnmey(warrior, BossManager)
+        findEnmey(archer, BossManager)
+        findEnmey(mage, BossManager)
+        
+        for var = 1, tempSize2 do
+            local objectTemp = BossManager[var-1]
+            findEnmey(objectTemp, HeroManager)
+        end          
+    end   
+
+end
+
+local function moveCamera(dt)
+    if camera then
+        local position = cc.pLerp({x=camera:getPositionX(),y=0},{x=getFocusPointOfHeros().x,y=0},2*dt)
+        camera:setPositionX(position.x)
+        camera:lookAt({x=position.x, y=size.width/2, z=0.0}, {x=0.0, y=1.0, z=0.0})
+    end
 end
 
 local function updateParticlePos()
-	if warrior._particle ~= nil then
+    if warrior._particle ~= nil then
         warrior._particle:setPosition(getPosTable(warrior))
-	end
+    end
     if archer._particle ~= nil then
         archer._particle:setPosition(getPosTable(archer))
     end
     if mage._particle ~= nil then
         mage._particle:setPosition(getPosTable(mage))
     end
+end
+
+
+
+
+local function jumpdone()
+	warrior:setState(EnumStateType.WALK)
 end
 
 local function addParticleToRole(role)
@@ -204,41 +246,28 @@ local function createRole()
     mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.DEBUG)
     addParticleToRole(mage)
     mage:setState(EnumStateType.WALK)
-           
-    scheduler:scheduleScriptFunc(updateParticlePos, 0, false)
-
-end
-
-local function createMonster()
-    addNewSprite(size.width/2-1200, size.height/2-200, EnumRaceType.MONSTER)
-    addNewSprite(size.width/2-1300, size.height/2-200, EnumRaceType.MONSTER)
-    addNewSprite(size.width/2-1300, size.height/2-100, EnumRaceType.MONSTER)
-end
-
-local function createBoss()
-    addNewSprite(size.width/2+300, size.height/2-100, EnumRaceType.BOSS)
 end
 
 local TestAIScene = class("TestAIScene",function()
     return cc.Scene:create()
 end)
 
-local function secondwavw_monster()
---    for var = 1, List.getSize(MonsterManager) do
---        currentLayer:removeChild(MonsterManager[var-1])
---    end
---    List.removeAll(MonsterManager)
---    for var = 1, List.getSize(HeroManager) do
---        HeroManager[var-1]._target = nil
---        HeroManager[var-1]:setState(EnumStateType.WALK)
---    end
+
+local function update(dt)
+    collisionDetect()
+    findAllEnemy()
+    moveCamera(dt)
+    updateParticlePos()
+
+    local tempPos = camera:getPositionX()
+    cclog("%f", tempPos)
+    if tempPos > -1800 and tempPos < -1700 then
+        createEnmey(1)    
+    elseif  tempPos > 1000 and tempPos < 1100 then
+        createEnmey(2)
+    end
 end
 
-local function firstwave_monster()
-    createMonster()
-    scheduler:unscheduleScriptEntry(scheduleid_1wave)
-    scheduleid_2wave=scheduler:scheduleScriptFunc(secondwavw_monster,1.5,false)
-end
 
 function TestAIScene.create()
     local scene = TestAIScene:new()
@@ -247,7 +276,6 @@ function TestAIScene.create()
 
     TestAIScene.createBackground()
     createRole()
-    createBoss()
     TestAIScene.setCamera()
     
     warrior._particle:setCamera(camera)
@@ -272,10 +300,14 @@ function TestAIScene.create()
     local listener2 = cc.EventListenerCustom:create("battle_fail", battle_fail)
     eventDispatcher:addEventListenerWithFixedPriority(listener2, 2)    
 
+--    local function someoneDead(event)                 
+--    end
+    
+--    local listener3 = cc.EventListenerCustom:create("someone_dead_event",someoneDead)
+--    eventDispatcher:addEventListenerWithFixedPriority(listener3, 1)
+    
     -- schedule
     scheduler:scheduleScriptFunc(update, 0, false)
-
-    scheduleid_1wave=scheduler:scheduleScriptFunc(firstwave_monster,1.5,false)
     return scene
 end
 
@@ -301,21 +333,11 @@ function TestAIScene.createBackground()
     spriteBg:setRotation3D(cc.V3(90,0,0))
 end
 
-
-local function moveCamera(dt)
-    if camera then
-        local position = cc.pLerp({x=camera:getPositionX(),y=0},{x=getFocusPointOfHeros().x,y=0},2*dt)
-        camera:setPositionX(position.x)
-        camera:lookAt({x=position.x, y=size.width/2, z=0.0}, {x=0.0, y=1.0, z=0.0})
-    end
-end
-
 function TestAIScene.setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 1.0, 2000.0)
     camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height*1.2, size.width/2))
     camera:lookAt(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y, 0.0), cc.V3(0.0, 1.0, 0.0))
     currentLayer:addChild(camera)
-    scheduler:scheduleScriptFunc(moveCamera,0,false)
 end
 
 function TestAIScene.success()

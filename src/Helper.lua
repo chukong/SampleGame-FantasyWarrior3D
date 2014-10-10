@@ -120,3 +120,14 @@ function List.first(list)
     
     return value
 end
+
+function List.remove(list, index)
+    if list.last < index then return end
+    
+    while index < list.last do
+        list[index] = list[index+1]
+        list[index+1] = nil
+        index = index + 1
+    end
+    list.last = list.last -1
+end

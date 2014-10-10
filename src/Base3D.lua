@@ -130,12 +130,9 @@ function Base3D:setState(type)
     end     
     
     if type == EnumStateType.KNOCKED then
-        if self._racetype == EnumRaceType.BOSS then
-            local action = cc.Sequence:create(cc.MoveBy:create(0.05, cc.p(5,5)),  cc.MoveBy:create(0.05, cc.p(-5,-5)))
-            self._sprite3d:runAction(action)
-        else 
-            self._sprite3d:runAction(cc.RotateBy:create(0.2, 360.0))
-        end 
+        local toRed = cc.TintTo:create(0.2, 255, 255, 255)
+        self._sprite3d:setColor(cc.c3b(255, 0, 0))
+        self._sprite3d:runAction(toRed)
     end
 end
 
@@ -174,7 +171,7 @@ function Base3D:hurt(hurtCount)
             self:setState(EnumStateType.KNOCKED)
         else
             self._isalive = false
-            self:setState(EnumStateType.DEAD)
+            self:setState(EnumStateType.DEAD)          
         end
     end
 end
