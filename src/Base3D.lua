@@ -20,13 +20,12 @@ EnumStateType =
     "STAND",
     "WALK",
     "ATTACK",
+    "SPECIALATTACK",
     "DEFEND",
     "KNOCKED",    
     "DEAD",
 }
 EnumStateType = CreateEnumTable(EnumStateType) 
-
-
 
 local Base3D = class ("Base3D", function ()
 	return cc.Node:create()
@@ -49,7 +48,15 @@ function Base3D:ctor()
     self._attackZone = nil
     self._scheduleAttackId = 0
     self._target = nil
-    self._action = {stand="", attack="", walk="", defend=""}
+    self._action = {
+                    stand = nil,
+                    walk = nil,
+                    attack = nil,
+                    specialattack = nil,
+                    defense = nil,
+                    knocked = nil,
+                    dead = nil
+                   }
 end
 
 function Base3D.create()
