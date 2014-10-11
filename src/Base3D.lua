@@ -20,13 +20,12 @@ EnumStateType =
     "STAND",
     "WALK",
     "ATTACK",
+    "SPECIALATTACK",
     "DEFEND",
     "KNOCKED",    
     "DEAD",
 }
 EnumStateType = CreateEnumTable(EnumStateType) 
-
-
 
 local Base3D = class ("Base3D", function ()
 	return cc.Node:create()
@@ -49,7 +48,15 @@ function Base3D:ctor()
     self._attackZone = nil
     self._scheduleAttackId = 0
     self._target = nil
-    self._action = {stand="", attack="", walk="", defend=""}
+    self._action = {
+                    stand = nil,
+                    walk = nil,
+                    attack = nil,
+                    specialattack = nil,
+                    defense = nil,
+                    knocked = nil,
+                    dead = nil
+                   }
 end
 
 function Base3D.create()
@@ -69,6 +76,7 @@ function Base3D:addCircle()
     self._attackZone:setColor(cc.c3b(255, 0, 0))
     self._attackZone:setType(cc.PROGRESS_TIMER_TYPE_RADIAL)
     self._attackZone:runAction(cc.ProgressTo:create(0, 25))	
+    self._attackZone:setRotation(45) 
 end
 
 function Base3D:setState(type)
@@ -86,7 +94,7 @@ function Base3D:setState(type)
     end
 
     if type == EnumStateType.DEAD then
-        local rotateAngle = nil
+        local rotateAngle = 0
         if self._racetype == EnumRaceType.DEBUG then
             rotateAngle = 90.0
         else 
@@ -96,16 +104,7 @@ function Base3D:setState(type)
     end 
 
     if type == EnumStateType.WALK then
-        local x = 0
-        if self._racetype == EnumRaceType.DEBUG then
-            x = 10
-        else
-            x = -10
-        end
-        local walkAction = cc.JumpBy:create(0.5, cc.p(x,0), 5, 1)
-        local repeatAction = cc.RepeatForever:create(walkAction)
-        repeatAction:setTag(self._statetype) 
-        self._sprite3d:runAction(repeatAction)   
+        self._sprite3d:stopAllActions()
     end 
 
     if type == EnumStateType.ATTACK then
@@ -130,12 +129,9 @@ function Base3D:setState(type)
     end     
     
     if type == EnumStateType.KNOCKED then
-        if self._racetype == EnumRaceType.BOSS then
-            local action = cc.Sequence:create(cc.MoveBy:create(0.05, cc.p(5,5)),  cc.MoveBy:create(0.05, cc.p(-5,-5)))
-            self._sprite3d:runAction(action)
-        else 
-            self._sprite3d:runAction(cc.RotateBy:create(0.2, 360.0))
-        end 
+        local toRed = cc.TintTo:create(0, 255, 0, 0)
+        local toRedBack = cc.TintTo:create(0.2, 255, 255, 255)
+        self._sprite3d:runAction(cc.Sequence:create(toRed, toRedBack))
     end
 end
 
@@ -159,10 +155,7 @@ function Base3D:setStateType(type)
 end
 
 function Base3D:setTarget(target)
-    if target ~= nil and self._target == target then
-        local angle = getAngleFrom2Point(cc.p(self._target:getPosition()), cc.p(self:getPosition()))
-        self:runAction(cc.RotateTo:create(0.1, angle))    	
-    else
+    if self._target ~= target then
         self._target = target
     end
 end
@@ -174,7 +167,7 @@ function Base3D:hurt(hurtCount)
             self:setState(EnumStateType.KNOCKED)
         else
             self._isalive = false
-            self:setState(EnumStateType.DEAD)
+            self:setState(EnumStateType.DEAD)          
         end
     end
 end

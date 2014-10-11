@@ -43,6 +43,11 @@ function getNextStepPos(obj,targetPos,dt)
 	return {x = curPos.x+math.cos(angel)*obj._speed*dt, y = curPos.y+math.sin(angel)*obj._speed*dt}
 end
 
+--createAnimationStruct
+function createAnimationStruct(var1,var2, var3)
+    local timerange = {begin = var1, ended = var2, speed=var3}
+    return timerange
+end
 
 -- cclog
 cclog = function(...)
@@ -119,4 +124,15 @@ function List.first(list)
     end
     
     return value
+end
+
+function List.remove(list, index)
+    if list.last < index then return end
+    
+    while index < list.last do
+        list[index] = list[index+1]
+        list[index+1] = nil
+        index = index + 1
+    end
+    list.last = list.last -1
 end
