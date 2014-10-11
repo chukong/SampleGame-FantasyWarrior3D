@@ -1,6 +1,7 @@
 require "Helper"
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
+local activearea = {width = 500, height = 640}
 
 HeroManager = List.new()
 MonsterManager = List.new()
@@ -45,24 +46,9 @@ function tooClose(object1, object2)
     
     if tempDistance < miniDistance then
         local angle = cc.pToAngleSelf(cc.pSub(obj1Pos, obj2Pos))
-        local distance = miniDistance - tempDistance + 1 -- Add extra 1 to avoid (tempDistance < miniDistance) is always ture
+        local distance = miniDistance - tempDistance + 1 -- Add extra 1 to avoid 'tempDistance < miniDistance' is always ture
         object1:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(distance/2,0),obj1Pos), obj1Pos, angle))
-        object2:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(-distance/2,0),obj2Pos), obj2Pos, angle))
---    elseif isInCircleSector(object1, object2) then 
---        --cclog("i'm ready for attack")
---        if object1:getRaceType() ~= object2:getRaceType() then
---            object1:setState(EnumStateType.ATTACK)
---            object1:setTarget(object2)
---        end
---    else
---        if object1._target == 0 then 
---            object1:setState(EnumStateType.STAND)
---        else
---            if object1._target == object2 then
---                object1:setTarget(0)
---                object1:setState(EnumStateType.STAND)
---            end
---        end        
+        object2:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(-distance/2,0),obj2Pos), obj2Pos, angle))       
     end  
 end
 
@@ -107,28 +93,23 @@ function isOutOfBound(object)
     if currentPos.x < 0 then
         currentPos.x = 0
         state = true
-        beginUpdate = false
     end    
 
-    if currentPos.x > size.width then
-        currentPos.x = size.width
+    if currentPos.x > activearea.width then
+        currentPos.x = activearea.width
         state = true
-        beginUpdate = false
     end
 
     if currentPos.y < 0 then
         currentPos.y = 0
         state = true
-        beginUpdate = false
     end
 
-    if currentPos.y > size.height then
-        currentPos.y = size.height
+    if currentPos.y > activearea.height then
+        currentPos.y = activearea.height
         state = true
-        beginUpdate = false
     end
 
-    object:setPosition(currentPos)
     return state
 end
 
@@ -139,24 +120,31 @@ function isInCircleSector(object1, object2)
     local tempDistance = cc.pGetDistance(obj1Pos, obj2Pos)
    
     if tempDistance < attackDistance then
-        return true
-        
---    	local angle = getAngleFrom2Point(obj2Pos, obj1Pos)
---    	local rotation = object1:getRotation()
---    	
---    	if angle < 0 then
---    		angle = angle + 360
---    	end
---
---        if rotation < 0 then
---            rotation = rotation + 360
---        end    	
---    	
---        --cclog("%d [%f %f] %f", object1._racetype, rotation, rotation+90, angle)
---        if angle >= rotation  and angle <= rotation + 90 then
---            cclog("in circle sector")
---    		return true
---    	end
+    	local angle = getAngleFrom2Point(obj2Pos, obj1Pos)
+    	local rotation = object1:getRotation()
+    	
+    	if angle < 0 then
+    		angle = angle + 360
+    	end
+
+        if rotation < 0 then
+            rotation = rotation + 360
+        end    	
+    	
+    	local min = rotation
+        local max = rotation + 90
+        --cclog("%d [%f %f] %f", object1._racetype, rotation, rotation+90, angle)
+        if angle >= min  and angle <= max then
+            cclog("in circle sector")
+    		return true
+    	end
+    	
+        if max > 360 and angle >= 0 and angle <= max - 360 then
+           cclog("in circle sector")
+    	   return true
+    	else
+            faceToEnmey(object1, object2)
+    	end
     end 
     
     return false
@@ -175,10 +163,15 @@ function getAngleFrom2Point(p1, p2)
         angle = 270 + angle   
     end
     
-    angle = angle - 25 
+    angle = angle - 90 
     if angle > 180 then
         angle = angle - 360
     end
     
     return angle
+end
+
+function faceToEnmey(object1, object2)
+    local angle = getAngleFrom2Point(cc.p(object2:getPosition()), cc.p(object1:getPosition()))
+    object1:setRotation(angle)
 end
