@@ -4,6 +4,7 @@ require "Hero3D"
 require "Monster3D"
 require "Boss3D"
 require "Manager"
+require "Warrior"
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
@@ -73,7 +74,6 @@ local function findEnmey(object, manager)
         object:setTarget(nil)
     else
         if isInCircleSector(object, object._target) then
-            object:setState(EnumStateType.STAND)
             object:setState(EnumStateType.ATTACK)
         else
             faceToEnmey(object, object._target)
@@ -145,7 +145,8 @@ local function addNewSprite(x, y, tag)
     local sprite = nil
     local animation = nil
     if tag == EnumRaceType.DEBUG then
-        sprite = Hero3D.create(EnumRaceType.WARRIOR)
+        sprite = Warrior.create()
+        --sprite = Hero3D.create(EnumRaceType.WARRIOR)
         sprite._sprite3d:setScale(25)
         List.pushlast(HeroManager, sprite)
     elseif tag == EnumRaceType.MONSTER then
