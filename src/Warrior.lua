@@ -10,7 +10,7 @@ function Warrior:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 300    
+    self._attack = 300  
 end
 
 function Warrior.create()
@@ -43,19 +43,13 @@ function Warrior.create()
 
         elseif EnumStateType.STAND == hero._statetype then
         elseif EnumStateType.ATTACK == hero._statetype then
-            cclog("%f", dt)
+            --cclog("%f", dt)
         end
     end
 
     --mainloop
     scheduler:scheduleScriptFunc(MainLoop, 0, false)    
 
---    local function update(dt)
---        if hero.FindEnemy2Attack == nil then return  end
---        hero:FindEnemy2Attack()        
---    end
---
---    scheduler:scheduleScriptFunc(update, 0.5, false)    
     return hero
 end
 
@@ -125,7 +119,7 @@ end
 
 function Warrior:setState(type)
     if type == self._statetype then return end
-    cclog("Warrior:setState(" .. type ..")")
+    --cclog("Warrior:setState(" .. type ..")")
 
     if type == EnumStateType.STAND then
         self._statetype = type
