@@ -137,7 +137,7 @@ local function createRole()
     warrior:setGlobalZOrder(gloableZOrder)
     currentLayer:addChild(warrior)
 
-    warrior:setState(EnumStateType.WALK)
+    warrior:setState(EnumStateType.STAND)
 
     List.pushlast(HeroManager, warrior)
 

@@ -42,20 +42,20 @@ function Base3D:ctor()
 	self._rotatehead = 3
 	self._priority = self._speed
     self._racetype = EnumRaceType.BASE
-    self._statetype = EnumStateType.STAND
+    self._statetype = nil
     self._sprite3d = nil
     self._circle = nil
     self._attackZone = nil
     self._scheduleAttackId = 0
     self._target = nil
     self._action = {
-                    stand = nil,
-                    walk = nil,
-                    attack = nil,
-                    specialattack = nil,
-                    defense = nil,
-                    knocked = nil,
-                    dead = nil
+                    -- stand = nil,
+                    -- walk = nil,
+                    -- attack = nil,
+                    -- specialattack = nil,
+                    -- defense = nil,
+                    -- knocked = nil,
+                    -- dead = nil
                    }
 end
 

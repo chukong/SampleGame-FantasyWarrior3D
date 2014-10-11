@@ -79,57 +79,44 @@ function Warrior:AddSprite3D()
 --    self:setDefaultEqt()
 end
 
+local function createAnimation(animationStruct, isloop )
+    local animation3d = cc.Animation3D:create(filename)
+    local animate3d = cc.Animate3D:create(animation3d, animationStruct.begin/30,(animationStruct.ended-animationStruct.begin)/30)
+    animate3d:setSpeed(animationStruct.speed)
+    if isloop then
+        return cc.RepeatForever:create(animate3d)
+    else
+        return animate3d
+    end
+end
+
 function Warrior:initActions()
     local stand = createAnimationStruct(267,283,0.7)
     local walk = createAnimationStruct(227,247,0.7)
-    local attack = createAnimationStruct(103,153,0.7)
+    local attack1 = createAnimationStruct(103,129,0.7)
+    local attack2 = createAnimationStruct(130,154,0.7)
     local specialattack = createAnimationStruct(160,220,0.7)
-    local defense = createAnimationStruct(92,96,0.7)
+    local defend = createAnimationStruct(92,96,0.7)
     local knocked = createAnimationStruct(254,260,0.7)
     local dead = createAnimationStruct(0,77,0.7)
 
-
-    local stand_animation3d = cc.Animation3D:create(filename)
-    local stand_animate3d = cc.Animate3D:create(stand_animation3d, stand.begin/30,(stand.ended-stand.begin)/30)
-    stand_animate3d:setSpeed(stand.speed)
-    self._action.stand = cc.RepeatForever:create(stand_animate3d)
+    self._action.stand = createAnimation(stand, true)
     self._action.stand:retain()
-
-    local walk_animation3d = cc.Animation3D:create(filename)
-    local walk_animate3d = cc.Animate3D:create(walk_animation3d, walk.begin/30,(walk.ended-walk.begin)/30)
-    walk_animate3d:setSpeed(walk.speed)
-    self._action.walk = cc.RepeatForever:create(walk_animate3d)
+    self._action.walk = createAnimation(walk, true)
     self._action.walk:retain()
-
-    local attack_animation3d = cc.Animation3D:create(filename)
-    local attack_animate3d = cc.Animate3D:create(attack_animation3d, attack.begin/30,(attack.ended-attack.begin)/30)
-    attack_animate3d:setSpeed(attack.speed)
-    self._action.attack = cc.RepeatForever:create(attack_animate3d)
-    self._action.attack:retain()
-
-    local specialattack_animation3d = cc.Animation3D:create(filename)
-    local specialattack_animate3d = cc.Animate3D:create(specialattack_animation3d, specialattack.begin/30,(specialattack.ended-specialattack.begin)/30)
-    specialattack_animate3d:setSpeed(specialattack.speed)
-    self._action.specialattack = cc.RepeatForever:create(specialattack_animate3d)
+    self._action.attack1 = createAnimation(attack1, false)
+    self._action.attack1:retain()
+    self._action.attack2 = createAnimation(attack2, false)
+    self._action.attack2:retain()
+    self._action.specialattack = createAnimation(specialattack, false)
     self._action.specialattack:retain()
-
-    local defense_animation3d = cc.Animation3D:create(filename)
-    local defense_animate3d = cc.Animate3D:create(defense_animation3d, defense.begin/30,(defense.ended-defense.begin)/30)
-    defense_animate3d:setSpeed(defense.speed)
-    self._action.defense = cc.Sequence:create(cc.DelayTime:create(1.0), defense_animate3d)
-    self._action.defense:retain()
-
-    local knocked_animation3d = cc.Animation3D:create(filename)
-    local knocked_animate3d = cc.Animate3D:create(knocked_animation3d, knocked.begin/30,(knocked.ended-knocked.begin)/30)
-    knocked_animate3d:setSpeed(knocked.speed)
-    self._action.knocked = knocked_animate3d
+    self._action.defend = createAnimation(defend, false)
+    self._action.defend:retain()
+    self._action.knocked = createAnimation(knocked, false)
     self._action.knocked:retain()
-
-    local dead_animation3d = cc.Animation3D:create(filename)
-    local dead_animate3d = cc.Animate3D:create(dead_animation3d, dead.begin/30,(dead.ended-dead.begin)/30)
-    dead_animate3d:setSpeed(dead.speed)
-    self._action.dead = dead_animate3d
+    self._action.dead = createAnimation(dead, false)
     self._action.dead:retain()
+
 end
 
 -- find enemy
@@ -162,6 +149,10 @@ function Warrior:FindEnemy2Attack()
     end  
 end
 
+local function dosth(  )
+    cclog("attack sb...")
+end
+
 function Warrior:setState(type)
 cclog("Warrior:setState(" .. type ..")")
     if type == self._statetype then return end
@@ -190,7 +181,8 @@ cclog("Warrior:setState(" .. type ..")")
     elseif type == EnumStateType.ATTACK then
         self._statetype = type
         self._sprite3d:stopAllActions()
-        self._sprite3d:runAction(self._action.attack:clone())
+        local attack = cc.Sequence:create(self._action.attack1:clone(),cc.callfunc:create(dosth),self._action.attack2)
+        self._sprite3d:runAction(attack)
 
     elseif type == EnumStateType.SPECIALATTACK then
         self._statetype = type
