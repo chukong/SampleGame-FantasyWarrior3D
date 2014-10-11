@@ -135,12 +135,12 @@ function isInCircleSector(object1, object2)
         local max = rotation + 90
         --cclog("%d [%f %f] %f", object1._racetype, rotation, rotation+90, angle)
         if angle >= min  and angle <= max then
-            cclog("in circle sector")
+            --cclog("in circle sector")
     		return true
     	end
     	
         if max > 360 and angle >= 0 and angle <= max - 360 then
-           cclog("in circle sector")
+           --cclog("in circle sector")
     	   return true
     	else
             faceToEnmey(object1, object2)

@@ -10,6 +10,7 @@ function Warrior:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
+    self._attack = 300  
 end
 
 function Warrior.create()
@@ -26,45 +27,29 @@ function Warrior.create()
 
     local function MainLoop(dt)
         if EnumStateType.WALK == hero._statetype then
-            --move
             local targetPos = {x=3000, y=0}
-            local dis = hero._attackRadius
-            if nil ~= hero._target then
-                targetPos = getPosTable(hero._target)
-                dis = hero._attackRadius+hero._target._radius
-            end
-            local curPos = getPosTable(hero)
-            if cc.pGetDistance(curPos,targetPos)>(dis) then
-                hero:setPosition(getNextStepPos(hero,targetPos,dt))
-            else 
-                hero:setState(EnumStateType.STAND)
-            end
-
-            --rotate
-            local curPos = getPosTable(hero)
-            local angel = -math.atan2(targetPos.y-curPos.y,targetPos.x-curPos.x)*180/math.pi;
-            local curRotation = hero:getRotation()
-            if math.abs(angel-curRotation)>=hero._rotatehead then
-                if angel < 0 then
-                    hero:setRotation(curRotation-hero._rotatehead)
+            if hero._target ~= nil  then
+                local distance = hero._attackRadius + hero._target._radius
+                local p1 = getPosTable(hero)
+                local p2 = getPosTable(hero._target)
+                if distance < cc.pGetDistance(p1, p2) then
+                    hero:setPosition(getNextStepPos(hero, p2, dt))
                 else
-                    hero:setRotation(curRotation+hero._rotatehead)
+                    hero:setPosition(getNextStepPos(hero, targetPos, dt))
                 end
+            else
+                hero:setPosition(getNextStepPos(hero, targetPos, dt))            
             end
 
         elseif EnumStateType.STAND == hero._statetype then
+        elseif EnumStateType.ATTACK == hero._statetype then
+            --cclog("%f", dt)
         end
     end
 
     --mainloop
     scheduler:scheduleScriptFunc(MainLoop, 0, false)    
 
-    local function update(dt)
-        if hero.FindEnemy2Attack == nil then return  end
-        hero:FindEnemy2Attack()        
-    end
-
-    scheduler:scheduleScriptFunc(update, 0.5, false)    
     return hero
 end
 
@@ -132,39 +117,10 @@ function Warrior:initActions()
     self._action.dead:retain()
 end
 
--- find enemy
-function Warrior:FindEnemy2Attack()
-    if self._isalive == false then
-        if self._scheduleAttackId ~= 0 then
-            scheduler:unscheduleScriptEntry(self._scheduleAttackId)
-            self._scheduleAttackId = 0
-        end
-        return
-    end 
-
-    if self._statetype == EnumStateType.ATTACK and self._scheduleAttackId == 0 then
-        local function scheduleAttack(dt)
-            if self._target == nil or self._target == 0 or self._target._isalive == false then
-                scheduler:unscheduleScriptEntry(self._scheduleAttackId)
-                self._scheduleAttackId = 0
-                return
-            end
-
-            self._attackZone:runAction(cc.Sequence:create(cc.ProgressTo:create(0, 0), cc.ProgressTo:create(0.3, 25))) 
-            --self._target:hurt(self._attack)
-        end    
-        self._scheduleAttackId = scheduler:scheduleScriptFunc(scheduleAttack, 1, false)            
-    end
-
-    if self._statetype ~= EnumStateType.ATTACK and self._scheduleAttackId ~= 0 then
-        scheduler:unscheduleScriptEntry(self._scheduleAttackId)
-        self._scheduleAttackId = 0
-    end  
-end
-
 function Warrior:setState(type)
-cclog("Warrior:setState(" .. type ..")")
     if type == self._statetype then return end
+    --cclog("Warrior:setState(" .. type ..")")
+
     if type == EnumStateType.STAND then
         self._statetype = type
         self._sprite3d:stopAllActions()
@@ -191,7 +147,7 @@ cclog("Warrior:setState(" .. type ..")")
         self._statetype = type
         self._sprite3d:stopAllActions()
         self._sprite3d:runAction(self._action.attack:clone())
-
+                
     elseif type == EnumStateType.SPECIALATTACK then
         self._statetype = type
         self._sprite3d:stopAllActions()
