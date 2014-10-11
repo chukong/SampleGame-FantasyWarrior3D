@@ -53,6 +53,9 @@ function MessageDispatchCenter:dispatchMessage(messageType,param)
     end
     
     --callback
+    if self.MessageQue[messageType] == nil then
+        return
+    end
     for i,v in pairs(self.MessageQue[messageType]) do
         v(param)
     end
