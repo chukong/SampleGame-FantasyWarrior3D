@@ -4,6 +4,7 @@ require "Hero3D"
 require "Monster3D"
 require "Boss3D"
 require "Manager"
+require "Warrior"
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
@@ -119,14 +120,26 @@ end
 
 local function createRole()
  
-    addNewSprite(size.width/2, size.height/2, EnumRaceType.DEBUG)
+    -- addNewSprite(size.width/2, size.height/2, EnumRaceType.DEBUG)
 --    addNewSprite(size.width/2 - 200, size.height/2, EnumRaceType.DEBUG)
 --    addNewSprite(size.width/2 - 100, size.height/2 + 50, EnumRaceType.DEBUG)
     
-    addNewSprite(size.width/2-200, size.height/2-200, EnumRaceType.MONSTER)
+    -- addNewSprite(size.width/2-200, size.height/2-200, EnumRaceType.MONSTER)
 --    addNewSprite(size.width/2-300, size.height/2-200, EnumRaceType.MONSTER)
 --    addNewSprite(size.width/2-300, size.height/2-100, EnumRaceType.MONSTER)
 --    addNewSprite(size.width/2+300, size.height/2-100, EnumRaceType.BOSS)
+
+    local warrior = require("Warrior").create()
+    warrior._sprite3d:setScale(15)
+
+    warrior:setPosition(cc.p(400, 200))
+    gloableZOrder = gloableZOrder + 1
+    warrior:setGlobalZOrder(gloableZOrder)
+    currentLayer:addChild(warrior)
+
+    warrior:setState(EnumStateType.WALK)
+
+    List.pushlast(HeroManager, warrior)
 
     chosenOne = findAliveHero() --Assume it is the selected people
     --chosenOne = findAliveBoss() --Assume it is the selected people
@@ -153,17 +166,6 @@ function BattleFieldScene.create()
         end
     end  
 
-    local return_Button = ccui.Button:create()
-    return_Button:setTouchEnabled(true)
-    return_Button:loadTextures("btn_circle_normal.png", "btn_circle_normal.png", "")
-    return_Button:setTitleText("Return")
-    return_Button:setAnchorPoint(0,1)
-    return_Button:setPosition(cc.V3(size.width / 2 - 300, size.height / 2))
-    --return_Button:setPosition3D(cc.V3(size.width / 2 - 300, size.height / 2, 300))
-    --return_Button:setRotation3D(cc.V3(90, 0, 0))
-    return_Button:addTouchEventListener(touchEvent_return)        
-    currentLayer:addChild(return_Button, 10)
-    --return_Button:setScale(0.5)
 
     local function battle_success(event)
         BattleFieldScene.success()
@@ -255,7 +257,7 @@ end
 
 function BattleFieldScene.setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 1.0, 2000.0)
-    camera:setPosition3D(cc.V3(size.width/2, -size.height/2, size.width/2))
+    camera:setPosition3D(cc.V3(size.width/2, -size.height/8, size.width/4))
     camera:lookAt(cc.V3(size.width/2, size.height/2, 0.0), cc.V3(0.0, 1.0, 0.0))
     currentLayer:addChild(camera)  
 end
