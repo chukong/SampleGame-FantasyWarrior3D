@@ -39,18 +39,6 @@ function Hero3D.create(type)
             else 
                 hero:setState(EnumStateType.STAND)
             end
-            
-            --rotate
-            local curPos = getPosTable(hero)
-            local angel = -math.atan2(targetPos.y-curPos.y,targetPos.x-curPos.x)*180/math.pi;
-            local curRotation = hero:getRotation()
-            if math.abs(angel-curRotation)>=hero._rotatehead then
-                if angel < 0 then
-                    hero:setRotation(curRotation-hero._rotatehead)
-                else
-                    hero:setRotation(curRotation+hero._rotatehead)
-                end
-            end
         
         elseif EnumStateType.STAND == hero._statetype then
         end
@@ -254,9 +242,10 @@ function Hero3D:setState(type)
         self._sprite3d:runAction(defendAction)     
 
     elseif type == EnumStateType.KNOCKED then
-        local toRed = cc.TintTo:create(0.2, 255, 255, 255)
-        self._sprite3d:setColor(cc.c3b(255, 0, 0))
-        self._sprite3d:runAction(toRed)
+        local toRed = cc.TintTo:create(0, 255, 0, 0)
+        local toRedBack = cc.TintTo:create(0.2, 255, 255, 255)
+        self._sprite3d:runAction(cc.Sequence:create(toRed, toRedBack))
+        cclog("Hero is attacked!!!!")
     end
 end
 

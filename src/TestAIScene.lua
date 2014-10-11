@@ -6,52 +6,17 @@ require "Boss3D"
 require "Manager"
 
 local size = cc.Director:getInstance():getWinSize()
-local activearea = {width = 500, height = 640}
 local scheduler = cc.Director:getInstance():getScheduler()
 local gloableZOrder = 1
 local touchPos = nil
-local beginUpdate = false
 local currentLayer = nil
 local heroOriginPositionX = -2900
-local targetpos = {x=3000,y=0}
 local currentStep = 1;
 
 --hero ref
 local warrior
 local archer
 local mage
-
-local function isOutOfBound(object)
-    local currentPos = cc.p(object:getPosition());
-    local state = false;
-
-    if currentPos.x < 0 then
-        currentPos.x = 0
-        state = true
-        beginUpdate = false
-    end    
-
-    if currentPos.x > activearea.width then
-        currentPos.x = activearea.width
-        state = true
-        beginUpdate = false
-    end
-
-    if currentPos.y < 0 then
-        currentPos.y = 0
-        state = true
-        beginUpdate = false
-    end
-
-    if currentPos.y > activearea.height then
-        currentPos.y = activearea.height
-        state = true
-        beginUpdate = false
-    end
-
-    --object:setPosition(currentPos)
-    return false
-end
 
 local function collisionDetect()
     for val = 1, List.getSize(HeroManager) do
@@ -64,7 +29,7 @@ local function collisionDetect()
             break
         end
     end
-    
+
     for val = 1, List.getSize(MonsterManager) do
         local sprite = MonsterManager[val-1]
         if sprite._isalive == true then
@@ -75,7 +40,7 @@ local function collisionDetect()
             break
         end
     end    
-    
+
     for val = 1, List.getSize(BossManager) do
         local sprite = BossManager[val-1]
         if sprite._isalive == true then
@@ -86,14 +51,13 @@ local function collisionDetect()
             break
         end
     end        
-    
 end
 
 local function findEnmey(object, manager)
     if object._isalive == false then return end
 
-    local find = false
-    local shortest_distance = cc.pGetDistance(getPosTable(object),targetpos)
+    local find = false            
+    local shortest_distance = 500
     for var = 1, List.getSize(manager) do
         local objectTemp = manager[var-1]
         local dis = cc.pGetDistance(getPosTable(object),getPosTable(objectTemp))
@@ -103,14 +67,76 @@ local function findEnmey(object, manager)
             find = true
         end
     end
-    
+
     if find == false then
         object:setState(EnumStateType.WALK)
         object:setTarget(nil)
     elseif isInCircleSector(object, object._target) then
         object:setState(EnumStateType.STAND)
         object:setState(EnumStateType.ATTACK)
+    else
+        object:setState(EnumStateType.WALK)
     end
+end
+
+local function findAllEnemy()
+    local tempSize1 = List.getSize(MonsterManager)
+    findEnmey(warrior, MonsterManager)
+    findEnmey(archer, MonsterManager)
+    findEnmey(mage, MonsterManager)
+        
+    for var = 1, tempSize1 do
+        local objectTemp = MonsterManager[var-1]
+        findEnmey(objectTemp, HeroManager)
+    end
+
+    local tempSize2 = List.getSize(BossManager)
+    if tempSize2 > 0 then        
+        findEnmey(warrior, BossManager)
+        findEnmey(archer, BossManager)
+        findEnmey(mage, BossManager)
+        
+        for var = 1, tempSize2 do
+            local objectTemp = BossManager[var-1]
+            findEnmey(objectTemp, HeroManager)
+        end          
+    end   
+
+end
+
+local function moveCamera(dt)
+    if camera and List.getSize(HeroManager) > 0 then
+        local position = cc.pLerp({x=camera:getPositionX(),y=0},{x=getFocusPointOfHeros().x,y=0},2*dt)
+        camera:setPositionX(position.x)
+        camera:lookAt({x=position.x, y=size.width/2, z=0.0}, {x=0.0, y=1.0, z=0.0})
+    end
+end
+
+local function updateParticlePos()
+    if warrior._particle ~= nil then
+        warrior._particle:setPosition(getPosTable(warrior))
+    end
+    if archer._particle ~= nil then
+        archer._particle:setPosition(getPosTable(archer))
+    end
+    if mage._particle ~= nil then
+        mage._particle:setPosition(getPosTable(mage))
+    end
+end
+
+local function jumpdone()
+    warrior:setState(EnumStateType.WALK)
+end
+
+local function addParticleToRole(role)
+    role._particle = cc.BillboardParticleSystem:create("effect/walkingPuff.plist")
+    role._particle:setDepthTestEnabled(true)
+    role._particle:setScale(1)
+    role._particle:setPositionZ(15)
+    role._particle:setDuration(-1)    
+    role._particle:setStartColor({r=234,g=123,b=245,a=255})
+    currentLayer:addChild(role._particle,5)
+    role._particle:setEmissionRate(0)
 end
 
 local function addNewSprite(x, y, tag)
@@ -152,166 +178,10 @@ local function addNewSprite(x, y, tag)
 
     sprite:setState(EnumStateType.STAND)
 
-    return sprite
+    return sprite    
 end
 
-local function createEnmey(step)
-    if  step ~= currentStep  then return end
-
-    if currentStep == 1 then
-        addNewSprite(size.width/2-1200, size.height/2-200, EnumRaceType.MONSTER)
-        addNewSprite(size.width/2-1300, size.height/2-200, EnumRaceType.MONSTER)
-        addNewSprite(size.width/2-1300, size.height/2-100, EnumRaceType.MONSTER)
-        currentStep = currentStep + 1    
-    elseif currentStep == 2 then
-        addNewSprite(size.width/2+2000, size.height/2-100, EnumRaceType.BOSS)
-        currentStep = currentStep + 1            
-    end
-end
-
-local function findAllEnemy()
-    local tempSize1 = List.getSize(MonsterManager)
-    findEnmey(warrior, MonsterManager)
-    findEnmey(archer, MonsterManager)
-    findEnmey(mage, MonsterManager)
-        
-    for var = 1, tempSize1 do
-        local objectTemp = MonsterManager[var-1]
-        findEnmey(objectTemp, HeroManager)
-    end
-
-    local tempSize2 = List.getSize(BossManager)
-    if tempSize2 > 0 then        
-        findEnmey(warrior, BossManager)
-        findEnmey(archer, BossManager)
-        findEnmey(mage, BossManager)
-        
-        for var = 1, tempSize2 do
-            local objectTemp = BossManager[var-1]
-            findEnmey(objectTemp, HeroManager)
-        end          
-    end   
-
-end
-
-local function moveCamera(dt)
-    if camera then
-        local position = cc.pLerp({x=camera:getPositionX(),y=0},{x=getFocusPointOfHeros().x,y=0},2*dt)
-        camera:setPositionX(position.x)
-        camera:lookAt({x=position.x, y=size.width/2, z=0.0}, {x=0.0, y=1.0, z=0.0})
-    end
-end
-
-local function updateParticlePos()
-    if warrior._particle ~= nil then
-        warrior._particle:setPosition(getPosTable(warrior))
-    end
-    if archer._particle ~= nil then
-        archer._particle:setPosition(getPosTable(archer))
-    end
-    if mage._particle ~= nil then
-        mage._particle:setPosition(getPosTable(mage))
-    end
-end
-
-
-
-
-local function jumpdone()
-	warrior:setState(EnumStateType.WALK)
-end
-
-local function addParticleToRole(role)
-    role._particle = cc.BillboardParticleSystem:create("effect/walkingPuff.plist")
-    role._particle:setDepthTestEnabled(true)
-    role._particle:setScale(1)
-    role._particle:setPositionZ(15)
-    role._particle:setDuration(-1)    
-    role._particle:setStartColor({r=234,g=123,b=245,a=255})
-    currentLayer:addChild(role._particle,5)
-    role._particle:setEmissionRate(0)
-end
-
-local function createRole()
- 
-    warrior = addNewSprite(heroOriginPositionX, 0, EnumRaceType.DEBUG)
-    addParticleToRole(warrior)    
-    warrior:setState(EnumStateType.STAND)
-    warrior:runAction(cc.Sequence:create(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1),cc.CallFunc:create(jumpdone)))
-    
-    archer = addNewSprite(heroOriginPositionX, 300, EnumRaceType.DEBUG)
-    addParticleToRole(archer)    
-    archer:setState(EnumStateType.WALK)
-
-    mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.DEBUG)
-    addParticleToRole(mage)
-    mage:setState(EnumStateType.WALK)
-end
-
-local TestAIScene = class("TestAIScene",function()
-    return cc.Scene:create()
-end)
-
-
-local function update(dt)
-    collisionDetect()
-    findAllEnemy()
-    moveCamera(dt)
-    updateParticlePos()
-
-    local tempPos = camera:getPositionX()
-    cclog("%f", tempPos)
-    if tempPos > -1800 and tempPos < -1700 then
-        createEnmey(1)    
-    elseif  tempPos > 1000 and tempPos < 1100 then
-        createEnmey(2)
-    end
-end
-
-
-function TestAIScene.create()
-    local scene = TestAIScene:new()
-    currentLayer = cc.Layer:create()
-    scene:addChild(currentLayer)
-
-    TestAIScene.createBackground()
-    createRole()
-    TestAIScene.setCamera()
-    
-    warrior._particle:setCamera(camera)
-    archer._particle:setCamera(camera)
-    mage._particle:setCamera(camera)
-
-    --test    
-
-    --custom event
-    local function battle_success(event)
-        TestAIScene.success()
-    end
-
-    local function battle_fail(event)
-        TestAIScene.fail()
-    end    
-
-    local listener1 = cc.EventListenerCustom:create("battle_success", battle_success)
-    local eventDispatcher = currentLayer:getEventDispatcher()
-    eventDispatcher:addEventListenerWithFixedPriority(listener1, 1)
-
-    local listener2 = cc.EventListenerCustom:create("battle_fail", battle_fail)
-    eventDispatcher:addEventListenerWithFixedPriority(listener2, 2)    
-
---    local function someoneDead(event)                 
---    end
-    
---    local listener3 = cc.EventListenerCustom:create("someone_dead_event",someoneDead)
---    eventDispatcher:addEventListenerWithFixedPriority(listener3, 1)
-    
-    -- schedule
-    scheduler:scheduleScriptFunc(update, 0, false)
-    return scene
-end
-
-function TestAIScene.createBackground()
+local function createBackground()
     local spriteBg = cc.Sprite3D:create("Sprite3DTest/scene/DemoScene.c3b")
     local children = spriteBg:getChildren()
     for key1, var1 in ipairs(children) do
@@ -333,47 +203,86 @@ function TestAIScene.createBackground()
     spriteBg:setRotation3D(cc.V3(90,0,0))
 end
 
-function TestAIScene.setCamera()
+local function createEnmey(step)
+    if  step ~= currentStep  then return end
+
+    if currentStep == 1 then
+        addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER)
+        addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER)
+        addNewSprite(size.width/2-2000, size.height/2-100, EnumRaceType.MONSTER)
+        currentStep = currentStep + 1    
+    elseif currentStep == 2 then
+        addNewSprite(size.width/2, size.height/2-200, EnumRaceType.MONSTER)
+        addNewSprite(size.width/2+100, size.height/2-200, EnumRaceType.MONSTER)
+        addNewSprite(size.width/2+100, size.height/2-100, EnumRaceType.MONSTER)
+        currentStep = currentStep + 1   
+    elseif currentStep == 3 then
+        addNewSprite(size.width/2+2000, size.height/2-100, EnumRaceType.BOSS)
+        currentStep = currentStep + 1                    
+    end
+end
+
+local function createRole()
+ 
+    warrior = addNewSprite(heroOriginPositionX, 0, EnumRaceType.DEBUG)
+    addParticleToRole(warrior)    
+    warrior:setState(EnumStateType.STAND)
+    warrior:runAction(cc.Sequence:create(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1),cc.CallFunc:create(jumpdone)))
+    
+    archer = addNewSprite(heroOriginPositionX, 300, EnumRaceType.DEBUG)
+    addParticleToRole(archer)    
+    archer:setState(EnumStateType.WALK)
+
+    mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.DEBUG)
+    addParticleToRole(mage)
+    mage:setState(EnumStateType.WALK)
+end
+
+local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 1.0, 2000.0)
     camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height*1.2, size.width/2))
     camera:lookAt(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y, 0.0), cc.V3(0.0, 1.0, 0.0))
     currentLayer:addChild(camera)
 end
 
-function TestAIScene.success()
-    local successLabel = cc.Label:createWithTTF("Warrior SUCCESS!!!", "fonts/Marker Felt.ttf", 18)
-    
-    successLabel:setPosition(size.width / 2 - 100, size.height / 2)
-    currentLayer:addChild(successLabel)
-    
-    local spawnAction = cc.Spawn:create(cc.ScaleBy:create(3.0, 3.0), cc.FadeOut:create(3.0))
-    local action = cc.Sequence:create(showAction, spawnAction)
+local function gameController(dt)
+    collisionDetect()
+    findAllEnemy()
+    moveCamera(dt)
+    updateParticlePos()
 
-    successLabel:runAction(cc.Sequence:create(action, cc.RemoveSelf:create()))
-    
-    List.removeAll(MonsterManager)
-    
-    TestAIScene.restore()
+    local tempPos = camera:getPositionX()
+    --cclog("%f", tempPos)
+    if tempPos > -2500 and tempPos < -2400 then
+        createEnmey(1)    
+    elseif  tempPos > -1000 and tempPos < -900 then
+        createEnmey(2)
+    elseif  tempPos > 1000 and tempPos < 1100 then
+        createEnmey(3)        
+    end    
 end
 
-function TestAIScene.restore()
-    for val = 1, List.getSize(HeroManager) do
-       HeroManager[val-1]._blood = 100
-       HeroManager[val-1]._isalive = true
-       HeroManager[val-1]:setState(EnumStateType.STAND)
-       HeroManager[val-1]:setState(EnumStateType.WALK)
-    end  
-end
+local TestAIScene = class("TestAIScene",function()
+    return cc.Scene:create()
+end)
 
-function TestAIScene.fail()
-    local failLabel = cc.Label:createWithTTF("YOU LOSE!!!", "fonts/Marker Felt.ttf", 18)
-    failLabel:setTextColor(cc.c4b(255, 0, 0, 255))
-    failLabel:setPosition(size.width / 2 - 100, size.height / 2)
-    currentLayer:addChild(failLabel)
+function TestAIScene.create()
 
-    local action = cc.Sequence:create(showAction, cc.ScaleBy:create(3.0, 3.0))
+    local scene = TestAIScene:new()
+    currentLayer = cc.Layer:create()
+    scene:addChild(currentLayer)
 
-    failLabel:runAction(action)
+    createBackground()
+    createRole()
+    setCamera()
+    
+    warrior._particle:setCamera(camera)
+    archer._particle:setCamera(camera)
+    mage._particle:setCamera(camera)
+
+    scheduler:scheduleScriptFunc(gameController, 0, false)
+    
+    return scene
 end
 
 return TestAIScene

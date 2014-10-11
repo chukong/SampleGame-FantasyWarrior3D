@@ -47,6 +47,7 @@ function Base3D:ctor()
     self._sprite3d = nil
     self._circle = nil
     self._attackZone = nil
+    self.label = nil
     self._scheduleAttackId = 0
     self._target = nil
     self._action = {stand="", attack="", walk="", defend=""}
@@ -69,6 +70,11 @@ function Base3D:addCircle()
     self._attackZone:setColor(cc.c3b(255, 0, 0))
     self._attackZone:setType(cc.PROGRESS_TIMER_TYPE_RADIAL)
     self._attackZone:runAction(cc.ProgressTo:create(0, 25))	
+    self._attackZone:setRotation(45) 
+    
+    local str = string.format("%.2f", self:getRotation())
+    self.label = cc.Label:createWithTTF(str, "fonts/Marker Felt.ttf", 32)
+    self:addChild(self.label, 1)
 end
 
 function Base3D:setState(type)
@@ -96,16 +102,7 @@ function Base3D:setState(type)
     end 
 
     if type == EnumStateType.WALK then
-        local x = 0
-        if self._racetype == EnumRaceType.DEBUG then
-            x = 10
-        else
-            x = -10
-        end
-        local walkAction = cc.JumpBy:create(0.5, cc.p(x,0), 5, 1)
-        local repeatAction = cc.RepeatForever:create(walkAction)
-        repeatAction:setTag(self._statetype) 
-        self._sprite3d:runAction(repeatAction)   
+        self._sprite3d:stopAllActions()
     end 
 
     if type == EnumStateType.ATTACK then
@@ -130,9 +127,9 @@ function Base3D:setState(type)
     end     
     
     if type == EnumStateType.KNOCKED then
-        local toRed = cc.TintTo:create(0.2, 255, 255, 255)
-        self._sprite3d:setColor(cc.c3b(255, 0, 0))
-        self._sprite3d:runAction(toRed)
+        local toRed = cc.TintTo:create(0, 255, 0, 0)
+        local toRedBack = cc.TintTo:create(0.2, 255, 255, 255)
+        self._sprite3d:runAction(cc.Sequence:create(toRed, toRedBack))
     end
 end
 
@@ -158,7 +155,9 @@ end
 function Base3D:setTarget(target)
     if target ~= nil and self._target == target then
         local angle = getAngleFrom2Point(cc.p(self._target:getPosition()), cc.p(self:getPosition()))
-        self:runAction(cc.RotateTo:create(0.1, angle))    	
+        self:runAction(cc.RotateTo:create(0.1, angle))  
+        local str = string.format("%.2f", angle)
+        self.label:setString(str)
     else
         self._target = target
     end
