@@ -12,6 +12,7 @@ function Hero3D:ctor()
     self._arm = ""
     self._chest = ""
     self._weapon = ""
+    self._attack = 300    
 end
 
 function Hero3D.create(type)
@@ -38,18 +39,6 @@ function Hero3D.create(type)
                 hero:setPosition(getNextStepPos(hero,targetPos,dt))
             else 
                 hero:setState(EnumStateType.STAND)
-            end
-            
-            --rotate
-            local curPos = getPosTable(hero)
-            local angel = -math.atan2(targetPos.y-curPos.y,targetPos.x-curPos.x)*180/math.pi;
-            local curRotation = hero:getRotation()
-            if math.abs(angel-curRotation)>=hero._rotatehead then
-                if angel < 0 then
-                    hero:setRotation(curRotation-hero._rotatehead)
-                else
-                    hero:setRotation(curRotation+hero._rotatehead)
-                end
             end
         
         elseif EnumStateType.STAND == hero._statetype then
@@ -227,8 +216,14 @@ function Hero3D:setState(type)
         self._particle:setEmissionRate(5)
 
     elseif type == EnumStateType.DEAD then
- 
-    elseif type == EnumStateType.ATTACK then
+        local rotateAngle = nil
+        if self._racetype == EnumRaceType.DEBUG then
+            rotateAngle = 90.0
+        else 
+            rotateAngle = -90.0
+        end
+        self._sprite3d:runAction(cc.RotateTo:create(0.5, cc.V3(0, 0, rotateAngle))) 
+     elseif type == EnumStateType.ATTACK then
 --        local animation = cc.Animation3D:create(self._action.attack)
 --        local animate = cc.Animate3D:create(animation)
 --        animate:setSpeed(self._speed)
@@ -248,12 +243,10 @@ function Hero3D:setState(type)
         self._sprite3d:runAction(defendAction)     
 
     elseif type == EnumStateType.KNOCKED then
-        if self._racetype == EnumRaceType.BOSS then
-            local action = cc.Sequence:create(cc.MoveBy:create(0.05, cc.p(5,5)),  cc.MoveBy:create(0.05, cc.p(-5,-5)))
-            self._sprite3d:runAction(action)
-        else 
-            self._sprite3d:runAction(cc.RotateBy:create(0.5, 360.0))
-        end 
+        local toRed = cc.TintTo:create(0, 255, 0, 0)
+        local toRedBack = cc.TintTo:create(0.2, 255, 255, 255)
+        self._sprite3d:runAction(cc.Sequence:create(toRed, toRedBack))
+        cclog("Hero is attacked!!!!")
     end
 end
 
