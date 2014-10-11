@@ -142,6 +142,8 @@ function isInCircleSector(object1, object2)
         if max > 360 and angle >= 0 and angle <= max - 360 then
            cclog("in circle sector")
     	   return true
+    	else
+            faceToEnmey(object1, object2)
     	end
     end 
     
@@ -167,4 +169,9 @@ function getAngleFrom2Point(p1, p2)
     end
     
     return angle
+end
+
+function faceToEnmey(object1, object2)
+    local angle = getAngleFrom2Point(cc.p(object2:getPosition()), cc.p(object1:getPosition()))
+    object1:setRotation(angle)
 end

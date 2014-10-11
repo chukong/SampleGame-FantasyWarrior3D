@@ -64,18 +64,20 @@ local function findEnmey(object, manager)
         if dis < shortest_distance and objectTemp._isalive then
             object:setTarget(objectTemp)
             shortest_distance = dis
-            find = true
+            find = true                      
         end
     end
-
+    
     if find == false then
         object:setState(EnumStateType.WALK)
         object:setTarget(nil)
-    elseif isInCircleSector(object, object._target) then
-        object:setState(EnumStateType.STAND)
-        object:setState(EnumStateType.ATTACK)
     else
-        object:setState(EnumStateType.WALK)
+        if isInCircleSector(object, object._target) then
+            object:setState(EnumStateType.STAND)
+            object:setState(EnumStateType.ATTACK)
+        else
+            faceToEnmey(object, object._target)
+        end
     end
 end
 

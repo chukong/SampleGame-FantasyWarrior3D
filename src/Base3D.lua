@@ -47,7 +47,6 @@ function Base3D:ctor()
     self._sprite3d = nil
     self._circle = nil
     self._attackZone = nil
-    self.label = nil
     self._scheduleAttackId = 0
     self._target = nil
     self._action = {stand="", attack="", walk="", defend=""}
@@ -71,10 +70,6 @@ function Base3D:addCircle()
     self._attackZone:setType(cc.PROGRESS_TIMER_TYPE_RADIAL)
     self._attackZone:runAction(cc.ProgressTo:create(0, 25))	
     self._attackZone:setRotation(45) 
-    
-    local str = string.format("%.2f", self:getRotation())
-    self.label = cc.Label:createWithTTF(str, "fonts/Marker Felt.ttf", 32)
-    self:addChild(self.label, 1)
 end
 
 function Base3D:setState(type)
@@ -153,12 +148,7 @@ function Base3D:setStateType(type)
 end
 
 function Base3D:setTarget(target)
-    if target ~= nil and self._target == target then
-        local angle = getAngleFrom2Point(cc.p(self._target:getPosition()), cc.p(self:getPosition()))
-        self:runAction(cc.RotateTo:create(0.1, angle))  
-        local str = string.format("%.2f", angle)
-        self.label:setString(str)
-    else
+    if self._target ~= target then
         self._target = target
     end
 end
