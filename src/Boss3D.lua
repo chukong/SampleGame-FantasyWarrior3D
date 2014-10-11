@@ -16,6 +16,20 @@ function Boss3D.create()
 	--base
 	boss:setRaceType(EnumRaceType.BOSS)
 	
+    local function MainLoop(dt)
+        if EnumStateType.WALK == boss._statetype and boss._target ~= nil then
+            local distance = boss._attackRadius + boss._target._radius
+            local p1 = getPosTable(boss)
+            local p2 = getPosTable(boss._target)
+            if distance < cc.pGetDistance(p1, p2) then
+                boss:setPosition(getNextStepPos(boss, p2, dt))
+            end
+        end
+    end
+
+    --mainloop
+    scheduler:scheduleScriptFunc(MainLoop, 0, false)    
+    
 	--self
     local function update(dt)
         if boss.FindEnemy2Attack == nil then return  end

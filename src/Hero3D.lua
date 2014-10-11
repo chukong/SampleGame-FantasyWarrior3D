@@ -12,6 +12,7 @@ function Hero3D:ctor()
     self._arm = ""
     self._chest = ""
     self._weapon = ""
+    self._attack = 300    
 end
 
 function Hero3D.create(type)

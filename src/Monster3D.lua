@@ -17,6 +17,20 @@ function Monster3D.create(type)
     --base
     monster:setRaceType(type)
 
+    local function MainLoop(dt)
+        if EnumStateType.WALK == monster._statetype and monster._target ~= nil then
+            local distance = monster._attackRadius + monster._target._radius
+            local p1 = getPosTable(monster)
+            local p2 = getPosTable(monster._target)
+            if distance < cc.pGetDistance(p1, p2) then
+                monster:setPosition(getNextStepPos(monster, p2, dt))
+            end
+        end
+    end
+
+    --mainloop
+    scheduler:scheduleScriptFunc(MainLoop, 0, false)    
+    
     --self
     local function update(dt)
         if monster.FindEnemy2Attack == nil then return  end

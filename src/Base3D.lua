@@ -87,7 +87,7 @@ function Base3D:setState(type)
     end
 
     if type == EnumStateType.DEAD then
-        local rotateAngle = nil
+        local rotateAngle = 0
         if self._racetype == EnumRaceType.DEBUG then
             rotateAngle = 90.0
         else 
