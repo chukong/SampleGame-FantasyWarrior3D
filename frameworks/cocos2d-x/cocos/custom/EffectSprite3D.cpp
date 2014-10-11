@@ -131,11 +131,11 @@ void EffectSprite3D::addChildEffect(const Vec3& outlineColor, float width,ssize_
         }
     }
 }
-const std::string Effect3DOutline::_vertShaderFile = "Shaders3D/OutLine.vert";
-const std::string Effect3DOutline::_fragShaderFile = "Shaders3D/OutLine.frag";
+const std::string Effect3DOutline::_vertShaderFile = "shaders3D/OutLine.vert";
+const std::string Effect3DOutline::_fragShaderFile = "shaders3D/OutLine.frag";
 const std::string Effect3DOutline::_keyInGLProgramCache = "Effect3DLibrary_Outline";
-const std::string Effect3DOutline::_vertSkinnedShaderFile = "Shaders3D/SkinnedOutline.vert";
-const std::string Effect3DOutline::_fragSkinnedShaderFile = "Shaders3D/OutLine.frag";
+const std::string Effect3DOutline::_vertSkinnedShaderFile = "shaders3D/SkinnedOutline.vert";
+const std::string Effect3DOutline::_fragSkinnedShaderFile = "shaders3D/OutLine.frag";
 const std::string Effect3DOutline::_keySkinnedInGLProgramCache = "Effect3DLibrary_Outline";
 
 GLProgram* Effect3DOutline::getOrCreateProgram(bool isSkinned /* = false */ )
