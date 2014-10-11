@@ -4,7 +4,7 @@ end)
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
-local filename = "Model/zhanshi_ALL.c3b"
+local filename = "model/warrior/warrior.c3b"
 
 function Warrior:ctor()
     self._useWeaponId = 0
