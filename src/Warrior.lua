@@ -4,12 +4,13 @@ end)
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
-local filename = "Model/zhanshi_ALL.c3b"
+local filename = "model/warrior/warrior.c3b"
 
 function Warrior:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
+    self._attack = 300  
 end
 
 function Warrior.create()
@@ -26,45 +27,29 @@ function Warrior.create()
 
     local function MainLoop(dt)
         if EnumStateType.WALK == hero._statetype then
-            --move
             local targetPos = {x=3000, y=0}
-            local dis = hero._attackRadius
-            if nil ~= hero._target then
-                targetPos = getPosTable(hero._target)
-                dis = hero._attackRadius+hero._target._radius
-            end
-            local curPos = getPosTable(hero)
-            if cc.pGetDistance(curPos,targetPos)>(dis) then
-                hero:setPosition(getNextStepPos(hero,targetPos,dt))
-            else 
-                hero:setState(EnumStateType.STAND)
-            end
-
-            --rotate
-            local curPos = getPosTable(hero)
-            local angel = -math.atan2(targetPos.y-curPos.y,targetPos.x-curPos.x)*180/math.pi;
-            local curRotation = hero:getRotation()
-            if math.abs(angel-curRotation)>=hero._rotatehead then
-                if angel < 0 then
-                    hero:setRotation(curRotation-hero._rotatehead)
+            if hero._target ~= nil  then
+                local distance = hero._attackRadius + hero._target._radius
+                local p1 = getPosTable(hero)
+                local p2 = getPosTable(hero._target)
+                if distance < cc.pGetDistance(p1, p2) then
+                    hero:setPosition(getNextStepPos(hero, p2, dt))
                 else
-                    hero:setRotation(curRotation+hero._rotatehead)
+                    hero:setPosition(getNextStepPos(hero, targetPos, dt))
                 end
+            else
+                hero:setPosition(getNextStepPos(hero, targetPos, dt))            
             end
 
         elseif EnumStateType.STAND == hero._statetype then
+        elseif EnumStateType.ATTACK == hero._statetype then
+            --cclog("%f", dt)
         end
     end
 
     --mainloop
     scheduler:scheduleScriptFunc(MainLoop, 0, false)    
 
-    local function update(dt)
-        if hero.FindEnemy2Attack == nil then return  end
-        hero:FindEnemy2Attack()        
-    end
-
-    scheduler:scheduleScriptFunc(update, 0.5, false)    
     return hero
 end
 
@@ -154,8 +139,9 @@ local function dosth(  )
 end
 
 function Warrior:setState(type)
-cclog("Warrior:setState(" .. type ..")")
     if type == self._statetype then return end
+    --cclog("Warrior:setState(" .. type ..")")
+
     if type == EnumStateType.STAND then
         self._statetype = type
         self._sprite3d:stopAllActions()
@@ -181,9 +167,8 @@ cclog("Warrior:setState(" .. type ..")")
     elseif type == EnumStateType.ATTACK then
         self._statetype = type
         self._sprite3d:stopAllActions()
-        local attack = cc.Sequence:create(self._action.attack1:clone(),cc.callfunc:create(dosth),self._action.attack2)
+        local attack = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(dosth),self._action.attack2)
         self._sprite3d:runAction(attack)
-
     elseif type == EnumStateType.SPECIALATTACK then
         self._statetype = type
         self._sprite3d:stopAllActions()

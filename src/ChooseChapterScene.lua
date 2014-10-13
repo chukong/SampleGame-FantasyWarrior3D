@@ -19,13 +19,7 @@ function ChooseChapter:create()
 end
 
 function ChooseChapter:addElement()
-    -- add bg
---    local bg = cc.Sprite3D:create("Sprite3DTest/scene/DemoScene.c3b")
---    bg:setScale(60)
---    bg:setRotation3D({x=0,y=180,z=0})
---    bg:setPosition3D({x=self.size.width/2,y=0,z=0})
---    self:addChild(bg,0)
-    local bg = cc.Sprite:create("activate_background.jpg")
+    local bg = cc.Sprite:create("xiaota/activate_background.jpg")
     bg:setPosition({x=self.size.width/2,y=self.size.height/2})
     self:addChild(bg)
 --    self:addBg()
@@ -34,13 +28,11 @@ function ChooseChapter:addElement()
     self:addHero()
     
     --test 3D camera
-    self:testJump3D()
+--    self:testJump3D()
     
     --addCamera
     self:addCamera()
     self:setCameraMask(2)
-    
-    
 end
 
 function ChooseChapter:testJump3D()
@@ -59,23 +51,6 @@ function ChooseChapter:testJump3D()
     hero:runAction(cc.Sequence:create(action,reverse,clone,jumpTo,cloneJump)) 
     
     self:addChild(hero)
-end
-
-function ChooseChapter:addBg()
-     local line = cc.DrawNode3D:create()
-    --draw x
-    for j=-20,200 do
-        line:drawLine({x=-100,y=0,z=10*j},{x=100,y=0,z=10*j},{r=1,g=0,b=0,a=1})
-    end
-    
-    for j=-20,200 do
-        line:drawLine({x=10*j,y=0,z=-100},{x=10*j,y=0,z=100},{r=0,g=0,b=1,a=1})
-    end
-    line:drawLine({x=0,y=-50,z=0},{x=0,y=0,z=0},{r=0,g=0.5,b=0,a=1})
-    line:drawLine({x=0,y=0,z=0},{x=0,y=50,z=0},{r=0,g=1,b=0,a=1})
---    line:setPosition3D({x=self.size.width/2,y=self.size.height/2,z=0})
---    line:setPositionX(self.size.width/2)r
-    self:addChild(line)
 end
 
 --add camera
@@ -99,18 +74,18 @@ function ChooseChapter:addCamera()
     end   
     self.scheduleID = cc.Director:getInstance():getScheduler():scheduleScriptFunc(cameraFollow,0,false)
 end
-  
+
 --add hero 
 function ChooseChapter:addHero()
     --add hero
     local hero = require("Hero3D").create(0)
     hero:setRotation3D({x=0,y=0,z=0})
     hero:setScale(10)
-    hero:setPosition3D({x=self.size.width*0.95, y=self.size.height*0.15,z=10})   
+    hero:setPosition3D({x=self.size.width*0.95, y=self.size.height*0.15,z=10}) 
     self:addChild(hero)
     self._hero = hero
     self._prePosition = hero:getPositionX()
-
+    
     --action   
     local controlPoint = {{x=0,y=0},
         {x=-self.size.width*0.25,y=-self.size.height*0.18},
@@ -121,6 +96,24 @@ function ChooseChapter:addHero()
     local cardinalSpline = cc.CardinalSplineBy:create(3,controlPoint,0)
 --    hero:runAction(cardinalSpline)
 
+    --test billboard
+    local dropBlood = require("DropBlood"):create()
+    dropBlood:setPosition3D({x=0,y=0,z=0})
+    hero:addChild(dropBlood)
+    
+    local dispatch = require("MessageDispatchCenter")
+    local offset = 1
+    local function schedule_function()
+--        hero:setRotation3D({x=0,y=0,z=offset})
+--        offset = offset+1
+    end
+    cc.Director:getInstance():getScheduler():scheduleScriptFunc(schedule_function,0,false)
+
+    local function schedule_function2()
+        local num = math.random(0,300)
+        dispatch:dispatchMessage(dispatch.MessageType.BLOOD_DROP,num)
+    end
+    cc.Director:getInstance():getScheduler():scheduleScriptFunc(schedule_function2,1,false)
 end
 
 return ChooseChapter

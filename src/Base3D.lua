@@ -38,7 +38,7 @@ function Base3D:ctor()
 	self._blood = 1000
 	self._attack = 100
 	self._defense = 100
-	self._speed = 500
+	self._speed = 50
 	self._rotatehead = 3
 	self._priority = self._speed
     self._racetype = EnumRaceType.BASE

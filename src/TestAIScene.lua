@@ -1,9 +1,9 @@
 require "Helper"
 require "Base3D"
-require "Hero3D"
 require "Monster3D"
 require "Boss3D"
 require "Manager"
+require "Warrior"
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
@@ -19,6 +19,7 @@ local archer
 local mage
 
 local function collisionDetect()
+    --cclog("collisionDetect")
     for val = 1, List.getSize(HeroManager) do
         local sprite = HeroManager[val-1]
         if sprite._isalive == true then
@@ -54,7 +55,7 @@ local function collisionDetect()
 end
 
 local function findEnmey(object, manager)
-    if object._isalive == false then return end
+    if object == nil or object._isalive == false then return end
 
     local find = false            
     local shortest_distance = 500
@@ -63,6 +64,7 @@ local function findEnmey(object, manager)
         local dis = cc.pGetDistance(getPosTable(object),getPosTable(objectTemp))
         if dis < shortest_distance and objectTemp._isalive then
             object:setTarget(objectTemp)
+            cclog("%d", object._statetype)
             shortest_distance = dis
             find = true                      
         end
@@ -73,7 +75,6 @@ local function findEnmey(object, manager)
         object:setTarget(nil)
     else
         if isInCircleSector(object, object._target) then
-            object:setState(EnumStateType.STAND)
             object:setState(EnumStateType.ATTACK)
         else
             faceToEnmey(object, object._target)
@@ -107,6 +108,7 @@ local function findAllEnemy()
 end
 
 local function moveCamera(dt)
+    --cclog("moveCamera")
     if camera and List.getSize(HeroManager) > 0 then
         local position = cc.pLerp({x=camera:getPositionX(),y=0},{x=getFocusPointOfHeros().x,y=0},2*dt)
         camera:setPositionX(position.x)
@@ -115,13 +117,14 @@ local function moveCamera(dt)
 end
 
 local function updateParticlePos()
-    if warrior._particle ~= nil then
+    --cclog("updateParticlePos")
+    if warrior ~= nil and warrior._particle ~= nil then
         warrior._particle:setPosition(getPosTable(warrior))
     end
-    if archer._particle ~= nil then
+    if archer ~= nil and archer._particle ~= nil then
         archer._particle:setPosition(getPosTable(archer))
     end
-    if mage._particle ~= nil then
+    if mage ~= nil and mage._particle ~= nil then
         mage._particle:setPosition(getPosTable(mage))
     end
 end
@@ -145,7 +148,7 @@ local function addNewSprite(x, y, tag)
     local sprite = nil
     local animation = nil
     if tag == EnumRaceType.DEBUG then
-        sprite = Hero3D.create(EnumRaceType.WARRIOR)
+        sprite = Warrior.create()
         sprite._sprite3d:setScale(25)
         List.pushlast(HeroManager, sprite)
     elseif tag == EnumRaceType.MONSTER then
@@ -261,7 +264,7 @@ local function gameController(dt)
         createEnmey(2)
     elseif  tempPos > 1000 and tempPos < 1100 then
         createEnmey(3)        
-    end    
+    end
 end
 
 local TestAIScene = class("TestAIScene",function()
