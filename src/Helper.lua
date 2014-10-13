@@ -44,9 +44,15 @@ function getNextStepPos(obj,targetPos,dt)
 end
 
 --createAnimationStruct
-function createAnimationStruct(var1,var2, var3)
+function createAnimationStruct(var1, var2, var3)
     local timerange = {begin = var1, ended = var2, speed=var3}
     return timerange
+end
+
+--createKnockedMessageStruct
+function createKnockedMsgStruct(var1, var2)
+    local msgStruct = {target = var1, attack = var2}
+    return msgStruct
 end
 
 -- cclog

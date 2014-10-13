@@ -1,8 +1,9 @@
-local MessageDispatchCenter = {}
+MessageDispatchCenter = {}
 
 MessageDispatchCenter.MessageType = {
     BLOOD_DROP = "BLOOD_DROP",
-    REDUCE_SCORE = "REDUCE_SCORE"
+    REDUCE_SCORE = "REDUCE_SCORE",
+    KNOCKED = "KNOCKED",
 }
 
 MessageDispatchCenter.MessageQue = {}
