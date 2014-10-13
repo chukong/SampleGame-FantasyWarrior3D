@@ -1753,6 +1753,10 @@
 		50ED2BE519BEAF7900A0AB90 /* UIEditBoxImpl-win32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50ED2BDE19BEAF7900A0AB90 /* UIEditBoxImpl-win32.cpp */; };
 		50ED2BE619BEAF7900A0AB90 /* UIEditBoxImpl-wp8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50ED2BDF19BEAF7900A0AB90 /* UIEditBoxImpl-wp8.cpp */; };
 		50ED2BE719BEAF7900A0AB90 /* UIEditBoxImpl-wp8.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 50ED2BDF19BEAF7900A0AB90 /* UIEditBoxImpl-wp8.cpp */; };
+		661E906219EBA8430095FA64 /* Water.h in Headers */ = {isa = PBXBuildFile; fileRef = 661E906019EBA8430095FA64 /* Water.h */; };
+		661E906319EBA8430095FA64 /* Water.h in Headers */ = {isa = PBXBuildFile; fileRef = 661E906019EBA8430095FA64 /* Water.h */; };
+		661E906419EBA8430095FA64 /* Water.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 661E906119EBA8430095FA64 /* Water.cpp */; };
+		661E906519EBA8430095FA64 /* Water.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 661E906119EBA8430095FA64 /* Water.cpp */; };
 		66AC65E419DA46B5007478A0 /* BillboardParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66AC65DE19DA46B5007478A0 /* BillboardParticleSystem.cpp */; };
 		66AC65E519DA46B5007478A0 /* BillboardParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66AC65DE19DA46B5007478A0 /* BillboardParticleSystem.cpp */; };
 		66AC65E619DA46B5007478A0 /* BillboardParticleSystem.h in Headers */ = {isa = PBXBuildFile; fileRef = 66AC65DF19DA46B5007478A0 /* BillboardParticleSystem.h */; };
@@ -2776,6 +2780,8 @@
 		50FCEB9018C72017004AD434 /* WidgetReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WidgetReader.cpp; sourceTree = "<group>"; };
 		50FCEB9118C72017004AD434 /* WidgetReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetReader.h; sourceTree = "<group>"; };
 		50FCEB9218C72017004AD434 /* WidgetReaderProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WidgetReaderProtocol.h; sourceTree = "<group>"; };
+		661E906019EBA8430095FA64 /* Water.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Water.h; sourceTree = "<group>"; };
+		661E906119EBA8430095FA64 /* Water.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Water.cpp; sourceTree = "<group>"; };
 		66AC65DE19DA46B5007478A0 /* BillboardParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BillboardParticleSystem.cpp; sourceTree = "<group>"; };
 		66AC65DF19DA46B5007478A0 /* BillboardParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BillboardParticleSystem.h; sourceTree = "<group>"; };
 		66AC65E019DA46B5007478A0 /* DrawNode3D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DrawNode3D.cpp; sourceTree = "<group>"; };
@@ -4780,6 +4786,8 @@
 		66AC65DD19DA46B5007478A0 /* custom */ = {
 			isa = PBXGroup;
 			children = (
+				661E906019EBA8430095FA64 /* Water.h */,
+				661E906119EBA8430095FA64 /* Water.cpp */,
 				04962B3419E65D1100D7DB93 /* JumpTo3D.cpp */,
 				04962B3519E65D1100D7DB93 /* JumpTo3D.h */,
 				04962B2419E63E0A00D7DB93 /* JumpBy3D.cpp */,
@@ -4885,6 +4893,7 @@
 				46A170EE1807CECA005B8026 /* CCPhysicsShape.h in Headers */,
 				15AE1A5C19AAD40300C27E9E /* b2Timer.h in Headers */,
 				50ABBED31925AB6F00A911A9 /* uthash.h in Headers */,
+				661E906219EBA8430095FA64 /* Water.h in Headers */,
 				46A170E91807CECA005B8026 /* CCPhysicsContact.h in Headers */,
 				15AE1A2219AAD3D500C27E9E /* Box2D.h in Headers */,
 				15AE191419AAD35000C27E9E /* CCSGUIReader.h in Headers */,
@@ -5719,6 +5728,7 @@
 				15AE19B519AAD39700C27E9E /* TextAtlasReader.h in Headers */,
 				15AE18D619AAD33D00C27E9E /* CCScale9SpriteLoader.h in Headers */,
 				15AE182B19AAD2F700C27E9E /* CCMeshSkin.h in Headers */,
+				661E906319EBA8430095FA64 /* Water.h in Headers */,
 				15AE1B7D19AADA9A00C27E9E /* UISlider.h in Headers */,
 				503DD8E01926736A00CD74DD /* CCApplication-ios.h in Headers */,
 				15AE1B8319AADA9A00C27E9E /* UITextBMFont.h in Headers */,
@@ -6072,6 +6082,7 @@
 				15AE19E819AAD3A700C27E9E /* Slot.cpp in Sources */,
 				B24AA985195A675C007B4522 /* CCFastTMXLayer.cpp in Sources */,
 				15AE1A6A19AAD40300C27E9E /* b2ChainAndCircleContact.cpp in Sources */,
+				661E906419EBA8430095FA64 /* Water.cpp in Sources */,
 				15AE19BE19AAD3A700C27E9E /* Event.cpp in Sources */,
 				1A5701EA180BCB8C0088DEC7 /* CCTransitionPageTurn.cpp in Sources */,
 				15AE186B19AAD31D00C27E9E /* SimpleAudioEngine.mm in Sources */,
@@ -6405,6 +6416,7 @@
 				15AE1A4119AAD3D500C27E9E /* b2Distance.cpp in Sources */,
 				50ABBE4E1925AB6F00A911A9 /* CCEventCustom.cpp in Sources */,
 				15AE1BF519AAE01E00C27E9E /* CCControlSlider.cpp in Sources */,
+				661E906519EBA8430095FA64 /* Water.cpp in Sources */,
 				15AE181719AAD2F700C27E9E /* CCAttachNode.cpp in Sources */,
 				15AE18B719AAD33D00C27E9E /* CCBSequenceProperty.cpp in Sources */,
 				15AE1A1119AAD3A700C27E9E /* RegionAttachment.cpp in Sources */,
