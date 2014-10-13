@@ -36,4 +36,9 @@
 -- @field [parent=#cc] JumpTo3D#JumpTo3D JumpTo3D preloaded module
 
 
+--------------------------------------------------------
+-- the cc Water
+-- @field [parent=#cc] Water#Water Water preloaded module
+
+
 return nil
