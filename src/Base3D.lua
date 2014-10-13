@@ -18,6 +18,7 @@ EnumRaceType = CreateEnumTable(EnumRaceType)
 EnumStateType =
 {
     "STAND",
+    "STANDING",
     "WALK",
     "ATTACK",
     "ATTACKING",

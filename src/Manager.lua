@@ -144,6 +144,7 @@ function isInCircleSector(object1, object2)
     	   return true
     	else
             faceToEnmey(object1, object2)
+            return true
     	end
     end 
     

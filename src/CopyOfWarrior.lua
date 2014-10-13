@@ -28,16 +28,18 @@ function MonsterDebug.create()
     hero._weapon = math.random() .. ""
 
     local function MainLoop(dt)
-        getDebugStateType(hero)
-            if EnumStateType.WALK == hero._statetype and hero._target ~= nil then
-                local distance = hero._attackRadius + hero._target._radius
-                local p1 = getPosTable(hero)
-                local p2 = getPosTable(hero._target)
-                if distance < cc.pGetDistance(p1, p2) then
-                    hero:setPosition(getNextStepPos(hero, p2, dt))
-                end
-
+    getDebugStateType(hero)
+        if EnumStateType.WALK == hero._statetype and hero._target ~= nil then
+            local distance = hero._attackRadius + hero._target._radius
+            local p1 = getPosTable(hero)
+            local p2 = getPosTable(hero._target)
+            if distance < cc.pGetDistance(p1, p2) then
+                hero:setPosition(getNextStepPos(hero, p2, dt))
+            end
+            
         elseif EnumStateType.STAND == hero._statetype then
+            hero._statetype = EnumStateType.STANDING
+            hero._sprite3d:runAction(hero._action.stand:clone())
 
         elseif EnumStateType.ATTACK == hero._statetype then
             hero._statetype = EnumStateType.ATTACKING
@@ -50,37 +52,39 @@ function MonsterDebug.create()
             local attack = cc.Sequence:create(hero._action.attack1:clone(),cc.CallFunc:create(sendKnockedMsg),hero._action.attack2,cc.CallFunc:create(attackdone))
             hero._sprite3d:runAction(attack)
 
-        elseif EnumStateType.KNOCKED == hero._type then
+        elseif EnumStateType.KNOCKED == hero._statetype then
             --self._knockedMsgStruct.attack
-            local damage = 100
+            local damage = 800
             hero._blood = hero._blood - damage
             if hero._blood <0 then
                 hero._blood = 0
             end
             if hero._blood == 0 then
-                hero.setState(DEAD)
+                hero._isalive = false
+                hero:setState(EnumStateType.DEAD)
             else
+            cclog("knock....")
                 hero._statetype = EnumStateType.KNOCKING
                 local function dropblood()
                     cclog("dropblood")
                 end
                 local function knockdone()
-                    hero.setState(EnumStateType.STAND)
+                    hero:setState(EnumStateType.STAND)
                 end
                 hero._sprite3d:runAction(cc.Sequence:create(cc.Spawn:create(hero._action.knocked:clone(),cc.CallFunc:create(dropblood)),cc.CallFunc:create(knockdone))) 
             end
-
-        elseif EnumStateType.DEFEND == hero._type then
+        
+        elseif EnumStateType.DEFEND == hero._statetype then
             hero._statetype = EnumStateType.DEFENDING
             local function defenddone()
                 hero:setState(EnumStateType.STAND)
             end
             hero._sprite3d:runAction(cc.Sequence:create(hero._action.defense:clone(),cc.CallFunc:create(defenddone)))
 
-        elseif EnumStateType.DEAD == hero._type then
+        elseif EnumStateType.DEAD == hero._statetype then
             hero._statetype = EnumStateType.DYING
             local deaddone = function ()
-                hero:setState(NULL)
+                hero:setState(EnumStateType.NULL)
             end
             hero._sprite3d:runAction(cc.Sequence:create(hero._action.dead:clone(), cc.CallFunc:create(deaddone)))
         end
@@ -91,12 +95,12 @@ function MonsterDebug.create()
 
     --regist message
 
-
+    
     local function knocked(msgStruct)
         --stopAllActions and dropblood
-        if msgStruct.target == self then 
-            self.setState(EnumStateType.KNOCKED,msgStruct)
-            self._knockedMsgStruct = msgStruct
+        if msgStruct.target == hero then 
+            hero:setState(EnumStateType.KNOCKED,msgStruct)
+            hero._knockedMsgStruct = msgStruct
         end
     end
 
@@ -113,7 +117,7 @@ function MonsterDebug:AddSprite3D()
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
 
-    --    self:setDefaultEqt()
+--    self:setDefaultEqt()
 end
 
 local function createAnimation(animationStruct, isloop )
@@ -156,28 +160,33 @@ function MonsterDebug:initActions()
 
 end
 
-function MonsterDebug:setState(type, other)
+function MonsterDebug:setState(type)
     if type == self._statetype then return end
     --cclog("MonsterDebug:setState(" .. type ..")")
 
     if type == EnumStateType.STAND then
+        if EnumStateType.STANDING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
-        self._sprite3d:runAction(self._action.stand:clone())
         if self._particle ~= nil then self._particle:setEmissionRate(0) end
 
+
     elseif type == EnumStateType.WALK then
+        if EnumStateType.ATTACKING == self._statetype then return end
+        if EnumStateType.KNOCKING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
         self._sprite3d:runAction(self._action.walk:clone())
         if self._particle ~= nil then self._particle:setEmissionRate(5) end
 
     elseif type == EnumStateType.KNOCKED then
+        if EnumStateType.KNOCKING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
 
     elseif type == EnumStateType.ATTACK then
         if EnumStateType.ATTACKING == self._statetype then return end
+        if EnumStateType.KNOCKING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
 

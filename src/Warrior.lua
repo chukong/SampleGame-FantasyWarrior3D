@@ -28,7 +28,7 @@ function Warrior.create()
     hero._weapon = math.random() .. ""
 
     local function MainLoop(dt)
-    --getDebugStateType(hero)
+--    getDebugStateType(hero)
         if EnumStateType.WALK == hero._statetype then
             local targetPos = {x=3000, y=0}
             if hero._target ~= nil  then
@@ -45,11 +45,14 @@ function Warrior.create()
             end
 
         elseif EnumStateType.STAND == hero._statetype then
+            hero._statetype = EnumStateType.STANDING
+            hero._sprite3d:runAction(hero._action.stand:clone())
 
         elseif EnumStateType.ATTACK == hero._statetype then
             hero._statetype = EnumStateType.ATTACKING
             local function sendKnockedMsg()
                 MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(hero._target, hero._attack))
+                cclog("warrior send msg....")
             end
             local function attackdone()
                 hero:setState(EnumStateType.STAND)
@@ -57,7 +60,7 @@ function Warrior.create()
             local attack = cc.Sequence:create(hero._action.attack1:clone(),cc.CallFunc:create(sendKnockedMsg),hero._action.attack2,cc.CallFunc:create(attackdone))
             hero._sprite3d:runAction(attack)
 
-        elseif EnumStateType.KNOCKED == hero._type then
+        elseif EnumStateType.KNOCKED == hero._statetype then
             --self._knockedMsgStruct.attack
             local damage = 100
             hero._blood = hero._blood - damage
@@ -65,29 +68,30 @@ function Warrior.create()
                 hero._blood = 0
             end
             if hero._blood == 0 then
-                hero.setState(DEAD)
+                hero._isalive = false
+                hero:setState(EnumStateType.DEAD)
             else
                 hero._statetype = EnumStateType.KNOCKING
                 local function dropblood()
-                    cclog("dropblood")
+                    --cclog("dropblood")
                 end
                 local function knockdone()
-                    hero.setState(EnumStateType.STAND)
+                    hero:setState(EnumStateType.STAND)
                 end
                 hero._sprite3d:runAction(cc.Sequence:create(cc.Spawn:create(hero._action.knocked:clone(),cc.CallFunc:create(dropblood)),cc.CallFunc:create(knockdone))) 
             end
         
-        elseif EnumStateType.DEFEND == hero._type then
+        elseif EnumStateType.DEFEND == hero._statetype then
             hero._statetype = EnumStateType.DEFENDING
             local function defenddone()
                 hero:setState(EnumStateType.STAND)
             end
             hero._sprite3d:runAction(cc.Sequence:create(hero._action.defense:clone(),cc.CallFunc:create(defenddone)))
 
-        elseif EnumStateType.DEAD == hero._type then
+        elseif EnumStateType.DEAD == hero._statetype then
             hero._statetype = EnumStateType.DYING
             local deaddone = function ()
-                hero:setState(NULL)
+                hero:setState(EnumStateType.NULL)
             end
             hero._sprite3d:runAction(cc.Sequence:create(hero._action.dead:clone(), cc.CallFunc:create(deaddone)))
         end
@@ -101,9 +105,9 @@ function Warrior.create()
     
     local function knocked(msgStruct)
         --stopAllActions and dropblood
-        if msgStruct.target == self then 
-            self.setState(EnumStateType.KNOCKED,msgStruct)
-            self._knockedMsgStruct = msgStruct
+        if msgStruct.target == hero then 
+            hero:setState(EnumStateType.KNOCKED,msgStruct)
+            hero._knockedMsgStruct = msgStruct
         end
     end
 
@@ -163,17 +167,20 @@ function Warrior:initActions()
 
 end
 
-function Warrior:setState(type, other)
+function Warrior:setState(type)
     if type == self._statetype then return end
     --cclog("Warrior:setState(" .. type ..")")
 
     if type == EnumStateType.STAND then
+        if EnumStateType.STANDING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
-        self._sprite3d:runAction(self._action.stand:clone())
         if self._particle ~= nil then self._particle:setEmissionRate(0) end
 
+
     elseif type == EnumStateType.WALK then
+        if EnumStateType.ATTACKING == self._statetype then return end
+        if EnumStateType.KNOCKING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
         self._sprite3d:runAction(self._action.walk:clone())
@@ -181,11 +188,13 @@ function Warrior:setState(type, other)
 
     elseif type == EnumStateType.KNOCKED then
         if EnumStateType.KNOCKING == self._statetype then return end
+        if EnumStateType.ATTACKING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
 
     elseif type == EnumStateType.ATTACK then
         if EnumStateType.ATTACKING == self._statetype then return end
+        if EnumStateType.KNOCKING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
 

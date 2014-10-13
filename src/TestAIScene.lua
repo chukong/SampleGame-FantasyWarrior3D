@@ -89,10 +89,10 @@ local function findAllEnemy()
     findEnmey(archer, MonsterManager)
     findEnmey(mage, MonsterManager)
         
-    for var = 1, tempSize1 do
-        local objectTemp = MonsterManager[var-1]
-        findEnmey(objectTemp, HeroManager)
-    end
+   for var = 1, tempSize1 do
+       local objectTemp = MonsterManager[var-1]
+       findEnmey(objectTemp, HeroManager)
+   end
 
     local tempSize2 = List.getSize(BossManager)
     if tempSize2 > 0 then        
@@ -155,7 +155,7 @@ local function addNewSprite(x, y, tag)
     elseif tag == EnumRaceType.MONSTER then
         --sprite = Monster3D.create(EnumRaceType.MONSTER)   
         sprite = MonsterDebug.create()
-        sprite._sprite3d:setScale(5)
+        sprite._sprite3d:setScale(15)
         List.pushlast(MonsterManager, sprite)
     elseif tag == EnumRaceType.BOSS then
         sprite = Boss3D.create()
