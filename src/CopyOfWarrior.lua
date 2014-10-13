@@ -1,5 +1,5 @@
 require "MessageDispatchCenter"
-Warrior = class("Warrior", function()
+MonsterDebug = class("MonsterDebug", function()
     return require "Base3D".create()
 end)
 
@@ -8,47 +8,36 @@ local scheduler = cc.Director:getInstance():getScheduler()
 local filename = "model/warrior/zhanshi_ALLv002.c3b"
 filename  = "model/warrior/warrior.c3b"
 
-function Warrior:ctor()
+function MonsterDebug:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
     self._attack = 300  
 end
 
-function Warrior.create()
+function MonsterDebug.create()
 
-    local hero = Warrior.new()
-    hero:AddSprite3D()
+    local monster = MonsterDebug.new()
+    monster:AddSprite3D()
 
     -- base
-    hero:setRaceType(EnumRaceType.WARRIOR)
-    hero:initActions()
+    monster:setRaceType(EnumRaceType.WARRIOR)
+    monster:initActions()
 
     --self
-    hero._weapon = math.random() .. ""
+    monster._weapon = math.random() .. ""
 
     local function MainLoop(dt)
-        if EnumStateType.WALK == hero._statetype then
-            local targetPos = {x=3000, y=0}
-            if hero._target ~= nil  then
-                local distance = hero._attackRadius + hero._target._radius
-                local p1 = getPosTable(hero)
-                local p2 = getPosTable(hero._target)
-                if distance < cc.pGetDistance(p1, p2) then
-                    hero:setPosition(getNextStepPos(hero, p2, dt))
-                else
-                    hero:setPosition(getNextStepPos(hero, targetPos, dt))
-                end
-            else
-                hero:setPosition(getNextStepPos(hero, targetPos, dt))            
+        if EnumStateType.WALK == monster._statetype and monster._target ~= nil then
+            local distance = monster._attackRadius + monster._target._radius
+            local p1 = getPosTable(monster)
+            local p2 = getPosTable(monster._target)
+            if distance < cc.pGetDistance(p1, p2) then
+                monster:setPosition(getNextStepPos(monster, p2, dt))
             end
-
-        elseif EnumStateType.STAND == hero._statetype then
-        elseif EnumStateType.ATTACK == hero._statetype then
-            --cclog("%f", dt)
         end
     end
-
+    
     --mainloop
     scheduler:scheduleScriptFunc(MainLoop, 0, false)    
 
@@ -64,11 +53,11 @@ function Warrior.create()
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKED, knocked)
 
-    return hero
+    return monster
 end
 
 
-function Warrior:AddSprite3D()
+function MonsterDebug:AddSprite3D()
     self._sprite3d = cc.EffectSprite3D:create(filename)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.01, -1)
     self:addChild(self._sprite3d)
@@ -89,7 +78,7 @@ local function createAnimation(animationStruct, isloop )
     end
 end
 
-function Warrior:initActions()
+function MonsterDebug:initActions()
     local stand = createAnimationStruct(267,283,0.7)
     local walk = createAnimationStruct(227,246,0.7)
     local attack1 = createAnimationStruct(103,129,0.7)
@@ -118,9 +107,9 @@ function Warrior:initActions()
 
 end
 
-function Warrior:setState(type, other)
+function MonsterDebug:setState(type, other)
     if type == self._statetype then return end
-    --cclog("Warrior:setState(" .. type ..")")
+    --cclog("MonsterDebug:setState(" .. type ..")")
 
     if type == EnumStateType.STAND then
         self._statetype = type
@@ -176,7 +165,7 @@ function Warrior:setState(type, other)
 end
 
 -- set default equipments
-function Warrior:setDefaultEqt()
+function MonsterDebug:setDefaultEqt()
     local girl_lowerbody = self._sprite3d:getMeshByName("Girl_LowerBody01")
     girl_lowerbody:setVisible(false)
     local girl_shoe = self._sprite3d:getMeshByName("Girl_Shoes01")
@@ -188,7 +177,7 @@ function Warrior:setDefaultEqt()
 end
 
 --swicth weapon
-function Warrior:switchWeapon()
+function MonsterDebug:switchWeapon()
     self._useWeaponId = self._useWeaponId+1
     if self._useWeaponId > 1 then
         self._useWeaponId = 0;
@@ -215,7 +204,7 @@ function Warrior:switchWeapon()
 end
 
 --switch armour
-function Warrior:switchArmour()
+function MonsterDebug:switchArmour()
     self._useArmourId = self._useArmourId+1
     if self._useArmourId > 1 then
         self._useArmourId = 0;
@@ -244,13 +233,13 @@ end
 
 
 -- get weapon id
-function Warrior:getWeaponID()
+function MonsterDebug:getWeaponID()
     return self._useWeaponId
 end
 
 -- get armour id
-function Warrior:getArmourID()
+function MonsterDebug:getArmourID()
     return self._useArmourId
 end
 
-return Warrior
+return MonsterDebug
