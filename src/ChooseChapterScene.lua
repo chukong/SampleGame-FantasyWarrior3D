@@ -19,7 +19,7 @@ function ChooseChapter:create()
 end
 
 function ChooseChapter:addElement()
-    local bg = cc.Sprite:create("xiaota/activate_background.jpg")
+    local bg = cc.Sprite:create("choosechapterscene/background.jpg")
     bg:setPosition({x=self.size.width/2,y=self.size.height/2})
     self:addChild(bg)
 --    self:addBg()

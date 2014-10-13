@@ -53,7 +53,7 @@ end
 
 function MainMenuScene:addLogo(layer)
     --add logo
-    local logo = cc.Sprite:create("xiaota/mainmenugame/logo.png")
+    local logo = cc.Sprite:create("mainmenuscene/logo.png")
     logo:setPosition(self.size.width*0.7,self.size.height+logo:getContentSize().height/2)
     layer:addChild(logo,4)
     
@@ -87,7 +87,7 @@ function MainMenuScene:addButton(layer)
         end
     end
 
-    local button = ccui.Button:create("xiaota/mainmenugame/button.png")
+    local button = ccui.Button:create("mainmenuscene/button.png")
     button:setPressedActionEnabled(true)
     button:setPosition(self.size.width*0.87,self.size.height*0.28)
 --    button:registerScriptHandler(button_callback)
@@ -109,11 +109,11 @@ end
 
 function MainMenuScene:addCloud(layer)
     --cloud
-    local cloud0 = cc.Sprite:create("xiaota/mainmenugame/cloud1.png")
-    local cloud1 = cc.Sprite:create("xiaota/mainmenugame/cloud1.png")
-    local cloud2 = cc.Sprite:create("xiaota/mainmenugame/cloud3.png")
-    local cloud3 = cc.Sprite:create("xiaota/mainmenugame/cloud2.png")
-    local cloud4 = cc.Sprite:create("xiaota/mainmenugame/cloud3.png")
+    local cloud0 = cc.Sprite:create("mainmenuscene/cloud1.png")
+    local cloud1 = cc.Sprite:create("mainmenuscene/cloud1.png")
+    local cloud2 = cc.Sprite:create("mainmenuscene/cloud3.png")
+    local cloud3 = cc.Sprite:create("mainmenuscene/cloud2.png")
+    local cloud4 = cc.Sprite:create("mainmenuscene/cloud3.png")
     
     --setPosition
     cloud0:setPosition(self.size.width*1.1,self.size.height*0.7)
@@ -148,8 +148,8 @@ end
 
 function MainMenuScene:addBg(layer)
     --background
-    local bg_back = cc.Sprite:create("xiaota/mainmenugame/bg_back.png")
-    local bg_front = cc.Sprite:create("xiaota/mainmenugame/bg_front.png")
+    local bg_back = cc.Sprite:create("mainmenuscene/bg_back.png")
+    local bg_front = cc.Sprite:create("mainmenuscene/bg_front.png")
     bg_back:setPosition(self.size.width/2,self.size.height/2)
     bg_front:setPosition(self.size.width/2,self.size.height/2)
     layer:addChild(bg_back,1)
@@ -209,7 +209,7 @@ end
 
 function MainMenuScene:testJump3D(layer)
     local action = cc.JumpBy:create(2,cc.p(350,400),10,3)
-    local sprite = cc.Sprite:create("xiaota/dog.png")
+    local sprite = cc.Sprite:create("mainmenuscene/dog.png")
     sprite:runAction(action)
     sprite:setPosition({x=100,y=100})
     

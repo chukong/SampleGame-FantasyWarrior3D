@@ -27,7 +27,7 @@ function DropBlood:addEventListener()
 end
 
 function DropBlood:addBillBoard()
-    local billBoard = cc.BillBoard:create("xiaota/dog.png")
+    local billBoard = cc.BillBoard:create("choosechapterscene/dog.png")
     billBoard:setScale(0.1)
     billBoard:setBlendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA)
 --    billBoard:setCameraMask(2)
@@ -46,7 +46,7 @@ function DropBlood:showBloodLossNum(time)
 
     if not self._isBloodLabelShowing then
         self._isBloodLabelShowing = true
-        local ttfconfig = {outlineSize=7,fontSize=50,fontFilePath="xiaota/fonts/britanic bold.ttf"}
+        local ttfconfig = {outlineSize=7,fontSize=50,fontFilePath="fonts/britanic bold.ttf"}
         local num = time
         local blood = cc.Label:createWithTTF(ttfconfig,"-"..num,cc.TEXT_ALIGNMENT_CENTER,400)
         blood:enableOutline(cc.c4b(0,0,0,255))
