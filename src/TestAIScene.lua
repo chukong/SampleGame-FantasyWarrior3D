@@ -4,6 +4,7 @@ require "Monster3D"
 require "Boss3D"
 require "Manager"
 require "Warrior"
+require "CopyOfWarrior"
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
@@ -152,7 +153,8 @@ local function addNewSprite(x, y, tag)
         sprite._sprite3d:setScale(25)
         List.pushlast(HeroManager, sprite)
     elseif tag == EnumRaceType.MONSTER then
-        sprite = Monster3D.create(EnumRaceType.MONSTER)   
+        --sprite = Monster3D.create(EnumRaceType.MONSTER)   
+        sprite = MonsterDebug.create()
         sprite._sprite3d:setScale(5)
         List.pushlast(MonsterManager, sprite)
     elseif tag == EnumRaceType.BOSS then
