@@ -17,43 +17,92 @@ end
 
 function MonsterDebug.create()
 
-    local monster = MonsterDebug.new()
-    monster:AddSprite3D()
+    local hero = MonsterDebug.new()
+    hero:AddSprite3D()
 
     -- base
-    monster:setRaceType(EnumRaceType.WARRIOR)
-    monster:initActions()
+    hero:setRaceType(EnumRaceType.MONSTER)
+    hero:initActions()
 
     --self
-    monster._weapon = math.random() .. ""
+    hero._weapon = math.random() .. ""
 
     local function MainLoop(dt)
-        if EnumStateType.WALK == monster._statetype and monster._target ~= nil then
-            local distance = monster._attackRadius + monster._target._radius
-            local p1 = getPosTable(monster)
-            local p2 = getPosTable(monster._target)
-            if distance < cc.pGetDistance(p1, p2) then
-                monster:setPosition(getNextStepPos(monster, p2, dt))
+        getDebugStateType(hero)
+            if EnumStateType.WALK == hero._statetype and hero._target ~= nil then
+                local distance = hero._attackRadius + hero._target._radius
+                local p1 = getPosTable(hero)
+                local p2 = getPosTable(hero._target)
+                if distance < cc.pGetDistance(p1, p2) then
+                    hero:setPosition(getNextStepPos(hero, p2, dt))
+                end
+
+        elseif EnumStateType.STAND == hero._statetype then
+
+        elseif EnumStateType.ATTACK == hero._statetype then
+            hero._statetype = EnumStateType.ATTACKING
+            local function sendKnockedMsg()
+                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(hero._target, hero._attack))
             end
+            local function attackdone()
+                hero:setState(EnumStateType.STAND)
+            end
+            local attack = cc.Sequence:create(hero._action.attack1:clone(),cc.CallFunc:create(sendKnockedMsg),hero._action.attack2,cc.CallFunc:create(attackdone))
+            hero._sprite3d:runAction(attack)
+
+        elseif EnumStateType.KNOCKED == hero._type then
+            --self._knockedMsgStruct.attack
+            local damage = 100
+            hero._blood = hero._blood - damage
+            if hero._blood <0 then
+                hero._blood = 0
+            end
+            if hero._blood == 0 then
+                hero.setState(DEAD)
+            else
+                hero._statetype = EnumStateType.KNOCKING
+                local function dropblood()
+                    cclog("dropblood")
+                end
+                local function knockdone()
+                    hero.setState(EnumStateType.STAND)
+                end
+                hero._sprite3d:runAction(cc.Sequence:create(cc.Spawn:create(hero._action.knocked:clone(),cc.CallFunc:create(dropblood)),cc.CallFunc:create(knockdone))) 
+            end
+
+        elseif EnumStateType.DEFEND == hero._type then
+            hero._statetype = EnumStateType.DEFENDING
+            local function defenddone()
+                hero:setState(EnumStateType.STAND)
+            end
+            hero._sprite3d:runAction(cc.Sequence:create(hero._action.defense:clone(),cc.CallFunc:create(defenddone)))
+
+        elseif EnumStateType.DEAD == hero._type then
+            hero._statetype = EnumStateType.DYING
+            local deaddone = function ()
+                hero:setState(NULL)
+            end
+            hero._sprite3d:runAction(cc.Sequence:create(hero._action.dead:clone(), cc.CallFunc:create(deaddone)))
         end
     end
-    
+
     --mainloop
     scheduler:scheduleScriptFunc(MainLoop, 0, false)    
 
     --regist message
 
-    
+
     local function knocked(msgStruct)
         --stopAllActions and dropblood
         if msgStruct.target == self then 
             self.setState(EnumStateType.KNOCKED,msgStruct)
+            self._knockedMsgStruct = msgStruct
         end
     end
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKED, knocked)
 
-    return monster
+    return hero
 end
 
 
@@ -64,7 +113,7 @@ function MonsterDebug:AddSprite3D()
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
 
---    self:setDefaultEqt()
+    --    self:setDefaultEqt()
 end
 
 local function createAnimation(animationStruct, isloop )
@@ -123,29 +172,15 @@ function MonsterDebug:setState(type, other)
         self._sprite3d:runAction(self._action.walk:clone())
         if self._particle ~= nil then self._particle:setEmissionRate(5) end
 
-    elseif type == EnumStateType.DEAD then
-        self._statetype = type
-        self._sprite3d:stopAllActions()
-        self._sprite3d:runAction(self._action.dead:clone())
-
     elseif type == EnumStateType.KNOCKED then
         self._statetype = type
         self._sprite3d:stopAllActions()
-        local function dropblood(sender, other)
-            --dropblood logic
-            cclog(other.attack)
-            --
-        end
-        self._sprite3d:runAction(cc.Spawn:create(self._action.knocked:clone(),cc.CallFunc:create(dropblood,other)))
 
     elseif type == EnumStateType.ATTACK then
+        if EnumStateType.ATTACKING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
-        local function sendKnockedMsg()
-            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(self._target, self._attack))
-        end
-        local attack = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(sendKnockedMsg),self._action.attack2)
-        self._sprite3d:runAction(attack)
+
     elseif type == EnumStateType.SPECIALATTACK then
         self._statetype = type
         self._sprite3d:stopAllActions()
@@ -154,14 +189,14 @@ function MonsterDebug:setState(type, other)
     elseif type == EnumStateType.DEFEND then
         self._statetype = type
         self._sprite3d:stopAllActions()
-        self._sprite3d:runAction(self._action.defense:clone())
 
     elseif type == EnumStateType.DEAD then
         self._statetype = type
         self._sprite3d:stopAllActions()
-        self._sprite3d:runAction(self._action.dead:clone())
 
-    else end
+    elseif type == EnumStateType.NULL then
+        self._statetype = type
+    end
 end
 
 -- set default equipments

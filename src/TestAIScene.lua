@@ -215,8 +215,8 @@ local function createEnmey(step)
 
     if currentStep == 1 then
         addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER)
-        addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER)
-        addNewSprite(size.width/2-2000, size.height/2-100, EnumRaceType.MONSTER)
+        --addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER)
+        -- addNewSprite(size.width/2-2000, size.height/2-100, EnumRaceType.MONSTER)
         currentStep = currentStep + 1    
     elseif currentStep == 2 then
         addNewSprite(size.width/2, size.height/2-200, EnumRaceType.MONSTER)
@@ -236,13 +236,13 @@ local function createRole()
     warrior:setState(EnumStateType.STAND)
     warrior:runAction(cc.Sequence:create(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1),cc.CallFunc:create(jumpdone)))
     
-    archer = addNewSprite(heroOriginPositionX, 300, EnumRaceType.DEBUG)
-    addParticleToRole(archer)    
-    archer:setState(EnumStateType.WALK)
+    -- archer = addNewSprite(heroOriginPositionX, 300, EnumRaceType.DEBUG)
+    -- addParticleToRole(archer)    
+    -- archer:setState(EnumStateType.WALK)
 
-    mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.DEBUG)
-    addParticleToRole(mage)
-    mage:setState(EnumStateType.WALK)
+    -- mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.DEBUG)
+    -- addParticleToRole(mage)
+    -- mage:setState(EnumStateType.WALK)
 end
 
 local function setCamera()
@@ -284,8 +284,8 @@ function TestAIScene.create()
     setCamera()
     
     warrior._particle:setCamera(camera)
-    archer._particle:setCamera(camera)
-    mage._particle:setCamera(camera)
+    --archer._particle:setCamera(camera)
+    --mage._particle:setCamera(camera)
 
     scheduler:scheduleScriptFunc(gameController, 0, false)
     

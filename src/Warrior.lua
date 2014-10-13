@@ -28,6 +28,7 @@ function Warrior.create()
     hero._weapon = math.random() .. ""
 
     local function MainLoop(dt)
+    --getDebugStateType(hero)
         if EnumStateType.WALK == hero._statetype then
             local targetPos = {x=3000, y=0}
             if hero._target ~= nil  then
@@ -44,8 +45,51 @@ function Warrior.create()
             end
 
         elseif EnumStateType.STAND == hero._statetype then
+
         elseif EnumStateType.ATTACK == hero._statetype then
-            --cclog("%f", dt)
+            hero._statetype = EnumStateType.ATTACKING
+            local function sendKnockedMsg()
+                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(hero._target, hero._attack))
+            end
+            local function attackdone()
+                hero:setState(EnumStateType.STAND)
+            end
+            local attack = cc.Sequence:create(hero._action.attack1:clone(),cc.CallFunc:create(sendKnockedMsg),hero._action.attack2,cc.CallFunc:create(attackdone))
+            hero._sprite3d:runAction(attack)
+
+        elseif EnumStateType.KNOCKED == hero._type then
+            --self._knockedMsgStruct.attack
+            local damage = 100
+            hero._blood = hero._blood - damage
+            if hero._blood <0 then
+                hero._blood = 0
+            end
+            if hero._blood == 0 then
+                hero.setState(DEAD)
+            else
+                hero._statetype = EnumStateType.KNOCKING
+                local function dropblood()
+                    cclog("dropblood")
+                end
+                local function knockdone()
+                    hero.setState(EnumStateType.STAND)
+                end
+                hero._sprite3d:runAction(cc.Sequence:create(cc.Spawn:create(hero._action.knocked:clone(),cc.CallFunc:create(dropblood)),cc.CallFunc:create(knockdone))) 
+            end
+        
+        elseif EnumStateType.DEFEND == hero._type then
+            hero._statetype = EnumStateType.DEFENDING
+            local function defenddone()
+                hero:setState(EnumStateType.STAND)
+            end
+            hero._sprite3d:runAction(cc.Sequence:create(hero._action.defense:clone(),cc.CallFunc:create(defenddone)))
+
+        elseif EnumStateType.DEAD == hero._type then
+            hero._statetype = EnumStateType.DYING
+            local deaddone = function ()
+                hero:setState(NULL)
+            end
+            hero._sprite3d:runAction(cc.Sequence:create(hero._action.dead:clone(), cc.CallFunc:create(deaddone)))
         end
     end
 
@@ -59,6 +103,7 @@ function Warrior.create()
         --stopAllActions and dropblood
         if msgStruct.target == self then 
             self.setState(EnumStateType.KNOCKED,msgStruct)
+            self._knockedMsgStruct = msgStruct
         end
     end
 
@@ -134,29 +179,16 @@ function Warrior:setState(type, other)
         self._sprite3d:runAction(self._action.walk:clone())
         if self._particle ~= nil then self._particle:setEmissionRate(5) end
 
-    elseif type == EnumStateType.DEAD then
-        self._statetype = type
-        self._sprite3d:stopAllActions()
-        self._sprite3d:runAction(self._action.dead:clone())
-
     elseif type == EnumStateType.KNOCKED then
+        if EnumStateType.KNOCKING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
-        local function dropblood(sender, other)
-            --dropblood logic
-            cclog(other.attack)
-            --
-        end
-        self._sprite3d:runAction(cc.Spawn:create(self._action.knocked:clone(),cc.CallFunc:create(dropblood,other)))
 
     elseif type == EnumStateType.ATTACK then
+        if EnumStateType.ATTACKING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
-        local function sendKnockedMsg()
-            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(self._target, self._attack))
-        end
-        local attack = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(sendKnockedMsg),self._action.attack2)
-        self._sprite3d:runAction(attack)
+
     elseif type == EnumStateType.SPECIALATTACK then
         self._statetype = type
         self._sprite3d:stopAllActions()
@@ -165,14 +197,14 @@ function Warrior:setState(type, other)
     elseif type == EnumStateType.DEFEND then
         self._statetype = type
         self._sprite3d:stopAllActions()
-        self._sprite3d:runAction(self._action.defense:clone())
 
     elseif type == EnumStateType.DEAD then
         self._statetype = type
         self._sprite3d:stopAllActions()
-        self._sprite3d:runAction(self._action.dead:clone())
 
-    else end
+    elseif type == EnumStateType.NULL then
+        self._statetype = type
+    end
 end
 
 -- set default equipments

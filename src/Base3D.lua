@@ -20,11 +20,24 @@ EnumStateType =
     "STAND",
     "WALK",
     "ATTACK",
+    "ATTACKING",
     "SPECIALATTACK",
     "DEFEND",
     "KNOCKED",    
+    "KNOCKING",
     "DEAD",
+    "DYING",
+    "NULL" -- means dead already.
 }
+
+DEBUG_TYPESTATE = {}
+for key, var in pairs(EnumStateType) do
+    DEBUG_TYPESTATE[key] = var	
+end
+function getDebugStateType(obj)
+    cclog(DEBUG_TYPESTATE[obj._statetype+1])
+end
+
 EnumStateType = CreateEnumTable(EnumStateType) 
 
 local Base3D = class ("Base3D", function ()
