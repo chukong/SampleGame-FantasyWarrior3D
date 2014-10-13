@@ -1,29 +1,29 @@
 --[[
-Global variables
-sample:
-G.SAMPLE = 20
+Monster Actors Values：
 ]]--
 
-G = {};
+--Monster Slime
+MonsterSlimeValues =
+{
+    fileNameNormal = "model/slime/slimeAnger.c3b",
+    fileNameAnger = "model/slime/slimeAnger.c3b"
+}
 
---Effects
+--Monster Dragon
+MonsterDragonValues = 
+{
+    fileName = "model/dragon/dragon.c3b"
+}
 
+--Monster Rat
+MonsterRatValues = 
+    {
+        fileName = "model/rat/rat.c3b"
+    }
 
---Player
-
-
---3D Part
-
-
---Choose Chapter Scene
-
-
---Choose Role Scene
-
-
---Battlefield Scene
-
-
---others
-
-
+--Monster Piglet
+MonsterPigletValues = 
+    {
+        fileName = "model/piglet/piglet.c3b"
+    }
+    
