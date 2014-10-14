@@ -80,7 +80,7 @@ function Base3D.create()
 end
 
 function Base3D:addCircle()
-	self._circle = cc.Sprite:create("btn_circle_normal.png")
+    self._circle = cc.Sprite:create("shadow.png")
 	self._circle:setScale(1.5)
 	self:addChild(self._circle)
 	
@@ -91,62 +91,13 @@ function Base3D:addCircle()
     self._attackZone:setType(cc.PROGRESS_TIMER_TYPE_RADIAL)
     self._attackZone:runAction(cc.ProgressTo:create(0, 25))	
     self._attackZone:setRotation(45) 
+    self._attackZone:setVisible(false)
 end
 
 function Base3D:setState(type)
-    if self._statetype == type then
-        return
-    elseif type ~= EnumStateType.KNOCKED then
-        self._sprite3d:stopActionByTag(self._statetype)    
-        self._statetype = type
-    end    
-
-    if type == EnumStateType.STAND then
-        local standAction = cc.RotateTo:create(0.5, 0)
-        standAction:setTag(self._statetype) 
-        self:runAction(standAction) 
-    end
-
-    if type == EnumStateType.DEAD then
-        local rotateAngle = 0
-        if self._racetype == EnumRaceType.DEBUG then
-            rotateAngle = 90.0
-        else 
-            rotateAngle = -90.0
-        end
-        self._sprite3d:runAction(cc.RotateTo:create(0.5, cc.V3(0, 0, rotateAngle))) 
-    end 
-
-    if type == EnumStateType.WALK then
-        self._sprite3d:stopAllActions()
-    end 
-
-    if type == EnumStateType.ATTACK then
-        local animation = cc.Animation3D:create(self._action.attack)
-        local animate = cc.Animate3D:create(animation)
-        animate:setSpeed(self._speed)
-        local repeatAction = cc.RepeatForever:create(animate)
-        repeatAction:setTag(self._statetype) 
-        self._sprite3d:runAction(repeatAction)
-    end
-
-    if type == EnumStateType.DEFEND then
-        local x = 0
-        if self._racetype == EnumRaceType.HERO then
-            x = -15
-        else
-            x = 15
-        end    
-        local defendAction = cc.RotateBy:create(0.5, x)
-        defendAction:setTag(self._statetype) 
-        self._sprite3d:runAction(defendAction)     
-    end     
+    if self._statetype == type then return end
     
-    if type == EnumStateType.KNOCKED then
-        local toRed = cc.TintTo:create(0, 255, 0, 0)
-        local toRedBack = cc.TintTo:create(0.2, 255, 255, 255)
-        self._sprite3d:runAction(cc.Sequence:create(toRed, toRedBack))
-    end
+    self._statetype = type
 end
 
 --getter & setter
