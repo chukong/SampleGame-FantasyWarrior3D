@@ -276,13 +276,13 @@ local function gameController(dt)
     end
 end
 
-local TestAIScene = class("TestAIScene",function()
+local BattleScene = class("BattleScene",function()
     return cc.Scene:create()
 end)
 
-function TestAIScene.create()
+function BattleScene.create()
 
-    local scene = TestAIScene:new()
+    local scene = BattleScene:new()
     currentLayer = cc.Layer:create()
     scene:addChild(currentLayer)
 
@@ -305,4 +305,4 @@ function TestAIScene.create()
     return scene
 end
 
-return TestAIScene
+return BattleScene
