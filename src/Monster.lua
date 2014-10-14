@@ -12,7 +12,7 @@ function Monster:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 300  
+    self._attack = 100  
 end
 
 function Monster.create()
@@ -22,6 +22,7 @@ function Monster.create()
 
     -- base
     monster:setRaceType(EnumRaceType.MONSTER)
+    monster:setState(EnumRaceType.STAND)
     monster:initActions()
 
     --self
@@ -99,7 +100,7 @@ function Monster.create()
     local function knocked(msgStruct)
         --stopAllActions and dropblood
         if msgStruct.target == monster then 
-            monster:setState(EnumStateType.KNOCKED,msgStruct)
+            monster:setState(EnumStateType.KNOCKED)
             monster._knockedMsgStruct = msgStruct
         end
     end
@@ -187,6 +188,7 @@ function Monster:setState(type)
     elseif type == EnumStateType.ATTACK then
         if EnumStateType.ATTACKING == self._statetype then return end
         if EnumStateType.KNOCKING == self._statetype then return end
+        if EnumStateType.KNOCKED == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
 

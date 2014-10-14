@@ -148,18 +148,17 @@ local function addNewSprite(x, y, tag)
     local sprite = nil
     local animation = nil
     if tag == EnumRaceType.DEBUG then
-        sprite = Warrior.create()
+        sprite = Warrior.create()    
         sprite._sprite3d:setScale(25)
-        List.pushlast(HeroManager, sprite)
+        List.pushlast(HeroPoor, sprite)
     elseif tag == EnumRaceType.MONSTER then
         sprite = Monster.create()
         sprite._sprite3d:setScale(15)
-        List.pushlast(MonsterManager, sprite)
+        List.pushlast(MonsterPoor, sprite)
     elseif tag == EnumRaceType.BOSS then
         sprite = Boss.create()
-        sprite._sprite3d:setScale(1)
-        sprite:setState(EnumStateType.ATTACK)
-        List.pushlast(BossManager, sprite)
+        sprite._sprite3d:setScale(35)        
+        List.pushlast(BossPoor, sprite)
     else
         return
     end
@@ -212,35 +211,45 @@ local function createEnmey(step)
     if  step ~= currentStep  then return end
 
     if currentStep == 1 then
-        addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER)
-        addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER)
-        addNewSprite(size.width/2-2000, size.height/2-100, EnumRaceType.MONSTER)
-        currentStep = currentStep + 1    
+        List.pushlast(MonsterManager, List.popfirst(MonsterPoor))
+        List.pushlast(MonsterManager, List.popfirst(MonsterPoor))
+        List.pushlast(MonsterManager, List.popfirst(MonsterPoor))
+        currentStep = currentStep + 1
     elseif currentStep == 2 then
-        addNewSprite(size.width/2, size.height/2-200, EnumRaceType.MONSTER)
-        addNewSprite(size.width/2+100, size.height/2-200, EnumRaceType.MONSTER)
-        addNewSprite(size.width/2+100, size.height/2-100, EnumRaceType.MONSTER)
+        List.pushlast(MonsterManager, List.popfirst(MonsterPoor))
+        List.pushlast(MonsterManager, List.popfirst(MonsterPoor))
+        List.pushlast(MonsterManager, List.popfirst(MonsterPoor))
         currentStep = currentStep + 1   
     elseif currentStep == 3 then
-        addNewSprite(size.width/2+2000, size.height/2-100, EnumRaceType.BOSS)
+        List.pushlast(BossManager, List.popfirst(BossPoor))
         currentStep = currentStep + 1                    
-    end
+    end    
 end
 
 local function createRole()
- 
     warrior = addNewSprite(heroOriginPositionX, 0, EnumRaceType.DEBUG)
     addParticleToRole(warrior)    
     warrior:setState(EnumStateType.STAND)
     warrior:runAction(cc.Sequence:create(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1),cc.CallFunc:create(jumpdone)))
-    
+    List.pushlast(HeroManager, warrior)
+        
     archer = addNewSprite(heroOriginPositionX, 300, EnumRaceType.DEBUG)
     addParticleToRole(archer)    
     archer:setState(EnumStateType.WALK)
+    List.pushlast(HeroManager, archer)
 
     mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.DEBUG)
     addParticleToRole(mage)
     mage:setState(EnumStateType.WALK)
+    List.pushlast(HeroManager, mage)
+
+    addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER)
+    addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER)
+    addNewSprite(size.width/2-2000, size.height/2-100, EnumRaceType.MONSTER)
+    addNewSprite(size.width/2, size.height/2-200, EnumRaceType.MONSTER)
+    addNewSprite(size.width/2+100, size.height/2-200, EnumRaceType.MONSTER)
+    addNewSprite(size.width/2+100, size.height/2-100, EnumRaceType.MONSTER)
+    addNewSprite(size.width/2+2000, size.height/2-100, EnumRaceType.BOSS)
 end
 
 local function setCamera()
