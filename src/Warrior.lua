@@ -22,13 +22,14 @@ function Warrior.create()
 
     -- base
     hero:setRaceType(EnumRaceType.WARRIOR)
+    hero:setState(EnumRaceType.STAND)
     hero:initActions()
 
     --self
     hero._weapon = math.random() .. ""
 
     local function MainLoop(dt)
---    getDebugStateType(hero)
+        --getDebugStateType(hero)
         if EnumStateType.WALK == hero._statetype then
             local targetPos = {x=3000, y=0}
             if hero._target ~= nil  then
@@ -106,7 +107,7 @@ function Warrior.create()
     local function knocked(msgStruct)
         --stopAllActions and dropblood
         if msgStruct.target == hero then 
-            hero:setState(EnumStateType.KNOCKED,msgStruct)
+            hero:setState(EnumStateType.KNOCKED)
             hero._knockedMsgStruct = msgStruct
         end
     end
@@ -188,13 +189,13 @@ function Warrior:setState(type)
 
     elseif type == EnumStateType.KNOCKED then
         if EnumStateType.KNOCKING == self._statetype then return end
-        if EnumStateType.ATTACKING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
 
     elseif type == EnumStateType.ATTACK then
         if EnumStateType.ATTACKING == self._statetype then return end
         if EnumStateType.KNOCKING == self._statetype then return end
+        if EnumStateType.KNOCKED == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
 
