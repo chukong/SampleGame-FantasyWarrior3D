@@ -177,6 +177,13 @@ function getAngleFrom2Point(p1, p2)
 end
 
 function faceToEnmey(object1, object2)
-    local angle = getAngleFrom2Point(cc.p(object2:getPosition()), cc.p(object1:getPosition()))
-    object1:setRotation(angle)
+    local pos1 = getPosTable(object1)
+    local pos2 = getPosTable(object2)
+    
+    if cc.pGetDistance(pos1, pos2) > 500 then
+        object1:setRotation(0)    
+    else
+        local angle = getAngleFrom2Point(pos2, pos1)
+        object1:setRotation(angle)
+    end
 end

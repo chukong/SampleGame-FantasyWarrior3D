@@ -57,7 +57,7 @@ end
 local function findEnmey(object, manager)
     if object == nil or object._isalive == false then return end
 
-    local find = false            
+    local find = false
     local shortest_distance = 500
     for var = 1, List.getSize(manager) do
         local objectTemp = manager[var-1]
@@ -65,24 +65,29 @@ local function findEnmey(object, manager)
         if dis < shortest_distance and objectTemp._isalive then
             object:setTarget(objectTemp)
             shortest_distance = dis
-            find = true                      
+            find = true
         end
     end
     
     if find == false then
+        object:setRotation(0)
         object:setState(EnumStateType.WALK)
         object:setTarget(nil)
     else
         if isInCircleSector(object, object._target) then
             object:setState(EnumStateType.ATTACK)
         else
-            object:setState(EnumStateType.WALK)        
+            object:setState(EnumStateType.WALK)    
             faceToEnmey(object, object._target)
         end
     end
 end
 
 local function findAllEnemy()
+    if currentStep > 3 and findAliveBoss() == 0 and findAliveMonster() == 0 then
+        return
+    end
+    
     local tempSize1 = List.getSize(MonsterManager)
     findEnmey(warrior, MonsterManager)
     findEnmey(archer, MonsterManager)
@@ -104,7 +109,6 @@ local function findAllEnemy()
             findEnmey(objectTemp, HeroManager)
         end          
     end   
-
 end
 
 local function moveCamera(dt)
@@ -259,12 +263,7 @@ local function setCamera()
     currentLayer:addChild(camera)
 end
 
-local function gameController(dt)
-    collisionDetect()
-    findAllEnemy()
-    moveCamera(dt)
-    updateParticlePos()
-
+local function enemyEncounter()
     local tempPos = camera:getPositionX()
     --cclog("%f", tempPos)
     if tempPos > -2500 and tempPos < -2400 then
@@ -274,6 +273,15 @@ local function gameController(dt)
     elseif  tempPos > 1000 and tempPos < 1100 then
         createEnmey(3)        
     end
+end
+
+local function gameController(dt)
+    collisionDetect()
+    moveCamera(dt)
+    updateParticlePos()
+        
+    enemyEncounter()
+    findAllEnemy()
 end
 
 local BattleScene = class("BattleScene",function()
