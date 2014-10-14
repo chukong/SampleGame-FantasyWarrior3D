@@ -2,6 +2,12 @@
 Monster Actors Values：
 ]]--
 
+--G values
+G =
+{
+    winSize = cc.Director:getInstance():getWinSize()
+}
+
 --Monster Slime
 MonsterSlimeValues =
 {
