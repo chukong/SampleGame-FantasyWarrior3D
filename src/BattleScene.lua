@@ -75,7 +75,11 @@ local function findEnmey(object, manager)
         object:setTarget(nil)
     else
         if isInCircleSector(object, object._target) then
-            object:setState(EnumStateType.ATTACK)
+            if object:getRaceType() == EnumRaceType.WARRIOR then
+                object:setState(EnumStateType.SPECIALATTACK)
+            else
+                object:setState(EnumStateType.ATTACK)
+            end
         else
             object:setState(EnumStateType.WALK)    
             faceToEnmey(object, object._target)
@@ -151,7 +155,7 @@ end
 local function addNewSprite(x, y, tag)
     local sprite = nil
     local animation = nil
-    if tag == EnumRaceType.DEBUG then
+    if tag == EnumRaceType.WARRIOR then
         sprite = Warrior.create()    
         sprite._sprite3d:setScale(25)
         List.pushlast(HeroPoor, sprite)
@@ -231,18 +235,18 @@ local function createEnmey(step)
 end
 
 local function createRole()
-    warrior = addNewSprite(heroOriginPositionX, 0, EnumRaceType.DEBUG)
+    warrior = addNewSprite(heroOriginPositionX, 0, EnumRaceType.WARRIOR)
     addParticleToRole(warrior)    
     warrior:setState(EnumStateType.STAND)
     warrior:runAction(cc.Sequence:create(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1),cc.CallFunc:create(jumpdone)))
     List.pushlast(HeroManager, warrior)
         
-    archer = addNewSprite(heroOriginPositionX, 300, EnumRaceType.DEBUG)
+    archer = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR)
     addParticleToRole(archer)    
     archer:setState(EnumStateType.WALK)
     List.pushlast(HeroManager, archer)
 
-    mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.DEBUG)
+    mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.WARRIOR)
     addParticleToRole(mage)
     mage:setState(EnumStateType.WALK)
     List.pushlast(HeroManager, mage)

@@ -45,7 +45,7 @@ function Boss.create()
         elseif EnumStateType.ATTACK == boss._statetype then
             boss._statetype = EnumStateType.ATTACKING
             local function sendKnockedMsg()
-                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(boss._target, boss._attack))
+                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(boss))
             end
             local function attackdone()
                 boss:setState(EnumStateType.STAND)
@@ -54,7 +54,7 @@ function Boss.create()
             boss._sprite3d:runAction(attack)
 
         elseif EnumStateType.KNOCKED == boss._statetype then
-            --self._knockedMsgStruct.attack
+            --self._knockedMsgStruct.attacker._attack
             local damage = 800
             boss._blood = boss._blood - damage
             if boss._blood <0 then
@@ -100,8 +100,8 @@ function Boss.create()
     local function knocked(msgStruct)
         --stopAllActions and dropblood
         if msgStruct.target == boss then 
-            boss:setState(EnumStateType.KNOCKED)
             boss._knockedMsgStruct = msgStruct
+            boss:setState(EnumStateType.KNOCKED)
         end
     end
 

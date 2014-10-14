@@ -45,7 +45,7 @@ function Monster.create()
         elseif EnumStateType.ATTACK == monster._statetype then
             monster._statetype = EnumStateType.ATTACKING
             local function sendKnockedMsg()
-                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(monster._target, monster._attack))
+                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(monster))
             end
             local function attackdone()
                 monster:setState(EnumStateType.STAND)
@@ -54,7 +54,7 @@ function Monster.create()
             monster._sprite3d:runAction(attack)
 
         elseif EnumStateType.KNOCKED == monster._statetype then
-            --self._knockedMsgStruct.attack
+            --self._knockedMsgStruct.attacker._attack
             local damage = 800
             monster._blood = monster._blood - damage
             if monster._blood <0 then
@@ -100,8 +100,8 @@ function Monster.create()
     local function knocked(msgStruct)
         --stopAllActions and dropblood
         if msgStruct.target == monster then 
-            monster:setState(EnumStateType.KNOCKED)
             monster._knockedMsgStruct = msgStruct
+            monster:setState(EnumStateType.KNOCKED)
         end
     end
 

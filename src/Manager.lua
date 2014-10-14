@@ -187,3 +187,37 @@ function faceToEnmey(object1, object2)
         object1:setRotation(angle)
     end
 end
+
+function attackAll(object)
+    if object:getRaceType() ~= EnumRaceType.WARRIOR then
+        for val = 1, List.getSize(HeroManager) do
+            local sprite = HeroManager[val-1]
+            if sprite._isalive == true 
+                and sprite ~= object 
+                and isInCircleSector(object, sprite) then
+                    sprite._knockedMsgStruct = msgStruct
+                    sprite:setState(EnumStateType.KNOCKED)
+            end
+        end
+    else
+        for val = 1, List.getSize(MonsterManager) do
+            local sprite = MonsterManager[val-1]
+            if sprite._isalive == true 
+                and sprite ~= object 
+                and isInCircleSector(object, sprite) then
+                    sprite._knockedMsgStruct = msgStruct
+                    sprite:setState(EnumStateType.KNOCKED)
+            end                
+        end 
+
+        for val = 1, List.getSize(BossManager) do
+            local sprite = BossManager[val-1]
+            if sprite._isalive == true 
+                and sprite ~= object 
+                and isInCircleSector(object, sprite) then
+                    sprite._knockedMsgStruct = msgStruct
+                    sprite:setState(EnumStateType.KNOCKED)
+            end
+        end 
+    end            
+end

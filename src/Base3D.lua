@@ -23,6 +23,7 @@ EnumStateType =
     "ATTACK",
     "ATTACKING",
     "SPECIALATTACK",
+    "SPECIALATTACKING",
     "DEFEND",
     "KNOCKED",    
     "KNOCKING",
