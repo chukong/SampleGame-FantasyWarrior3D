@@ -31,13 +31,15 @@ function Monster.create()
     local function MainLoop(dt)
         --getDebugStateType(monster)
         if EnumStateType.WALK == monster._statetype and monster._target ~= nil then
-            local distance = monster._attackRadius + monster._target._radius
+            local miniDistance = monster._attackRadius + monster._target._radius
             local p1 = getPosTable(monster)
             local p2 = getPosTable(monster._target)
-            if distance < cc.pGetDistance(p1, p2) then
-                monster:setPosition(getNextStepPos(monster, p2, dt))
-            end
-
+            local distance = cc.pGetDistance(p1, p2)
+            local angle = cc.pToAngleSelf(cc.pSub(p1, p2))
+            p2 = cc.pRotateByAngle(cc.pAdd(cc.p(-miniDistance/2,0),p2), p2, angle)              
+            if miniDistance < distance then
+                monster:setPosition(getNextStepPos(p1, p2, monster._speed, dt))
+            end                       
         elseif EnumStateType.STAND == monster._statetype then
             monster._statetype = EnumStateType.STANDING
             monster._sprite3d:runAction(monster._action.stand:clone())
