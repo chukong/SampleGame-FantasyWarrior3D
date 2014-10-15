@@ -37,10 +37,9 @@ function getPosTable(obj)
 end
 
 --getnextpos
-function getNextStepPos(obj,targetPos,dt)
-	local curPos = getPosTable(obj)
+function getNextStepPos(curPos, targetPos, speed, dt)
 	local angel = math.atan2(targetPos.y-curPos.y,targetPos.x-curPos.x)
-	return {x = curPos.x+math.cos(angel)*obj._speed*dt, y = curPos.y+math.sin(angel)*obj._speed*dt}
+    return {x = curPos.x+math.cos(angel)*speed*dt, y = curPos.y+math.sin(angel)*speed*dt}
 end
 
 --createAnimationStruct

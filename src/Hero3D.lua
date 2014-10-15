@@ -36,7 +36,7 @@ function Hero3D.create(type)
             end
             local curPos = getPosTable(hero)
             if cc.pGetDistance(curPos,targetPos)>(dis) then
-                hero:setPosition(getNextStepPos(hero,targetPos,dt))
+                hero:setPosition(getNextStepPos(curPos, targetPos, hero._speed, dt))
             else 
                 hero:setState(EnumStateType.STAND)
             end

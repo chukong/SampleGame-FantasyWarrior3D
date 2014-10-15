@@ -31,11 +31,14 @@ function Boss.create()
     local function MainLoop(dt)
         --getDebugStateType(boss)
         if EnumStateType.WALK == boss._statetype and boss._target ~= nil then
-            local distance = boss._attackRadius + boss._target._radius
+            local miniDistance = boss._attackRadius + boss._target._radius
             local p1 = getPosTable(boss)
             local p2 = getPosTable(boss._target)
-            if distance < cc.pGetDistance(p1, p2) then
-                boss:setPosition(getNextStepPos(boss, p2, dt))
+            local distance = cc.pGetDistance(p1, p2)
+            local angle = cc.pToAngleSelf(cc.pSub(p1, p2))
+            p2 = cc.pRotateByAngle(cc.pAdd(cc.p(-miniDistance/2,0),p2), p2, angle)                
+            if miniDistance < distance then
+                boss:setPosition(getNextStepPos(p1, p2, boss._speed, dt))
             end
 
         elseif EnumStateType.STAND == boss._statetype then
