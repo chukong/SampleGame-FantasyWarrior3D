@@ -104,6 +104,7 @@ function Warrior.create()
             hero._statetype = EnumStateType.DYING
             local deaddone = function ()
                 hero:setState(EnumStateType.NULL)
+                hero:runAction(cc.MoveBy:create(1.0,cc.V3(0,0,-50)))
             end
             hero._sprite3d:runAction(cc.Sequence:create(hero._action.dead:clone(), cc.CallFunc:create(deaddone)))
         end

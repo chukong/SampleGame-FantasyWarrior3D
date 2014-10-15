@@ -288,6 +288,17 @@ local function gameController(dt)
     findAllEnemy()
 end
 
+local function initUILayer()
+    uiLayer = require("BattleFieldUI").create()
+
+    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye())
+    uiLayer:setScale(1)
+    uiLayer:ignoreAnchorPointForPosition(false)
+    uiLayer:setGlobalZOrder(999)
+    camera:addChild(uiLayer)
+end
+
+
 local BattleScene = class("BattleScene",function()
     return cc.Scene:create()
 end)
@@ -301,6 +312,7 @@ function BattleScene.create()
     createBackground()
     createRole()
     setCamera()
+    initUILayer()
     
     if warrior ~= nil then
         warrior._particle:setCamera(camera)
