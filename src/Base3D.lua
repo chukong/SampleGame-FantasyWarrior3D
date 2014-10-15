@@ -48,7 +48,7 @@ end)
 
 function Base3D:ctor()
     self._radius = 50
-    self._attackRadius = 50*1.5
+    self._attackRadius = 50*3.5
 	self._isalive = true
 	self._blood = 1000
 	self._attack = 100
