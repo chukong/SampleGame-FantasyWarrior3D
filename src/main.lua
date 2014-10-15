@@ -39,6 +39,8 @@ local function main()
         pEGLView:setDesignResolutionSize(winSize.width*widthRate/heightRate, winSize.height,
             1)
     end
+    
+    cc.Director:getInstance():setDisplayStats(true)
 
     --create scene
 --    local scene = require("ChooseChapterScene")
