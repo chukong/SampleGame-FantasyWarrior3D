@@ -50,8 +50,8 @@ function createAnimationStruct(var1, var2, var3)
 end
 
 --createKnockedMessageStruct
-function createKnockedMsgStruct(var1, var2)
-    local msgStruct = {target = var1, attack = var2}
+function createKnockedMsgStruct(object)
+    local msgStruct = {attacker = object, target = object._target}
     return msgStruct
 end
 

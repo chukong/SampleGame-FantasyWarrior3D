@@ -57,7 +57,7 @@ end
 local function findEnmey(object, manager)
     if object == nil or object._isalive == false then return end
 
-    local find = false            
+    local find = false
     local shortest_distance = 500
     for var = 1, List.getSize(manager) do
         local objectTemp = manager[var-1]
@@ -65,24 +65,33 @@ local function findEnmey(object, manager)
         if dis < shortest_distance and objectTemp._isalive then
             object:setTarget(objectTemp)
             shortest_distance = dis
-            find = true                      
+            find = true
         end
     end
     
     if find == false then
+        object:setRotation(0)
         object:setState(EnumStateType.WALK)
         object:setTarget(nil)
     else
         if isInCircleSector(object, object._target) then
-            object:setState(EnumStateType.ATTACK)
+            if object:getRaceType() == EnumRaceType.WARRIOR then
+                object:setState(EnumStateType.SPECIALATTACK)
+            else
+                object:setState(EnumStateType.ATTACK)
+            end
         else
-            object:setState(EnumStateType.WALK)        
+            object:setState(EnumStateType.WALK)    
             faceToEnmey(object, object._target)
         end
     end
 end
 
 local function findAllEnemy()
+    if currentStep > 3 and findAliveBoss() == 0 and findAliveMonster() == 0 then
+        return
+    end
+    
     local tempSize1 = List.getSize(MonsterManager)
     findEnmey(warrior, MonsterManager)
     findEnmey(archer, MonsterManager)
@@ -104,7 +113,6 @@ local function findAllEnemy()
             findEnmey(objectTemp, HeroManager)
         end          
     end   
-
 end
 
 local function moveCamera(dt)
@@ -147,7 +155,7 @@ end
 local function addNewSprite(x, y, tag)
     local sprite = nil
     local animation = nil
-    if tag == EnumRaceType.DEBUG then
+    if tag == EnumRaceType.WARRIOR then
         sprite = Warrior.create()    
         sprite._sprite3d:setScale(25)
         List.pushlast(HeroPoor, sprite)
@@ -227,18 +235,18 @@ local function createEnmey(step)
 end
 
 local function createRole()
-    warrior = addNewSprite(heroOriginPositionX, 0, EnumRaceType.DEBUG)
+    warrior = addNewSprite(heroOriginPositionX, 0, EnumRaceType.WARRIOR)
     addParticleToRole(warrior)    
     warrior:setState(EnumStateType.STAND)
     warrior:runAction(cc.Sequence:create(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1),cc.CallFunc:create(jumpdone)))
     List.pushlast(HeroManager, warrior)
         
-    archer = addNewSprite(heroOriginPositionX, 300, EnumRaceType.DEBUG)
+    archer = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR)
     addParticleToRole(archer)    
     archer:setState(EnumStateType.WALK)
     List.pushlast(HeroManager, archer)
 
-    mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.DEBUG)
+    mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.WARRIOR)
     addParticleToRole(mage)
     mage:setState(EnumStateType.WALK)
     List.pushlast(HeroManager, mage)
@@ -259,12 +267,7 @@ local function setCamera()
     currentLayer:addChild(camera)
 end
 
-local function gameController(dt)
-    collisionDetect()
-    findAllEnemy()
-    moveCamera(dt)
-    updateParticlePos()
-
+local function enemyEncounter()
     local tempPos = camera:getPositionX()
     --cclog("%f", tempPos)
     if tempPos > -2500 and tempPos < -2400 then
@@ -274,6 +277,15 @@ local function gameController(dt)
     elseif  tempPos > 1000 and tempPos < 1100 then
         createEnmey(3)        
     end
+end
+
+local function gameController(dt)
+    collisionDetect()
+    moveCamera(dt)
+    updateParticlePos()
+        
+    enemyEncounter()
+    findAllEnemy()
 end
 
 local function initUILayer()
