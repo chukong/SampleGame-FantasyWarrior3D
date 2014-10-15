@@ -1,27 +1,27 @@
 require "MessageDispatchCenter"
-require "Helper"
-Warrior = class("Warrior", function()
+Mage = class("Mage", function()
     return require "Base3D".create()
 end)
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
-local filename  = "model/warrior/warrior.c3b"
+local filename = "model/mage/mage.c3b"
 
-function Warrior:ctor()
+function Mage:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
     self._attack = 300  
+    self._attackRadius = 50*10
 end
 
-function Warrior.create()
+function Mage.create()
 
-    local hero = Warrior.new()
+    local hero = Mage.new()
     hero:AddSprite3D()
 
     -- base
-    hero:setRaceType(EnumRaceType.WARRIOR)
+    hero:setRaceType(EnumRaceType.MAGE)
     hero:setState(EnumRaceType.STAND)
     hero:initActions()
 
@@ -53,7 +53,7 @@ function Warrior.create()
             hero._statetype = EnumStateType.ATTACKING
             local function sendKnockedMsg()
                 MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(hero))
-                cclog("warrior send msg....")
+                cclog("Mage send msg....")
             end
             local function attackdone()
                 hero:setState(EnumStateType.STAND)
@@ -64,7 +64,7 @@ function Warrior.create()
             hero._statetype = EnumStateType.SPECIALATTACKING
             local function sendKnockedMsg()
                 MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKEDAOE, createKnockedMsgStruct(hero))
-                cclog("warrior send msg....")
+                cclog("Mage send msg....")
             end
             local function attackdone()
                 hero:setState(EnumStateType.STAND)
@@ -74,7 +74,7 @@ function Warrior.create()
 
         elseif EnumStateType.KNOCKED == hero._statetype then
             --self._knockedMsgStruct.attacker._attack
-            local damage = 1200
+            local damage = 100
             hero._blood = hero._blood - damage
             if hero._blood <0 then
                 hero._blood = 0
@@ -104,7 +104,7 @@ function Warrior.create()
             hero._statetype = EnumStateType.DYING
             local deaddone = function ()
                 hero:setState(EnumStateType.NULL)
-                hero:runAction(cc.Sequence:create(cc.MoveBy:create(1.0,cc.V3(0,0,-50))))
+                hero:runAction(cc.MoveBy:create(1.0,cc.V3(0,0,-50)))
             end
             hero._sprite3d:runAction(cc.Sequence:create(hero._action.dead:clone(), cc.CallFunc:create(deaddone)))
         end
@@ -138,9 +138,9 @@ function Warrior.create()
 end
 
 
-function Warrior:AddSprite3D()
+function Mage:AddSprite3D()
     self._sprite3d = cc.EffectSprite3D:create(filename)
-    self._sprite3d:setScale(25)
+    self._sprite3d:setScale(2)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.01, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
@@ -160,16 +160,16 @@ local function createAnimation(animationStruct, isloop )
     end
 end
 
-function Warrior:initActions()
-    local stand = createAnimationStruct(267,283,0.7)
-    local walk = createAnimationStruct(227,246,0.7)
-    local attack1 = createAnimationStruct(103,129,0.7)
-    local attack2 = createAnimationStruct(130,154,0.7)
-    local specialattack1 = createAnimationStruct(160,190,0.3)
-    local specialattack2 = createAnimationStruct(191,220,0.4)
-    local defend = createAnimationStruct(92,96,0.7)
-    local knocked = createAnimationStruct(254,260,0.7)
-    local dead = createAnimationStruct(0,77,0.7)
+function Mage:initActions()
+    local stand = createAnimationStruct(206,229,0.7)
+    local walk = createAnimationStruct(99,119,0.7)
+    local attack1 = createAnimationStruct(12,30,0.7)
+    local attack2 = createAnimationStruct(31,49,0.7)
+    local specialattack1 = createAnimationStruct(56,74,0.3)
+    local specialattack2 = createAnimationStruct(75,92,0.4)
+    local defend = createAnimationStruct(1,5,0.7)
+    local knocked = createAnimationStruct(126,132,0.7)
+    local dead = createAnimationStruct(139,199,0.7)
 
     self._action.stand = createAnimation(stand, true)
     self._action.stand:retain()
@@ -192,9 +192,9 @@ function Warrior:initActions()
 
 end
 
-function Warrior:setState(type)
+function Mage:setState(type)
     if type == self._statetype then return end
-    --cclog("Warrior:setState(" .. type ..")")
+    --cclog("Mage:setState(" .. type ..")")
 
     if type == EnumStateType.STAND then
         if EnumStateType.STANDING == self._statetype then return end
@@ -245,7 +245,7 @@ function Warrior:setState(type)
 end
 
 -- set default equipments
-function Warrior:setDefaultEqt()
+function Mage:setDefaultEqt()
     local girl_lowerbody = self._sprite3d:getMeshByName("Girl_LowerBody01")
     girl_lowerbody:setVisible(false)
     local girl_shoe = self._sprite3d:getMeshByName("Girl_Shoes01")
@@ -257,7 +257,7 @@ function Warrior:setDefaultEqt()
 end
 
 --swicth weapon
-function Warrior:switchWeapon()
+function Mage:switchWeapon()
     self._useWeaponId = self._useWeaponId+1
     if self._useWeaponId > 1 then
         self._useWeaponId = 0;
@@ -284,7 +284,7 @@ function Warrior:switchWeapon()
 end
 
 --switch armour
-function Warrior:switchArmour()
+function Mage:switchArmour()
     self._useArmourId = self._useArmourId+1
     if self._useArmourId > 1 then
         self._useArmourId = 0;
@@ -313,13 +313,13 @@ end
 
 
 -- get weapon id
-function Warrior:getWeaponID()
+function Mage:getWeaponID()
     return self._useWeaponId
 end
 
 -- get armour id
-function Warrior:getArmourID()
+function Mage:getArmourID()
     return self._useArmourId
 end
 
-return Warrior
+return Mage

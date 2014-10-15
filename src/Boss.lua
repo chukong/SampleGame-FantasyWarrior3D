@@ -64,10 +64,10 @@ function Boss.create()
                 boss._isalive = false
                 boss:setState(EnumStateType.DEAD)
             else
-                cclog("knock....")
+                cclog("boss knocked....")
                 boss._statetype = EnumStateType.KNOCKING
                 local function dropblood()
-                    cclog("dropblood")
+                    cclog("boss dropblood")
                 end
                 local function knockdone()
                     boss:setState(EnumStateType.STAND)

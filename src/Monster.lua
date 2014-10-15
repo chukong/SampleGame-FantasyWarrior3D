@@ -55,7 +55,7 @@ function Monster.create()
 
         elseif EnumStateType.KNOCKED == monster._statetype then
             --self._knockedMsgStruct.attacker._attack
-            local damage = 800
+            local damage = 300
             monster._blood = monster._blood - damage
             if monster._blood <0 then
                 monster._blood = 0
@@ -64,10 +64,10 @@ function Monster.create()
                 monster._isalive = false
                 monster:setState(EnumStateType.DEAD)
             else
-                cclog("knock....")
+                cclog("monster knocked....")
                 monster._statetype = EnumStateType.KNOCKING
                 local function dropblood()
-                    cclog("dropblood")
+                    cclog("monster dropblood")
                 end
                 local function knockdone()
                     monster:setState(EnumStateType.STAND)
