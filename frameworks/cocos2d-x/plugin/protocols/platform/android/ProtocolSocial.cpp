@@ -47,9 +47,18 @@ extern "C" {
                 {
                     pListener->onSocialResult((SocialRetCode) ret, strMsg.c_str());
                 }
+                else
+                {
+                	ProtocolSocial::ProtocolSocialCallback callback = pSocial->getCallback();
+                	if (callback)
+					{
+						callback(ret, strMsg);
+					}
+                }
             }
         }
     }
+
 }
 
 ProtocolSocial::ProtocolSocial()
@@ -106,6 +115,12 @@ void ProtocolSocial::submitScore(const char* leadboardID, long score)
     }
 }
 
+void ProtocolSocial::submitScore(const char* leadboardID, long score, ProtocolSocialCallback cb)
+{
+	_callback = cb;
+	submitScore(leadboardID, score);
+}
+
 void ProtocolSocial::showLeaderboard(const char* leaderboardID)
 {
     PluginJavaData* pData = PluginUtils::getPluginJavaData(this);
@@ -149,6 +164,12 @@ void ProtocolSocial::unlockAchievement(TAchievementInfo achInfo)
             t.env->DeleteLocalRef(t.classID);
         }
     }
+}
+
+void ProtocolSocial::unlockAchievement(TAchievementInfo achInfo, ProtocolSocialCallback cb)
+{
+	_callback = cb;
+	unlockAchievement(achInfo);
 }
 
 void ProtocolSocial::showAchievements()

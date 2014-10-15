@@ -41,5 +41,6 @@ public class UserWrapper {
 			}
 		});
 	}
+	
 	private static native void nativeOnActionResult(String className, int ret, String msg);
 }

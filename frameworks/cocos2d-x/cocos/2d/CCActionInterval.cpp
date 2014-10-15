@@ -26,16 +26,17 @@ THE SOFTWARE.
 ****************************************************************************/
 
 #include "2d/CCActionInterval.h"
+
+#include <stdarg.h>
+
 #include "2d/CCSprite.h"
 #include "2d/CCNode.h"
 #include "2d/CCSpriteFrame.h"
-#include "CCStdC.h"
 #include "2d/CCActionInstant.h"
 #include "base/CCDirector.h"
 #include "base/CCEventCustom.h"
 #include "base/CCEventDispatcher.h"
-
-#include <stdarg.h>
+#include "platform/CCStdC.h"
 
 NS_CC_BEGIN
 
@@ -335,7 +336,7 @@ void Sequence::update(float t)
 	else if(found==0 && _last==1 )
 	{
 		// Reverse mode ?
-		// XXX: Bug. this case doesn't contemplate when _last==-1, found=0 and in "reverse mode"
+		// FIXME: Bug. this case doesn't contemplate when _last==-1, found=0 and in "reverse mode"
 		// since it will require a hack to know if an action is on reverse mode or not.
 		// "step" should be overriden, and the "reverseMode" value propagated to inner Sequences.
 		_actions[1]->update(0);
@@ -981,7 +982,7 @@ void RotateBy::startWithTarget(Node *target)
 
 void RotateBy::update(float time)
 {
-    // XXX: shall I add % 360
+    // FIXME: shall I add % 360
     if (_target)
     {
         if(_is3D)
@@ -1047,35 +1048,14 @@ MoveBy* MoveBy::create(float duration, const Vec2& deltaPosition)
     return ret;
 }
 
-MoveBy* MoveBy::create(float duration, const Vec3& deltaPosition)
-{
-    MoveBy *ret = new (std::nothrow) MoveBy();
-    ret->initWithDuration(duration, deltaPosition);
-    ret->autorelease();
-    
-    return ret;
-}
-
 bool MoveBy::initWithDuration(float duration, const Vec2& deltaPosition)
 {
     if (ActionInterval::initWithDuration(duration))
     {
-        _positionDelta = Vec3(deltaPosition.x, deltaPosition.y, 0);
-        return true;
-    }
-
-    return false;
-}
-
-bool MoveBy::initWithDuration(float duration, const Vec3& deltaPosition)
-{
-    if (ActionInterval::initWithDuration(duration))
-    {
         _positionDelta = deltaPosition;
-        _is3D = true;
         return true;
     }
-    
+
     return false;
 }
 
@@ -1083,7 +1063,6 @@ MoveBy* MoveBy::clone() const
 {
 	// no copy constructor
 	auto a = new (std::nothrow) MoveBy();
-    a->_is3D = _is3D;
     a->initWithDuration(_duration, _positionDelta);
 	a->autorelease();
 	return a;
@@ -1092,7 +1071,7 @@ MoveBy* MoveBy::clone() const
 void MoveBy::startWithTarget(Node *target)
 {
     ActionInterval::startWithTarget(target);
-    _previousPosition = _startPosition = target->getPosition3D();
+    _previousPosition = _startPosition = target->getPosition();
 }
 
 MoveBy* MoveBy::reverse() const
@@ -1105,33 +1084,16 @@ void MoveBy::update(float t)
 {
     if (_target)
     {
-        if (_is3D) {
 #if CC_ENABLE_STACKABLE_ACTIONS
-            Vec3 currentPos = _target->getPosition3D();
-            Vec3 diff = currentPos - _previousPosition;
-            _startPosition = _startPosition + diff;
-            Vec3 newPos =  _startPosition + (_positionDelta * t);
-            _target->setPosition3D(newPos);
-            _previousPosition = newPos;
+        Vec2 currentPos = _target->getPosition();
+        Vec2 diff = currentPos - _previousPosition;
+        _startPosition = _startPosition + diff;
+        Vec2 newPos =  _startPosition + (_positionDelta * t);
+        _target->setPosition(newPos);
+        _previousPosition = newPos;
 #else
-            _target->setPosition3D(_startPosition + _positionDelta * t);
+        _target->setPosition(_startPosition + _positionDelta * t);
 #endif // CC_ENABLE_STACKABLE_ACTIONS
-        }
-        else
-        {
-#if CC_ENABLE_STACKABLE_ACTIONS
-            Vec2 currentPos = _target->getPosition();
-            Vec2 diff = currentPos - Vec2(_previousPosition.x, _previousPosition.y) ;
-            _startPosition = _startPosition + Vec3(diff.x, diff.y, 0);
-            Vec3 newPos =  _startPosition + (_positionDelta * t);
-            _target->setPosition(Vec2(newPos.x, newPos.y));
-            _previousPosition = Vec3(newPos.x, newPos.y, _previousPosition.z);
-#else
-            Vec3 temp = _startPosition + _positionDelta * t;
-            _target->setPosition(Vec2(temp.x, temp.y));
-#endif // CC_ENABLE_STACKABLE_ACTIONS
-        }
-
     }
 }
 
@@ -1148,37 +1110,14 @@ MoveTo* MoveTo::create(float duration, const Vec2& position)
     return ret;
 }
 
-MoveTo* MoveTo::create(float duration, const Vec3& position)
-{
-    MoveTo *ret = new (std::nothrow) MoveTo();
-    
-    ret->initWithDuration(duration, position);
-    ret->autorelease();
-    
-    return ret;
-}
-
-
 bool MoveTo::initWithDuration(float duration, const Vec2& position)
 {
     if (ActionInterval::initWithDuration(duration))
     {
-        _endPosition = Vec3(position.x, position.y, 0);
-        return true;
-    }
-
-    return false;
-}
-
-bool MoveTo::initWithDuration(float duration, const Vec3& position)
-{
-    if (ActionInterval::initWithDuration(duration))
-    {
         _endPosition = position;
-        _is3D = true;
         return true;
     }
-    
+
     return false;
 }
 
@@ -1186,7 +1125,6 @@ MoveTo* MoveTo::clone() const
 {
 	// no copy constructor
 	auto a = new (std::nothrow) MoveTo();
-    a->_is3D = _is3D;
     a->initWithDuration(_duration, _endPosition);
 	a->autorelease();
 	return a;
@@ -1195,7 +1133,7 @@ MoveTo* MoveTo::clone() const
 void MoveTo::startWithTarget(Node *target)
 {
     MoveBy::startWithTarget(target);
-    _positionDelta = _endPosition - target->getPosition3D();
+    _positionDelta = _endPosition - target->getPosition();
 }
 
 
@@ -2246,7 +2184,7 @@ void ReverseTime::update(float time)
 
 ReverseTime* ReverseTime::reverse() const
 {
-    // XXX: This looks like a bug
+    // FIXME: This looks like a bug
     return (ReverseTime*)_other->clone();
 }
 

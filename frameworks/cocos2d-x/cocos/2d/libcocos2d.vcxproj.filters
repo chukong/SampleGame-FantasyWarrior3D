@@ -76,14 +76,8 @@
     <Filter Include="extension\GUI">
       <UniqueIdentifier>{b27aba95-51a2-413c-8570-0aff9adf2b6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="extension\GUI\CCControlExtension">
-      <UniqueIdentifier>{220cf2ee-61b0-40cf-a88a-8627e4e609f1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="extension\GUI\CCScrollView">
       <UniqueIdentifier>{a1f539bc-d5be-4224-a4d2-01c0b6f17d6e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="extension\GUI\CCEditBox">
-      <UniqueIdentifier>{dc45cd54-4576-4401-87b7-a276f91a45bd}</UniqueIdentifier>
     </Filter>
     <Filter Include="extension\physics_nodes">
       <UniqueIdentifier>{1de7fce7-0dee-4571-8fcd-43eb617aaf8b}</UniqueIdentifier>
@@ -211,8 +205,14 @@
     <Filter Include="cocosbuilder\Source Files">
       <UniqueIdentifier>{8579ed15-b266-4f80-818d-a3a9251c4248}</UniqueIdentifier>
     </Filter>
-    <Filter Include="custom">
-      <UniqueIdentifier>{8d3dcc28-5bcf-4662-85dc-87da7535189d}</UniqueIdentifier>
+    <Filter Include="ui\UIWidgets\EditBox">
+      <UniqueIdentifier>{89eb6312-dc7f-4fda-b9b2-ab67c31ddd55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="extension\GUI\CCControlExtensions">
+      <UniqueIdentifier>{118d80ca-ccf2-480c-b87d-25220af23440}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="audioengine">
+      <UniqueIdentifier>{e916e2b4-0a6e-4d25-8b36-66fa03719f48}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -592,6 +592,9 @@
     <ClCompile Include="..\renderer\CCCustomCommand.cpp">
       <Filter>renderer</Filter>
     </ClCompile>
+    <ClCompile Include="..\renderer\CCTrianglesCommand.cpp">
+      <Filter>renderer</Filter>
+    </ClCompile>
     <ClCompile Include="..\renderer\CCGLProgram.cpp">
       <Filter>renderer</Filter>
     </ClCompile>
@@ -630,21 +633,6 @@
     </ClCompile>
     <ClCompile Include="..\renderer\CCTextureCache.cpp">
       <Filter>renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\platform\win32\CCApplication.cpp">
-      <Filter>platform\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\platform\win32\CCCommon.cpp">
-      <Filter>platform\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\platform\win32\CCDevice.cpp">
-      <Filter>platform\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\platform\win32\CCFileUtilsWin32.cpp">
-      <Filter>platform\win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\platform\win32\CCStdC.cpp">
-      <Filter>platform\win32</Filter>
     </ClCompile>
     <ClCompile Include="..\math\CCAffineTransform.cpp">
       <Filter>math</Filter>
@@ -691,6 +679,9 @@
     <ClCompile Include="..\..\external\tinyxml2\tinyxml2.cpp">
       <Filter>external\tinyxml2</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\external\unzip\ioapi_mem.cpp">
+      <Filter>external\unzip</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\external\unzip\ioapi.cpp">
       <Filter>external\unzip</Filter>
     </ClCompile>
@@ -717,9 +708,6 @@
     </ClCompile>
     <ClCompile Include="..\storage\local-storage\LocalStorage.cpp">
       <Filter>storage</Filter>
-    </ClCompile>
-    <ClCompile Include="..\platform\desktop\CCGLViewImpl.cpp">
-      <Filter>platform\desktop</Filter>
     </ClCompile>
     <ClCompile Include="..\platform\CCGLView.cpp">
       <Filter>platform</Filter>
@@ -790,42 +778,6 @@
     <ClCompile Include="..\..\extensions\assets-manager\AssetsManager.cpp">
       <Filter>extension\AssetsManager</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControl.cpp">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlButton.cpp">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlColourPicker.cpp">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlHuePicker.cpp">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlPotentiometer.cpp">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlSaturationBrightnessPicker.cpp">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlSlider.cpp">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlStepper.cpp">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlSwitch.cpp">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlUtils.cpp">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCInvocation.cpp">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCScale9Sprite.cpp">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\extensions\GUI\CCScrollView\CCScrollView.cpp">
       <Filter>extension\GUI\CCScrollView</Filter>
     </ClCompile>
@@ -834,15 +786,6 @@
     </ClCompile>
     <ClCompile Include="..\..\extensions\GUI\CCScrollView\CCTableViewCell.cpp">
       <Filter>extension\GUI\CCScrollView</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCEditBox\CCEditBox.cpp">
-      <Filter>extension\GUI\CCEditBox</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\GUI\CCEditBox\CCEditBoxImplWin.cpp">
-      <Filter>extension\GUI\CCEditBox</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\extensions\proj.win32\Win32InputBox.cpp">
-      <Filter>extension\GUI\CCEditBox</Filter>
     </ClCompile>
     <ClCompile Include="..\..\extensions\physics-nodes\CCPhysicsDebugNode.cpp">
       <Filter>extension\physics_nodes</Filter>
@@ -1168,11 +1111,86 @@
     <ClCompile Include="..\editor-support\cocosbuilder\CCSpriteLoader.cpp">
       <Filter>cocosbuilder\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\custom\DrawNode3D.cpp">
-      <Filter>custom</Filter>
+    <ClCompile Include="..\3d\CCBillBoard.cpp">
+      <Filter>3d</Filter>
     </ClCompile>
-    <ClCompile Include="..\custom\EffectSprite3D.cpp">
-      <Filter>custom</Filter>
+    <ClCompile Include="..\ui\UIEditBox\UIEditBox.cpp">
+      <Filter>ui\UIWidgets\EditBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControl.cpp">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlButton.cpp">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlColourPicker.cpp">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlHuePicker.cpp">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlPotentiometer.cpp">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlSaturationBrightnessPicker.cpp">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlSlider.cpp">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlStepper.cpp">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlSwitch.cpp">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCControlUtils.cpp">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\extensions\GUI\CCControlExtension\CCInvocation.cpp">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\platform\win32\CCApplication-win32.cpp">
+      <Filter>platform\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\platform\win32\CCCommon-win32.cpp">
+      <Filter>platform\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\platform\win32\CCDevice-win32.cpp">
+      <Filter>platform\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\platform\win32\CCFileUtils-win32.cpp">
+      <Filter>platform\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\platform\win32\CCStdC-win32.cpp">
+      <Filter>platform\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\platform\desktop\CCGLViewImpl-desktop.cpp">
+      <Filter>platform\desktop</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ui\UIEditBox\UIEditBoxImpl-win32.cpp">
+      <Filter>ui\UIWidgets\EditBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ui\UIWebViewImpl-win32.cpp">
+      <Filter>ui\UIWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ui\UIWebView.cpp">
+      <Filter>ui\UIWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\base\CCLight.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\audio\AudioEngine.cpp">
+      <Filter>audioengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\audio\win32\AudioCache.cpp">
+      <Filter>audioengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\audio\win32\AudioEngine-win32.cpp">
+      <Filter>audioengine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\audio\win32\AudioPlayer.cpp">
+      <Filter>audioengine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1597,6 +1615,9 @@
     <ClInclude Include="..\renderer\CCBatchCommand.h">
       <Filter>renderer</Filter>
     </ClInclude>
+    <ClInclude Include="..\renderer\CCTrianglesCommand.h">
+      <Filter>renderer</Filter>
+    </ClInclude>
     <ClInclude Include="..\renderer\CCCustomCommand.h">
       <Filter>renderer</Filter>
     </ClInclude>
@@ -1644,21 +1665,6 @@
     </ClInclude>
     <ClInclude Include="..\platform\win32\compat\stdint.h">
       <Filter>platform\win32\compat</Filter>
-    </ClInclude>
-    <ClInclude Include="..\platform\win32\CCApplication.h">
-      <Filter>platform\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\platform\win32\CCFileUtilsWin32.h">
-      <Filter>platform\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\platform\win32\CCGL.h">
-      <Filter>platform\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\platform\win32\CCPlatformDefine.h">
-      <Filter>platform\win32</Filter>
-    </ClInclude>
-    <ClInclude Include="..\platform\win32\CCStdC.h">
-      <Filter>platform\win32</Filter>
     </ClInclude>
     <ClInclude Include="..\math\CCAffineTransform.h">
       <Filter>math</Filter>
@@ -1726,6 +1732,9 @@
     <ClInclude Include="..\..\external\unzip\ioapi.h">
       <Filter>external\unzip</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\external\unzip\ioapi_mem.h">
+      <Filter>external\unzip</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\external\edtaa3func\edtaa3func.h">
       <Filter>external\edtaa</Filter>
     </ClInclude>
@@ -1749,9 +1758,6 @@
     </ClInclude>
     <ClInclude Include="..\storage\local-storage\LocalStorage.h">
       <Filter>storage</Filter>
-    </ClInclude>
-    <ClInclude Include="..\platform\desktop\CCGLViewImpl.h">
-      <Filter>platform\desktop</Filter>
     </ClInclude>
     <ClInclude Include="..\platform\CCGLView.h">
       <Filter>platform</Filter>
@@ -1834,45 +1840,6 @@
     <ClInclude Include="..\..\extensions\assets-manager\AssetsManager.h">
       <Filter>extension\AssetsManager</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControl.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlButton.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlColourPicker.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlExtensions.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlHuePicker.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlPotentiometer.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlSaturationBrightnessPicker.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlSlider.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlStepper.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlSwitch.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlUtils.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCInvocation.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCScale9Sprite.h">
-      <Filter>extension\GUI\CCControlExtension</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\extensions\GUI\CCScrollView\CCScrollView.h">
       <Filter>extension\GUI\CCScrollView</Filter>
     </ClInclude>
@@ -1881,18 +1848,6 @@
     </ClInclude>
     <ClInclude Include="..\..\extensions\GUI\CCScrollView\CCTableViewCell.h">
       <Filter>extension\GUI\CCScrollView</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCEditBox\CCEditBox.h">
-      <Filter>extension\GUI\CCEditBox</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCEditBox\CCEditBoxImpl.h">
-      <Filter>extension\GUI\CCEditBox</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\GUI\CCEditBox\CCEditBoxImplWin.h">
-      <Filter>extension\GUI\CCEditBox</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\extensions\proj.win32\Win32InputBox.h">
-      <Filter>extension\GUI\CCEditBox</Filter>
     </ClInclude>
     <ClInclude Include="..\..\extensions\physics-nodes\CCPhysicsDebugNode.h">
       <Filter>extension\physics_nodes</Filter>
@@ -2299,11 +2254,95 @@
     <ClInclude Include="..\editor-support\cocosbuilder\CocosBuilder.h">
       <Filter>cocosbuilder\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\custom\DrawNode3D.h">
-      <Filter>custom</Filter>
+    <ClInclude Include="..\3d\CCBillBoard.h">
+      <Filter>3d</Filter>
     </ClInclude>
-    <ClInclude Include="..\custom\EffectSprite3D.h">
-      <Filter>custom</Filter>
+    <ClInclude Include="..\ui\UIEditBox\UIEditBox.h">
+      <Filter>ui\UIWidgets\EditBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\UIEditBox\UIEditBoxImpl.h">
+      <Filter>ui\UIWidgets\EditBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControl.h">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlButton.h">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlColourPicker.h">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlExtensions.h">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlHuePicker.h">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlPotentiometer.h">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlSaturationBrightnessPicker.h">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlSlider.h">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlStepper.h">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlSwitch.h">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCControlUtils.h">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extensions\GUI\CCControlExtension\CCInvocation.h">
+      <Filter>extension\GUI\CCControlExtensions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\platform\win32\CCApplication-win32.h">
+      <Filter>platform\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\platform\win32\CCFileUtils-win32.h">
+      <Filter>platform\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\platform\win32\CCGL-win32.h">
+      <Filter>platform\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\platform\win32\CCPlatformDefine-win32.h">
+      <Filter>platform\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\platform\win32\CCStdC-win32.h">
+      <Filter>platform\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\platform\desktop\CCGLViewImpl-desktop.h">
+      <Filter>platform\desktop</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\UIEditBox\UIEditBoxImpl-win32.h">
+      <Filter>ui\UIWidgets\EditBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\UIWebViewImpl-win32.h">
+      <Filter>ui\UIWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\UIWebView-inl.h">
+      <Filter>ui\UIWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ui\UIWebView.h">
+      <Filter>ui\UIWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\base\CCLight.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\audio\include\AudioEngine.h">
+      <Filter>audioengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\audio\win32\AudioCache.h">
+      <Filter>audioengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\audio\win32\AudioEngine-win32.h">
+      <Filter>audioengine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\audio\win32\AudioPlayer.h">
+      <Filter>audioengine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -27,6 +27,7 @@ THE SOFTWARE.
 #include "PluginProtocol.h"
 #include <map>
 #include <string>
+#include <functional>
 
 namespace cocos2d { namespace plugin {
 
@@ -57,6 +58,8 @@ public:
     ProtocolSocial();
     virtual ~ProtocolSocial();
 
+	typedef std::function<void(int, std::string&)> ProtocolSocialCallback;
+
     /**
     @brief config the share developer info
     @param devInfo This parameter is the info of developer,
@@ -70,25 +73,52 @@ public:
      * @brief methods of leaderboard feature
      */
     void submitScore(const char* leadboardID, long score);
+    void submitScore(const char* leadboardID, long score, ProtocolSocialCallback cb);
     void showLeaderboard(const char* leaderboardID);
 
     /**
      * @brief methods of achievement feature
      */
     void unlockAchievement(TAchievementInfo achInfo);
+    void unlockAchievement(TAchievementInfo achInfo, ProtocolSocialCallback cb);
     void showAchievements();
 
-    inline void setListener(SocialListener* listener) {
+    /*
+     @deprecated
+     @brief set listener
+     */
+    CC_DEPRECATED_ATTRIBUTE inline void setListener(SocialListener* listener) {
         _listener = listener;
     }
 
-    inline SocialListener* getListener()
+    /*
+     @deprecated
+     @brief get listener
+     */
+    CC_DEPRECATED_ATTRIBUTE inline SocialListener* getListener()
     {
         return _listener;
     }
 
+    /*
+     @brief set callback function
+     */
+    inline void setCallback(ProtocolSocialCallback &cb)
+    {
+    	_callback = cb;
+    }
+
+    /*
+     @brief get callback function
+     */
+    inline ProtocolSocialCallback& getCallback()
+    {
+    	return _callback;
+    }
+
 protected:
     SocialListener* _listener;
+    ProtocolSocialCallback _callback;
 };
 
 }} // namespace cocos2d { namespace plugin {

@@ -38,9 +38,13 @@ using namespace cocos2d::plugin;
         const char* chMsg = [msg UTF8String];
         AdsResultCode cRet = (AdsResultCode) ret;
         AdsListener* listener = adsPlugin->getAdsListener();
+         ProtocolAds::ProtocolAdsCallback callback = adsPlugin->getCallback();
         if (listener)
         {
             listener->onAdsResult(cRet, chMsg);
+        }else if(callback){
+            std::string stdmsg(chMsg);
+            callback(cRet,stdmsg);
         }
     } else {
         PluginUtilsIOS::outputLog("Can't find the C++ object of the ads plugin");
@@ -62,6 +66,42 @@ using namespace cocos2d::plugin;
     }
 }
 
++ (NSString*)buildVersion
+{
+  NSString *SDKPlatformVersion = [[NSBundle mainBundle] infoDictionary][@"DTPlatformVersion"];
+  
+  if (SDKPlatformVersion) {
+    return SDKPlatformVersion;
+  }
+  
+  // adapted from http://stackoverflow.com/questions/25540140/can-one-determine-the-ios-sdk-version-used-to-build-a-binary-programmatically
+  // form character set of digits and punctuation
+  NSMutableCharacterSet *characterSet = [[NSCharacterSet decimalDigitCharacterSet] mutableCopy];
+  
+  [characterSet formUnionWithCharacterSet: [NSCharacterSet punctuationCharacterSet]];
+  
+  // get only those things in characterSet from the SDK name
+  NSString *SDKName = [[NSBundle mainBundle] infoDictionary][@"DTSDKName"];
+  NSArray *components = [[SDKName componentsSeparatedByCharactersInSet: [characterSet invertedSet]]
+                         filteredArrayUsingPredicate: [NSPredicate predicateWithFormat:@"length != 0"]];
+  
+  if([components count])  {
+    return components[0];
+  }
+  
+  return nil;
+}
+
++ (BOOL)wasBuiltForiOS8orLater
+{
+  return [[self buildVersion] compare:@"8.0"] != NSOrderedAscending;
+}
+
++ (BOOL)requireRotation
+{
+  return ![self wasBuiltForiOS8orLater] || ([[[UIDevice currentDevice] systemVersion] floatValue] < 8.0);
+}
+
 + (void) addAdView:(UIView*) view atPos:(AdsPosEnum) pos
 {
     UIViewController* controller = [AdsWrapper getCurrentRootViewController];
@@ -75,7 +115,7 @@ using namespace cocos2d::plugin;
     CGSize viewSize = view.frame.size;
     CGPoint viewOrigin;
 
-    if (UIInterfaceOrientationIsLandscape(controller.interfaceOrientation)){
+    if ([self requireRotation] && UIInterfaceOrientationIsLandscape(controller.interfaceOrientation)){
         CGFloat temp = rootSize.width;
         rootSize.width = rootSize.height;
         rootSize.height = temp;

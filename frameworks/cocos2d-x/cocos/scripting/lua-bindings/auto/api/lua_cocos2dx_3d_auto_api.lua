@@ -2,13 +2,73 @@
 -- @module cc
 
 --------------------------------------------------------
--- the cc AABB
--- @field [parent=#cc] AABB#AABB AABB preloaded module
+-- the cc Waves3D
+-- @field [parent=#cc] Waves3D#Waves3D Waves3D preloaded module
 
 
 --------------------------------------------------------
--- the cc OBB
--- @field [parent=#cc] OBB#OBB OBB preloaded module
+-- the cc FlipX3D
+-- @field [parent=#cc] FlipX3D#FlipX3D FlipX3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc FlipY3D
+-- @field [parent=#cc] FlipY3D#FlipY3D FlipY3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc Lens3D
+-- @field [parent=#cc] Lens3D#Lens3D Lens3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc Ripple3D
+-- @field [parent=#cc] Ripple3D#Ripple3D Ripple3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc Shaky3D
+-- @field [parent=#cc] Shaky3D#Shaky3D Shaky3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc PageTurn3D
+-- @field [parent=#cc] PageTurn3D#PageTurn3D PageTurn3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc ShakyTiles3D
+-- @field [parent=#cc] ShakyTiles3D#ShakyTiles3D ShakyTiles3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc ShatteredTiles3D
+-- @field [parent=#cc] ShatteredTiles3D#ShatteredTiles3D ShatteredTiles3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc WavesTiles3D
+-- @field [parent=#cc] WavesTiles3D#WavesTiles3D WavesTiles3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc JumpTiles3D
+-- @field [parent=#cc] JumpTiles3D#JumpTiles3D JumpTiles3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc Grid3D
+-- @field [parent=#cc] Grid3D#Grid3D Grid3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc TiledGrid3D
+-- @field [parent=#cc] TiledGrid3D#TiledGrid3D TiledGrid3D preloaded module
+
+
+--------------------------------------------------------
+-- the cc Bone3D
+-- @field [parent=#cc] Bone3D#Bone3D Bone3D preloaded module
 
 
 --------------------------------------------------------

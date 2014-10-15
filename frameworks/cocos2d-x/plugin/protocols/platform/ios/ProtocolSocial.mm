@@ -70,6 +70,19 @@ void ProtocolSocial::submitScore(const char* leadboardID, long score)
         [curObj submitScore:pID withScore:score];
     }
 }
+    void ProtocolSocial::submitScore(const char* leadboardID, long score, ProtocolSocialCallback callback)
+    {
+        PluginOCData* pData = PluginUtilsIOS::getPluginOCData(this);
+        assert(pData != NULL);
+        setCallback(callback);
+        id ocObj = pData->obj;
+        if ([ocObj conformsToProtocol:@protocol(InterfaceSocial)]) {
+            NSObject<InterfaceSocial>* curObj = ocObj;
+            
+            NSString* pID = [NSString stringWithUTF8String:leadboardID];
+            [curObj submitScore:pID withScore:score];
+        }
+    }
 
 void ProtocolSocial::showLeaderboard(const char* leaderboardID)
 {
@@ -106,6 +119,27 @@ void ProtocolSocial::unlockAchievement(TAchievementInfo achInfo)
         }
     }
 }
+    void ProtocolSocial::unlockAchievement(TAchievementInfo achInfo,ProtocolSocialCallback callback)
+    {
+        if (achInfo.empty())
+        {
+            PluginUtilsIOS::outputLog("ProtocolSocial", "The achievement info is empty!");
+            return;
+        }
+        else
+        {
+            PluginOCData* pData = PluginUtilsIOS::getPluginOCData(this);
+            assert(pData != NULL);
+            setCallback(callback);
+            id ocObj = pData->obj;
+            if ([ocObj conformsToProtocol:@protocol(InterfaceSocial)]) {
+                NSObject<InterfaceSocial>* curObj = ocObj;
+                
+                NSMutableDictionary* pDict = PluginUtilsIOS::createDictFromMap(&achInfo);
+                [curObj unlockAchievement:pDict];
+            }
+        }
+    }
 
 void ProtocolSocial::showAchievements()
 {

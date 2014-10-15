@@ -363,7 +363,73 @@ function cc.PhysicsMaterial(_density, _restitution, _friction)
 	return { density = _density, restitution = _restitution, friction = _friction }
 end
 
---Vec3
+function cc.vec3(_x, _y, _z)
+    return { x = _x, y = _y, z = _z }
+end
+
+function cc.vec4(_x, _y, _z, _w)
+    return { x = _x, y = _y, z = _z, w = _w }
+end
+
+function cc.vec3normalize(vec3)
+    local n = vec3.x * vec3.x + vec3.y * vec3.y + vec3.z * vec3.z
+    if n == 1.0 then
+        return vec3
+    end
+
+    n = math.sqrt(n)
+
+    if n < 2e-37 then
+        return vec3
+    end
+
+    n = 1.0 / n
+    return {x = vec3.x * n, y = vec3.y * n, z = vec3.z * n}
+end
+
+function cc.quaternion(_x, _y ,_z,_w)
+    return { x = _x, y = _y, z = _z, w = _w }
+end
+
+cc.mat4 = cc.mat4 or {}
+
+function cc.mat4.new(...)
+    local params = {...}
+    local size   = #params
+
+    local obj = {}
+
+    if 1 == size then
+        assert(type(params[1]) == "table" , "type of input params are wrong to new a mat4 when num of params is 1")
+        for i= 1, 16 do
+            if params[1][i] ~= nil then
+                obj[i] = params[1][i]
+            else
+                obj[i] = 0
+            end
+        end 
+    elseif 16 == size then
+        if params[i] ~= nil then
+            mat4[i] = params[i]
+        else
+            mat4[i] = 0
+        end
+    end  
+
+    setmetatable(obj, {__index = cc.mat4})
+
+    return obj 
+end
+
+function cc.mat4.getInversed(self)
+    return mat4_getInversed(self)
+end
+
+function cc.mat4.transformVector(self, vector, dst)
+    return mat4_transformVector(self, vector, dst)
+end
+
+--Vec3   user define
 function cc.V3(p1, p2, p3)
     return {x = p1, y = p2, z = p3}
 end
@@ -479,5 +545,3 @@ function cc.Mat4transformVector(m, p)
     p.y = x * m[2] + y * m[6] + z * m[10] + w * m[14];
     p.z = x * m[3] + y * m[7] + z * m[11] + w * m[15];
 end
-
-

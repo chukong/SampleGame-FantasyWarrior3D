@@ -13,10 +13,7 @@ using namespace std;
 
 AppDelegate::AppDelegate()
 {
-#if (COCOS2D_DEBUG > 0)
-    // NOTE:Please don't remove this call if you want to debug with Cocos Code IDE
-    initRuntime();
-#endif
+
 }
 
 AppDelegate::~AppDelegate()
@@ -38,17 +35,22 @@ void AppDelegate::initGLContextAttrs()
 bool AppDelegate::applicationDidFinishLaunching()
 {
     // initialize director
+#if (COCOS2D_DEBUG > 0)
+    // NOTE:Please don't remove this call if you want to debug with Cocos Code IDE
+    initRuntime();
+#endif
+    
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();    
     if(!glview) {
         Size viewSize = ConfigParser::getInstance()->getInitViewSize();
         string title = ConfigParser::getInstance()->getInitViewName();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
-        extern void createSimulator(const char* viewName, float width, float height,bool isLandscape = true, float frameZoomFactor = 1.0f);
+        extern void createSimulator(const char* viewName, float width, float height, bool isLandscape = true, float frameZoomFactor = 1.0f);
         bool isLanscape = ConfigParser::getInstance()->isLanscape();
-        createSimulator(title.c_str(),viewSize.width,viewSize.height,isLanscape);
+        createSimulator(title.c_str(),viewSize.width,viewSize.height, isLanscape);
 #else
-        glview = cocos2d::GLViewImpl::createWithRect(title.c_str(), Rect(0,0,viewSize.width,viewSize.height));
+        glview = cocos2d::GLViewImpl::createWithRect(title.c_str(), Rect(0, 0, viewSize.width, viewSize.height));
         director->setOpenGLView(glview);
 #endif
     }
@@ -60,8 +62,6 @@ bool AppDelegate::applicationDidFinishLaunching()
 
     LuaStack* stack = engine->getLuaStack();
     stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
-
-    director->setDisplayStats(true);
     
     //register custom function
     //LuaStack* stack = engine->getLuaStack();
@@ -73,8 +73,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 #else
     engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
 #endif
-    
-    
+
     return true;
 }
 

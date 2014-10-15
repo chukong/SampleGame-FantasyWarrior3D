@@ -3,6 +3,7 @@
 
 #include "jsb_pluginx_spidermonkey_specifics.h"
 #include "pluginxUTF8.h"
+#include <sstream>
 
 namespace pluginx {
 
@@ -60,6 +61,28 @@ public:
     }
 };
 
+// JSFunctionWrapper
+JSFunctionWrapper::JSFunctionWrapper(JSContext* cx, JSObject *jsthis, jsval fval)
+: _cx(cx)
+, _jsthis(jsthis)
+, _fval(fval)
+{
+    JS_AddNamedValueRoot(cx, &this->_fval, "JSFunctionWrapper");
+    JS_AddNamedObjectRoot(cx, &this->_jsthis, "JSFunctionWrapper");
+}
+
+JSFunctionWrapper::~JSFunctionWrapper()
+{
+    JS_RemoveValueRoot(this->_cx, &this->_fval);
+    JS_RemoveObjectRoot(this->_cx, &this->_jsthis);
+}
+
+bool JSFunctionWrapper::invoke(unsigned int argc, jsval *argv, jsval &rval)
+{
+    //JSB_AUTOCOMPARTMENT_WITH_GLOBAL_OBJCET
+    
+    return JS_CallFunctionValue(this->_cx, this->_jsthis, this->_fval, argc, argv, &rval);
+}
 
 bool jsval_to_int32( JSContext *cx, jsval vp, int32_t *outval )
 {
@@ -196,6 +219,91 @@ bool jsval_to_TProductInfo(JSContext *cx, jsval v, TProductInfo* ret)
     return true;
 }
 
+bool jsval_to_FBInfo(JSContext *cx, jsval v, StringMap* ret)
+{
+	JSObject* tmp = JSVAL_TO_OBJECT(v);
+	if (!tmp) {
+		LOGD("jsval_to_TProductInfo: the jsval is not an object.");
+		return false;
+	}
+
+	JSObject* it = JS_NewPropertyIterator(cx, tmp);
+
+	while (true)
+	{
+		jsid idp;
+		jsval key;
+		if (! JS_NextProperty(cx, it, &idp) || ! JS_IdToValue(cx, idp, &key))
+			return false; // error
+		if (key == JSVAL_VOID)
+			break; // end of iteration
+		if (! JSVAL_IS_STRING(key))
+			continue; // ignore integer properties
+		JS::RootedValue value(cx);
+		JS_GetPropertyById(cx, tmp, idp, &value);
+
+//		if (! JSVAL_IS_STRING(value))
+//			continue; // ignore integer properties
+		if(JSVAL_IS_STRING(value))
+		{
+
+			JSStringWrapper strWrapper(JSVAL_TO_STRING(key), cx);
+			JSStringWrapper strWrapper2(JSVAL_TO_STRING(value), cx);
+
+			ret->insert(std::map<std::string, std::string>::value_type(strWrapper.get(), strWrapper2.get()));
+		}
+		else if(JSVAL_IS_NUMBER(value))
+		{
+			double number = 0.0;
+			JS::ToNumber(cx, value, &number);
+
+			std::stringstream ss;
+			ss << number;
+
+			JSStringWrapper strWrapper(JSVAL_TO_STRING(key), cx);
+			//JSStringWrapper strWrapper2(JSVAL_TO_STRING(value), cx);
+
+			ret->insert(std::map<std::string, std::string>::value_type(strWrapper.get(), ss.str()));
+		}
+		else if(JSVAL_IS_BOOLEAN(value))
+		{
+			bool boolVal = JS::ToBoolean(value);
+			JSStringWrapper strWrapper(JSVAL_TO_STRING(key), cx);
+			//JSStringWrapper strWrapper2(JSVAL_TO_STRING(value), cx);
+			std::string boolstring = boolVal ? "true" : "false";
+			ret->insert(std::map<std::string, std::string>::value_type(strWrapper.get(), boolstring));
+		}
+	}
+
+	return true;
+}
+
+bool jsval_array_to_string(JSContext *cx, jsval v, std::string* ret)
+{
+	JS::RootedObject jsobj(cx);
+	bool ok = v.isObject() && JS_ValueToObject( cx, JS::RootedValue(cx, v), &jsobj );
+	JSB_PRECONDITION2( ok, cx, false, "Error converting value to object");
+	JSB_PRECONDITION2( jsobj && JS_IsArrayObject( cx, jsobj), cx, false, "Object must be an array");
+
+	uint32_t len;
+	JS_GetArrayLength(cx, jsobj, &len);
+
+	for( uint32_t i=0; i< len;i++ ) {
+		JS::RootedValue valarg(cx);
+		JS_GetElement(cx, jsobj, i, &valarg);
+
+		std::string temp;
+		ok = jsval_to_std_string(cx, valarg, &temp);
+		JSB_PRECONDITION2(ok, cx, false, "Error processing arguments");
+		if(i != len -1)
+			ret->append(temp + ",");
+		else
+			ret->append(temp);
+	}
+
+	return true;
+}
+
 bool jsval_to_TIAPDeveloperInfo(JSContext *cx, jsval v, TIAPDeveloperInfo* ret)
 {
     return jsval_to_TProductInfo(cx, v, ret);
@@ -320,18 +428,18 @@ jsval TProductInfo_to_jsval(JSContext *cx, TProductInfo& ret)
     return OBJECT_TO_JSVAL(tmp);
 }
 
-    jsval TProductList_to_jsval(JSContext *cx,TProductList list){
-        JSObject *tmp = JS_NewArrayObject(cx, 0, NULL);
-        int i = 0;
-        for(TProductList::iterator it = list.begin();it!=list.end();++it){
-            JS::RootedValue arrElement(cx);
-            
-            arrElement = TProductInfo_to_jsval(cx, *it);
-            JS_SetElement(cx, tmp, i, &arrElement);
-            ++i;
-        }
-        return OBJECT_TO_JSVAL(tmp);
-    }
+jsval TProductList_to_jsval(JSContext *cx,TProductList list){
+	JSObject *tmp = JS_NewArrayObject(cx, 0, NULL);
+	int i = 0;
+	for(TProductList::iterator it = list.begin();it!=list.end();++it){
+		JS::RootedValue arrElement(cx);
+
+		arrElement = TProductInfo_to_jsval(cx, *it);
+		JS_SetElement(cx, tmp, i, &arrElement);
+		++i;
+	}
+	return OBJECT_TO_JSVAL(tmp);
+}
     
 jsval LogEventParamMap_to_jsval(JSContext *cx, LogEventParamMap*& ret)
 {// TODO:

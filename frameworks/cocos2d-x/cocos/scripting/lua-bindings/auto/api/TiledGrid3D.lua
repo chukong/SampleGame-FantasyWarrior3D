@@ -5,6 +5,33 @@
 -- @parent_module cc
 
 --------------------------------
+--  returns the original tile (untransformed) at the given position <br>
+-- js NA<br>
+-- lua NA
+-- @function [parent=#TiledGrid3D] getOriginalTile 
+-- @param self
+-- @param #vec2_table pos
+-- @return Quad3#Quad3 ret (return value: cc.Quad3)
+        
+--------------------------------
+--  returns the tile at the given position <br>
+-- js NA<br>
+-- lua NA
+-- @function [parent=#TiledGrid3D] getTile 
+-- @param self
+-- @param #vec2_table pos
+-- @return Quad3#Quad3 ret (return value: cc.Quad3)
+        
+--------------------------------
+--  sets a new tile <br>
+-- js NA<br>
+-- lua NA
+-- @function [parent=#TiledGrid3D] setTile 
+-- @param self
+-- @param #vec2_table pos
+-- @param #cc.Quad3 coords
+        
+--------------------------------
 -- @overload self, size_table         
 -- @overload self, size_table, cc.Texture2D, bool         
 -- @function [parent=#TiledGrid3D] create

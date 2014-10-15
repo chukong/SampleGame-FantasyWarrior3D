@@ -36,6 +36,5 @@ typedef enum {
     
 }
 
-+ (void) onShareResult:(id) obj withRet:(ShareResult) ret withMsg:(NSString*) msg;
-
++ (void) onShareResult:(id) obj withRet:(int) ret withMsg:(NSString*) msg;
 @end

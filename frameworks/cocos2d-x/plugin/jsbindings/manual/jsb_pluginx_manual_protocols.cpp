@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "PluginProtocol.h"
+#include "AgentManager.h"
 
 using namespace pluginx;
 

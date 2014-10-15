@@ -89,6 +89,7 @@ NSArray * _transactionArray;
 
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error {
     OUTPUT_LOG(@"Failed to load list of products.");
+     [IAPWrapper onRequestProduct:self withRet:RequestFail withProducts:NULL];
     _productsRequest = nil;
 }
 

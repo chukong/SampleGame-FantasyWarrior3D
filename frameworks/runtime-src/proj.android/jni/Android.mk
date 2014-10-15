@@ -32,7 +32,6 @@ hellolua/Runtime_android.cpp \
 ../../Classes/AppDelegate.cpp \
 ../../Classes/ConfigParser.cpp
 
-
 LOCAL_C_INCLUDES := \
 $(LOCAL_PATH)/../../Classes/protobuf-lite \
 $(LOCAL_PATH)/../../Classes/runtime \

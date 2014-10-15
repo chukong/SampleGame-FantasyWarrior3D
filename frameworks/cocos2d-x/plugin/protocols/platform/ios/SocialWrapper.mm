@@ -36,15 +36,18 @@ using namespace cocos2d::plugin;
     ProtocolSocial* pSocial = dynamic_cast<ProtocolSocial*>(pPlugin);
     if (pSocial) {
         SocialListener* pListener = pSocial->getListener();
+        ProtocolSocial::ProtocolSocialCallback callback = pSocial->getCallback();
+        const char* chMsg = [msg UTF8String];
+        SocialRetCode cRet = (SocialRetCode) ret;
         if (NULL != pListener)
         {
-            const char* chMsg = [msg UTF8String];
-            SocialRetCode cRet = (SocialRetCode) ret;
             pListener->onSocialResult(cRet, chMsg);
+        }else if(callback){
+            std::string stdmsg(chMsg);
+            callback(cRet,stdmsg);
         }
     } else {
         PluginUtilsIOS::outputLog("Can't find the C++ object of the Social plugin");
     }
 }
-
 @end

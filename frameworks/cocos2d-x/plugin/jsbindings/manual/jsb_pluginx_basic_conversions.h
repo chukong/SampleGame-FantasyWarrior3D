@@ -38,7 +38,8 @@ bool jsval_to_TPaymentInfo(JSContext *cx, jsval v, std::map<std::string, std::st
 bool jsval_to_TUserDeveloperInfo(JSContext *cx, jsval v, TUserDeveloperInfo* ret);
 bool jsval_to_LogEventParamMap(JSContext *cx, jsval v, LogEventParamMap** ret);
 bool jsval_to_StringMap(JSContext *cx, jsval v, StringMap* ret);
-
+bool jsval_to_FBInfo(JSContext *cx, jsval v, StringMap* ret);
+bool jsval_array_to_string(JSContext *cx, jsval v, std::string* ret);
 // from native
 jsval int32_to_jsval( JSContext *cx, int32_t l);
 jsval uint32_to_jsval( JSContext *cx, uint32_t number );
@@ -49,6 +50,24 @@ jsval c_string_to_jsval(JSContext* cx, const char* v, size_t length = -1);
 jsval TProductInfo_to_jsval(JSContext *cx, TProductInfo& ret);
 jsval TProductList_to_jsval(JSContext *cx, TProductList ret);
 jsval LogEventParamMap_to_jsval(JSContext *cx, LogEventParamMap*& ret);
+
+
+// wraps a function and "this" object
+class JSFunctionWrapper
+{
+public:
+    JSFunctionWrapper(JSContext* cx, JSObject *jsthis, jsval fval);
+    ~JSFunctionWrapper();
+
+    bool invoke(unsigned int argc, jsval *argv, jsval &rval);
+private:
+    JSContext *_cx;
+    JSObject *_jsthis;
+    jsval _fval;
+private:
+    JSFunctionWrapper(const JSFunctionWrapper &);
+    JSFunctionWrapper& operator=(const JSFunctionWrapper &);
+};
 
 } // namespace pluginx {
 

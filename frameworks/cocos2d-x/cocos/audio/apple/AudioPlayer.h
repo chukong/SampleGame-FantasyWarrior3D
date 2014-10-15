@@ -28,10 +28,11 @@
 #ifndef __AUDIO_PLAYER_H_
 #define __AUDIO_PLAYER_H_
 
-#import <OpenAL/al.h>
-#include <string>
+#include <condition_variable>
 #include <mutex>
+#include <string>
 #include <thread>
+#import <OpenAL/al.h>
 #include "CCPlatformMacros.h"
 
 NS_CC_BEGIN
@@ -69,7 +70,8 @@ private:
     bool _streamingSource;
     ALuint _bufferIds[3];
     std::thread _rotateBufferThread;
-    std::timed_mutex _timeMtx;
+    std::condition_variable _sleepCondition;
+    std::mutex _sleepMutex;
     bool _exitThread;
     bool _timeDirty;
     

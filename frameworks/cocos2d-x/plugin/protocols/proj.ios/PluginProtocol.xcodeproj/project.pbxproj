@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		051FF7BC192CE3CC00C43A06 /* IAPWrapper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 051FF7BB192CE3CC00C43A06 /* IAPWrapper.mm */; };
+		059B0A7E19864CE1004B06D4 /* FacebookAgent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 059B0A7D19864CE1004B06D4 /* FacebookAgent.mm */; };
+		05AB25181988F62000D00E8E /* ParseUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 05AB25171988F62000D00E8E /* ParseUtils.m */; };
+		BA1BF842195A6FC100B47F4E /* AgentManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = BA1BF841195A6FC100B47F4E /* AgentManager.mm */; };
 		FA09A325168ADBC2008C1C7B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA09A324168ADBC2008C1C7B /* Foundation.framework */; };
 		FA09A33E168ADC1F008C1C7B /* PluginManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FA09A33C168ADC1F008C1C7B /* PluginManager.cpp */; };
 		FA8CC1E6173754CF00464206 /* PluginUtilsIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA8CC1E5173754CF00464206 /* PluginUtilsIOS.mm */; };
@@ -42,6 +45,12 @@
 /* Begin PBXFileReference section */
 		051FF7BA192CE3CC00C43A06 /* IAPWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAPWrapper.h; sourceTree = "<group>"; };
 		051FF7BB192CE3CC00C43A06 /* IAPWrapper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IAPWrapper.mm; sourceTree = "<group>"; };
+		059B0A79198649F0004B06D4 /* FacebookAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookAgent.h; sourceTree = "<group>"; };
+		059B0A7D19864CE1004B06D4 /* FacebookAgent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FacebookAgent.mm; sourceTree = "<group>"; };
+		05AB25161988F62000D00E8E /* ParseUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParseUtils.h; sourceTree = "<group>"; };
+		05AB25171988F62000D00E8E /* ParseUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParseUtils.m; sourceTree = "<group>"; };
+		BA1BF7FE195962C400B47F4E /* AgentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AgentManager.h; sourceTree = "<group>"; };
+		BA1BF841195A6FC100B47F4E /* AgentManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AgentManager.mm; sourceTree = "<group>"; };
 		FA09A321168ADBC2008C1C7B /* libPluginProtocol.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPluginProtocol.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA09A324168ADBC2008C1C7B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FA09A337168ADC05008C1C7B /* PluginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PluginManager.h; sourceTree = "<group>"; };
@@ -129,6 +138,8 @@
 		FA09A336168ADC05008C1C7B /* include */ = {
 			isa = PBXGroup;
 			children = (
+				059B0A79198649F0004B06D4 /* FacebookAgent.h */,
+				BA1BF7FE195962C400B47F4E /* AgentManager.h */,
 				FADBF896179E504B00F59B1D /* ProtocolSocial.h */,
 				FAD55522177D213F00968F54 /* ProtocolUser.h */,
 				FAC2A7F41777F88700035D22 /* ProtocolShare.h */,
@@ -147,9 +158,11 @@
 		FA0CB8B5168D3CC200E36B11 /* ios */ = {
 			isa = PBXGroup;
 			children = (
+				059B0A7D19864CE1004B06D4 /* FacebookAgent.mm */,
+				BA1BF841195A6FC100B47F4E /* AgentManager.mm */,
 				051FF7BA192CE3CC00C43A06 /* IAPWrapper.h */,
-				051FF7BB192CE3CC00C43A06 /* IAPWrapper.mm */,
 				FADBF897179E509500F59B1D /* InterfaceSocial.h */,
+				051FF7BB192CE3CC00C43A06 /* IAPWrapper.mm */,
 				FADBF898179E509500F59B1D /* ProtocolSocial.mm */,
 				FADBF899179E509500F59B1D /* SocialWrapper.h */,
 				FADBF89A179E509500F59B1D /* SocialWrapper.mm */,
@@ -174,6 +187,8 @@
 				FA8CC207173894F000464206 /* ProtocolIAP.mm */,
 				FA8CC1E4173754CF00464206 /* PluginUtilsIOS.h */,
 				FA8CC1E5173754CF00464206 /* PluginUtilsIOS.mm */,
+				05AB25161988F62000D00E8E /* ParseUtils.h */,
+				05AB25171988F62000D00E8E /* ParseUtils.m */,
 			);
 			name = ios;
 			path = ../platform/ios;
@@ -238,13 +253,16 @@
 				FA8CC20A173894F000464206 /* ProtocolIAP.mm in Sources */,
 				FAB6DF961755D7E500C90D89 /* PluginParam.cpp in Sources */,
 				FAB6DF981755D82F00C90D89 /* PluginFactory.mm in Sources */,
+				059B0A7E19864CE1004B06D4 /* FacebookAgent.mm in Sources */,
 				FAB6DF9A1755D93600C90D89 /* PluginProtocol.mm in Sources */,
 				FADC44CA176EABCF00B2D5ED /* AdsWrapper.mm in Sources */,
 				FAC2A7F91777F8C200035D22 /* ProtocolShare.mm in Sources */,
 				FAC2A7FA1777F8C200035D22 /* ShareWrapper.mm in Sources */,
 				FAD55520177D1FA900968F54 /* ProtocolUser.mm in Sources */,
 				FAD55521177D1FA900968F54 /* UserWrapper.mm in Sources */,
+				BA1BF842195A6FC100B47F4E /* AgentManager.mm in Sources */,
 				FADBF89B179E509500F59B1D /* ProtocolSocial.mm in Sources */,
+				05AB25181988F62000D00E8E /* ParseUtils.m in Sources */,
 				FADBF89C179E509500F59B1D /* SocialWrapper.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

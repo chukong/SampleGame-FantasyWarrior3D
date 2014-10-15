@@ -114,6 +114,7 @@ base/CCEventListenerTouch.cpp \
 base/CCEventMouse.cpp \
 base/CCEventTouch.cpp \
 base/CCIMEDispatcher.cpp \
+base/CCLight.cpp \
 base/CCNS.cpp \
 base/CCProfiling.cpp \
 base/ccRandom.cpp \
@@ -122,7 +123,7 @@ base/CCScheduler.cpp \
 base/CCScriptSupport.cpp \
 base/CCTouch.cpp \
 base/CCUserDefault.cpp \
-base/CCUserDefaultAndroid.cpp \
+base/CCUserDefault-android.cpp \
 base/CCValue.cpp \
 base/TGAlib.cpp \
 base/ZipUtils.cpp \
@@ -159,6 +160,7 @@ renderer/CCVertexIndexBuffer.cpp \
 renderer/CCVertexIndexData.cpp \
 renderer/CCPrimitive.cpp \
 renderer/CCPrimitiveCommand.cpp \
+renderer/CCTrianglesCommand.cpp \
 deprecated/CCArray.cpp \
 deprecated/CCSet.cpp \
 deprecated/CCString.cpp \
@@ -178,18 +180,22 @@ physics/chipmunk/CCPhysicsWorldInfo_chipmunk.cpp \
 ../external/ConvertUTF/ConvertUTFWrapper.cpp \
 ../external/ConvertUTF/ConvertUTF.c \
 ../external/tinyxml2/tinyxml2.cpp \
+../external/unzip/ioapi_mem.cpp \
 ../external/unzip/ioapi.cpp \
 ../external/unzip/unzip.cpp \
 ../external/edtaa3func/edtaa3func.cpp \
 ../external/xxhash/xxhash.c \
-custom/EffectSprite3D.cpp \
+custom/BillboardParticleSystem.cpp \
 custom/DrawNode3D.cpp \
-custom/BillboardParticleSystem.cpp
+custom/EffectSprite3D.cpp \
+custom/JumpBy3D.cpp \
+custom/JumpTo3D.cpp \
+custom/Water.cpp \
 
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
                     $(LOCAL_PATH)/. \
-                    $(LOCAL_PATH)/platform/android \
+                    $(LOCAL_PATH)/platform \
                     $(LOCAL_PATH)/base \
                     $(LOCAL_PATH)/../external/tinyxml2 \
                     $(LOCAL_PATH)/../external/unzip \
@@ -199,7 +205,7 @@ LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH) \
                     $(LOCAL_PATH)/. \
-                    $(LOCAL_PATH)/platform/android \
+                    $(LOCAL_PATH)/platform \
                     $(LOCAL_PATH)/../external \
                     $(LOCAL_PATH)/../external/tinyxml2 \
                     $(LOCAL_PATH)/../external/unzip \
@@ -219,7 +225,7 @@ LOCAL_STATIC_LIBRARIES += cocos_png_static
 LOCAL_STATIC_LIBRARIES += cocos_jpeg_static
 LOCAL_STATIC_LIBRARIES += cocos_tiff_static
 LOCAL_STATIC_LIBRARIES += cocos_webp_static
-LOCAL_STATIC_LIBRARIES += chipmunk_static
+LOCAL_STATIC_LIBRARIES += cocos_chipmunk_static
 
 LOCAL_WHOLE_STATIC_LIBRARIES := cocos2dxandroid_static
 
@@ -229,6 +235,10 @@ LOCAL_CPPFLAGS := -Wno-deprecated-declarations -Wno-extern-c-compat
 LOCAL_EXPORT_CFLAGS   := -DUSE_FILE32API
 LOCAL_EXPORT_CPPFLAGS := -Wno-deprecated-declarations -Wno-extern-c-compat
 
+ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
+LOCAL_ARM_NEON  := true
+endif
+
 include $(BUILD_STATIC_LIBRARY)
 
 #==============================================================
@@ -236,28 +246,25 @@ include $(BUILD_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := cocos2dx_static
-
 LOCAL_MODULE_FILENAME := libcocos2d
 
 LOCAL_STATIC_LIBRARIES := cocostudio_static
+LOCAL_STATIC_LIBRARIES += audioengine_static
 LOCAL_STATIC_LIBRARIES += cocos3d_static
 LOCAL_STATIC_LIBRARIES += cocosbuilder_static
 LOCAL_STATIC_LIBRARIES += spine_static
 LOCAL_STATIC_LIBRARIES += cocos_network_static
 LOCAL_STATIC_LIBRARIES += box2d_static
-LOCAL_STATIC_LIBRARIES += chipmunk_static
 
 include $(BUILD_STATIC_LIBRARY)
 #==============================================================
 $(call import-module,freetype2/prebuilt/android)
-$(call import-module,chipmunk)
 $(call import-module,platform/android)
 $(call import-module,png/prebuilt/android)
 $(call import-module,jpeg/prebuilt/android)
 $(call import-module,tiff/prebuilt/android)
 $(call import-module,webp/prebuilt/android)
-$(call import-module,webp/prebuilt/android)
-$(call import-module,webp/prebuilt/android)
+$(call import-module,chipmunk/prebuilt/android)
 $(call import-module,3d)
 $(call import-module,audio/android)
 $(call import-module,editor-support/cocosbuilder)
