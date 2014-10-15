@@ -302,12 +302,6 @@ local function gameController(dt)
     moveCamera(dt)
     updateParticlePos()
 
---  A sample to drop blood    
---    if uiLayer~=nil and warrior._blood>700 then
---        sendDropBlood(300/1000*100, warrior)
---        warrior._blood=warrior._blood-1
---    end
-      
     enemyEncounter()
     findAllEnemy()
 end
@@ -339,7 +333,13 @@ function BattleScene.create()
     initUILayer()
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,registerBloodDrop)
-    
+
+-- A sample to send blood drop
+--    if uiLayer~=nil then
+--        sendDropBlood(500/1000*100,warrior)
+--        warrior._blood=warrior._blood-1
+--    end
+
     if warrior ~= nil then
         warrior._particle:setCamera(camera)
     end
