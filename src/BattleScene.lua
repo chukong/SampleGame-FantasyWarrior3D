@@ -6,6 +6,7 @@ require "Manager"
 require "Warrior"
 require "Mage"
 require "MessageDispatchCenter"
+require "AttackCommand"
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
@@ -15,11 +16,6 @@ local currentLayer = nil
 local heroOriginPositionX = -2900
 local currentStep = 1;
 local uiLayer = nil
-
---hero ref
-local warrior
-local archer
-local mage
 
 local function collisionDetect()
     --cclog("collisionDetect")
@@ -61,7 +57,7 @@ local function findEnmey(object, manager)
     if object == nil or object._isalive == false then return end
 
     local find = false
-    local shortest_distance = 500
+    local shortest_distance = 1000
     for var = 1, List.getSize(manager) do
         local objectTemp = manager[var-1]
         local dis = cc.pGetDistance(getPosTable(object),getPosTable(objectTemp))
@@ -94,24 +90,32 @@ local function findAllEnemy()
     if currentStep > 3 and findAliveBoss() == 0 and findAliveMonster() == 0 then
         return
     end
-    
-    local tempSize1 = List.getSize(MonsterManager)
-    findEnmey(warrior, MonsterManager)
-    findEnmey(archer, MonsterManager)
-    findEnmey(mage, MonsterManager)
+
+    local heroSize =  List.getSize(HeroManager)
+    local monsterSize = List.getSize(MonsterManager)
+    local bossSize = List.getSize(BossManager)    
+
+    --hero find monster and boss
+    for val = 1, heroSize do
+        local sprite = HeroManager[val-1]
+        findEnmey(sprite, MonsterManager)
+    end
         
-   for var = 1, tempSize1 do
+    if bossSize > 0 then  
+        for val = 1, heroSize do
+            local sprite = HeroManager[val-1]
+            findEnmey(sprite, BossManager)
+        end           
+    end        
+        
+    --monster and boss find hero
+    for var = 1, monsterSize do
        local objectTemp = MonsterManager[var-1]
        findEnmey(objectTemp, HeroManager)
    end
 
-    local tempSize2 = List.getSize(BossManager)
-    if tempSize2 > 0 then        
-        findEnmey(warrior, BossManager)
-        findEnmey(archer, BossManager)
-        findEnmey(mage, BossManager)
-        
-        for var = 1, tempSize2 do
+    if bossSize > 0 then  
+        for var = 1, bossSize do
             local objectTemp = BossManager[var-1]
             findEnmey(objectTemp, HeroManager)
         end          
@@ -129,19 +133,12 @@ end
 
 local function updateParticlePos()
     --cclog("updateParticlePos")
-    if warrior ~= nil and warrior._particle ~= nil then
-        warrior._particle:setPosition(getPosTable(warrior))
+    for val = 1, List.getSize(HeroManager) do
+        local sprite = HeroManager[val-1]
+        if sprite._particle ~= nil then        
+            sprite._particle:setPosition(getPosTable(sprite))
+        end
     end
-    if archer ~= nil and archer._particle ~= nil then
-        archer._particle:setPosition(getPosTable(archer))
-    end
-    if mage ~= nil and mage._particle ~= nil then
-        mage._particle:setPosition(getPosTable(mage))
-    end
-end
-
-local function jumpdone()
-    warrior:setState(EnumStateType.WALK)
 end
 
 local function addParticleToRole(role)
@@ -238,21 +235,21 @@ local function createEnmey(step)
 end
 
 local function createRole()
-    warrior = addNewSprite(heroOriginPositionX, 0, EnumRaceType.WARRIOR)
-    addParticleToRole(warrior)    
-    warrior:setState(EnumStateType.STAND)
-    warrior:runAction(cc.Sequence:create(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1),cc.CallFunc:create(jumpdone)))
-    List.pushlast(HeroManager, warrior)
---        
-    archer = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR)
-    addParticleToRole(archer)    
-    archer:setState(EnumStateType.WALK)
-    List.pushlast(HeroManager, archer)
+    local hero = addNewSprite(heroOriginPositionX, 0, EnumRaceType.WARRIOR)
+    addParticleToRole(hero)    
+    hero:setState(EnumStateType.WALK)
+    hero:runAction(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1))
+    List.pushlast(HeroManager, hero)
+        
+    hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR)
+    addParticleToRole(hero)    
+    hero:setState(EnumStateType.WALK)
+    List.pushlast(HeroManager, hero)
 
-    mage = addNewSprite(heroOriginPositionX, -300, EnumRaceType.MAGE)
-    addParticleToRole(mage)
-    mage:setState(EnumStateType.WALK)
-    List.pushlast(HeroManager, mage)
+    hero = addNewSprite(heroOriginPositionX, -300, EnumRaceType.MAGE)
+    addParticleToRole(hero)
+    hero:setState(EnumStateType.WALK)
+    List.pushlast(HeroManager, hero)
 
     addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER)
     addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER)
@@ -334,23 +331,12 @@ function BattleScene.create()
     initUILayer()
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,registerBloodDrop)
-
--- A sample to send blood drop
---    if uiLayer~=nil then
---        sendDropBlood(500/1000*100,warrior)
---        warrior._blood=warrior._blood-1
---    end
-
-    if warrior ~= nil then
-        warrior._particle:setCamera(camera)
-    end
-    if archer ~= nil then
-        archer._particle:setCamera(camera)
-    end
-    if mage ~= nil then
-        mage._particle:setCamera(camera)
-    end
     
+    for val = 1, List.getSize(HeroManager) do
+        local sprite = HeroManager[val-1]
+        sprite._particle:setCamera(camera)
+    end    
+
     scheduler:scheduleScriptFunc(gameController, 0, false)
     
     return scene

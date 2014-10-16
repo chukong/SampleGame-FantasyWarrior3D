@@ -37,7 +37,11 @@ for key, var in pairs(EnumStateType) do
     DEBUG_TYPESTATE[key] = var	
 end
 function getDebugStateType(obj)
-    cclog(DEBUG_TYPESTATE[obj._statetype+1])
+    if type(obj) == "number" then
+        cclog(DEBUG_TYPESTATE[obj+1])    
+    else
+        cclog(DEBUG_TYPESTATE[obj._statetype+1])
+    end
 end
 
 EnumStateType = CreateEnumTable(EnumStateType) 

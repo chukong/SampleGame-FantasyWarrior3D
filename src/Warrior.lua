@@ -22,11 +22,8 @@ function Warrior.create()
 
     -- base
     hero:setRaceType(EnumRaceType.WARRIOR)
-    hero:setState(EnumRaceType.STAND)
+    hero:setState(EnumStateType.STAND)
     hero:initActions()
-
-    --self
-    hero._weapon = math.random() .. ""
 
     local function MainLoop(dt)
         --getDebugStateType(hero)
@@ -106,7 +103,11 @@ function Warrior.create()
             hero._statetype = EnumStateType.DYING
             local deaddone = function ()
                 hero:setState(EnumStateType.NULL)
-                hero:runAction(cc.Sequence:create(cc.MoveBy:create(1.0,cc.V3(0,0,-50))))
+                local function disappear()
+                    hero._particle:removeFromParent()
+                    hero:removeFromParent()
+                end
+                hero:runAction(cc.Sequence:create(cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(disappear)))
             end
             hero._sprite3d:runAction(cc.Sequence:create(hero._action.dead:clone(), cc.CallFunc:create(deaddone)))
         end
@@ -195,6 +196,7 @@ function Warrior:initActions()
 end
 
 function Warrior:setState(type)
+--    getDebugStateType(type)
     if type == self._statetype then return end
     --cclog("Warrior:setState(" .. type ..")")
 
@@ -203,7 +205,6 @@ function Warrior:setState(type)
         self._statetype = type
         self._sprite3d:stopAllActions()
         if self._particle ~= nil then self._particle:setEmissionRate(0) end
-
 
     elseif type == EnumStateType.WALK then
         if EnumStateType.ATTACKING == self._statetype then return end
@@ -226,12 +227,14 @@ function Warrior:setState(type)
         if EnumStateType.KNOCKED == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
+        if self._particle ~= nil then self._particle:setEmissionRate(0) end
 
     elseif type == EnumStateType.SPECIALATTACK then
         if EnumStateType.SPECIALATTACKING == self._statetype then return end
         if EnumStateType.KNOCKED == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
+        if self._particle ~= nil then self._particle:setEmissionRate(0) end
 
     elseif type == EnumStateType.DEFEND then
         self._statetype = type
@@ -240,6 +243,7 @@ function Warrior:setState(type)
     elseif type == EnumStateType.DEAD then
         self._statetype = type
         self._sprite3d:stopAllActions()
+        if self._particle ~= nil then self._particle:setEmissionRate(0) end
 
     elseif type == EnumStateType.NULL then
         self._statetype = type
