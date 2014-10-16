@@ -74,11 +74,11 @@ local function findEnmey(object, manager)
         object:setTarget(nil)
     else
         if isInCircleSector(object, object._target) then
-            if object:getRaceType() == EnumRaceType.WARRIOR then
-                object:setState(EnumStateType.SPECIALATTACK)
-            else
+--            if object:getRaceType() == EnumRaceType.WARRIOR then
+--                object:setState(EnumStateType.SPECIALATTACK)
+--            else
                 object:setState(EnumStateType.ATTACK)
-            end
+--            end
         else
             object:setState(EnumStateType.WALK)    
             faceToEnmey(object, object._target)
@@ -241,15 +241,15 @@ local function createRole()
     hero:runAction(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1))
     List.pushlast(HeroManager, hero)
         
-    hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR)
-    addParticleToRole(hero)    
-    hero:setState(EnumStateType.WALK)
-    List.pushlast(HeroManager, hero)
+   hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR)
+   addParticleToRole(hero)    
+   hero:setState(EnumStateType.WALK)
+   List.pushlast(HeroManager, hero)
 
-    hero = addNewSprite(heroOriginPositionX, -300, EnumRaceType.MAGE)
-    addParticleToRole(hero)
-    hero:setState(EnumStateType.WALK)
-    List.pushlast(HeroManager, hero)
+   hero = addNewSprite(heroOriginPositionX, -300, EnumRaceType.MAGE)
+   addParticleToRole(hero)
+   hero:setState(EnumStateType.WALK)
+   List.pushlast(HeroManager, hero)
 
     addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER)
     addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER)
