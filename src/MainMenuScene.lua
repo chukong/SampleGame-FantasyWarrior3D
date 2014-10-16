@@ -39,7 +39,7 @@ function MainMenuScene:createLayer()
     --add logo
     self:addLogo(mainLayer)
     
-    --
+    --when replease scene unschedule schedule
     local function onExit(event)
         if "exit" == event then
             cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self.logoSchedule)
@@ -53,19 +53,16 @@ end
 
 function MainMenuScene:addLogo(layer)
     --add logo
-    local logo = cc.Sprite:create("mainmenuscene/logo.png")
-    logo:setPosition(self.size.width*0.7,self.size.height+logo:getContentSize().height/2)
+    local logo = cc.EffectSprite:create("mainmenuscene/logo.png")
+    self._logoSize = logo:getContentSize()
+    logo:setPosition(self.size.width*0.68,self.size.height+self._logoSize.height*0.4)
     layer:addChild(logo,4)
     
-    --from fast to slow
-    --   cc.EaseOut:create(action,rate)
-    --   cc.EaseBackOut:create(action)
-    --   cc.EaseElasticOut:create(cc.ActionInterval,float)
     local action = cc.EaseElasticOut:create(cc.MoveBy:create(2,cc.p(0, -self.size.height*0.45)))
     
     logo:runAction(action)
     
-    --set random seed
+    --logo shake
     local time = 0
     --logo animation
     local function logoShake()
@@ -75,10 +72,32 @@ function MainMenuScene:addLogo(layer)
         local rand_z = 0.1*math.sin(math.rad(time*0.2+54325))
         logo:setRotation3D({x=math.deg(rand_x),y=math.deg(rand_y),z=math.deg(rand_z)})
         time = time+1
+        self._pointLight:setPosition3D(cc.vec3(math.abs(rand_x)*self._logoSize.width*9,math.abs(rand_y)*self._logoSize.height*9,math.abs(rand_z)*50))
+        self._lightSprite:setPosition3D(cc.vec3(math.abs(rand_x)*self._logoSize.width*9,math.abs(rand_y)*self._logoSize.height*9,math.abs(rand_z)*50))
     end
     self.logoSchedule = cc.Director:getInstance():getScheduler():scheduleScriptFunc(logoShake,0,false)
+
+    --add pointlight
+    self._pointLight = cc.PointLight:create(cc.vec3(0,0,50),cc.c3b(255,255,255),10000)
+    self._pointLight:setCameraMask(1)
+    self._pointLight:setEnabled(true)
+    logo:addChild(self._pointLight)
+    
+    --add light sprite
+    self._lightSprite = cc.Sprite:create("mainmenuscene/light.png")
+    self._lightSprite:setPosition3D(cc.vec3(0,0,50))
+    self._lightSprite:setColor(cc.c3b(200,0,0))
+    logo:addChild(self._lightSprite)
+    
+    -- effectNormalMap
+    local effectNormalMapped = cc.EffectNormalMapped:create("mainmenuscene/logo_normal.png");
+    effectNormalMapped:setPointLight(self._pointLight)
+    effectNormalMapped:setKBump(100)
+    logo:setEffect(effectNormalMapped)
+    
 end
 
+--add button to start game
 function MainMenuScene:addButton(layer)
     local button_callback = function(sender,eventType)
         print(eventType)
@@ -90,23 +109,13 @@ function MainMenuScene:addButton(layer)
     local button = ccui.Button:create("mainmenuscene/button.png")
     button:setPressedActionEnabled(true)
     button:setPosition(self.size.width*0.87,self.size.height*0.28)
---    button:registerScriptHandler(button_callback)
     button:addTouchEventListener(button_callback)
     button:setOpacity(0)
     button:runAction(cc.Sequence:create(cc.FadeIn:create(3)))
     layer:addChild(button,4)
-    
---    local button_item = cc.MenuItemImage:create("mainmenugame/button.png","mainmenugame/button.png")
---    button_item:registerScriptTapHandler(button_callback)
---    button_item:setPosition(self.size.width*0.87,self.size.height*0.28)
---    button_item:setOpacity(0)
---    button_item:runAction(cc.Sequence:create(cc.FadeIn:create(3)))
---    local menu = cc.Menu:create(button_item)
---    menu:setPosition({0,0})
---    layer:addChild(menu,4) 
-
 end
 
+-- cloud action
 function MainMenuScene:addCloud(layer)
     --cloud
     local cloud0 = cc.Sprite:create("mainmenuscene/cloud1.png")
@@ -141,11 +150,11 @@ function MainMenuScene:addCloud(layer)
             end
             v:setPositionX(point)
         end
-
     end
     self.scheduleCloudMove = cc.Director:getInstance():getScheduler():scheduleScriptFunc(cloud_move,1/60,false)
 end
 
+--bg
 function MainMenuScene:addBg(layer)
     --background
     local bg_back = cc.Sprite:create("mainmenuscene/bg_back.png")
@@ -154,66 +163,6 @@ function MainMenuScene:addBg(layer)
     bg_front:setPosition(self.size.width/2,self.size.height/2)
     layer:addChild(bg_back,1)
     layer:addChild(bg_front,3)
-    
---    --test billboardparticlesysytem
---    local particle = cc.BillboardParticleSystem:create("toonSmoke.plist")
---    particle:setPosition({x=200,y=200})
---    particle:setDuration(-1)
---    particle:setStartColor({r=234,g=123,b=245,a=255})
---    layer:addChild(particle,5)
-    
-    --test jump3D
---    self:testJump3D(layer)
-end
-
---test MessageDispatchCenter
-function MainMenuScene:testDispatcher()
-    local function test1(v)
-        print(v)
-    end
-
-    local function test2(v)
-        print(v.x,v.y)
-    end
-
-    --register
-    local dispatch1 = require("MessageDispatchCenter")
-    dispatch1:registerMessage(dispatch1.MessageType.BLOOD_DROP,test1)
-
-    local dispatch2 = require("MessageDispatchCenter")
-    dispatch2:registerMessage(dispatch2.MessageType.BLOOD_DROP,test1)
-    --remove messagecenter
-    dispatch2:removeMessage(dispatch2.MessageType.BLOOD_DROP,test1)
-
-    --dispatch
-    local dispatch3 = require("MessageDispatchCenter")
-    dispatch3:dispatchMessage(dispatch2.MessageType.BLOOD_DROP,"test")
-
-    local dispatch4 = require("MessageDispatchCenter")
-    dispatch4:dispatchMessage(dispatch2.MessageType.BLOOD_DROP,"dispatch")
-
-    --register
-    local dispatch5 = require("MessageDispatchCenter")
-    dispatch5:registerMessage(dispatch5.MessageType.REDUCE_SCORE,test2)
-
-    local dispatch6 = require("MessageDispatchCenter")
-    --    dispatch6:registerMessage(dispatch6.MessageType.REDUCE_SCORE,test2)
-
-    --dispatch
-    local dispatch7 = require("MessageDispatchCenter")
-    dispatch7:dispatchMessage(dispatch7.MessageType.REDUCE_SCORE,{x=1,y=2})
-
-    local dispatch8 = require("MessageDispatchCenter")
-    dispatch8:dispatchMessage(dispatch8.MessageType.REDUCE_SCORE,{x=3,y=4})
-end
-
-function MainMenuScene:testJump3D(layer)
-    local action = cc.JumpBy:create(2,cc.p(350,400),10,3)
-    local sprite = cc.Sprite:create("mainmenuscene/dog.png")
-    sprite:runAction(action)
-    sprite:setPosition({x=100,y=100})
-    
-    layer:addChild(sprite,7)
 end
 
 return MainMenuScene
