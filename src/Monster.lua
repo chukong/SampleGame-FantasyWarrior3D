@@ -29,7 +29,7 @@ function Monster.create()
     monster._weapon = math.random() .. ""
 
     local function MainLoop(dt)
-        --getDebugStateType(monster)
+--        getDebugStateType(monster)
         if EnumStateType.WALK == monster._statetype and monster._target ~= nil then
             local miniDistance = monster._attackRadius + monster._target._radius
             local p1 = getPosTable(monster)
@@ -88,7 +88,10 @@ function Monster.create()
             monster._statetype = EnumStateType.DYING
             local deaddone = function ()
                 monster:setState(EnumStateType.NULL)
-                monster:runAction(cc.MoveBy:create(1.0,cc.V3(0,0,-50)))
+                local function disappear()
+                    monster:removeFromParent()
+                end
+                monster:runAction(cc.Sequence:create(cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(disappear)))
             end
             monster._sprite3d:runAction(cc.Sequence:create(monster._action.dead:clone(), cc.CallFunc:create(deaddone)))
         end

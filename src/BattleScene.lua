@@ -61,7 +61,7 @@ local function findEnmey(object, manager)
     if object == nil or object._isalive == false then return end
 
     local find = false
-    local shortest_distance = 500
+    local shortest_distance = 1000
     for var = 1, List.getSize(manager) do
         local objectTemp = manager[var-1]
         local dis = cc.pGetDistance(getPosTable(object),getPosTable(objectTemp))
