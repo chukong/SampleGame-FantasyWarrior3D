@@ -16,17 +16,17 @@ end
 
 function BattlefieldUI:avatarInit()
     self.WarriorPng = cc.Sprite:create("battlefieldUI/UI-1136-640_03.png")
-    self.WarriorPng:setPosition(90.5,566.72)
+    self.WarriorPng:setPosition(90.5/1136*G.winSize.width,566.72/640*G.winSize.height)
     self.WarriorPng:setScale(0.70)
     self:addChild(self.WarriorPng,2)
        
     self.ArcherPng = cc.Sprite:create("battlefieldUI/UI-1136-640_11.png")
-    self.ArcherPng:setPosition(200.5,566.72)
+    self.ArcherPng:setPosition(200.5/1136*G.winSize.width,566.72/640*G.winSize.height)
     self.ArcherPng:setScale(0.70)
     self:addChild(self.ArcherPng,2)
     
     self.MagePng = cc.Sprite:create("battlefieldUI/UI-1136-640_18.png")
-    self.MagePng:setPosition(310.5,566.72)
+    self.MagePng:setPosition(310.5/1136*G.winSize.width,566.72/640*G.winSize.height)
     self.MagePng:setScale(0.70)    
     self:addChild(self.MagePng,2)
 end
@@ -39,7 +39,7 @@ function BattlefieldUI:bloodbarInit()
     self.WarriorBlood:setMidpoint(cc.vertex2F(0,0))
     self.WarriorBlood:setPercentage(100)
     self.WarriorBlood:setPosition(self.WarriorPng:getPositionX(), (532/566.72)*self.WarriorPng:getPositionY())
-    self.WarriorBlood:setScaleX(0.7)
+    self.WarriorBlood:setScale(0.7)
     self:addChild(self.WarriorBlood,4)
         
     self.WarriorBloodClone = cc.ProgressTimer:create(cc.Sprite:create("battlefieldUI/UI-1136-640_36_clone.png"))
@@ -97,12 +97,12 @@ end
 
 function BattlefieldUI:touchButtonInit()
     self.DefenceBtn = ccui.Button:create("battlefieldUI/UI-1136-640_26.png","battlefieldUI/UI-1136-640_24.png","battlefieldUI/UI-1136-640_22.png",0)
-    self.DefenceBtn:setPosition(1019.50,109)
+    self.DefenceBtn:setPosition(1019.50/1136*G.winSize.width,109/640*G.winSize.height)
     self.DefenceBtn:setOpacity(255*0.9)
     self:addChild(self.DefenceBtn,3)
 
     self.SetBtn = ccui.Button:create("battlefieldUI/UI-1136-640_06.png","battlefieldUI/UI-1136-640_06.png","battlefieldUI/UI-1136-640_06.png",0)
-    self.SetBtn:setPosition(1019.50,570)
+    self.SetBtn:setPosition(1019.50/1136*G.winSize.width,570/640*G.winSize.height)
     self.SetBtn:setOpacity(255*0.9)
     self:addChild(self.SetBtn,3)
 end
