@@ -3,9 +3,9 @@ local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
 local activearea = {width = 500, height = 640}
 
-HeroPoor = List.new()
-MonsterPoor = List.new()
-BossPoor = List.new()
+HeroPool = List.new()
+MonsterPool = List.new()
+BossPool = List.new()
 
 HeroManager = List.new()
 MonsterManager = List.new()
