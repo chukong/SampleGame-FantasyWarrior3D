@@ -33,16 +33,19 @@ function Mage.create()
         if EnumStateType.WALK == hero._statetype then
             local targetPos = {x=3000, y=0}
             if hero._target ~= nil  then
-                local distance = hero._attackRadius + hero._target._radius
+                local miniDistance = hero._attackRadius + hero._target._radius
                 local p1 = getPosTable(hero)
                 local p2 = getPosTable(hero._target)
-                if distance < cc.pGetDistance(p1, p2) then
-                    hero:setPosition(getNextStepPos(hero, p2, dt))
+                local distance = cc.pGetDistance(p1, p2)
+                local angle = cc.pToAngleSelf(cc.pSub(p1, p2))
+                p2 = cc.pRotateByAngle(cc.pAdd(cc.p(-miniDistance/2,0),p2), p2, angle)       
+                if miniDistance < distance then
+                    hero:setPosition(getNextStepPos(p1, p2, hero._speed, dt))
                 else
-                    hero:setPosition(getNextStepPos(hero, targetPos, dt))
+                    hero:setPosition(getNextStepPos(p1, targetPos, hero._speed, dt))
                 end
             else
-                hero:setPosition(getNextStepPos(hero, targetPos, dt))            
+                hero:setPosition(getNextStepPos(getPosTable(hero), targetPos, hero._speed, dt))            
             end
 
         elseif EnumStateType.STAND == hero._statetype then
