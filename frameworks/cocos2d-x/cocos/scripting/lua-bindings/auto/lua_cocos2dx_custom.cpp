@@ -4,8 +4,8 @@
 #include "custom/BillboardParticleSystem.h"
 #include "custom/JumpBy3D.h"
 #include "custom/JumpTo3D.h"
-#include "custom/JumpBy3D.h"
 #include "custom/Water.h"
+#include "custom/EffectSprite.h"
 #include "tolua_fix.h"
 #include "LuaBasicConversions.h"
 
@@ -5169,6 +5169,515 @@ int lua_register_cocos2dx_custom_Water(lua_State* tolua_S)
     g_typeCast["Water"] = "cc.Water";
     return 1;
 }
+
+int lua_cocos2dx_custom_Effect_setTarget(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::Effect* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.Effect",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::Effect*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_Effect_setTarget'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::EffectSprite* arg0;
+
+        ok &= luaval_to_object<cocos2d::EffectSprite>(tolua_S, 2, "cc.EffectSprite",&arg0);
+        if(!ok)
+            return 0;
+        cobj->setTarget(arg0);
+        return 0;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "cc.Effect:setTarget",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_Effect_setTarget'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_custom_Effect_updateUniforms(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::Effect* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.Effect",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::Effect*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_Effect_updateUniforms'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+            return 0;
+        cobj->updateUniforms();
+        return 0;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "cc.Effect:updateUniforms",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_Effect_updateUniforms'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_custom_Effect_getGLProgramState(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::Effect* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.Effect",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::Effect*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_Effect_getGLProgramState'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+            return 0;
+        cocos2d::GLProgramState* ret = cobj->getGLProgramState();
+        object_to_luaval<cocos2d::GLProgramState>(tolua_S, "cc.GLProgramState",(cocos2d::GLProgramState*)ret);
+        return 1;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "cc.Effect:getGLProgramState",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_Effect_getGLProgramState'.",&tolua_err);
+#endif
+
+    return 0;
+}
+static int lua_cocos2dx_custom_Effect_finalize(lua_State* tolua_S)
+{
+    printf("luabindings: finalizing LUA object (Effect)");
+    return 0;
+}
+
+int lua_register_cocos2dx_custom_Effect(lua_State* tolua_S)
+{
+    tolua_usertype(tolua_S,"cc.Effect");
+    tolua_cclass(tolua_S,"Effect","cc.Effect","cc.Ref",nullptr);
+
+    tolua_beginmodule(tolua_S,"Effect");
+        tolua_function(tolua_S,"setTarget",lua_cocos2dx_custom_Effect_setTarget);
+        tolua_function(tolua_S,"updateUniforms",lua_cocos2dx_custom_Effect_updateUniforms);
+        tolua_function(tolua_S,"getGLProgramState",lua_cocos2dx_custom_Effect_getGLProgramState);
+    tolua_endmodule(tolua_S);
+    std::string typeName = typeid(cocos2d::Effect).name();
+    g_luaType[typeName] = "cc.Effect";
+    g_typeCast["Effect"] = "cc.Effect";
+    return 1;
+}
+
+int lua_cocos2dx_custom_EffectNormalMapped_setKBump(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::EffectNormalMapped* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.EffectNormalMapped",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::EffectNormalMapped*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_EffectNormalMapped_setKBump'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        double arg0;
+
+        ok &= luaval_to_number(tolua_S, 2,&arg0, "cc.EffectNormalMapped:setKBump");
+        if(!ok)
+            return 0;
+        cobj->setKBump(arg0);
+        return 0;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "cc.EffectNormalMapped:setKBump",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_EffectNormalMapped_setKBump'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_custom_EffectNormalMapped_setPointLight(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::EffectNormalMapped* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.EffectNormalMapped",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::EffectNormalMapped*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_EffectNormalMapped_setPointLight'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::PointLight* arg0;
+
+        ok &= luaval_to_object<cocos2d::PointLight>(tolua_S, 2, "cc.PointLight",&arg0);
+        if(!ok)
+            return 0;
+        cobj->setPointLight(arg0);
+        return 0;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "cc.EffectNormalMapped:setPointLight",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_EffectNormalMapped_setPointLight'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_custom_EffectNormalMapped_getKBump(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::EffectNormalMapped* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.EffectNormalMapped",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::EffectNormalMapped*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_EffectNormalMapped_getKBump'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+            return 0;
+        double ret = cobj->getKBump();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "cc.EffectNormalMapped:getKBump",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_EffectNormalMapped_getKBump'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_custom_EffectNormalMapped_create(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"cc.EffectNormalMapped",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+
+    do 
+    {
+        if (argc == 1)
+        {
+            std::string arg0;
+            ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.EffectNormalMapped:create");
+            if (!ok) { break; }
+            cocos2d::EffectNormalMapped* ret = cocos2d::EffectNormalMapped::create(arg0);
+            object_to_luaval<cocos2d::EffectNormalMapped>(tolua_S, "cc.EffectNormalMapped",(cocos2d::EffectNormalMapped*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    do 
+    {
+        if (argc == 0)
+        {
+            cocos2d::EffectNormalMapped* ret = cocos2d::EffectNormalMapped::create();
+            object_to_luaval<cocos2d::EffectNormalMapped>(tolua_S, "cc.EffectNormalMapped",(cocos2d::EffectNormalMapped*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d", "cc.EffectNormalMapped:create",argc, 0);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_EffectNormalMapped_create'.",&tolua_err);
+#endif
+    return 0;
+}
+static int lua_cocos2dx_custom_EffectNormalMapped_finalize(lua_State* tolua_S)
+{
+    printf("luabindings: finalizing LUA object (EffectNormalMapped)");
+    return 0;
+}
+
+int lua_register_cocos2dx_custom_EffectNormalMapped(lua_State* tolua_S)
+{
+    tolua_usertype(tolua_S,"cc.EffectNormalMapped");
+    tolua_cclass(tolua_S,"EffectNormalMapped","cc.EffectNormalMapped","cc.Effect",nullptr);
+
+    tolua_beginmodule(tolua_S,"EffectNormalMapped");
+        tolua_function(tolua_S,"setKBump",lua_cocos2dx_custom_EffectNormalMapped_setKBump);
+        tolua_function(tolua_S,"setPointLight",lua_cocos2dx_custom_EffectNormalMapped_setPointLight);
+        tolua_function(tolua_S,"getKBump",lua_cocos2dx_custom_EffectNormalMapped_getKBump);
+        tolua_function(tolua_S,"create", lua_cocos2dx_custom_EffectNormalMapped_create);
+    tolua_endmodule(tolua_S);
+    std::string typeName = typeid(cocos2d::EffectNormalMapped).name();
+    g_luaType[typeName] = "cc.EffectNormalMapped";
+    g_typeCast["EffectNormalMapped"] = "cc.EffectNormalMapped";
+    return 1;
+}
+
+int lua_cocos2dx_custom_EffectSprite_setEffect(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::EffectSprite* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.EffectSprite",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::EffectSprite*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_EffectSprite_setEffect'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::Effect* arg0;
+
+        ok &= luaval_to_object<cocos2d::Effect>(tolua_S, 2, "cc.Effect",&arg0);
+        if(!ok)
+            return 0;
+        cobj->setEffect(arg0);
+        return 0;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "cc.EffectSprite:setEffect",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_EffectSprite_setEffect'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_custom_EffectSprite_addEffect(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::EffectSprite* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.EffectSprite",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::EffectSprite*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_EffectSprite_addEffect'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 2) 
+    {
+        cocos2d::Effect* arg0;
+        ssize_t arg1;
+
+        ok &= luaval_to_object<cocos2d::Effect>(tolua_S, 2, "cc.Effect",&arg0);
+
+        ok &= luaval_to_ssize(tolua_S, 3, &arg1, "cc.EffectSprite:addEffect");
+        if(!ok)
+            return 0;
+        cobj->addEffect(arg0, arg1);
+        return 0;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "cc.EffectSprite:addEffect",argc, 2);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_EffectSprite_addEffect'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_custom_EffectSprite_create(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"cc.EffectSprite",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        std::string arg0;
+        ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.EffectSprite:create");
+        if(!ok)
+            return 0;
+        cocos2d::EffectSprite* ret = cocos2d::EffectSprite::create(arg0);
+        object_to_luaval<cocos2d::EffectSprite>(tolua_S, "cc.EffectSprite",(cocos2d::EffectSprite*)ret);
+        return 1;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d\n ", "cc.EffectSprite:create",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_EffectSprite_create'.",&tolua_err);
+#endif
+    return 0;
+}
+static int lua_cocos2dx_custom_EffectSprite_finalize(lua_State* tolua_S)
+{
+    printf("luabindings: finalizing LUA object (EffectSprite)");
+    return 0;
+}
+
+int lua_register_cocos2dx_custom_EffectSprite(lua_State* tolua_S)
+{
+    tolua_usertype(tolua_S,"cc.EffectSprite");
+    tolua_cclass(tolua_S,"EffectSprite","cc.EffectSprite","cc.Sprite",nullptr);
+
+    tolua_beginmodule(tolua_S,"EffectSprite");
+        tolua_function(tolua_S,"setEffect",lua_cocos2dx_custom_EffectSprite_setEffect);
+        tolua_function(tolua_S,"addEffect",lua_cocos2dx_custom_EffectSprite_addEffect);
+        tolua_function(tolua_S,"create", lua_cocos2dx_custom_EffectSprite_create);
+    tolua_endmodule(tolua_S);
+    std::string typeName = typeid(cocos2d::EffectSprite).name();
+    g_luaType[typeName] = "cc.EffectSprite";
+    g_typeCast["EffectSprite"] = "cc.EffectSprite";
+    return 1;
+}
 TOLUA_API int register_all_cocos2dx_custom(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
@@ -5176,7 +5685,10 @@ TOLUA_API int register_all_cocos2dx_custom(lua_State* tolua_S)
 	tolua_module(tolua_S,"cc",0);
 	tolua_beginmodule(tolua_S,"cc");
 
+	lua_register_cocos2dx_custom_Effect(tolua_S);
+	lua_register_cocos2dx_custom_EffectNormalMapped(tolua_S);
 	lua_register_cocos2dx_custom_BillboardParticleSystem(tolua_S);
+	lua_register_cocos2dx_custom_EffectSprite(tolua_S);
 	lua_register_cocos2dx_custom_EffectSprite3D(tolua_S);
 	lua_register_cocos2dx_custom_JumpBy3D(tolua_S);
 	lua_register_cocos2dx_custom_JumpTo3D(tolua_S);
