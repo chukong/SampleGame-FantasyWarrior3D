@@ -41,4 +41,19 @@
 -- @field [parent=#cc] Water#Water Water preloaded module
 
 
+--------------------------------------------------------
+-- the cc Effect
+-- @field [parent=#cc] Effect#Effect Effect preloaded module
+
+
+--------------------------------------------------------
+-- the cc EffectNormalMapped
+-- @field [parent=#cc] EffectNormalMapped#EffectNormalMapped EffectNormalMapped preloaded module
+
+
+--------------------------------------------------------
+-- the cc EffectSprite
+-- @field [parent=#cc] EffectSprite#EffectSprite EffectSprite preloaded module
+
+
 return nil

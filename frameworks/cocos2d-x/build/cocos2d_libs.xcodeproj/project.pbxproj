@@ -31,6 +31,10 @@
 		04815BCF19EC0046006E85F2 /* Water.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04815BB819EC0046006E85F2 /* Water.cpp */; };
 		04815BD019EC0046006E85F2 /* Water.h in Headers */ = {isa = PBXBuildFile; fileRef = 04815BB919EC0046006E85F2 /* Water.h */; };
 		04815BD119EC0046006E85F2 /* Water.h in Headers */ = {isa = PBXBuildFile; fileRef = 04815BB919EC0046006E85F2 /* Water.h */; };
+		049C949219EE7F09004820C2 /* EffectSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049C949019EE7F09004820C2 /* EffectSprite.cpp */; };
+		049C949319EE7F09004820C2 /* EffectSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049C949019EE7F09004820C2 /* EffectSprite.cpp */; };
+		049C949419EE7F09004820C2 /* EffectSprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 049C949119EE7F09004820C2 /* EffectSprite.h */; };
+		049C949519EE7F09004820C2 /* EffectSprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 049C949119EE7F09004820C2 /* EffectSprite.h */; };
 		15AE180819AAD2F700C27E9E /* CCAABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15AE17E419AAD2F700C27E9E /* CCAABB.cpp */; };
 		15AE180919AAD2F700C27E9E /* CCAABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15AE17E419AAD2F700C27E9E /* CCAABB.cpp */; };
 		15AE180A19AAD2F700C27E9E /* CCAABB.h in Headers */ = {isa = PBXBuildFile; fileRef = 15AE17E519AAD2F700C27E9E /* CCAABB.h */; };
@@ -1860,6 +1864,8 @@
 		04815BB719EC0046006E85F2 /* JumpTo3D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JumpTo3D.h; path = ../cocos/custom/JumpTo3D.h; sourceTree = "<group>"; };
 		04815BB819EC0046006E85F2 /* Water.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Water.cpp; path = ../cocos/custom/Water.cpp; sourceTree = "<group>"; };
 		04815BB919EC0046006E85F2 /* Water.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Water.h; path = ../cocos/custom/Water.h; sourceTree = "<group>"; };
+		049C949019EE7F09004820C2 /* EffectSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EffectSprite.cpp; path = ../cocos/custom/EffectSprite.cpp; sourceTree = "<group>"; };
+		049C949119EE7F09004820C2 /* EffectSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EffectSprite.h; path = ../cocos/custom/EffectSprite.h; sourceTree = "<group>"; };
 		0634A4C5194B19E400E608AF /* CCActionTimeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCActionTimeline.cpp; sourceTree = "<group>"; };
 		0634A4C6194B19E400E608AF /* CCActionTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCActionTimeline.h; sourceTree = "<group>"; };
 		0634A4C7194B19E400E608AF /* CCActionTimelineCache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCActionTimelineCache.cpp; sourceTree = "<group>"; };
@@ -2893,6 +2899,8 @@
 		04815BAD19EC0024006E85F2 /* custom */ = {
 			isa = PBXGroup;
 			children = (
+				049C949019EE7F09004820C2 /* EffectSprite.cpp */,
+				049C949119EE7F09004820C2 /* EffectSprite.h */,
 				04815BAE19EC0046006E85F2 /* BillboardParticleSystem.cpp */,
 				04815BAF19EC0046006E85F2 /* BillboardParticleSystem.h */,
 				04815BB019EC0046006E85F2 /* DrawNode3D.cpp */,
@@ -5330,6 +5338,7 @@
 				50ABBDB31925AB4100A911A9 /* ccShaders.h in Headers */,
 				50ABBDAB1925AB4100A911A9 /* CCRenderCommandPool.h in Headers */,
 				5034CA45191D591100CE6051 /* ccShader_Label_outline.frag in Headers */,
+				049C949419EE7F09004820C2 /* EffectSprite.h in Headers */,
 				50ABBEB11925AB6F00A911A9 /* CCUserDefault.h in Headers */,
 				15AE19CD19AAD3A700C27E9E /* AtlasAttachmentLoader.h in Headers */,
 				50ABBEC71925AB6F00A911A9 /* etc1.h in Headers */,
@@ -5564,6 +5573,7 @@
 				15AE1BFA19AAE01E00C27E9E /* CCControlSwitch.h in Headers */,
 				15AE182F19AAD2F700C27E9E /* CCMeshVertexIndexData.h in Headers */,
 				15AE19F419AAD3A700C27E9E /* EventData.h in Headers */,
+				049C949519EE7F09004820C2 /* EffectSprite.h in Headers */,
 				15AE1BAA19AADFDF00C27E9E /* UIVBox.h in Headers */,
 				15AE194E19AAD35100C27E9E /* CCDataReaderHelper.h in Headers */,
 				04815BBD19EC0046006E85F2 /* BillboardParticleSystem.h in Headers */,
@@ -6070,6 +6080,7 @@
 				15AE1B5319AADA9900C27E9E /* UIRichText.cpp in Sources */,
 				15AE19DC19AAD3A700C27E9E /* Json.cpp in Sources */,
 				292DB13D19B4574100A80320 /* UIEditBox.cpp in Sources */,
+				049C949219EE7F09004820C2 /* EffectSprite.cpp in Sources */,
 				50ABBE551925AB6F00A911A9 /* CCEventFocus.cpp in Sources */,
 				15AE1A8819AAD40300C27E9E /* b2PrismaticJoint.cpp in Sources */,
 				50ABBE491925AB6F00A911A9 /* CCEventAcceleration.cpp in Sources */,
@@ -6514,6 +6525,7 @@
 				3E61781D1966A5A300DE83F5 /* CCController.cpp in Sources */,
 				50ABC00E1926664800A911A9 /* CCFileUtils.cpp in Sources */,
 				299CF1FC19A434BC00C378C1 /* ccRandom.cpp in Sources */,
+				049C949319EE7F09004820C2 /* EffectSprite.cpp in Sources */,
 				DA8C62A319E52C6400000516 /* ioapi_mem.cpp in Sources */,
 				15AE18C919AAD33D00C27E9E /* CCMenuItemLoader.cpp in Sources */,
 				50ABBE241925AB6F00A911A9 /* base64.cpp in Sources */,
