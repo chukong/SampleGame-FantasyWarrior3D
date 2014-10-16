@@ -162,11 +162,11 @@ local function addNewSprite(x, y, tag)
     elseif tag == EnumRaceType.MONSTER then
         sprite = Monster.create()
         sprite._sprite3d:setScale(15)
-        List.pushlast(MonsterPoor, sprite)
+        List.pushlast(MonsterPool, sprite)
     elseif tag == EnumRaceType.BOSS then
         sprite = Boss.create()
         sprite._sprite3d:setScale(35)        
-        List.pushlast(BossPoor, sprite)
+        List.pushlast(BossPool, sprite)
     else
         return
     end
@@ -219,17 +219,17 @@ local function createEnmey(step)
     if  step ~= currentStep  then return end
 
     if currentStep == 1 then
-        List.pushlast(MonsterManager, List.popfirst(MonsterPoor))
-        List.pushlast(MonsterManager, List.popfirst(MonsterPoor))
-        List.pushlast(MonsterManager, List.popfirst(MonsterPoor))
+        List.pushlast(MonsterManager, List.popfirst(MonsterPool))
+        List.pushlast(MonsterManager, List.popfirst(MonsterPool))
+        List.pushlast(MonsterManager, List.popfirst(MonsterPool))
         currentStep = currentStep + 1
     elseif currentStep == 2 then
-        List.pushlast(MonsterManager, List.popfirst(MonsterPoor))
-        List.pushlast(MonsterManager, List.popfirst(MonsterPoor))
-        List.pushlast(MonsterManager, List.popfirst(MonsterPoor))
+        List.pushlast(MonsterManager, List.popfirst(MonsterPool))
+        List.pushlast(MonsterManager, List.popfirst(MonsterPool))
+        List.pushlast(MonsterManager, List.popfirst(MonsterPool))
         currentStep = currentStep + 1   
     elseif currentStep == 3 then
-        List.pushlast(BossManager, List.popfirst(BossPoor))
+        List.pushlast(BossManager, List.popfirst(BossPool))
         currentStep = currentStep + 1                    
     end    
 end
