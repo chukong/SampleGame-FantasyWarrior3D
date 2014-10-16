@@ -85,6 +85,7 @@ EffectSprite3D::~EffectSprite3D()
     {
         CC_SAFE_RELEASE_NULL(std::get<1>(effect));
     }
+    _effects.clear();
     CC_SAFE_RELEASE(_defaultEffect);
 }
 
@@ -104,9 +105,10 @@ void EffectSprite3D::addEffect(const Vec3& outlineColor, float width, ssize_t or
         {
             Effect3DOutline* effect = Effect3DOutline::create();
             effect->retain();
+            effect->setTarget(this,mesh);
             effect->setOutlineColor(outlineColor);
             effect->setOutlineWidth(width);
-            effect->setTarget(this,mesh);
+           
             _effects.push_back(std::make_tuple(order,effect,CustomCommand()));
             std::sort(std::begin(_effects), std::end(_effects), tuple_sort);
         }
@@ -238,12 +240,13 @@ void Effect3DOutline::setTarget(Sprite3D *sprite,Mesh* childMesh)
 
     if(sprite != _sprite)
     {
-        GLProgram* glprogram;
-        if(!childMesh->getSkin())
-            glprogram = GLProgram::createWithFilenames(_vertShaderFile, _fragShaderFile);
-        else
-            glprogram = GLProgram::createWithFilenames(_vertSkinnedShaderFile, _fragSkinnedShaderFile);
-
+        bool isSkinned =false;
+        if(childMesh->getSkin())
+        {
+            isSkinned=true;
+        }
+        GLProgram* glprogram=Effect3DOutline::getOrCreateProgram(isSkinned);
+        CCASSERT(nullptr != glprogram ,"Error: Setting a null pointer or a null glprogram EffectSprite3D to Effect3D");
         _glProgramState = GLProgramState::create(glprogram);
 
         _glProgramState->retain();
@@ -253,7 +256,6 @@ void Effect3DOutline::setTarget(Sprite3D *sprite,Mesh* childMesh)
 
         _sprite   =  sprite;
         _childMesh = childMesh;
-        //auto mesh = sprite->getMesh();
         long offset = 0;
         for (auto i = 0; i < childMesh->getMeshVertexAttribCount(); i++)
         {
@@ -281,11 +283,12 @@ static void MatrixPalleteCallBack( GLProgram* glProgram, Uniform* uniform, int p
 
 void Effect3DOutline::draw(const Mat4 &transform)
 {
-    Color4F color(_sprite->getDisplayedColor());
-    color.a = _sprite->getDisplayedOpacity() / 255.0f;
-    _glProgramState->setUniformVec4("u_color", Vec4(color.r, color.g, color.b, color.a));
-    if(_sprite && _childMesh)
+    
+    if(_sprite && _childMesh && _glProgramState)
     {
+        Color4F color(_sprite->getDisplayedColor());
+        color.a = _sprite->getDisplayedOpacity() / 255.0f;
+        _glProgramState->setUniformVec4("u_color", Vec4(color.r, color.g, color.b, color.a));
         glEnable(GL_CULL_FACE);
         glCullFace(GL_FRONT);
         glEnable(GL_DEPTH_TEST);
@@ -318,15 +321,7 @@ void Effect3DOutline::draw(const Mat4 &transform)
 
 void EffectSprite3D::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
 {
-    for(auto &effect : _effects)
-    {
-        if(std::get<0>(effect) >=0)
-            break;
-        CustomCommand &cc = std::get<2>(effect);
-        cc.func = CC_CALLBACK_0(Effect3D::draw,std::get<1>(effect),transform);
-        renderer->addCommand(&cc);
-        
-    }
+  
     
     if(!_defaultEffect)
     {
@@ -338,11 +333,10 @@ void EffectSprite3D::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &tran
         _command.func = CC_CALLBACK_0(Effect3D::draw, _defaultEffect, transform);
         renderer->addCommand(&_command);
     }
-    
     for(auto &effect : _effects)
     {
-        if(std::get<0>(effect) <=0)
-            continue;
+        if(std::get<0>(effect) >=0)
+            break;
         CustomCommand &cc = std::get<2>(effect);
         cc.func = CC_CALLBACK_0(Effect3D::draw,std::get<1>(effect),transform);
         renderer->addCommand(&cc);
