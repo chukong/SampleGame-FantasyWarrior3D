@@ -1,3 +1,4 @@
+require "GlobalVariables"
 require "MessageDispatchCenter"
 require "Helper"
 Warrior = class("Warrior", function()
@@ -7,6 +8,7 @@ end)
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
 local filename  = "model/warrior/warrior.c3b"
+--filename = "model/warrior/zhanshi_ALLv002.c3b" 
 
 function Warrior:ctor()
     self._useWeaponId = 0
@@ -16,6 +18,8 @@ function Warrior:ctor()
 end
 
 function Warrior.create()
+    
+    local mainloop_schedulerid
 
     local hero = Warrior.new()
     hero:AddSprite3D()
@@ -26,7 +30,7 @@ function Warrior.create()
     hero:initActions()
 
     local function MainLoop(dt)
-        --getDebugStateType(hero)
+--     getDebugStateType(hero)
         if EnumStateType.WALK == hero._statetype then
             local targetPos = {x=3000, y=0}
             if hero._target ~= nil  then
@@ -48,8 +52,8 @@ function Warrior.create()
             hero._statetype = EnumStateType.STANDING
             hero._sprite3d:runAction(hero._action.stand:clone())
 
-        elseif EnumStateType.ATTACK == hero._statetype then
-            hero._statetype = EnumStateType.ATTACKING
+        elseif EnumStateType.NORMALATTACK == hero._statetype then
+            hero._statetype = EnumStateType.NORMALATTACKING
             local function sendKnockedMsg()
                 MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(hero))
                 cclog("warrior send msg....")
@@ -73,7 +77,7 @@ function Warrior.create()
 
         elseif EnumStateType.KNOCKED == hero._statetype then
             --self._knockedMsgStruct.attacker._attack
-            local damage = 1200
+            local damage = 200
             hero._blood = hero._blood - damage
             if hero._blood <0 then
                 hero._blood = 0
@@ -105,6 +109,8 @@ function Warrior.create()
                 hero:setState(EnumStateType.NULL)
                 local function disappear()
                     hero._particle:removeFromParent()
+                    hero._particle = nil
+                    scheduler:unscheduleScriptEntry(mainloop_schedulerid)
                     hero:removeFromParent()
                 end
                 hero:runAction(cc.Sequence:create(cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(disappear)))
@@ -114,7 +120,7 @@ function Warrior.create()
     end
 
     --mainloop
-    scheduler:scheduleScriptFunc(MainLoop, 0, false)    
+    mainloop_schedulerid = scheduler:scheduleScriptFunc(MainLoop, 0, false)    
 
     --regist message
 
@@ -149,6 +155,7 @@ function Warrior:AddSprite3D()
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
 
+    cclog(self._sprite3d:getMeshNum())
 --    self:setDefaultEqt()
 end
 
@@ -207,8 +214,7 @@ function Warrior:setState(type)
         if self._particle ~= nil then self._particle:setEmissionRate(0) end
 
     elseif type == EnumStateType.WALK then
-        if EnumStateType.ATTACKING == self._statetype then return end
-        if EnumStateType.SPECIALATTACKING == self._statetype then return end
+        if EnumStateType.SPECIALATTACKING == self._statetype or EnumStateType.NORMALATTACKING == self._statetype then return end
         if EnumStateType.KNOCKING == self._statetype then return end
         self._statetype = type
         self._sprite3d:stopAllActions()
@@ -222,17 +228,17 @@ function Warrior:setState(type)
         self._sprite3d:stopAllActions()
 
     elseif type == EnumStateType.ATTACK then
-        if EnumStateType.ATTACKING == self._statetype then return end
+        if EnumStateType.SPECIALATTACKING == self._statetype or EnumStateType.NORMALATTACKING == self._statetype then return end
         if EnumStateType.KNOCKING == self._statetype then return end
         if EnumStateType.KNOCKED == self._statetype then return end
-        self._statetype = type
-        self._sprite3d:stopAllActions()
-        if self._particle ~= nil then self._particle:setEmissionRate(0) end
-
-    elseif type == EnumStateType.SPECIALATTACK then
-        if EnumStateType.SPECIALATTACKING == self._statetype then return end
-        if EnumStateType.KNOCKED == self._statetype then return end
-        self._statetype = type
+        math.randomseed(os.time()) 
+        local random_special = math.random()
+        cclog(random_special)
+        if random_special < WarriorProperty.special_attack_chance then
+            self._statetype = EnumStateType.SPECIALATTACK
+        else    
+            self._statetype = EnumStateType.NORMALATTACK
+        end
         self._sprite3d:stopAllActions()
         if self._particle ~= nil then self._particle:setEmissionRate(0) end
 

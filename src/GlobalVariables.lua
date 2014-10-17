@@ -34,3 +34,22 @@ MonsterPigletValues =
         fileName = "model/piglet/piglet.c3b"
     }
     
+--Warroir property
+WarriorProperty =
+{
+    blood = 1000,
+    attack = 100,
+    defense = 100,
+    speed = 50,
+    special_attack_chance = 0.33,
+}
+
+--Mage property
+MageProperty =
+{
+    blood = 1000,
+    attack = 100,
+    defense = 100,
+    speed = 50,
+    special_attack_chance = 0.33,
+}

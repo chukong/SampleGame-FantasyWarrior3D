@@ -74,11 +74,11 @@ local function findEnmey(object, manager)
         object:setTarget(nil)
     else
         if isInCircleSector(object, object._target) then
-            if object:getRaceType() == EnumRaceType.WARRIOR then
-                object:setState(EnumStateType.SPECIALATTACK)
-            else
+--            if object:getRaceType() == EnumRaceType.WARRIOR then
+--                object:setState(EnumStateType.SPECIALATTACK)
+--            else
                 object:setState(EnumStateType.ATTACK)
-            end
+--            end
         else
             object:setState(EnumStateType.WALK)    
             faceToEnmey(object, object._target)

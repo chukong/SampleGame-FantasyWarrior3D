@@ -1,4 +1,5 @@
 require "Cocos2d"
+require "Helper"
 
 --declare a class extends scene
 local MainMenuScene = class("MainMenuScene",function()
@@ -39,6 +40,9 @@ function MainMenuScene:createLayer()
     --add logo
     self:addLogo(mainLayer)
     
+    --add pointlight
+    self:addPointLight(mainLayer)
+    
     --when replease scene unschedule schedule
     local function onExit(event)
         if "exit" == event then
@@ -56,6 +60,7 @@ function MainMenuScene:addLogo(layer)
     local logo = cc.EffectSprite:create("mainmenuscene/logo.png")
     self._logoSize = logo:getContentSize()
     logo:setPosition(self.size.width*0.68,self.size.height+self._logoSize.height*0.4)
+    self._logo = logo
     layer:addChild(logo,4)
     
     local action = cc.EaseElasticOut:create(cc.MoveBy:create(2,cc.p(0, -self.size.height*0.45)))
@@ -72,29 +77,87 @@ function MainMenuScene:addLogo(layer)
         local rand_z = 0.1*math.sin(math.rad(time*0.2+54325))
         logo:setRotation3D({x=math.deg(rand_x),y=math.deg(rand_y),z=math.deg(rand_z)})
         time = time+1
-        self._pointLight:setPosition3D(cc.vec3(math.abs(rand_x)*self._logoSize.width*9,math.abs(rand_y)*self._logoSize.height*9,math.abs(rand_z)*50))
-        self._lightSprite:setPosition3D(cc.vec3(math.abs(rand_x)*self._logoSize.width*9,math.abs(rand_y)*self._logoSize.height*9,math.abs(rand_z)*50))
     end
     self.logoSchedule = cc.Director:getInstance():getScheduler():scheduleScriptFunc(logoShake,0,false)
+end
 
+--add pointlight
+function MainMenuScene:addPointLight(layer)
     --add pointlight
-    self._pointLight = cc.PointLight:create(cc.vec3(0,0,50),cc.c3b(255,255,255),10000)
+    self._pointLight = cc.PointLight:create(cc.vec3(0,0,100),cc.c3b(255,255,255),1000000)
     self._pointLight:setCameraMask(1)
     self._pointLight:setEnabled(true)
-    logo:addChild(self._pointLight)
-    
-    --add light sprite
+
+    --add lightsprite
     self._lightSprite = cc.Sprite:create("mainmenuscene/light.png")
-    self._lightSprite:setPosition3D(cc.vec3(0,0,50))
+    self._lightSprite:setPosition3D(cc.vec3(self.size.width*0.5,self.size.height*0.5,100))
     self._lightSprite:setColor(cc.c3b(200,0,0))
-    logo:addChild(self._lightSprite)
-    
+    self._lightSprite:addChild(self._pointLight)
+    self:addChild(self._lightSprite)
+
     -- effectNormalMap
     local effectNormalMapped = cc.EffectNormalMapped:create("mainmenuscene/logo_normal.png");
     effectNormalMapped:setPointLight(self._pointLight)
     effectNormalMapped:setKBump(100)
-    logo:setEffect(effectNormalMapped)
+    self._logo:setEffect(effectNormalMapped)
     
+    --action
+    local function getBezierAction()
+        local bezierConfig1 = {
+            cc.p(self.size.width*1,self.size.height*0.5),
+            cc.p(self.size.width*1,self.size.height*0.9),
+            cc.p(self.size.width*0.5,self.size.height*0.9)
+        }
+        local bezierConfig2 = {
+            cc.p(self.size.width*0.3,self.size.height*0.9),
+            cc.p(self.size.width*0.3,self.size.height*0.5),
+            cc.p(self.size.width*0.5,self.size.height*0.5)
+        }
+        local bezier1 = cc.BezierTo:create(5,bezierConfig1)
+        local bezier2 = cc.BezierTo:create(5,bezierConfig2)
+        local bezier = cc.Sequence:create(bezier1,bezier2)
+
+        return bezier
+    end
+    self._lightSprite:runAction(cc.RepeatForever:create(getBezierAction()))
+    
+    --touch eventlistener
+    local function onTouchBegin(touch,event)
+        self._lightSprite:stopAllActions()
+        
+        local location = touch:getLocation()
+        self._prePosition = location
+
+        local function movePoint(dt)
+            local lightSpritePos = getPosTable(self._lightSprite)
+            local point = cc.pLerp(lightSpritePos,self._prePosition,dt*2)
+            self._lightSprite:setPosition(point)
+            local z = math.sin(math.rad(math.random(0,2*math.pi)))*100+100
+            self._lightSprite:setPositionZ(z)
+        end
+        self._scheduleMove = cc.Director:getInstance():getScheduler():scheduleScriptFunc(movePoint,0,false)
+        
+        return true
+    end
+    local function onTouchMoved(touch,event)
+        --again set prePosition
+        local location = touch:getLocation()
+        self._prePosition = location
+    end
+    local function onTouchEnded(touch,event)
+        --unschedule and stop action
+        cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scheduleMove)
+        self._lightSprite:stopAllActions()
+        self._lightSprite:setPositionZ(100)
+        self._lightSprite:runAction(cc.RepeatForever:create(getBezierAction()))      
+    end
+    
+    --add event listener
+    local touchEventListener = cc.EventListenerTouchOneByOne:create()
+    touchEventListener:registerScriptHandler(onTouchBegin,cc.Handler.EVENT_TOUCH_BEGAN)
+    touchEventListener:registerScriptHandler(onTouchMoved,cc.Handler.EVENT_TOUCH_MOVED)
+    touchEventListener:registerScriptHandler(onTouchEnded,cc.Handler.EVENT_TOUCH_ENDED)
+    layer:getEventDispatcher():addEventListenerWithSceneGraphPriority(touchEventListener,layer)
 end
 
 --add button to start game

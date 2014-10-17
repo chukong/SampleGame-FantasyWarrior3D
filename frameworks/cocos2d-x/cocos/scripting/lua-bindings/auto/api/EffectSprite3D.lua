@@ -20,6 +20,12 @@
         
 --------------------------------
 -- 
+-- @function [parent=#EffectSprite3D] getMeshNum 
+-- @param self
+-- @return int#int ret (return value: int)
+        
+--------------------------------
+-- 
 -- @function [parent=#EffectSprite3D] create 
 -- @param self
 -- @param #string modelPath
