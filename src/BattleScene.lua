@@ -125,7 +125,7 @@ end
 local function moveCamera(dt)
     --cclog("moveCamera")
     if camera and List.getSize(HeroManager) > 0 then
-        local position = cc.pLerp({x=camera:getPositionX(),y=0},{x=getFocusPointOfHeros().x,y=0},2*dt)
+        local position = cc.pLerp({x=camera:getPositionX(),y=0},{x=getFocusPointOfHeros().x+size.width/5,y=0},2*dt)
         camera:setPositionX(position.x)
         camera:lookAt({x=position.x, y=size.width/2, z=0.0}, {x=0.0, y=1.0, z=0.0})
     end
@@ -194,25 +194,23 @@ local function addNewSprite(x, y, tag)
 end
 
 local function createBackground()
-    local spriteBg = cc.Sprite3D:create("Sprite3DTest/scene/DemoScene.c3b")
-    local children = spriteBg:getChildren()
-    for key1, var1 in ipairs(children) do
-        if key1 ~= 2 then
-            var1:setVisible(false)
-        else
-            for key2, var2 in ipairs(var1:getChildren()) do
-                if key2 ~=2 then
-                    var2:setVisible(false)
-                end
-            end
-        end
-    end
+    local spriteBg = cc.Sprite3D:create("model/scene1.c3b", "model/zhenghe.png")
+    --local spriteBg = cc.Sprite3D:create("model/changjing.c3b")
+    --spriteBg:setTexture(cc.Director:getInstance():getTextureCache():addImage("model/zhenghe.png"))
 
+
+    
     currentLayer:addChild(spriteBg)
-    spriteBg:setScaleX(300)
-    spriteBg:setScaleY(100)
-    spriteBg:setPosition3D(cc.V3(size.width/2, size.height/2, 0))
+    spriteBg:setScale(2.5)
+    spriteBg:setGlobalZOrder(-9)
+    spriteBg:setPosition3D(cc.V3(-3500,0,0))
     spriteBg:setRotation3D(cc.V3(90,0,0))
+    
+    local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=4500, height=400}, 0.77, 0.3797, 1.2)
+    currentLayer:addChild(water)
+    water:setPosition3D(cc.V3(-3500,-400,-35))
+    water:setAnchorPoint(0,0)
+    water:setGlobalZOrder(-9)
 end
 
 local function createEnmey(step)
@@ -235,18 +233,18 @@ local function createEnmey(step)
 end
 
 local function createRole()
-    local hero = addNewSprite(heroOriginPositionX, 0, EnumRaceType.WARRIOR)
+    local hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR)
     addParticleToRole(hero)    
     hero:setState(EnumStateType.WALK)
     hero:runAction(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1))
     List.pushlast(HeroManager, hero)
         
-   hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR)
+   hero = addNewSprite(heroOriginPositionX, 600, EnumRaceType.WARRIOR)
    addParticleToRole(hero)    
    hero:setState(EnumStateType.WALK)
    List.pushlast(HeroManager, hero)
 
-   hero = addNewSprite(heroOriginPositionX, -300, EnumRaceType.MAGE)
+   hero = addNewSprite(heroOriginPositionX, 0, EnumRaceType.MAGE)
    addParticleToRole(hero)
    hero:setState(EnumStateType.WALK)
    List.pushlast(HeroManager, hero)
@@ -262,9 +260,10 @@ end
 
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 1.0, 2000.0)
-    camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height*1.2, size.width/2))
+    camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height*1.45, size.height/2+50))
     camera:lookAt(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y, 0.0), cc.V3(0.0, 1.0, 0.0))
     currentLayer:addChild(camera)
+    camera:setGlobalZOrder(10)
 end
 
 local function enemyEncounter()
@@ -310,7 +309,7 @@ local function initUILayer()
     uiLayer:setPositionZ(-cc.Director:getInstance():getZEye())
     uiLayer:setScale(1)
     uiLayer:ignoreAnchorPointForPosition(false)
-    uiLayer:setGlobalZOrder(999)
+    uiLayer:setLocalZOrder(999)
     camera:addChild(uiLayer)
 end
 
