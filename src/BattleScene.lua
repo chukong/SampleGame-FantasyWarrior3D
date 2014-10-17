@@ -235,7 +235,6 @@ local function createRole()
     hero:setState(EnumStateType.WALK)
     hero:runAction(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1))
     List.pushlast(HeroManager, hero)
-        
 
    hero = addNewSprite(heroOriginPositionX, 600, EnumRaceType.WARRIOR, true)
    addParticleToRole(hero)    
