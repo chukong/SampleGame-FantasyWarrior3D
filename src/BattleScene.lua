@@ -74,11 +74,12 @@ local function findEnmey(object, manager)
         object:setTarget(nil)
     else
         if isInCircleSector(object, object._target) then
---            if object:getRaceType() == EnumRaceType.WARRIOR then
---                object:setState(EnumStateType.SPECIALATTACK)
---            else
+            if object:getRaceType() == EnumRaceType.BOSS then
+--                object:setState(EnumStateType.ATTACK)
+                object:setState(EnumStateType.SPECIALATTACK)
+            else
                 object:setState(EnumStateType.ATTACK)
---            end
+            end
         else
             object:setState(EnumStateType.WALK)    
             faceToEnmey(object, object._target)
@@ -94,7 +95,6 @@ local function findAllEnemy()
     local heroSize =  List.getSize(HeroManager)
     local monsterSize = List.getSize(MonsterManager)
     local bossSize = List.getSize(BossManager)    
-
     --hero find monster and boss
     for val = 1, heroSize do
         local sprite = HeroManager[val-1]
@@ -152,18 +152,18 @@ local function addParticleToRole(role)
     role._particle:setEmissionRate(0)
 end
 
-local function addNewSprite(x, y, tag)
+local function addNewSprite(x, y, raceType, isVisible)
     local sprite = nil
     local animation = nil
-    if tag == EnumRaceType.WARRIOR then
+    if raceType == EnumRaceType.WARRIOR then
         sprite = Warrior.create()    
-    elseif tag == EnumRaceType.MAGE then
+    elseif raceType == EnumRaceType.MAGE then
         sprite = Mage.create()
-    elseif tag == EnumRaceType.MONSTER then
+    elseif raceType == EnumRaceType.MONSTER then
         sprite = Monster.create()
         sprite._sprite3d:setScale(15)
         List.pushlast(MonsterPool, sprite)
-    elseif tag == EnumRaceType.BOSS then
+    elseif raceType == EnumRaceType.BOSS then
         sprite = Boss.create()
         sprite._sprite3d:setScale(35)        
         List.pushlast(BossPool, sprite)
@@ -189,7 +189,7 @@ local function addNewSprite(x, y, tag)
     sprite.priority = sprite.speed        
 
     sprite:setState(EnumStateType.STAND)
-
+    sprite:setVisible(isVisible)
     return sprite    
 end
 
@@ -218,46 +218,47 @@ end
 local function createEnmey(step)
     if  step ~= currentStep  then return end
 
-    if currentStep == 1 then
-        List.pushlast(MonsterManager, List.popfirst(MonsterPool))
-        List.pushlast(MonsterManager, List.popfirst(MonsterPool))
-        List.pushlast(MonsterManager, List.popfirst(MonsterPool))
+    --On step 1&2, three monsters would attack you
+    --On step 3, boss would bite you 
+    if currentStep == 1 or currentStep == 2 then
+        for val = 1, 3 do
+            local sprite = List.popfirst(MonsterPool)
+            sprite:setVisible(true)
+            List.pushlast(MonsterManager, sprite)
+        end
         currentStep = currentStep + 1
-    elseif currentStep == 2 then
-        List.pushlast(MonsterManager, List.popfirst(MonsterPool))
-        List.pushlast(MonsterManager, List.popfirst(MonsterPool))
-        List.pushlast(MonsterManager, List.popfirst(MonsterPool))
-        currentStep = currentStep + 1   
     elseif currentStep == 3 then
-        List.pushlast(BossManager, List.popfirst(BossPool))
+        local sprite = List.popfirst(BossPool)
+        sprite:setVisible(true)    
+        List.pushlast(BossManager, sprite)
         currentStep = currentStep + 1                    
     end    
 end
 
 local function createRole()
-    local hero = addNewSprite(heroOriginPositionX, 0, EnumRaceType.WARRIOR)
+    local hero = addNewSprite(heroOriginPositionX, 0, EnumRaceType.WARRIOR, true)
     addParticleToRole(hero)    
     hero:setState(EnumStateType.WALK)
     hero:runAction(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1))
     List.pushlast(HeroManager, hero)
         
-   hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR)
-   addParticleToRole(hero)    
-   hero:setState(EnumStateType.WALK)
-   List.pushlast(HeroManager, hero)
+    hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR, true)
+    addParticleToRole(hero)    
+    hero:setState(EnumStateType.WALK)
+    List.pushlast(HeroManager, hero)
 
-   hero = addNewSprite(heroOriginPositionX, -300, EnumRaceType.MAGE)
-   addParticleToRole(hero)
-   hero:setState(EnumStateType.WALK)
-   List.pushlast(HeroManager, hero)
+    hero = addNewSprite(heroOriginPositionX, -300, EnumRaceType.MAGE, true)
+    addParticleToRole(hero)
+    hero:setState(EnumStateType.WALK)
+    List.pushlast(HeroManager, hero)
 
-    addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER)
-    addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER)
-    addNewSprite(size.width/2-2000, size.height/2-100, EnumRaceType.MONSTER)
-    addNewSprite(size.width/2, size.height/2-200, EnumRaceType.MONSTER)
-    addNewSprite(size.width/2+100, size.height/2-200, EnumRaceType.MONSTER)
-    addNewSprite(size.width/2+100, size.height/2-100, EnumRaceType.MONSTER)
-    addNewSprite(size.width/2+2000, size.height/2-100, EnumRaceType.BOSS)
+    addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER, false)
+    addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER, false)
+    addNewSprite(size.width/2-2000, size.height/2-100, EnumRaceType.MONSTER, false)
+    addNewSprite(size.width/2, size.height/2-200, EnumRaceType.MONSTER, false)
+    addNewSprite(size.width/2+100, size.height/2-200, EnumRaceType.MONSTER, false)
+    addNewSprite(size.width/2+100, size.height/2-100, EnumRaceType.MONSTER, false)
+    addNewSprite(size.width/2+2000, size.height/2-100, EnumRaceType.BOSS, false)
 end
 
 local function setCamera()
@@ -302,6 +303,7 @@ local function gameController(dt)
 
     enemyEncounter()
     findAllEnemy()
+    commandControl()
 end
 
 local function initUILayer()
