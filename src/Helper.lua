@@ -134,10 +134,11 @@ end
 function List.remove(list, index)
     if index < list.first or index > list.last then return end
     
-    while index < list.last do
+    while index <= list.last do
+        list[index] = nil
         list[index] = list[index+1]
-        list[index+1] = nil
         index = index + 1
     end
+    
     list.last = list.last -1
 end

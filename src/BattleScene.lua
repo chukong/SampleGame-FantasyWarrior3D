@@ -19,35 +19,35 @@ local uiLayer = nil
 
 local function collisionDetect()
     --cclog("collisionDetect")
-    for val = 1, List.getSize(HeroManager) do
-        local sprite = HeroManager[val-1]
+    for val = HeroManager.first, HeroManager.last do
+        local sprite = HeroManager[val]
         if sprite._isalive == true then
             collision(sprite)
             isOutOfBound(sprite)
         else
-            List.remove(HeroManager, val-1)
+            List.remove(HeroManager, val)
             break
         end
     end
 
-    for val = 1, List.getSize(MonsterManager) do
-        local sprite = MonsterManager[val-1]
+    for val = MonsterManager.first, MonsterManager.last do
+        local sprite = MonsterManager[val]
         if sprite._isalive == true then
             collision(sprite)
             isOutOfBound(sprite)            
         else
-            List.remove(MonsterManager, val-1)
+            List.remove(MonsterManager, val)
             break
         end
     end    
 
-    for val = 1, List.getSize(BossManager) do
-        local sprite = BossManager[val-1]
+    for val = BossManager.first, BossManager.last do
+        local sprite = BossManager[val]
         if sprite._isalive == true then
             collision(sprite)
             isOutOfBound(sprite)            
         else
-            List.remove(BossManager, val-1)
+            List.remove(BossManager, val)
             break
         end
     end        
@@ -58,8 +58,8 @@ local function findEnmey(object, manager)
 
     local find = false
     local shortest_distance = 1000
-    for var = 1, List.getSize(manager) do
-        local objectTemp = manager[var-1]
+    for val = manager.first, manager.last do
+        local objectTemp = manager[val]
         local dis = cc.pGetDistance(getPosTable(object),getPosTable(objectTemp))
         if dis < shortest_distance and objectTemp._isalive then
             object:setTarget(objectTemp)
@@ -74,12 +74,7 @@ local function findEnmey(object, manager)
         object:setTarget(nil)
     else
         if isInCircleSector(object, object._target) then
-            if object:getRaceType() == EnumRaceType.BOSS then
---                object:setState(EnumStateType.ATTACK)
-                object:setState(EnumStateType.SPECIALATTACK)
-            else
-                object:setState(EnumStateType.ATTACK)
-            end
+            object:setState(EnumStateType.ATTACK)
         else
             object:setState(EnumStateType.WALK)    
             faceToEnmey(object, object._target)
@@ -92,31 +87,30 @@ local function findAllEnemy()
         return
     end
 
-    local heroSize =  List.getSize(HeroManager)
     local monsterSize = List.getSize(MonsterManager)
     local bossSize = List.getSize(BossManager)    
     --hero find monster and boss
-    for val = 1, heroSize do
-        local sprite = HeroManager[val-1]
+    for val = HeroManager.first, HeroManager.last do
+        local sprite = HeroManager[val]
         findEnmey(sprite, MonsterManager)
     end
         
     if bossSize > 0 then  
-        for val = 1, heroSize do
-            local sprite = HeroManager[val-1]
+        for val = HeroManager.first, HeroManager.last do
+            local sprite = HeroManager[val]
             findEnmey(sprite, BossManager)
         end           
     end        
         
     --monster and boss find hero
-    for var = 1, monsterSize do
-       local objectTemp = MonsterManager[var-1]
+    for val = MonsterManager.first, MonsterManager.last do
+       local objectTemp = MonsterManager[val]
        findEnmey(objectTemp, HeroManager)
    end
 
     if bossSize > 0 then  
-        for var = 1, bossSize do
-            local objectTemp = BossManager[var-1]
+        for val = BossManager.first, BossManager.last do
+            local objectTemp = BossManager[val]
             findEnmey(objectTemp, HeroManager)
         end          
     end   
@@ -133,8 +127,8 @@ end
 
 local function updateParticlePos()
     --cclog("updateParticlePos")
-    for val = 1, List.getSize(HeroManager) do
-        local sprite = HeroManager[val-1]
+    for val = HeroManager.first, HeroManager.last do
+        local sprite = HeroManager[val]
         if sprite._particle ~= nil then        
             sprite._particle:setPosition(getPosTable(sprite))
         end
@@ -334,8 +328,8 @@ function BattleScene.create()
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,registerBloodDrop)
     
-    for val = 1, List.getSize(HeroManager) do
-        local sprite = HeroManager[val-1]
+    for val = HeroManager.first, HeroManager.last do
+        local sprite = HeroManager[val]
         sprite._particle:setCamera(camera)
     end    
 
