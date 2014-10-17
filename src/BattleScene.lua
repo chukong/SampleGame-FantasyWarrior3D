@@ -74,11 +74,12 @@ local function findEnmey(object, manager)
         object:setTarget(nil)
     else
         if isInCircleSector(object, object._target) then
---            if object:getRaceType() == EnumRaceType.WARRIOR then
---                object:setState(EnumStateType.SPECIALATTACK)
---            else
+            if object:getRaceType() == EnumRaceType.BOSS then
+--                object:setState(EnumStateType.ATTACK)
+                object:setState(EnumStateType.SPECIALATTACK)
+            else
                 object:setState(EnumStateType.ATTACK)
---            end
+            end
         else
             object:setState(EnumStateType.WALK)    
             faceToEnmey(object, object._target)
@@ -94,7 +95,6 @@ local function findAllEnemy()
     local heroSize =  List.getSize(HeroManager)
     local monsterSize = List.getSize(MonsterManager)
     local bossSize = List.getSize(BossManager)    
-
     --hero find monster and boss
     for val = 1, heroSize do
         local sprite = HeroManager[val-1]
@@ -303,6 +303,7 @@ local function gameController(dt)
 
     enemyEncounter()
     findAllEnemy()
+    commandControl()
 end
 
 local function initUILayer()

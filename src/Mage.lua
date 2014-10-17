@@ -1,3 +1,4 @@
+require "AttackCommand"
 require "GlobalVariables"
 require "MessageDispatchCenter"
 Mage = class("Mage", function()
@@ -55,7 +56,8 @@ function Mage.create()
         elseif EnumStateType.NORMALATTACK == hero._statetype then
             hero._statetype = EnumStateType.NORMALATTACKING
             local function sendKnockedMsg()
-                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(hero))
+                AttackCommand.create(hero)
+                --MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(hero))
                 cclog("Mage send msg....")
             end
             local function attackdone()
@@ -66,7 +68,8 @@ function Mage.create()
         elseif EnumStateType.SPECIALATTACK == hero._statetype then
             hero._statetype = EnumStateType.SPECIALATTACKING
             local function sendKnockedMsg()
-                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKEDAOE, createKnockedMsgStruct(hero))
+                AttackCommand.create(hero)
+                --MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKEDAOE, createKnockedMsgStruct(hero))
                 cclog("Mage send msg....")
             end
             local function attackdone()
@@ -125,21 +128,21 @@ function Mage.create()
     --regist message
 
     
-    local function knocked(msgStruct)
-        --stopAllActions and dropblood
-        if msgStruct.target == hero then 
-            hero._knockedMsgStruct = msgStruct
-            hero:setState(EnumStateType.KNOCKED)
-        end
-    end
-    
-    local function knockedAll(msgStruct)
-        --stopAllActions and dropblood
-        attackAll(msgStruct.attacker)
-    end    
-
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKED, knocked)
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKEDAOE, knockedAll)
+--    local function knocked(msgStruct)
+--        --stopAllActions and dropblood
+--        if msgStruct.target == hero then 
+--            hero._knockedMsgStruct = msgStruct
+--            hero:setState(EnumStateType.KNOCKED)
+--        end
+--    end
+--    
+--    local function knockedAll(msgStruct)
+--        --stopAllActions and dropblood
+--        attackAll(msgStruct.attacker)
+--    end    
+--
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKED, knocked)
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKEDAOE, knockedAll)
 
     List.pushlast(HeroPool, hero)
 

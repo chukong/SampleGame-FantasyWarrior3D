@@ -1,4 +1,6 @@
+require "AttackCommand"
 require "MessageDispatchCenter"
+
 Monster = class("Monster", function()
     return require "Base3D".create()
 end)
@@ -12,7 +14,7 @@ function Monster:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 100  
+    self._attack = 200  
 end
 
 function Monster.create()
@@ -47,7 +49,8 @@ function Monster.create()
         elseif EnumStateType.ATTACK == monster._statetype then
             monster._statetype = EnumStateType.ATTACKING
             local function sendKnockedMsg()
-                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(monster))
+                AttackCommand.create(monster)
+                --MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(monster))
             end
             local function attackdone()
                 monster:setState(EnumStateType.STAND)
@@ -103,15 +106,15 @@ function Monster.create()
     --regist message
 
 
-    local function knocked(msgStruct)
-        --stopAllActions and dropblood
-        if msgStruct.target == monster then 
-            monster._knockedMsgStruct = msgStruct
-            monster:setState(EnumStateType.KNOCKED)
-        end
-    end
-
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKED, knocked)
+--    local function knocked(msgStruct)
+--        --stopAllActions and dropblood
+--        if msgStruct.target == monster then 
+--            monster._knockedMsgStruct = msgStruct
+--            monster:setState(EnumStateType.KNOCKED)
+--        end
+--    end
+--
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKED, knocked)
 
     return monster
 end
