@@ -23,22 +23,22 @@ end
 
 function AttackCommand:attackAll()
     if self.raceType ~= EnumRaceType.WARRIOR and self.raceType ~= EnumRaceType.MAGE and self.raceType ~= EnumRaceType.ARCHER then
-        for val = 1, List.getSize(HeroManager) do
-            local sprite = HeroManager[val-1]
+        for val = HeroManager.first, HeroManager.last do
+            local sprite = HeroManager[val]
             if sprite._isalive == true and isInCircleSector(self.attacker, sprite) then
                 sprite:setState(EnumStateType.KNOCKED)
             end
         end
     else
-        for val = 1, List.getSize(MonsterManager) do
-            local sprite = MonsterManager[val-1]
+        for val = MonsterManager.first, MonsterManager.last do
+            local sprite = MonsterManager[val]
             if sprite._isalive == true and isInCircleSector(self.attacker, sprite) then
                 sprite:setState(EnumStateType.KNOCKED)
             end
         end 
 
-        for val = 1, List.getSize(BossManager) do
-            local sprite = BossManager[val-1]
+        for val = BossManager.first, BossManager.last do
+            local sprite = BossManager[val]
             if sprite._isalive == true and isInCircleSector(self.attacker, sprite) then
                 sprite:setState(EnumStateType.KNOCKED)
             end
