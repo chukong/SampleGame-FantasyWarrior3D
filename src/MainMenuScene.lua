@@ -43,6 +43,8 @@ function MainMenuScene:createLayer()
     --add pointlight
     self:addPointLight(mainLayer)
     
+    ccexp.AudioEngine:play2d("audios/Royal Flush Party.mp3")
+    
     --when replease scene unschedule schedule
     local function onExit(event)
         if "exit" == event then

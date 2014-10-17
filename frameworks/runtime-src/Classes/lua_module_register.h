@@ -26,7 +26,7 @@ int lua_module_register(lua_State* L)
     lua_getglobal(L, "_G");
     register_all_cocos2dx_custom(L);
     lua_pop(L, 1);
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC
     register_audioengine_module(L);
 #endif
     return 1;
