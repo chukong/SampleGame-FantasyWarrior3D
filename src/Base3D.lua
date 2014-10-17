@@ -59,7 +59,6 @@ function Base3D:ctor()
 	self._attack = 100
 	self._defense = 100
 	self._speed = 500
-	self._rotatehead = 3
 	self._priority = self._speed
     self._racetype = EnumRaceType.BASE
     self._statetype = nil
