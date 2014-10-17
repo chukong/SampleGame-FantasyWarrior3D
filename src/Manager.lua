@@ -12,9 +12,9 @@ MonsterManager = List.new()
 BossManager = List.new()
 
 function findAliveMonster()
-    for val = 1, List.getSize(MonsterManager) do
-        if MonsterManager[val-1]._isalive == true then
-            return MonsterManager[val-1]
+    for val = MonsterManager.first, MonsterManager.last do
+        if MonsterManager[val]._isalive == true then
+            return MonsterManager[val]
         end                  
     end
 
@@ -22,9 +22,9 @@ function findAliveMonster()
 end
 
 function findAliveHero()
-    for val = 1, List.getSize(HeroManager) do
-        if HeroManager[val-1]._isalive == true then
-            return HeroManager[val-1]
+    for val = HeroManager.first, HeroManager.last do
+        if HeroManager[val]._isalive == true then
+            return HeroManager[val]
         end                  
     end  
 
@@ -32,9 +32,9 @@ function findAliveHero()
 end
 
 function findAliveBoss()
-    for val = 1, List.getSize(BossManager) do
-        if BossManager[val-1]._isalive == true then
-            return BossManager[val-1]
+    for val = BossManager.first, BossManager.last do
+        if BossManager[val]._isalive == true then
+            return BossManager[val]
         end                  
     end  
 
@@ -57,22 +57,22 @@ function tooClose(object1, object2)
 end
 
 function collision(object)
-    for val = 1, List.getSize(HeroManager) do
-        local sprite = HeroManager[val-1]
+    for val = HeroManager.first, HeroManager.last do
+        local sprite = HeroManager[val]
         if sprite._isalive == true and sprite ~= object then
             tooClose(sprite, object)
         end
     end
 
-    for val = 1, List.getSize(MonsterManager) do
-        local sprite = MonsterManager[val-1]
+    for val = MonsterManager.first, MonsterManager.last do
+        local sprite = MonsterManager[val]
         if sprite._isalive == true and sprite ~= object then
             tooClose(sprite, object)
         end                  
     end 
 
-    for val = 1, List.getSize(BossManager) do
-        local sprite = BossManager[val-1]
+    for val = BossManager.first, BossManager.last do
+        local sprite = BossManager[val]
         if sprite._isalive == true and sprite ~= object then
             tooClose(sprite, object)
         end
@@ -190,8 +190,8 @@ end
 
 function attackAll(object)
     if object:getRaceType() ~= EnumRaceType.WARRIOR then
-        for val = 1, List.getSize(HeroManager) do
-            local sprite = HeroManager[val-1]
+        for val = HeroManager.first, HeroManager.last do
+            local sprite = HeroManager[val]
             if sprite._isalive == true 
                 and sprite ~= object 
                 and isInCircleSector(object, sprite) then
@@ -200,8 +200,8 @@ function attackAll(object)
             end
         end
     else
-        for val = 1, List.getSize(MonsterManager) do
-            local sprite = MonsterManager[val-1]
+        for val = MonsterManager.first, MonsterManager.last do
+            local sprite = MonsterManager[val]
             if sprite._isalive == true 
                 and sprite ~= object 
                 and isInCircleSector(object, sprite) then
@@ -210,8 +210,8 @@ function attackAll(object)
             end                
         end 
 
-        for val = 1, List.getSize(BossManager) do
-            local sprite = BossManager[val-1]
+        for val = BossManager.first, BossManager.last do
+            local sprite = BossManager[val]
             if sprite._isalive == true 
                 and sprite ~= object 
                 and isInCircleSector(object, sprite) then
