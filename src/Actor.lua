@@ -80,6 +80,7 @@ function Actor:ctor()
     self._AIEnabled = false
     self._attackTimer = 0
     self._timeKnocked = nil
+    self._cooldown = false
     
     --constant variables
     self._blendTime = 0.4
@@ -87,7 +88,7 @@ function Actor:ctor()
     self._defense = 100
     self._radius = 50
     self._speed = 500 --500units a second maximum
-    self._turnSpeed = DEGREES_TO_RADIANS(270) --270 degrees a second
+    self._turnSpeed = DEGREES_TO_RADIANS(225) --180 degrees a second
     self._acceleration = 750 --accelerates to 500 in a second
     self._decceleration = 750*1.5 --stopping should be slightly faster than starting
     self._goRight = true
@@ -319,17 +320,17 @@ function Actor:_inRange()
     end
 end
 function Actor:AI()
-    --print("i think")
+    print("i think")
     --my Brain, bleh
     --if i don't have a target, i should try to aquire one
     if self._isalive then
         local state = self:getStateType()
         local inRange = self:_inRange()
-        if not self._target or not self._target._isalive then
+        if not self._target or not self._target._isalive and not self._cooldown then
             self._target = self:_findEnemy()
             self:walkMode()
         end
-        if state == EnumStateType.ATTACKING and not inRange then
+        if state == EnumStateType.ATTACKING and not inRange and not self._cooldown then
             self:walkMode()
         end
     else
@@ -360,6 +361,7 @@ function Actor:attackUpdate(dt)
         self._attackTimer = self._attackTimer - self._attackFrequency
         local function playIdle()
             self:playAnimation("idle", true)
+            self._cooldown = false
         end
         --time for an attack, which attack should i do?
         local random_special = math.random()
@@ -371,6 +373,7 @@ function Actor:attackUpdate(dt)
             self._sprite3d:stopAction(self._curAnimation3d)
             self._sprite3d:runAction(attackAction)
             self._curAnimation = attackAction
+            self._cooldown = true
         else
             local function createCol()
                 self:createCollider(self._myPos, self._curFacing, self._specialAttack)
@@ -379,6 +382,7 @@ function Actor:attackUpdate(dt)
             self._sprite3d:stopAction(self._curAnimation3d)
             self._sprite3d:runAction(attackAction)
             self._curAnimation = attackAction
+            self._cooldown = true
         end
     end
 end
