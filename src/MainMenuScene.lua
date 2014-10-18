@@ -1,5 +1,7 @@
 require "Cocos2d"
 require "Helper"
+require "Warrior"
+require "Mage"
 
 --declare a class extends scene
 local MainMenuScene = class("MainMenuScene",function()
@@ -43,6 +45,8 @@ function MainMenuScene:createLayer()
     --add pointlight
     self:addPointLight(mainLayer)
     
+    self:addHero(mainLayer)
+    
     --when replease scene unschedule schedule
     local function onExit(event)
         if "exit" == event then
@@ -53,6 +57,18 @@ function MainMenuScene:createLayer()
     mainLayer:registerScriptHandler(onExit)
     
     return mainLayer
+end
+
+function MainMenuScene:addHero(layer)
+    local warrior = Warrior:create()
+    warrior:setPosition(cc.p(300,200))
+    warrior:setRotation3D({x=-90,y=-60,z=0})
+    layer:addChild(warrior,5)
+    
+    local mage = Mage:create()
+    mage:setPosition(cc.p(450,190))
+    mage:setRotation3D({x=-90,y=-60,z=0})
+    layer:addChild(mage,5)
 end
 
 function MainMenuScene:addLogo(layer)
@@ -81,19 +97,74 @@ function MainMenuScene:addLogo(layer)
     self.logoSchedule = cc.Director:getInstance():getScheduler():scheduleScriptFunc(logoShake,0,false)
 end
 
+function MainMenuScene:getLightSprite()
+    self._lightSprite = cc.Sprite:create("mainmenuscene/light.png")
+    self._lightSprite:setPosition3D(cc.vec3(self.size.width*0.5,self.size.height*0.5,100))
+    local light_size = self._lightSprite:getContentSize()
+    
+    local rotate_top = cc.RotateBy:create(0.05,50)
+    local rotate_bottom = cc.RotateBy:create(0.05,-50)
+    local origin_degree = 20
+    local sprite_scale = 0
+    local scale_action = cc.ScaleTo:create(0.05,0.7)
+    
+    
+    local swing_l1 = cc.Sprite:create("mainmenuscene/swing_l1.png")
+    swing_l1:setScale(sprite_scale)
+    swing_l1:setAnchorPoint(cc.p(1,0))
+    swing_l1:setPosition(light_size.width/2,light_size.height/2)
+    swing_l1:setRotation(-origin_degree)
+    self._lightSprite:addChild(swing_l1,5)
+    
+    local swing_l2 = cc.Sprite:create("mainmenuscene/swing_l2.png")
+    swing_l2:setAnchorPoint(cc.p(1,1))
+    swing_l2:setScale(sprite_scale)
+    swing_l2:setPosition(light_size.width/2,light_size.height/2)
+    swing_l2:setRotation(origin_degree)
+    self._lightSprite:addChild(swing_l2,5)
+    
+    local swing_r1 = cc.Sprite:create("mainmenuscene/swing_r1.png")
+    swing_r1:setAnchorPoint(cc.p(0,0))
+    swing_r1:setScale(sprite_scale)
+    swing_r1:setPosition(light_size.width/2,light_size.height/2)
+    swing_r1:setRotation(origin_degree)
+    self._lightSprite:addChild(swing_r1,5)
+    
+    local swing_r2 = cc.Sprite:create("mainmenuscene/swing_r2.png")
+    swing_r2:setAnchorPoint(cc.p(0,1))
+    swing_r2:setScale(sprite_scale)
+    swing_r2:setPosition(light_size.width/2,light_size.height/2)
+    swing_r2:setRotation(-origin_degree)
+    self._lightSprite:addChild(swing_r2,5)
+    
+    --runaction
+    local sequence_l1 = cc.Sequence:create(rotate_top,rotate_top:reverse())
+    local sequence_r1 = cc.Sequence:create(rotate_top:reverse():clone(),rotate_top:clone())
+    swing_l1:runAction(cc.RepeatForever:create(cc.Spawn:create(sequence_l1,scale_action)))
+    swing_r1:runAction(cc.RepeatForever:create(cc.Spawn:create(sequence_r1,scale_action)))
+    swing_l2:runAction(cc.RepeatForever:create(cc.Sequence:create(rotate_bottom,rotate_bottom:reverse())))
+    swing_r2:runAction(cc.RepeatForever:create(cc.Sequence:create(rotate_bottom:reverse():clone(),rotate_bottom:clone())))
+
+    --lightSprite rotate
+--    local function sprite_rotate(dt)
+--        local angle = cc.pToAngleSelf(getPosTable(self._lightSprite))
+--        self._lightSprite:setRotation(self._lightSprite:getRotation()-dt*25)
+--    end
+--    self._scheduleLightSprite = cc.Director:getInstance():getScheduler():scheduleScriptFunc(sprite_rotate,0,false)
+
+end
+
 --add pointlight
 function MainMenuScene:addPointLight(layer)
     --add pointlight
-    self._pointLight = cc.PointLight:create(cc.vec3(0,0,100),cc.c3b(255,255,255),1000000)
+    self._pointLight = cc.PointLight:create(cc.vec3(0,0,100),cc.c3b(255,255,255),10000)
     self._pointLight:setCameraMask(1)
     self._pointLight:setEnabled(true)
 
     --add lightsprite
-    self._lightSprite = cc.Sprite:create("mainmenuscene/light.png")
-    self._lightSprite:setPosition3D(cc.vec3(self.size.width*0.5,self.size.height*0.5,100))
-    self._lightSprite:setColor(cc.c3b(200,0,0))
+    self:getLightSprite()
     self._lightSprite:addChild(self._pointLight)
-    self:addChild(self._lightSprite)
+    self:addChild(self._lightSprite,10)
 
     -- effectNormalMap
     local effectNormalMapped = cc.EffectNormalMapped:create("mainmenuscene/logo_normal.png");
@@ -127,6 +198,10 @@ function MainMenuScene:addPointLight(layer)
         
         local location = touch:getLocation()
         self._prePosition = location
+        
+--       cc.pRotateByAngle(point,point,float)
+--        self._angle =cc.pToAngleSelf(cc.pSub(location,getPosTable(self._lightSprite)))
+        
 
         local function movePoint(dt)
             local lightSpritePos = getPosTable(self._lightSprite)
@@ -134,6 +209,9 @@ function MainMenuScene:addPointLight(layer)
             self._lightSprite:setPosition(point)
             local z = math.sin(math.rad(math.random(0,2*math.pi)))*100+100
             self._lightSprite:setPositionZ(z)
+            
+--            local deg = cc.fLerp(math.deg(self._angle),0,dt*2)
+--            self._lightSprite:setRotation(deg)
         end
         self._scheduleMove = cc.Director:getInstance():getScheduler():scheduleScriptFunc(movePoint,0,false)
         
@@ -143,6 +221,8 @@ function MainMenuScene:addPointLight(layer)
         --again set prePosition
         local location = touch:getLocation()
         self._prePosition = location
+        
+        self._angle =cc.pToAngleSelf(cc.pSub(location,getPosTable(self._lightSprite)))
     end
     local function onTouchEnded(touch,event)
         --unschedule and stop action

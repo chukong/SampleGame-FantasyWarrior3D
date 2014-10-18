@@ -141,7 +141,7 @@ function Mage.create()
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKED, knocked)
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKEDAOE, knockedAll)
 
-    List.pushlast(HeroPool, hero)
+--    List.pushlast(HeroPool, hero)
 
     return hero
 end

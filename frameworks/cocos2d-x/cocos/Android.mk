@@ -191,6 +191,7 @@ custom/EffectSprite3D.cpp \
 custom/JumpBy3D.cpp \
 custom/JumpTo3D.cpp \
 custom/Water.cpp \
+custom/EffectSprite.cpp 
 
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \
