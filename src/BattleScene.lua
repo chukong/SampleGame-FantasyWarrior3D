@@ -1,5 +1,5 @@
 require "Helper"
-require "Base3D"
+require "Actor"
 require "Monster"
 require "Boss"
 require "Manager"

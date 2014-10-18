@@ -1,5 +1,5 @@
 Hero3D = class("Hero3D", function()
-    return require "Base3D".create()
+    return require "Actor".create()
 end)
 
 local size = cc.Director:getInstance():getWinSize()

@@ -4,7 +4,7 @@ require "Helper"
 require "AttackCommand"
 
 Warrior = class("Warrior", function()
-    return require "Base3D".create()
+    return require "Actor".create()
 end)
 
 local size = cc.Director:getInstance():getWinSize()
@@ -29,6 +29,7 @@ function Warrior.create()
     hero:setRaceType(EnumRaceType.WARRIOR)
     hero:setState(EnumStateType.STAND)
     hero:initActions()
+    
 
     local function MainLoop(dt)
 --     getDebugStateType(hero)
@@ -81,11 +82,11 @@ function Warrior.create()
         elseif EnumStateType.KNOCKED == hero._statetype then
             --self._knockedMsgStruct.attacker._attack
             local damage = 200
-            hero._blood = hero._blood - damage
-            if hero._blood <0 then
-                hero._blood = 0
+            hero._hp = hero._hp - damage
+            if hero._hp <0 then
+                hero._hp = 0
             end
-            if hero._blood == 0 then
+            if hero._hp == 0 then
                 hero._isalive = false
                 hero:setState(EnumStateType.DEAD)
             else
