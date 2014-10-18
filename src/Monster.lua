@@ -68,10 +68,10 @@ function Monster.create()
                 monster._isalive = false
                 monster:setState(EnumStateType.DEAD)
             else
-                cclog("monster knocked....")
+                --cclog("monster knocked....")
                 monster._statetype = EnumStateType.KNOCKING
                 local function dropblood()
-                    cclog("monster dropblood")
+                    --cclog("monster dropblood")
                 end
                 local function knockdone()
                     monster:setState(EnumStateType.STAND)

@@ -246,7 +246,7 @@ function Hero3D:setState(type)
         local toRed = cc.TintTo:create(0, 255, 0, 0)
         local toRedBack = cc.TintTo:create(0.2, 255, 255, 255)
         self._sprite3d:runAction(cc.Sequence:create(toRed, toRedBack))
-        cclog("Hero is attacked!!!!")
+        --cclog("Hero is attacked!!!!")
     end
 end
 

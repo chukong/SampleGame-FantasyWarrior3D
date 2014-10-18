@@ -58,7 +58,7 @@ function Mage.create()
             local function sendKnockedMsg()
                 AttackCommand.create(hero)
                 --MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(hero))
-                cclog("Mage send msg....")
+                --cclog("Mage send msg....")
             end
             local function attackdone()
                 hero:setState(EnumStateType.STAND)
@@ -70,7 +70,7 @@ function Mage.create()
             local function sendKnockedMsg()
                 AttackCommand.create(hero)
                 --MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKEDAOE, createKnockedMsgStruct(hero))
-                cclog("Mage send msg....")
+                --cclog("Mage send msg....")
             end
             local function attackdone()
                 hero:setState(EnumStateType.STAND)
@@ -234,7 +234,7 @@ function Mage:setState(type)
         if EnumStateType.KNOCKED == self._statetype then return end
         math.randomseed(os.time()) 
         local random_special = math.random()
-        cclog(random_special)
+        --cclog(random_special)
         if random_special < WarriorProperty.special_attack_chance then
             self._statetype = EnumStateType.SPECIALATTACK
         else    
