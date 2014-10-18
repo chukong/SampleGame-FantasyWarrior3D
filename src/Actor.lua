@@ -98,6 +98,7 @@ function Actor:ctor()
     self._normalAttack = nil
     self._specialAttack = nil
     self._recoverTime = 0.8
+    self._searchDistance = 1000 --distance which enemy can be found
     
     --normal attack
     self._attackMinRadius = 0
@@ -188,7 +189,7 @@ end
 --=============end buggy blending code
 function Actor:playAnimation(name, loop)
     if self._curAnimation ~= name then --using name to check which animation is playing
-        self._sprite3d:stopAction(self._curAnimation3d) --using actual instance to stop playing
+        self._sprite3d:stopAllActions()
         if loop then
             self._curAnimation3d = cc.RepeatForever:create(self._action[name])
         else
@@ -294,13 +295,54 @@ function Actor:stateMachineUpdate(dt)
         --I am dying.. there is not much i can do right?
     end
 end
+function Actor:_findEnemy()
+    local shortest = self._searchDistance
+    local target = nil
+    for val = MonsterManager.first, MonsterManager.last do
+        local temp = MonsterManager[val]
+        local dis = cc.pGetDistance(self._myPos,getPosTable(temp))
+        if dis < shortest and temp._isalive then
+            shortest = dis
+            target = temp
+        end
+    end
+    return target
+end
+function Actor:_inRange()
+    if not self._target then
+        return false
+    elseif self._target._isalive then
+        local attackDistance = self._attackRadius + self._target._radius -1
+        local p1 = self._myPos
+        local p2 = getPosTable(self._target)
+        return (cc.pGetDistance(p1,p2) < attackDistance)
+    end
+end
+function Actor:AI()
+    --print("i think")
+    --my Brain, bleh
+    --if i don't have a target, i should try to aquire one
+    if self._isalive then
+        local state = self:getStateType()
+        local inRange = self:_inRange()
+        if not self._target or not self._target._isalive then
+            self._target = self:_findEnemy()
+            self:walkMode()
+        end
+        if state == EnumStateType.ATTACKING and not inRange then
+            self:walkMode()
+        end
+    else
+        -- logic when im dead 
+    end
+end
 function Actor:baseUpdate(dt)
     self._aliveTime = self._aliveTime+dt
     if self._AIEnabled then
         self._AITimer = self._AITimer+dt
         if self._AITimer > self._AIFrequency then
             self._AITimer = self._AITimer-self._AIFrequency
-            self.AI()
+            self:AI()
         end
     end
     self._myPos = getPosTable(self)
@@ -342,14 +384,15 @@ function Actor:attackUpdate(dt)
 end
 function Actor:walkUpdate(dt)
     --Walking state, switch to attack state when target in range
-    if self._target ~= nil  then
+    if self._target  then
         local attackDistance = self._attackRadius + self._target._radius -1
         local p1 = self._myPos
         local p2 = getPosTable(self._target)
-        self._targetFacing = cc.pToAngleSelf(cc.pSub(p1, p2))
-        if cc.pDistance(p1,p2) < attackDistance then
+        self._targetFacing = cc.pToAngleSelf(cc.pSub(p2, p1))
+        --print(RADIANS_TO_DEGREES(self._targetFacing))
+        if cc.pGetDistance(p1,p2) < attackDistance then
             --we are in range, lets switch to attack state
-            self.attackMode()
+            self:attackMode()
         end
     else
         --our hero doesn't have a target, lets move
