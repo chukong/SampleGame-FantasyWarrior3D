@@ -1,4 +1,6 @@
+require "AttackCommand"
 require "MessageDispatchCenter"
+
 Boss = class("Boss", function()
     return require "Base3D".create()
 end)
@@ -47,7 +49,8 @@ function Boss.create()
         elseif EnumStateType.ATTACK == boss._statetype then
             boss._statetype = EnumStateType.ATTACKING
             local function sendKnockedMsg()
-                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(boss))
+                AttackCommand.create(boss)
+                --MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(boss))
             end
             local function attackdone()
                 boss:setState(EnumStateType.STAND)
@@ -99,15 +102,15 @@ function Boss.create()
     --regist message
 
 
-    local function knocked(msgStruct)
-        --stopAllActions and dropblood
-        if msgStruct.target == boss then 
-            boss._knockedMsgStruct = msgStruct
-            boss:setState(EnumStateType.KNOCKED)
-        end
-    end
-
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKED, knocked)
+--    local function knocked(msgStruct)
+--        --stopAllActions and dropblood
+--        if msgStruct.target == boss then 
+--            boss._knockedMsgStruct = msgStruct
+--            boss:setState(EnumStateType.KNOCKED)
+--        end
+--    end
+--
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKED, knocked)
 
     return boss
 end

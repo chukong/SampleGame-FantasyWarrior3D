@@ -1,6 +1,8 @@
 require "GlobalVariables"
 require "MessageDispatchCenter"
 require "Helper"
+require "AttackCommand"
+
 Warrior = class("Warrior", function()
     return require "Base3D".create()
 end)
@@ -54,8 +56,9 @@ function Warrior.create()
         elseif EnumStateType.NORMALATTACK == hero._statetype then
             hero._statetype = EnumStateType.NORMALATTACKING
             local function sendKnockedMsg()
-                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(hero))
+                --MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKED, createKnockedMsgStruct(hero))
                 cclog("warrior send msg....")
+                AttackCommand.create(hero)
             end
             local function attackdone()
                 hero:setState(EnumStateType.STAND)
@@ -65,14 +68,15 @@ function Warrior.create()
         elseif EnumStateType.SPECIALATTACK == hero._statetype then
             hero._statetype = EnumStateType.SPECIALATTACKING
             local function sendKnockedMsg()
-                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKEDAOE, createKnockedMsgStruct(hero))
+                --MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.KNOCKEDAOE, createKnockedMsgStruct(hero))
                 cclog("warrior send msg....")
+                AttackCommand.create(hero)
             end
             local function attackdone()
                 hero:setState(EnumStateType.STAND)
             end
             local attack = cc.Sequence:create(hero._action.specialattack1:clone(),cc.CallFunc:create(sendKnockedMsg),hero._action.specialattack2,cc.CallFunc:create(attackdone))
-            hero._sprite3d:runAction(attack)            
+            hero._sprite3d:runAction(attack)
 
         elseif EnumStateType.KNOCKED == hero._statetype then
             --self._knockedMsgStruct.attacker._attack
@@ -124,21 +128,21 @@ function Warrior.create()
     --regist message
 
     
-    local function knocked(msgStruct)
-        --stopAllActions and dropblood
-        if msgStruct.target == hero then 
-            hero._knockedMsgStruct = msgStruct
-            hero:setState(EnumStateType.KNOCKED)
-        end
-    end
-    
-    local function knockedAll(msgStruct)
-        --stopAllActions and dropblood
-        attackAll(msgStruct.attacker)
-    end    
-
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKED, knocked)
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKEDAOE, knockedAll)
+--    local function knocked(msgStruct)
+--        --stopAllActions and dropblood
+--        if msgStruct.target == hero then 
+--            hero._knockedMsgStruct = msgStruct
+--            hero:setState(EnumStateType.KNOCKED)
+--        end
+--    end
+--    
+--    local function knockedAll(msgStruct)
+--        --stopAllActions and dropblood
+--        attackAll(msgStruct.attacker)
+--    end    
+--
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKED, knocked)
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKEDAOE, knockedAll)
 
     --List.pushlast(HeroPool, hero)
 
@@ -158,7 +162,7 @@ function Warrior:AddSprite3D()
 --    self:setDefaultEqt()
 end
 
-local function createAnimation(animationStruct, isloop )
+local function createAnimation(animationStruct, isloop)
     local animation3d = cc.Animation3D:create(filename)
     local animate3d = cc.Animate3D:create(animation3d, animationStruct.begin/30,(animationStruct.ended-animationStruct.begin)/30)
     animate3d:setSpeed(animationStruct.speed)

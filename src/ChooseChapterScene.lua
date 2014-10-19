@@ -14,7 +14,7 @@ function ChooseChapter:create()
     local scene = ChooseChapter:new()
     --add layer
     scene:addElement()
-
+    ccexp.AudioEngine:play2d("audios/Imminent Threat ROCK Loop.mp3", true,100)
     return scene
 end
 

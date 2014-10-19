@@ -96,7 +96,7 @@ end
 
 function List.popfirst(list)
 	local first = list.first
-	if first > list.last then error("list is empty") end
+	if first > list.last then return nil end
 	local value = list[first]
 	list[first] = nil
 	list.first = first + 1
@@ -105,7 +105,7 @@ end
 
 function List.poplast(list)
 	local last = list.last
-	if list.first > last then error("list is empty") end
+	if list.first > last then return nil end
 	local value = list[last]
 	list[last] = nil
 	list.last = last - 1
@@ -119,7 +119,7 @@ function List.removeAll(list)
 end
 
 function List.getSize(list)
-    return list.last + 1
+    return list.last - list.first + 1
 end
 
 function List.first(list)
@@ -132,12 +132,13 @@ function List.first(list)
 end
 
 function List.remove(list, index)
-    if list.last < index then return end
+    if index < list.first or index > list.last then return end
     
-    while index < list.last do
+    while index <= list.last do
+        list[index] = nil
         list[index] = list[index+1]
-        list[index+1] = nil
         index = index + 1
     end
+    
     list.last = list.last -1
 end
