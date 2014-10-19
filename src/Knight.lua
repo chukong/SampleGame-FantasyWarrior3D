@@ -14,6 +14,10 @@ function Knight:ctor()
     self._useArmourId = 0
     self._particle = nil
     self._attack = 300  
+    self._attackFrequency = 3
+    
+    
+    
     self:init3D()
     self:initActions()
 end
@@ -77,7 +81,7 @@ end
 do
     Knight._action = {
         idle = createAnimation(file,267,283,0.7),
-        walk = createAnimation(file,227,246,0.5),
+        walk = createAnimation(file,227,246,0.7),
         attack1 = createAnimation(file,103,129,0.7),
         attack2 = createAnimation(file,130,154,0.7),
         specialattack1 = createAnimation(file,160,190,0.3),
