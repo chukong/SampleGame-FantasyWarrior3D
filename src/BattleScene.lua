@@ -54,7 +54,7 @@ local function collisionDetect()
     end        
 end
 
-local function findEnmey(object, manager)
+local function findEnemy(object, manager)
     if object == nil or object._isalive == false then return end
 
     local find = false
@@ -78,7 +78,7 @@ local function findEnmey(object, manager)
             object:setState(EnumStateType.ATTACK)
         else
             object:setState(EnumStateType.WALK)    
-            faceToEnmey(object, object._target)
+            faceToEnemy(object, object._target)
         end
     end
 end
@@ -93,26 +93,26 @@ local function findAllEnemy()
     --hero find monster and boss
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
-        findEnmey(sprite, MonsterManager)
+        findEnemy(sprite, MonsterManager)
     end
         
     if bossSize > 0 then  
         for val = HeroManager.first, HeroManager.last do
             local sprite = HeroManager[val]
-            findEnmey(sprite, BossManager)
+            findEnemy(sprite, BossManager)
         end           
     end        
         
     --monster and boss find hero
     for val = MonsterManager.first, MonsterManager.last do
        local objectTemp = MonsterManager[val]
-       findEnmey(objectTemp, HeroManager)
+       findEnemy(objectTemp, HeroManager)
    end
 
     if bossSize > 0 then  
         for val = BossManager.first, BossManager.last do
             local objectTemp = BossManager[val]
-            findEnmey(objectTemp, HeroManager)
+            findEnemy(objectTemp, HeroManager)
         end          
     end   
 end
@@ -208,7 +208,7 @@ local function createBackground()
     water:setGlobalZOrder(-9)
 end
 
-local function createEnmey(step)
+local function createEnemy(step)
     if  step ~= currentStep  then return end
 
     --On step 1&2, three monsters would attack you
@@ -272,11 +272,11 @@ local function enemyEncounter()
     local tempPos = camera:getPositionX()
     --cclog("%f", tempPos)
     if tempPos > -2500 and tempPos < -2400 then
-        createEnmey(1)    
+        createEnemy(1)    
     elseif  tempPos > -1000 and tempPos < -900 then
-        createEnmey(2)
+        createEnemy(2)
     elseif  tempPos > 1000 and tempPos < 1100 then
-        createEnmey(3)        
+        createEnemy(3)        
     end
 end
 

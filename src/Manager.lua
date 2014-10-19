@@ -147,7 +147,7 @@ function isInCircleSector(object1, object2)
            --cclog("in circle sector")
     	   return true
     	else
-            faceToEnmey(object1, object2)
+            faceToEnemy(object1, object2)
             return true
     	end
     end 
@@ -176,7 +176,7 @@ function getAngleFrom2Point(p1, p2)
     return angle
 end
 
-function faceToEnmey(object1, object2)
+function faceToEnemy(object1, object2)
     local pos1 = getPosTable(object1)
     local pos2 = getPosTable(object2)
     
