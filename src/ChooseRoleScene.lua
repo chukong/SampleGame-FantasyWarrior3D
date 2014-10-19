@@ -35,7 +35,7 @@ function ChooseRoleScene:addHero(hero_type, pos)
     local hero3d = require("Hero3D")
     local hero = hero3d.create(hero_type)
     hero:setScale(8)
-    hero:setRotation3D({0,0,0})
+    hero:setRotation3D({x=-90,y=-90,z=0})
     hero:setPosition(pos)    
     
     return hero
@@ -114,7 +114,8 @@ function ChooseRoleScene:addButton()
     --button
     local function touchEvent_return(sender,eventType)
         if eventType == ccui.TouchEventType.ended then
-            print("return to main menu")
+--            print("return to main menu")
+            cc.Director:getInstance():replaceScene(require("MainMenuScene"):create())
         end
     end  
 
@@ -130,7 +131,7 @@ function ChooseRoleScene:addButton()
     local function touchEvent_next(sender,eventType)
         if eventType == ccui.TouchEventType.ended then
             print("go to game")
-            local scene = require("BattleFieldScene")
+            local scene = require("BattleScene")
             cc.Director:getInstance():replaceScene(scene.create())
         end
     end  

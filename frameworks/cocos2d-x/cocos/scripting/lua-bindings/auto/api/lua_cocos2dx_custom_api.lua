@@ -56,4 +56,9 @@
 -- @field [parent=#cc] EffectSprite#EffectSprite EffectSprite preloaded module
 
 
+--------------------------------------------------------
+-- the cc BillBoardLable
+-- @field [parent=#cc] BillBoardLable#BillBoardLable BillBoardLable preloaded module
+
+
 return nil
