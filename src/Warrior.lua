@@ -29,6 +29,7 @@ function Warrior.create()
     hero:setRaceType(EnumRaceType.WARRIOR)
     hero:setState(EnumStateType.STAND)
     hero:initActions()
+    hero:initAttackEffect(0.2, 145, -60)
     
     local function MainLoop(dt)
         
@@ -49,8 +50,9 @@ function Warrior.create()
             local function attackdone()
                 hero:setState(EnumStateType.STAND)
             end
-            local attack = cc.Sequence:create(hero._action.attack1:clone(),cc.CallFunc:create(sendKnockedMsg),hero._action.attack2,cc.CallFunc:create(attackdone))
+            local attack = cc.Sequence:create(hero._action.attack1:clone(), cc.CallFunc:create(sendKnockedMsg),hero._action.attack2,cc.CallFunc:create(attackdone))            
             hero._sprite3d:runAction(attack)
+            hero._sprite:runAction(cc.Sequence:create(cc.DelayTime:create(0.8), hero._action.attackEffect:clone()))                
         elseif EnumStateType.SPECIALATTACK == hero._statetype then
             hero._statetype = EnumStateType.SPECIALATTACKING
             local function sendKnockedMsg()
@@ -63,7 +65,7 @@ function Warrior.create()
             end
             local attack = cc.Sequence:create(hero._action.specialattack1:clone(),cc.CallFunc:create(sendKnockedMsg),hero._action.specialattack2,cc.CallFunc:create(attackdone))
             hero._sprite3d:runAction(attack)
-
+            hero._sprite:runAction(cc.Sequence:create(cc.DelayTime:create(0.8), hero._action.attackEffect:clone()))                
         elseif EnumStateType.KNOCKED == hero._statetype then
             --self._knockedMsgStruct.attacker._attack
             local damage = 200
@@ -173,8 +175,8 @@ function Warrior:initActions()
     end
     local stand = createAnimationStruct(267,283,0.7)
     local walk = createAnimationStruct(227,246,0.7)
-    local attack1 = createAnimationStruct(103,129,0.7)
-    local attack2 = createAnimationStruct(130,154,0.7)
+    local attack1 = createAnimationStruct(103,129,0.7)    
+    local attack2 = createAnimationStruct(130,154,0.7)    
     local specialattack1 = createAnimationStruct(160,190,0.3)
     local specialattack2 = createAnimationStruct(191,220,0.4)
     local defend = createAnimationStruct(92,96,0.7)
@@ -199,6 +201,8 @@ function Warrior:initActions()
     self._action.knocked:retain()
     self._action.dead = createAnimation(dead, false)
     self._action.dead:retain()
+
+    cclog("%f %f", self._action.attack1:getDuration(), self._action.attack2:getDuration())
 
 end
 
@@ -235,7 +239,8 @@ function Warrior:setState(type)
         local random_special = math.random()
         --cclog(random_special)
         if random_special < WarriorProperty.special_attack_chance then
-            self._statetype = EnumStateType.SPECIALATTACK
+            --self._statetype = EnumStateType.SPECIALATTACK
+            self._statetype = EnumStateType.NORMALATTACK
         else    
             self._statetype = EnumStateType.NORMALATTACK
         end
@@ -270,7 +275,7 @@ function Warrior:walkUpdate(dt)
         --our hero doesn't have a target, lets move right
         local curx,cury = self:getPosition()
         self:setPosition(curx+self._speed*dt, cury)           
-    end            
+    end
 end
 
 
@@ -354,6 +359,32 @@ end
 -- get armour id
 function Warrior:getArmourID()
     return self._useArmourId
+end
+
+function Warrior:initAttackEffect(speed, startRotate, rotate)
+    local sprite = cc.Sprite:create("effect/specialAttack.jpg")
+    sprite:setVisible(false)
+    sprite:setBlendFunc(gl.ONE_MINUS_SRC_ALPHA,gl.ONE)
+    sprite:setScaleX(0.01)
+    sprite:setRotation(startRotate)
+    sprite:setOpacity(0)
+    sprite:setAnchorPoint(cc.p(0.5, -1))    
+    sprite:setPosition3D(cc.V3(0, 50, 50))
+    self:addChild(sprite)
+    
+    local scaleAction = cc.ScaleBy:create(speed, 100, 1)
+    local rotateAction = cc.RotateBy:create(speed, rotate)
+    local attack = cc.Spawn:create(scaleAction, rotateAction)
+    local attack = cc.EaseCircleActionOut:create(attack)
+    local fadeAction = cc.FadeIn:create(speed)
+    local fadeAction2 = cc.FadeOut:create(0)
+    local scaleAction2 = cc.ScaleBy:create(0, 0.01, 1)
+    local rotateAction2 = cc.RotateTo:create(0, startRotate)
+    local restore = cc.Spawn:create(fadeAction2, scaleAction2, rotateAction2, cc.Hide:create())
+    
+    self._sprite = sprite
+    self._action.attackEffect = cc.Sequence:create(cc.Show:create(), attack, fadeAction, restore)    
+    self._action.attackEffect:retain()
 end
 
 return Warrior
