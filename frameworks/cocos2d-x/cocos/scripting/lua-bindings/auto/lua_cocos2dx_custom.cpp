@@ -2,10 +2,11 @@
 #include "custom/EffectSprite3D.h"
 #include "custom/DrawNode3D.h"
 #include "custom/BillboardParticleSystem.h"
-#include "custom/JumpTo3D.h"
 #include "custom/JumpBy3D.h"
+#include "custom/JumpTo3D.h"
 #include "custom/Water.h"
 #include "custom/EffectSprite.h"
+#include "custom/BillBoardLable.h"
 #include "tolua_fix.h"
 #include "LuaBasicConversions.h"
 
@@ -5723,6 +5724,291 @@ int lua_register_cocos2dx_custom_EffectSprite(lua_State* tolua_S)
     g_typeCast["EffectSprite"] = "cc.EffectSprite";
     return 1;
 }
+
+int lua_cocos2dx_custom_BillBoardLable_getMode(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::BillBoardLable* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.BillBoardLable",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::BillBoardLable*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_BillBoardLable_getMode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 0) 
+    {
+        if(!ok)
+            return 0;
+        int ret = (int)cobj->getMode();
+        tolua_pushnumber(tolua_S,(lua_Number)ret);
+        return 1;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillBoardLable:getMode",argc, 0);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_BillBoardLable_getMode'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_custom_BillBoardLable_setMode(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::BillBoardLable* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.BillBoardLable",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::BillBoardLable*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_BillBoardLable_setMode'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::BillBoardLable::Mode arg0;
+
+        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "cc.BillBoardLable:setMode");
+        if(!ok)
+            return 0;
+        cobj->setMode(arg0);
+        return 0;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillBoardLable:setMode",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_BillBoardLable_setMode'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_cocos2dx_custom_BillBoardLable_createWithTTF(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"cc.BillBoardLable",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+
+    do 
+    {
+        if (argc == 2)
+        {
+            cocos2d::_ttfConfig arg0;
+            ok &= luaval_to_ttfconfig(tolua_S, 2, &arg0, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            std::string arg1;
+            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1);
+            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    do 
+    {
+        if (argc == 3)
+        {
+            cocos2d::_ttfConfig arg0;
+            ok &= luaval_to_ttfconfig(tolua_S, 2, &arg0, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            std::string arg1;
+            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::TextHAlignment arg2;
+            ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1, arg2);
+            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    do 
+    {
+        if (argc == 4)
+        {
+            cocos2d::_ttfConfig arg0;
+            ok &= luaval_to_ttfconfig(tolua_S, 2, &arg0, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            std::string arg1;
+            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::TextHAlignment arg2;
+            ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            int arg3;
+            ok &= luaval_to_int32(tolua_S, 5,(int *)&arg3, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1, arg2, arg3);
+            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    do 
+    {
+        if (argc == 3)
+        {
+            std::string arg0;
+            ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            std::string arg1;
+            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            double arg2;
+            ok &= luaval_to_number(tolua_S, 4,&arg2, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1, arg2);
+            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    do 
+    {
+        if (argc == 4)
+        {
+            std::string arg0;
+            ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            std::string arg1;
+            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            double arg2;
+            ok &= luaval_to_number(tolua_S, 4,&arg2, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::Size arg3;
+            ok &= luaval_to_size(tolua_S, 5, &arg3, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1, arg2, arg3);
+            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    do 
+    {
+        if (argc == 5)
+        {
+            std::string arg0;
+            ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            std::string arg1;
+            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            double arg2;
+            ok &= luaval_to_number(tolua_S, 4,&arg2, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::Size arg3;
+            ok &= luaval_to_size(tolua_S, 5, &arg3, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::TextHAlignment arg4;
+            ok &= luaval_to_int32(tolua_S, 6,(int *)&arg4, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1, arg2, arg3, arg4);
+            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    do 
+    {
+        if (argc == 6)
+        {
+            std::string arg0;
+            ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            std::string arg1;
+            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            double arg2;
+            ok &= luaval_to_number(tolua_S, 4,&arg2, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::Size arg3;
+            ok &= luaval_to_size(tolua_S, 5, &arg3, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::TextHAlignment arg4;
+            ok &= luaval_to_int32(tolua_S, 6,(int *)&arg4, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::TextVAlignment arg5;
+            ok &= luaval_to_int32(tolua_S, 7,(int *)&arg5, "cc.BillBoardLable:createWithTTF");
+            if (!ok) { break; }
+            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1, arg2, arg3, arg4, arg5);
+            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d", "cc.BillBoardLable:createWithTTF",argc, 3);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_BillBoardLable_createWithTTF'.",&tolua_err);
+#endif
+    return 0;
+}
+static int lua_cocos2dx_custom_BillBoardLable_finalize(lua_State* tolua_S)
+{
+    printf("luabindings: finalizing LUA object (BillBoardLable)");
+    return 0;
+}
+
+int lua_register_cocos2dx_custom_BillBoardLable(lua_State* tolua_S)
+{
+    tolua_usertype(tolua_S,"cc.BillBoardLable");
+    tolua_cclass(tolua_S,"BillBoardLable","cc.BillBoardLable","cc.Label",nullptr);
+
+    tolua_beginmodule(tolua_S,"BillBoardLable");
+        tolua_function(tolua_S,"getMode",lua_cocos2dx_custom_BillBoardLable_getMode);
+        tolua_function(tolua_S,"setMode",lua_cocos2dx_custom_BillBoardLable_setMode);
+        tolua_function(tolua_S,"createWithTTF", lua_cocos2dx_custom_BillBoardLable_createWithTTF);
+    tolua_endmodule(tolua_S);
+    std::string typeName = typeid(cocos2d::BillBoardLable).name();
+    g_luaType[typeName] = "cc.BillBoardLable";
+    g_typeCast["BillBoardLable"] = "cc.BillBoardLable";
+    return 1;
+}
 TOLUA_API int register_all_cocos2dx_custom(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
@@ -5730,17 +6016,18 @@ TOLUA_API int register_all_cocos2dx_custom(lua_State* tolua_S)
 	tolua_module(tolua_S,"cc",0);
 	tolua_beginmodule(tolua_S,"cc");
 
-	lua_register_cocos2dx_custom_Effect(tolua_S);
-	lua_register_cocos2dx_custom_EffectNormalMapped(tolua_S);
-	lua_register_cocos2dx_custom_BillboardParticleSystem(tolua_S);
-	lua_register_cocos2dx_custom_EffectSprite(tolua_S);
-	lua_register_cocos2dx_custom_EffectSprite3D(tolua_S);
+	lua_register_cocos2dx_custom_BillBoardLable(tolua_S);
 	lua_register_cocos2dx_custom_JumpBy3D(tolua_S);
 	lua_register_cocos2dx_custom_JumpTo3D(tolua_S);
-	lua_register_cocos2dx_custom_Water(tolua_S);
 	lua_register_cocos2dx_custom_Effect3D(tolua_S);
+	lua_register_cocos2dx_custom_EffectSprite(tolua_S);
+	lua_register_cocos2dx_custom_Effect(tolua_S);
+	lua_register_cocos2dx_custom_Water(tolua_S);
+	lua_register_cocos2dx_custom_EffectNormalMapped(tolua_S);
+	lua_register_cocos2dx_custom_BillboardParticleSystem(tolua_S);
 	lua_register_cocos2dx_custom_Effect3DOutline(tolua_S);
 	lua_register_cocos2dx_custom_DrawNode3D(tolua_S);
+	lua_register_cocos2dx_custom_EffectSprite3D(tolua_S);
 
 	tolua_endmodule(tolua_S);
 	return 1;

@@ -157,6 +157,10 @@ function cc.pLerp(pt1,pt2,alpha)
     return cc.pAdd(cc.pMul(pt1, 1.0 - alpha), cc.pMul(pt2,alpha) )
 end
 
+function cc.fLerp(f1,f2,alpha)
+    return f1*(1.0-alpha)+f2*alpha
+end
+
 function cc.pFuzzyEqual(pt1,pt2,variance)
     if (pt1.x - variance <= pt2.x) and (pt2.x <= pt1.x + variance) and (pt1.y - variance <= pt2.y) and (pt2.y <= pt1.y + variance) then
         return true
