@@ -299,6 +299,7 @@ end
 
 local function gameController(dt)
     collisionDetect(dt)
+    solveAttacks()
     moveCamera(dt)
     updateParticlePos()
 
