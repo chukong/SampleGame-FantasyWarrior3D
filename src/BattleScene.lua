@@ -18,7 +18,7 @@ local heroOriginPositionX = -2900
 local currentStep = 1;
 local uiLayer = nil
 
-local function collisionDetect()
+local function collisionDetect(dt)
     --cclog("collisionDetect")
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
@@ -230,26 +230,27 @@ end
 
 local function createRole()
 
-    local hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR, true)
+   --  local hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR, true)
 
-    addParticleToRole(hero)    
-    hero:setState(EnumStateType.WALK)
-    hero:runAction(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1))
-    List.pushlast(HeroManager, hero)
+   --  addParticleToRole(hero)    
+   --  hero:setState(EnumStateType.WALK)
+   --  hero:runAction(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1))
+   --  List.pushlast(HeroManager, hero)
 
-   hero = addNewSprite(heroOriginPositionX, 600, EnumRaceType.WARRIOR, true)
-   addParticleToRole(hero)    
-   hero:setState(EnumStateType.WALK)
-   List.pushlast(HeroManager, hero)
+   -- hero = addNewSprite(heroOriginPositionX, 600, EnumRaceType.WARRIOR, true)
+   -- addParticleToRole(hero)    
+   -- hero:setState(EnumStateType.WALK)
+   -- List.pushlast(HeroManager, hero)
 
-   hero = addNewSprite(heroOriginPositionX, 0, EnumRaceType.MAGE, true)
-   addParticleToRole(hero)
-   hero:setState(EnumStateType.WALK)
-   List.pushlast(HeroManager, hero)
+--     hero = addNewSprite(heroOriginPositionX, 0, EnumRaceType.MAGE, true)
+--     addParticleToRole(hero)
+--     hero:setState(EnumStateType.WALK)
+--     List.pushlast(HeroManager, hero)
    
    local test = Knight:create()
    test:setPosition(heroOriginPositionX+500, 300)
     currentLayer:addChild(test)
+    List.pushlast(HeroManager, test)
 
     addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER, false)
     addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER, false)
@@ -271,8 +272,8 @@ end
 local function enemyEncounter()
     local tempPos = camera:getPositionX()
     --cclog("%f", tempPos)
-    if tempPos > -2500 and tempPos < -2400 then
-        createEnemy(1)    
+    if tempPos > -2500 and tempPos < -2100 then
+        createEnmey(1)    
     elseif  tempPos > -1000 and tempPos < -900 then
         createEnemy(2)
     elseif  tempPos > 1000 and tempPos < 1100 then
@@ -297,12 +298,13 @@ local function registerBloodDrop(struct)
 end
 
 local function gameController(dt)
-    collisionDetect()
+    collisionDetect(dt)
+    solveAttacks()
     moveCamera(dt)
     updateParticlePos()
 
     enemyEncounter()
-    findAllEnemy()
+    --findAllEnemy()
     commandControl()
 end
 
@@ -336,7 +338,9 @@ function BattleScene.create()
     
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
-        sprite._particle:setCamera(camera)
+        if sprite._particle then
+            sprite._particle:setCamera(camera)
+        end
     end    
 
     scheduler:scheduleScriptFunc(gameController, 0, false)

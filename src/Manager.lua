@@ -41,7 +41,7 @@ function findAliveBoss()
     return 0
 end
 
-function tooClose(object1, object2)
+function solveCollision(object1, object2)
 
     local miniDistance = object1._radius + object2._radius
     local obj1Pos = cc.p(object1:getPosition())
@@ -50,31 +50,31 @@ function tooClose(object1, object2)
     
     if tempDistance < miniDistance then
         local angle = cc.pToAngleSelf(cc.pSub(obj1Pos, obj2Pos))
-        local distance = miniDistance - tempDistance + 1 -- Add extra 1 to avoid 'tempDistance < miniDistance' is always ture
+        local distance = miniDistance - tempDistance + 1 -- Add extra 1 to avoid 'tempDistance < miniDistance' is always true
         object1:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(distance/2,0),obj1Pos), obj1Pos, angle))
-        object2:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(-distance/2,0),obj2Pos), obj2Pos, angle))       
+        object2:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(-distance/2,0),obj2Pos), obj2Pos, angle))
     end  
 end
 
 function collision(object)
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
-        if sprite._isalive == true and sprite ~= object then
-            tooClose(sprite, object)
+        if sprite._isalive and sprite ~= object then
+            solveCollision(sprite, object)
         end
     end
 
     for val = MonsterManager.first, MonsterManager.last do
         local sprite = MonsterManager[val]
         if sprite._isalive == true and sprite ~= object then
-            tooClose(sprite, object)
+            solveCollision(sprite, object)
         end                  
     end 
 
     for val = BossManager.first, BossManager.last do
         local sprite = BossManager[val]
         if sprite._isalive == true and sprite ~= object then
-            tooClose(sprite, object)
+            solveCollision(sprite, object)
         end
     end     
 end

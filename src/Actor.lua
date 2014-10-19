@@ -1,4 +1,5 @@
 require "Helper"
+require "AttackCommand"
 
 --type
 
@@ -58,7 +59,7 @@ end)
 
 function Actor:ctor()
 	self._priority = self._speed
-    self._racetype = EnumRaceType.BASE
+    self._racetype = EnumRaceType.HERO
     self._statetype = nil
     self._sprite3d = nil
     self._circle = nil
@@ -99,11 +100,11 @@ function Actor:ctor()
     self._normalAttack = nil
     self._specialAttack = nil
     self._recoverTime = 0.8
-    self._searchDistance = 1000 --distance which enemy can be found
+    self._searchDistance = 5000 --distance which enemy can be found
     
     --normal attack
     self._attackMinRadius = 0
-    self._attackRadius = 50*3.5 --TODO: rename to attackMaxRadius
+    self._attackRadius = 130 --TODO: rename to attackMaxRadius
     self._attack = 100
     self._attackAngle = 30
     self._attackKnock = 0
@@ -131,14 +132,18 @@ function Actor:initAttackInfo()
     self._normalAttack = {
         minRange = self._attackMinRadius,
         maxRange = self._attackRadius,
-        angle    = self._attackAngle,
+        angle    = DEGREES_TO_RADIANS(self._attackAngle),
         knock    = self._attackKnock,
+        damage   = self._attack,
+        mask     = self._racetype
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
-        maxRange = self._attackRadius,
-        angle    = self._attackAngle,
+        maxRange = self._attackRadius+50,
+        angle    = DEGREES_TO_RADIANS(150),
         knock    = self._attackKnock,
+        damage   = self._attack,
+        mask     = self._racetype
     }
 end
 
@@ -192,9 +197,9 @@ function Actor:playAnimation(name, loop)
     if self._curAnimation ~= name then --using name to check which animation is playing
         self._sprite3d:stopAllActions()
         if loop then
-            self._curAnimation3d = cc.RepeatForever:create(self._action[name])
+            self._curAnimation3d = cc.RepeatForever:create(self._action[name]:clone())
         else
-            self._curAnimation3d = self._action[name]
+            self._curAnimation3d = self._action[name]:clone()
         end
         self._sprite3d:runAction(self._curAnimation3d)
         self._curAnimation = name
@@ -246,12 +251,15 @@ function Actor:hurt(damage)
 end
 --======attacking collision check
 --TODO: Move this to collider Manager
-function Actor:createCollider(pos, facing, attackInfo)
+function Actor:createCollider(pos, facing, attackInfo, mask)
 
 end
 
 function Actor:normalAttack()
-    self:createCollider(getPosTable(self), self._curFacing, self._normalAttack)
+    Collider.create(getPosTable(self), self._curFacing, self._normalAttack)
+end
+function Actor:specialAttack()
+    Collider.create(getPosTable(self), self._curFacing, self._specialAttack)
 end
 --======State Machine switching functions
 function Actor:idleMode() --switch into idle mode
@@ -299,15 +307,19 @@ end
 function Actor:_findEnemy()
     local shortest = self._searchDistance
     local target = nil
+    local allDead = true
     for val = MonsterManager.first, MonsterManager.last do
         local temp = MonsterManager[val]
         local dis = cc.pGetDistance(self._myPos,getPosTable(temp))
-        if dis < shortest and temp._isalive then
-            shortest = dis
-            target = temp
+        if temp._isalive then
+            if dis < shortest then
+                shortest = dis
+                target = temp
+            end
+            allDead = false
         end
     end
-    return target
+    return target, allDead
 end
 function Actor:_inRange()
     if not self._target then
@@ -319,16 +331,22 @@ function Actor:_inRange()
         return (cc.pGetDistance(p1,p2) < attackDistance)
     end
 end
+--AI function does not run every tick
 function Actor:AI()
-    print("i think")
+    --print("i think")
     --my Brain, bleh
     --if i don't have a target, i should try to aquire one
     if self._isalive then
         local state = self:getStateType()
         local inRange = self:_inRange()
         if not self._target or not self._target._isalive and not self._cooldown then
-            self._target = self:_findEnemy()
-            self:walkMode()
+            local allDead
+            self._target, allDead = self:_findEnemy()
+--            if allDead then
+--                self:idleMode()
+--            else
+                self:walkMode()
+--            end
         end
         if state == EnumStateType.ATTACKING and not inRange and not self._cooldown then
             self:walkMode()
@@ -367,18 +385,18 @@ function Actor:attackUpdate(dt)
         local random_special = math.random()
         if random_special < self._specialAttackChance then
             local function createCol()
-                self:createCollider(self._myPos, self._curFacing, self._normalAttack)
+                self:normalAttack()
             end
-            local attackAction = cc.Sequence:create(self._action.attack1,cc.CallFunc:create(createCol),self._action.attack2,cc.CallFunc:create(playIdle))
+            local attackAction = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(createCol),self._action.attack2:clone(),cc.CallFunc:create(playIdle))
             self._sprite3d:stopAction(self._curAnimation3d)
             self._sprite3d:runAction(attackAction)
             self._curAnimation = attackAction
             self._cooldown = true
         else
             local function createCol()
-                self:createCollider(self._myPos, self._curFacing, self._specialAttack)
+                self:specialAttack()
             end
-            local attackAction = cc.Sequence:create(self._action.specialattack1,cc.CallFunc:create(createCol),self._action.specialattack2,cc.CallFunc:create(playIdle))
+            local attackAction = cc.Sequence:create(self._action.specialattack1:clone(),cc.CallFunc:create(createCol),self._action.specialattack2:clone(),cc.CallFunc:create(playIdle))
             self._sprite3d:stopAction(self._curAnimation3d)
             self._sprite3d:runAction(attackAction)
             self._curAnimation = attackAction
