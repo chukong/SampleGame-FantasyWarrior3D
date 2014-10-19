@@ -43,9 +43,9 @@ local function main()
     cc.Director:getInstance():setDisplayStats(true)
 
     --create scene
---    local scene = require("ChooseChapterScene")
-    local scene = require("BattleScene")
---    local scene = require("MainMenuScene")
+--    local scene = require("ChooseRoleScene")
+--   local scene = require("BattleScene")
+    local scene = require("MainMenuScene")
     local activateGameScene = scene.create()
     --activateGameScene:playBgMusic()
     

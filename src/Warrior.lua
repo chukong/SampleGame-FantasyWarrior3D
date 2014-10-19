@@ -130,7 +130,7 @@ function Warrior.create()
 --    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKED, knocked)
 --    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.KNOCKEDAOE, knockedAll)
 
-    List.pushlast(HeroPool, hero)
+    --List.pushlast(HeroPool, hero)
 
     return hero
 end
@@ -148,6 +148,16 @@ function Warrior:init3D()
 --    self:setDefaultEqt()
 end
 
+local function createAnimation(animationStruct, isloop)
+    local animation3d = cc.Animation3D:create(filename)
+    local animate3d = cc.Animate3D:create(animation3d, animationStruct.begin/30,(animationStruct.ended-animationStruct.begin)/30)
+    animate3d:setSpeed(animationStruct.speed)
+    if isloop then
+        return cc.RepeatForever:create(animate3d)
+    else
+        return animate3d
+    end
+end
 
 
 function Warrior:initActions()

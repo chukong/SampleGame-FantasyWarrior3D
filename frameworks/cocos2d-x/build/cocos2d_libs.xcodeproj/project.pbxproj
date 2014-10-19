@@ -35,6 +35,10 @@
 		049C949319EE7F09004820C2 /* EffectSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049C949019EE7F09004820C2 /* EffectSprite.cpp */; };
 		049C949419EE7F09004820C2 /* EffectSprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 049C949119EE7F09004820C2 /* EffectSprite.h */; };
 		049C949519EE7F09004820C2 /* EffectSprite.h in Headers */ = {isa = PBXBuildFile; fileRef = 049C949119EE7F09004820C2 /* EffectSprite.h */; };
+		049F8FCC19F0F6340070C1CC /* BillBoardLable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049F8FCA19F0F6340070C1CC /* BillBoardLable.cpp */; };
+		049F8FCD19F0F6340070C1CC /* BillBoardLable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 049F8FCA19F0F6340070C1CC /* BillBoardLable.cpp */; };
+		049F8FCE19F0F6340070C1CC /* BillBoardLable.h in Headers */ = {isa = PBXBuildFile; fileRef = 049F8FCB19F0F6340070C1CC /* BillBoardLable.h */; };
+		049F8FCF19F0F6340070C1CC /* BillBoardLable.h in Headers */ = {isa = PBXBuildFile; fileRef = 049F8FCB19F0F6340070C1CC /* BillBoardLable.h */; };
 		15AE180819AAD2F700C27E9E /* CCAABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15AE17E419AAD2F700C27E9E /* CCAABB.cpp */; };
 		15AE180919AAD2F700C27E9E /* CCAABB.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15AE17E419AAD2F700C27E9E /* CCAABB.cpp */; };
 		15AE180A19AAD2F700C27E9E /* CCAABB.h in Headers */ = {isa = PBXBuildFile; fileRef = 15AE17E519AAD2F700C27E9E /* CCAABB.h */; };
@@ -1866,6 +1870,8 @@
 		04815BB919EC0046006E85F2 /* Water.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Water.h; path = ../cocos/custom/Water.h; sourceTree = "<group>"; };
 		049C949019EE7F09004820C2 /* EffectSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EffectSprite.cpp; path = ../cocos/custom/EffectSprite.cpp; sourceTree = "<group>"; };
 		049C949119EE7F09004820C2 /* EffectSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EffectSprite.h; path = ../cocos/custom/EffectSprite.h; sourceTree = "<group>"; };
+		049F8FCA19F0F6340070C1CC /* BillBoardLable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BillBoardLable.cpp; path = ../cocos/custom/BillBoardLable.cpp; sourceTree = "<group>"; };
+		049F8FCB19F0F6340070C1CC /* BillBoardLable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BillBoardLable.h; path = ../cocos/custom/BillBoardLable.h; sourceTree = "<group>"; };
 		0634A4C5194B19E400E608AF /* CCActionTimeline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCActionTimeline.cpp; sourceTree = "<group>"; };
 		0634A4C6194B19E400E608AF /* CCActionTimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCActionTimeline.h; sourceTree = "<group>"; };
 		0634A4C7194B19E400E608AF /* CCActionTimelineCache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CCActionTimelineCache.cpp; sourceTree = "<group>"; };
@@ -2899,6 +2905,8 @@
 		04815BAD19EC0024006E85F2 /* custom */ = {
 			isa = PBXGroup;
 			children = (
+				049F8FCA19F0F6340070C1CC /* BillBoardLable.cpp */,
+				049F8FCB19F0F6340070C1CC /* BillBoardLable.h */,
 				049C949019EE7F09004820C2 /* EffectSprite.cpp */,
 				049C949119EE7F09004820C2 /* EffectSprite.h */,
 				04815BAE19EC0046006E85F2 /* BillboardParticleSystem.cpp */,
@@ -4997,6 +5005,7 @@
 				1A570114180BC8EE0088DEC7 /* CCDrawNode.h in Headers */,
 				15AE1A6019AAD40300C27E9E /* b2ContactManager.h in Headers */,
 				15AE188319AAD33D00C27E9E /* CCBSelectorResolver.h in Headers */,
+				049F8FCE19F0F6340070C1CC /* BillBoardLable.h in Headers */,
 				15AE1B5819AADA9900C27E9E /* UISlider.h in Headers */,
 				1A57011D180BC90D0088DEC7 /* CCGrabber.h in Headers */,
 				50ED2BE219BEAF7900A0AB90 /* UIEditBoxImpl-wp8.h in Headers */,
@@ -5735,6 +5744,7 @@
 				5034CA4C191D591100CE6051 /* ccShader_Label_df_glow.frag in Headers */,
 				503DD8EB1926736A00CD74DD /* CCGL-ios.h in Headers */,
 				50ABBE3C1925AB6F00A911A9 /* CCData.h in Headers */,
+				049F8FCF19F0F6340070C1CC /* BillBoardLable.h in Headers */,
 				503DD8FA1926B0DB00CD74DD /* CCIMEDispatcher.h in Headers */,
 				50ABBEC81925AB6F00A911A9 /* etc1.h in Headers */,
 				50ABBDB01925AB4100A911A9 /* CCRenderer.h in Headers */,
@@ -5952,6 +5962,7 @@
 				15AE1B4D19AADA9900C27E9E /* UIListView.cpp in Sources */,
 				15AE189D19AAD33D00C27E9E /* CCNodeLoader.cpp in Sources */,
 				5027253C190BF1B900AAF4ED /* cocos2d.cpp in Sources */,
+				049F8FCC19F0F6340070C1CC /* BillBoardLable.cpp in Sources */,
 				50ABC0611926664800A911A9 /* CCCommon-mac.mm in Sources */,
 				50ABBDB11925AB4100A911A9 /* ccShaders.cpp in Sources */,
 				15AE198219AAD36400C27E9E /* WidgetReader.cpp in Sources */,
@@ -6545,6 +6556,7 @@
 				15AE18AB19AAD33D00C27E9E /* CCBAnimationManager.cpp in Sources */,
 				15AE1B7219AADA9A00C27E9E /* UIListView.cpp in Sources */,
 				1A5701BE180BCB5A0088DEC7 /* CCLabelAtlas.cpp in Sources */,
+				049F8FCD19F0F6340070C1CC /* BillBoardLable.cpp in Sources */,
 				15AE1A3D19AAD3D500C27E9E /* b2CollideEdge.cpp in Sources */,
 				1A5701C2180BCB5A0088DEC7 /* CCLabelBMFont.cpp in Sources */,
 				1A087AE91860400400196EF5 /* edtaa3func.cpp in Sources */,
