@@ -7,11 +7,11 @@ EnumRaceType =
 { 
     "DEBUG",
     "BASE",
-    "HERO", 
+    "HERO",  --only this
     "WARRIOR",
     "ARCHER",
     "SORCERESS",
-    "MONSTER",
+    "MONSTER", --and this
     "BOSS", 
 }
 EnumRaceType = CreateEnumTable(EnumRaceType) 
@@ -135,7 +135,9 @@ function Actor:initAttackInfo()
         angle    = DEGREES_TO_RADIANS(self._attackAngle),
         knock    = self._attackKnock,
         damage   = self._attack,
-        mask     = self._racetype
+        mask     = self._racetype,
+        duration = 0, -- 0 duration means it will be removed upon calculation
+        speed    = 0
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
@@ -143,7 +145,9 @@ function Actor:initAttackInfo()
         angle    = DEGREES_TO_RADIANS(150),
         knock    = self._attackKnock,
         damage   = self._attack,
-        mask     = self._racetype
+        mask     = self._racetype,
+        duration = 0,
+        speed    = 0
     }
 end
 
@@ -250,16 +254,11 @@ function Actor:hurt(damage)
     end
 end
 --======attacking collision check
---TODO: Move this to collider Manager
-function Actor:createCollider(pos, facing, attackInfo, mask)
-
-end
-
 function Actor:normalAttack()
-    Collider.create(getPosTable(self), self._curFacing, self._normalAttack)
+    BasicCollider.create(getPosTable(self), self._curFacing, self._normalAttack)
 end
 function Actor:specialAttack()
-    Collider.create(getPosTable(self), self._curFacing, self._specialAttack)
+    BasicCollider.create(getPosTable(self), self._curFacing, self._specialAttack)
 end
 --======State Machine switching functions
 function Actor:idleMode() --switch into idle mode
@@ -383,7 +382,7 @@ function Actor:attackUpdate(dt)
         end
         --time for an attack, which attack should i do?
         local random_special = math.random()
-        if random_special < self._specialAttackChance then
+        if random_special > self._specialAttackChance then
             local function createCol()
                 self:normalAttack()
             end

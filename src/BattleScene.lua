@@ -7,19 +7,21 @@ require "Warrior"
 require "Mage"
 require "MessageDispatchCenter"
 require "AttackCommand"
-require "knight"
+require "Knight"
+require "Mage"
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
 local gloableZOrder = 1
 local touchPos = nil
-local currentLayer = nil
+currentLayer = nil
 local heroOriginPositionX = -2900
 local currentStep = 1;
 local uiLayer = nil
 
 local function collisionDetect(dt)
     --cclog("collisionDetect")
+    --TODO: change the for loop so that you can remove elements without break
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
         if sprite._isalive == true then
@@ -251,6 +253,11 @@ local function createRole()
    test:setPosition(heroOriginPositionX+500, 300)
     currentLayer:addChild(test)
     List.pushlast(HeroManager, test)
+    
+    local test2 = Mage:create()
+    test2:setPosition(heroOriginPositionX+500, 000)
+    currentLayer:addChild(test2)
+    List.pushlast(HeroManager, test2)
 
     addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER, false)
     addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER, false)
