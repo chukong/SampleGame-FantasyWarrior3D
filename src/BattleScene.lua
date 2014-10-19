@@ -7,7 +7,7 @@ require "Warrior"
 require "Mage"
 require "MessageDispatchCenter"
 require "AttackCommand"
-require "knight"
+require "Knight"
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
