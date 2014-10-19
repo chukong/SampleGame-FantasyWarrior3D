@@ -273,7 +273,7 @@ local function enemyEncounter()
     local tempPos = camera:getPositionX()
     --cclog("%f", tempPos)
     if tempPos > -2500 and tempPos < -2100 then
-        createEnmey(1)    
+        createEnemy(1)    
     elseif  tempPos > -1000 and tempPos < -900 then
         createEnemy(2)
     elseif  tempPos > 1000 and tempPos < 1100 then
