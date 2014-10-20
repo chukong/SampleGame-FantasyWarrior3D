@@ -9,8 +9,10 @@ require "Mage"
 require "MessageDispatchCenter"
 require "AttackCommand"
 require "Knight"
-require "Dragon"
+require "Piglet"
 require "Mage"
+require "Rat"
+require "DropBlood"
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
@@ -242,7 +244,6 @@ local function createEnemy(step)
 end
 
 local function createRole()
-
 --     local hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR, true)
 --     addParticleToRole(hero)
 --     hero:setState(EnumStateType.WALK)
@@ -259,8 +260,8 @@ local function createRole()
 --     hero:setState(EnumStateType.WALK)
 --     List.pushlast(HeroManager, hero)
    
-   local test = Knight:create()
-   test:setPosition(heroOriginPositionX+500, 300)
+    local test = Knight:create()
+    test:setPosition(heroOriginPositionX+500, 300)
     currentLayer:addChild(test)
     List.pushlast(HeroManager, test)
     
@@ -270,24 +271,30 @@ local function createRole()
     List.pushlast(HeroManager, test2)
     
     
-    local test3 = Dragon:create()
+    local test3 = Piglet:create()
     test3:setPosition(heroOriginPositionX+1500, 300)
     currentLayer:addChild(test3)
     List.pushlast(MonsterManager, test3)
     
-    local test4 = Dragon:create()
+--    local rat = Rat:create()
+--    rat:setPosition(heroOriginPositionX+1500, 000)
+--    currentLayer:addChild(rat)
+--    List.pushlast(MonsterManager, rat)
+    
+    local test4 = Piglet:create()
     test4:setPosition(heroOriginPositionX+1600, 400)
     currentLayer:addChild(test4)
     List.pushlast(MonsterManager, test4)
     
-    local test5 = Dragon:create()
-    test5:setPosition(heroOriginPositionX+1500, 500)
-    currentLayer:addChild(test5)
-    List.pushlast(MonsterManager, test5)
+--    local test5 = Piglet:create()
+--    test5:setPosition(heroOriginPositionX+1500, 500)
+--    currentLayer:addChild(test5)
+--    List.pushlast(MonsterManager, test5)
     
     test3:setFacing(180)
+--    rat:setFacing(180)
     test4:setFacing(-180)
-    test5:setFacing(-180)
+--    test5:setFacing(-180)
 
 --    addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER, false)
 --    addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER, false)
@@ -330,7 +337,7 @@ local function sendDropBlood(dropValuePercent, hero)
 end
 
 local function registerBloodDrop(struct)
-
+    
 
 end
 

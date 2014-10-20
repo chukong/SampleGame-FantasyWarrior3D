@@ -4,6 +4,10 @@ local DropBlood = class("DropBlood",function()
     return cc.Node:create()
 end)
 
+function DropBlood:create()
+    return DropBlood.new()
+end
+
 function DropBlood:showBloodLossNum(num)
     local time = 1
     local function getRandomXYZ()
@@ -17,17 +21,17 @@ function DropBlood:showBloodLossNum(num)
     local blood = cc.BillBoardLable:createWithTTF(ttfconfig,"-"..num,cc.TEXT_ALIGNMENT_CENTER,400)
     blood:enableOutline(cc.c4b(0,0,0,255))
     blood:setScale(0.1)
---    blood:setRotation3D(getRandomXYZ())
+    blood:setRotation3D(getRandomXYZ())
 
-    local targetScale = 0.3
+    local targetScale = 1
     if num > 200 then 
         blood:setColor(cc.c3b(255,0,0))
     elseif num > 100 then
         blood:setColor(cc.c3b(250,121,65))
-        targetScale = 0.25
+        targetScale = 0.75
     else
         blood:setColor(cc.c3b(250,191,65))
-        targetScale = 0.35
+        targetScale = 0.85
     end
     local sequence = cc.Sequence:create(cc.EaseElasticOut:create(cc.ScaleTo:create(0.5,targetScale),0.4),
         cc.FadeOut:create(0.5),
@@ -37,7 +41,6 @@ function DropBlood:showBloodLossNum(num)
         cc.MoveBy:create(1,{x=0,y=0,z=150}),
         cc.RotateBy:create(1,math.random(-40,40)))
     blood:runAction(spawn)
-    blood:setCameraMask(2) 
     
     return blood
 end
