@@ -59,10 +59,34 @@ function Knight.create()
         ret:movementUpdate(dt)
     end
     ret:scheduleUpdateWithPriorityLua(update, 0) 
+    ret:initAttackInfo()
     return ret
 end
 function Knight:normalAttack()
     KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+end
+function Knight:initAttackInfo()
+    --build the attack Infos
+    self._normalAttack = {
+        minRange = self._attackMinRadius,
+        maxRange = self._attackMaxRadius,
+        angle    = DEGREES_TO_RADIANS(self._attackAngle),
+        knock    = self._attackKnock,
+        damage   = self._attack,
+        mask     = self._racetype,
+        duration = 0, -- 0 duration means it will be removed upon calculation
+        speed    = 0
+    }
+    self._specialAttack = {
+        minRange = self._attackMinRadius,
+        maxRange = self._attackMaxRadius+50,
+        angle    = DEGREES_TO_RADIANS(150),
+        knock    = self._attackKnock,
+        damage   = self._attack,
+        mask     = self._racetype,
+        duration = 0,
+        speed    = 0
+    }
 end
 
 

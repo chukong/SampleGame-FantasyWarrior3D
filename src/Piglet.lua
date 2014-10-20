@@ -20,6 +20,11 @@ function Piglet:ctor()
     self._attackMaxRadius = 130
     self._radius = 50
     self._attackRange = 100
+    self._attackMaxRadius = 130
+    self._attackAngle = 30
+    self._attackKnock = 50
+    
+    self._goRight = false
     
     self:init3D()
     self:initActions()
@@ -37,6 +42,7 @@ function Piglet.create()
         ret:movementUpdate(dt)
     end
     ret:scheduleUpdateWithPriorityLua(update, 0.5) 
+    ret:initAttackInfo()
     return ret
 end
 
@@ -130,11 +136,9 @@ end
 do
     Piglet._action = {
         idle = createAnimation(file,0,40,0.7),
-        walk = createAnimation(file,135,147,0.5),
+        walk = createAnimation(file,135,147,1),
         attack1 = createAnimation(file,45,60,0.7),
         attack2 = createAnimation(file,60,75,0.7),
---        specialattack1 = createAnimation(file,160,190,0.3),
---        specialattack2 = createAnimation(file,191,220,0.4),
         defend = createAnimation(file,92,96,0.7),
         knocked = createAnimation(file,81,87,0.7),
         dead = createAnimation(file,95,127,1)

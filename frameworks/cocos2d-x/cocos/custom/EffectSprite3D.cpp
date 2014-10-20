@@ -291,7 +291,7 @@ void Effect3DOutline::draw(const Mat4 &transform)
         _glProgramState->setUniformVec4("u_color", Vec4(color.r, color.g, color.b, color.a));
         glEnable(GL_CULL_FACE);
         glCullFace(GL_FRONT);
-        glEnable(GL_DEPTH_TEST);
+        //glEnable(GL_DEPTH_TEST);
 
         // auto mesh = _childMesh;
         glBindBuffer(GL_ARRAY_BUFFER, _childMesh->getVertexBuffer());
@@ -313,9 +313,9 @@ void Effect3DOutline::draw(const Mat4 &transform)
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glDisable(GL_DEPTH_TEST);
+        //glDisable(GL_DEPTH_TEST);
         glCullFace(GL_BACK);
-        glDisable(GL_CULL_FACE);
+        //glDisable(GL_CULL_FACE);
     }
 }
 
