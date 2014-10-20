@@ -3,7 +3,7 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/warrior/warrior.c3b"
+local file = "model/piglet/piglet.c3b"
 
 Dragon = class("Dragon", function()
     return require "Actor".create()
@@ -60,7 +60,8 @@ end
 
 function Dragon:init3D()
     self._sprite3d = cc.EffectSprite3D:create(file)
-    self._sprite3d:setScale(25)
+    self._sprite3d:setTexture("model/piglet/zhu0928.jpg")
+    self._sprite3d:setScale(2)
     self._sprite3d:addEffect(cc.V3(0,0,1),0.01, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
@@ -70,15 +71,15 @@ end
 -- init Dragon animations=============================
 do
     Dragon._action = {
-        idle = createAnimation(file,267,283,0.7),
-        walk = createAnimation(file,227,246,0.5),
-        attack1 = createAnimation(file,103,129,0.7),
-        attack2 = createAnimation(file,130,154,0.7),
-        specialattack1 = createAnimation(file,160,190,0.3),
-        specialattack2 = createAnimation(file,191,220,0.4),
+        idle = createAnimation(file,0,40,0.7),
+        walk = createAnimation(file,135,147,0.5),
+        attack1 = createAnimation(file,45,75,0.7),
+--        attack2 = createAnimation(file,130,154,0.7),
+--        specialattack1 = createAnimation(file,160,190,0.3),
+--        specialattack2 = createAnimation(file,191,220,0.4),
         defend = createAnimation(file,92,96,0.7),
-        knocked = createAnimation(file,254,260,0.7),
-        dead = createAnimation(file,0,77,1)
+        knocked = createAnimation(file,81,87,0.7),
+        dead = createAnimation(file,95,127,1)
     }
 end
 -- end init Dragon animations========================
