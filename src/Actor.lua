@@ -119,7 +119,6 @@ end
 function Actor.create()
     local base = Actor.new()	
     base:initShadow()
-    base:initAttackInfo()
 	return base
 end
 
@@ -129,29 +128,7 @@ function Actor:initShadow()
 	self._circle:setOpacity(255*0.7)
 	self:addChild(self._circle)
 end
-function Actor:initAttackInfo()
-    --build the attack Infos
-    self._normalAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius,
-        angle    = DEGREES_TO_RADIANS(self._attackAngle),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 0, -- 0 duration means it will be removed upon calculation
-        speed    = 0
-    }
-    self._specialAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius+50,
-        angle    = DEGREES_TO_RADIANS(150),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 0,
-        speed    = 0
-    }
-end
+
 
 --======Play animation with blending in between, but seems buggy
 function Actor:_blendAnimationTo(anim, loop)
@@ -448,7 +425,7 @@ function Actor:walkUpdate(dt)
         if self._goRight then
             self._targetFacing = 0
         else
-            self._targetFacing = DEGREES_TO_RADIANS(180)
+            self:idleMode()
         end
     end
 end

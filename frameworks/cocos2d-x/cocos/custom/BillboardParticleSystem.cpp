@@ -371,7 +371,7 @@ void BillboardParticleSystem::onBegin()
 {
     if (_depthTestEnabled)
     {
-        glEnable(GL_DEPTH_TEST);
+        //glEnable(GL_DEPTH_TEST);
         glDepthMask(false);
     }
 }
@@ -379,7 +379,7 @@ void BillboardParticleSystem::onEnd()
 {
     if (_depthTestEnabled)
     {
-        glDisable(GL_DEPTH_TEST);
+        //glDisable(GL_DEPTH_TEST);
         glDepthMask(true);
     }
 }

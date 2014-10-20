@@ -17,7 +17,7 @@ function Mage:ctor()
     self._attackFrequency = 4.7
     self._AIFrequency = 1.3
     
-    self._attackRange = 500
+    self._attackRange = 1000
     
     --normal attack
     self._attackMinRadius = 0
@@ -48,6 +48,9 @@ function Mage.create()
 end
 function Mage:normalAttack()
     MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+end
+function Mage:specialAttack()
+    MageNormalAttack.create(getPosTable(self), self._curFacing, self._specialAttack)
 end
 
 

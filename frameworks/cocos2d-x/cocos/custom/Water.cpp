@@ -38,27 +38,27 @@ Water *Water::create(const std::string& tex1,const std::string& tex2,const std::
     return nullptr;
 }
 
-void Water::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
-{
-    _beforeDraw.init(_globalZOrder);
-    _beforeDraw.func =  CC_CALLBACK_0(Water::onBeforeDraw, this);
-    renderer->addCommand(&_beforeDraw);
-    Sprite::draw(renderer, transform, flags);
-    _afterDraw.init(_globalZOrder);
-    _afterDraw.func =  CC_CALLBACK_0(Water::onAfterDraw, this);
-    renderer->addCommand(&_afterDraw);
-}
-
-void Water::onBeforeDraw()
-{
-    glEnable(GL_DEPTH_TEST);
-    glDepthMask(GL_FALSE);
-    //bool a; = glGetBooleanv(GL_DEPTH_WRITEMASK, &a);
-}
-void Water::onAfterDraw()
-{
-    glDisable(GL_DEPTH_TEST);
-    glDepthMask(GL_TRUE);
-    //bool a; = glGetBooleanv(GL_DEPTH_WRITEMASK, &a);
-}
+//void Water::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
+//{
+//    _beforeDraw.init(_globalZOrder);
+//    _beforeDraw.func =  CC_CALLBACK_0(Water::onBeforeDraw, this);
+//    renderer->addCommand(&_beforeDraw);
+//    Sprite::draw(renderer, transform, flags);
+//    _afterDraw.init(_globalZOrder);
+//    _afterDraw.func =  CC_CALLBACK_0(Water::onAfterDraw, this);
+//    renderer->addCommand(&_afterDraw);
+//}
+//
+//void Water::onBeforeDraw()
+//{
+//    //glEnable(GL_DEPTH_TEST);
+//    glDepthMask(GL_FALSE);
+//    //bool a; = glGetBooleanv(GL_DEPTH_WRITEMASK, &a);
+//}
+//void Water::onAfterDraw()
+//{
+//    //glDisable(GL_DEPTH_TEST);
+//    glDepthMask(GL_TRUE);
+//    //bool a; = glGetBooleanv(GL_DEPTH_WRITEMASK, &a);
+//}
 
