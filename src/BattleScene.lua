@@ -16,12 +16,11 @@ require "DropBlood"
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
-local gloableZOrder = 1
 local touchPos = nil
 currentLayer = nil
-local heroOriginPositionX = -2900
 local currentStep = 1;
 local uiLayer = nil
+local gameMaster = nil
 
 local function collisionDetect(dt)
     --cclog("collisionDetect")
@@ -150,57 +149,6 @@ local function addParticleToRole(role)
     cclog("particle create...")
 end
 
-local function addNewSprite(x, y, raceType, isVisible)
-    local sprite = nil
-    local animation = nil
-    if raceType == EnumRaceType.WARRIOR then
-        sprite = Warrior.create()
-        cclog("warrior create...")    
-    elseif raceType == EnumRaceType.MAGE then
-        sprite = Mage.create()
-        cclog("mage create...")
-    elseif raceType == EnumRaceType.MONSTER then
-        sprite = Monster.create()
-        sprite._sprite3d:setScale(15)
-        List.pushlast(MonsterPool, sprite)
-        cclog("monster create...")
-    elseif raceType == EnumRaceType.BOSS then
-        sprite = Boss.create()
-        sprite._sprite3d:setScale(35)        
-        List.pushlast(BossPool, sprite)
-        cclog("boss create...")
-    elseif raceType == EnumRaceType.DRAGON then
-        sprite = Dragon.create()
-        sprite._sprite3d:setScale(30)
---        sprite._sprite3d:setRotation3D({x=90,y=0,z=90})        
-        List.pushlast(MonsterPool, sprite)
-        cclog("dragon create...")
-    else
-        return
-    end
-
-    sprite:setPosition(cc.p(x, y))
-    gloableZOrder = gloableZOrder + 1
-    sprite:setGlobalZOrder(gloableZOrder)
-    currentLayer:addChild(sprite)
-
-    local rand2 = math.random()
-    local speed = 1.0
-
-    if rand2 < 1/3 then
-        speed =  math.random()  
-    elseif rand2 < 2/3 then
-        speed = - 0.5 *  math.random()
-    end
-
-    sprite.speed =  speed + 0.5
-    sprite.priority = sprite.speed        
-
-    sprite:setState(EnumStateType.STAND)
-    sprite:setVisible(isVisible)
-    return sprite    
-end
-
 local function createBackground()
     local spriteBg = cc.Sprite3D:create("model/scene1.c3b", "model/zhenghe.png")
 --    local spriteBg = cc.Sprite3D:create("model/changjing.c3b")
@@ -231,79 +179,48 @@ local function createEnemy(step)
     if currentStep == 1 or currentStep == 2 then
         for val = 1, 3 do
             local sprite = List.popfirst(MonsterPool)
-            sprite:setVisible(true)
-            List.pushlast(MonsterManager, sprite)
+            if sprite ~= nil then
+                sprite:setVisible(true)
+                List.pushlast(MonsterManager, sprite)
+            end
         end
         currentStep = currentStep + 1
     elseif currentStep == 3 then
         local sprite = List.popfirst(BossPool)
-        sprite:setVisible(true)    
-        List.pushlast(BossManager, sprite)
+        if sprite ~= nil then
+            sprite:setVisible(true)    
+            List.pushlast(BossManager, sprite)
+        end
         currentStep = currentStep + 1                    
     end    
 end
 
-local function createRole()
---     local hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR, true)
---     addParticleToRole(hero)
---     hero:setState(EnumStateType.WALK)
---     hero:runAction(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1))
---     List.pushlast(HeroManager, hero)
---
---     hero = addNewSprite(heroOriginPositionX, 600, EnumRaceType.WARRIOR, true)
---     addParticleToRole(hero)    
---     hero:setState(EnumStateType.WALK)
---     List.pushlast(HeroManager, hero)
---
---     hero = addNewSprite(heroOriginPositionX, 0, EnumRaceType.MAGE, true)
---     addParticleToRole(hero)
---     hero:setState(EnumStateType.WALK)
---     List.pushlast(HeroManager, hero)
-   
-    local test = Knight:create()
-    test:setPosition(heroOriginPositionX+500, 300)
-    currentLayer:addChild(test)
-    List.pushlast(HeroManager, test)
-    
-    local test2 = Mage:create()
-    test2:setPosition(heroOriginPositionX+500, 000)
-    currentLayer:addChild(test2)
-    List.pushlast(HeroManager, test2)
-    
-    
-    local test3 = Piglet:create()
-    test3:setPosition(heroOriginPositionX+1500, 300)
-    currentLayer:addChild(test3)
-    List.pushlast(MonsterManager, test3)
-    
+--local function createRole()
+--   
+--    local test = Knight:create()
+--    test:setPosition(heroOriginPositionX+500, 300)
+--    currentLayer:addChild(test)
+--    List.pushlast(HeroManager, test)
+--    
+--    local test2 = Mage:create()
+--    test2:setPosition(heroOriginPositionX+500, 000)
+--    currentLayer:addChild(test2)
+--    List.pushlast(HeroManager, test2)
+-- 
+--    for i=1,4 do
+--        local test3 = Piglet:create()
+--        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
+--        currentLayer:addChild(test3)
+--        List.pushlast(MonsterManager, test3)
+--        test3:setFacing(180)
+--    end
+--    
 --    local rat = Rat:create()
 --    rat:setPosition(heroOriginPositionX+1500, 000)
 --    currentLayer:addChild(rat)
 --    List.pushlast(MonsterManager, rat)
-    
-    local test4 = Piglet:create()
-    test4:setPosition(heroOriginPositionX+1600, 400)
-    currentLayer:addChild(test4)
-    List.pushlast(MonsterManager, test4)
-    
---    local test5 = Piglet:create()
---    test5:setPosition(heroOriginPositionX+1500, 500)
---    currentLayer:addChild(test5)
---    List.pushlast(MonsterManager, test5)
-    
-    test3:setFacing(180)
 --    rat:setFacing(180)
-    test4:setFacing(-180)
---    test5:setFacing(-180)
-
---    addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER, false)
---    addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER, false)
---    addNewSprite(size.width/2-2000, size.height/2-100, EnumRaceType.MONSTER, false)
---    addNewSprite(size.width/2, size.height/2-200, EnumRaceType.MONSTER, false)
---    addNewSprite(size.width/2+100, size.height/2-200, EnumRaceType.MONSTER, false)
---    addNewSprite(size.width/2+100, size.height/2-100, EnumRaceType.MONSTER, false)
---    addNewSprite(size.width/2+2000, size.height/2-100, EnumRaceType.BOSS, false)
-end
+--end
 
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 1.0, 2000.0)
@@ -311,18 +228,6 @@ local function setCamera()
     camera:lookAt(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y, 0.0), cc.V3(0.0, 1.0, 0.0))
     currentLayer:addChild(camera)
     camera:setGlobalZOrder(10)
-end
-
-local function enemyEncounter()
-    local tempPos = camera:getPositionX()
-    --cclog("%f", tempPos)
-    if tempPos > -2500 and tempPos < -2100 then
-        createEnemy(1)    
-    elseif  tempPos > -1000 and tempPos < -900 then
-        createEnemy(2)
-    elseif  tempPos > 1000 and tempPos < 1100 then
-        createEnemy(3)        
-    end
 end
 
 --dropValuePercent is the dropValue/bloodValue*100
@@ -349,7 +254,7 @@ local function gameController(dt)
 
     --enemyEncounter()
     --findAllEnemy()
-    --commandControl()
+    gameMaster:update(dt)
 end
 
 local function initUILayer()
@@ -362,7 +267,6 @@ local function initUILayer()
     camera:addChild(uiLayer)
 end
 
-
 local BattleScene = class("BattleScene",function()
     return cc.Scene:create()
 end)
@@ -373,11 +277,12 @@ function BattleScene.create()
     scene:addChild(currentLayer)
     createBackground()
 
-    createRole()
+    gameMaster = require "GameMaster".create()
 
     setCamera()
 
     initUILayer()
+
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,registerBloodDrop)
     

@@ -9,6 +9,10 @@ BossPool = List.new()
 
 HeroManager = List.new()
 MonsterManager = List.new()
+DragonManager = List.new()
+SlimeManager = List.new()
+PigletManager = List.new()
+RatManager = List.new()
 BossManager = List.new()
 
 function findAliveMonster()
@@ -118,7 +122,7 @@ function isOutOfBound(object)
 end
 
 function isInCircleSector(object1, object2)
-    local attackDistance = object1._attackMaxRadius + object2._radius
+    local attackDistance = object1._attackRadius + object2._radius
     local obj1Pos = cc.p(object1:getPosition())
     local obj2Pos = cc.p(object2:getPosition())
     local tempDistance = cc.pGetDistance(obj1Pos, obj2Pos)

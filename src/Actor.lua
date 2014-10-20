@@ -114,6 +114,10 @@ function Actor:ctor()
     --target variables
     self._targetFacing = 0
     self._target = nil
+    
+    --dropblood
+    self._dropBlood = require "DropBlood":create()
+    self:addChild(self._dropBlood)
 end
 
 function Actor.create()
@@ -240,7 +244,8 @@ function Actor:hurt(collider)
             self:dyingMode(getPosTable(collider),collider.knock)        
         end
     end
-    local blood = require "DropBlood":create():showBloodLossNum(collider.damage)
+    local blood = self._dropBlood:showBloodLossNum(collider.damage)
+    blood:setPositionZ(120)
     self:addChild(blood)
 end
 --======attacking collision check
