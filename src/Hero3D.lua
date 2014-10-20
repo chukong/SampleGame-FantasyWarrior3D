@@ -29,10 +29,10 @@ function Hero3D.create(type)
         if EnumStateType.WALK == hero._statetype then
             --move
             local targetPos = {x=3000, y=0}
-            local dis = hero._attackRadius
+            local dis = hero._attackMaxRadius
             if nil ~= hero._target then
                 targetPos = getPosTable(hero._target)
-                dis = hero._attackRadius+hero._target._radius
+                dis = hero._attackMaxRadius+hero._target._radius
             end
             local curPos = getPosTable(hero)
             if cc.pGetDistance(curPos,targetPos)>(dis) then
@@ -73,7 +73,11 @@ function Hero3D:AddSprite3D(type)
     filename = "Sprite3DTest/ReskinGirl.c3b"
 
     self._sprite3d = cc.EffectSprite3D:create(filename)
+
     --self._sprite3d:addEffect(cc.V3(0,0,0),0.01, -1)
+
+--    self._sprite3d:addEffect(cc.V3(0,0,0),0.01, -1)
+
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)

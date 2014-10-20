@@ -19,15 +19,15 @@ function DropBlood:showBloodLossNum(num)
     blood:setScale(0.1)
     blood:setRotation3D(getRandomXYZ())
 
-    local targetScale = 1
+    local targetScale = 0.7
     if num > 200 then 
         blood:setColor(cc.c3b(255,0,0))
     elseif num > 100 then
         blood:setColor(cc.c3b(250,121,65))
-        targetScale = 0.75
+        targetScale = 0.45
     else
         blood:setColor(cc.c3b(250,191,65))
-        targetScale = 0.85
+        targetScale = 0.55
     end
     local sequence = cc.Sequence:create(cc.EaseElasticOut:create(cc.ScaleTo:create(0.5,targetScale),0.4),
         cc.FadeOut:create(0.5),
@@ -37,6 +37,7 @@ function DropBlood:showBloodLossNum(num)
         cc.MoveBy:create(1,cc.p(0,150)),
         cc.RotateBy:create(1,math.random(-40,40)))
     blood:runAction(spawn)
+    blood:setCameraMask(2) 
     
     return blood
 end

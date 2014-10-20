@@ -264,7 +264,7 @@ end
 
 function Warrior:walkUpdate(dt)
     if self._target ~= nil  then
-        local miniDistance = self._attackRadius + self._target._radius
+        local miniDistance = self._attackMaxRadius + self._target._radius
         local p1 = getPosTable(self)
         local p2 = getPosTable(self._target)
         local distance = cc.pGetDistance(p1, p2)

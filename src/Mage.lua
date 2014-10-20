@@ -21,7 +21,7 @@ function Mage:ctor()
     
     --normal attack
     self._attackMinRadius = 0
-    self._attackRadius = 5 --TODO: rename to attackMaxRadius
+	self._attackMaxRadius = 5
     self._attack = 300
     self._attackAngle = 360
     self._attackKnock = 0
@@ -66,7 +66,7 @@ function Mage:initAttackInfo()
     --build the attack Infos
     self._normalAttack = {
         minRange = self._attackMinRadius,
-        maxRange = self._attackRadius,
+        maxRange = self._attackMaxRadius,
         angle    = DEGREES_TO_RADIANS(self._attackAngle),
         knock    = self._attackKnock,
         damage   = self._attack,
@@ -76,7 +76,7 @@ function Mage:initAttackInfo()
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
-        maxRange = self._attackRadius+50,
+        maxRange = self._attackMaxRadius+50,
         angle    = DEGREES_TO_RADIANS(150),
         knock    = self._attackKnock,
         damage   = self._attack,
