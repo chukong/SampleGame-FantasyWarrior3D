@@ -21,7 +21,6 @@ function Piglet:ctor()
     self._radius = 50
     self._attackRange = 130
     
-    self._attackRange = 100
     self._attackMaxRadius = 130
     self._attackAngle = 30
     self._attackKnock = 50
