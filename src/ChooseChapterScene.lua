@@ -107,7 +107,7 @@ function ChooseChapter:addHero()
         hero:setRotation3D({x=0,y=0,z=offset})
         offset = offset+1
     end
---    cc.Director:getInstance():getScheduler():scheduleScriptFunc(schedule_function,0,false)
+    cc.Director:getInstance():getScheduler():scheduleScriptFunc(schedule_function,0,false)
 
     local function schedule_function2()
         local blood = dropBlood:showBloodLossNum(math.random(0,300))
