@@ -13,13 +13,14 @@ function Piglet:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 100  
+    self._attack = 150  
     self._racetype = EnumRaceType.MONSTER
-    self._speed = 300
+    self._speed = 400
     self._attackMinRadius = 0
     self._attackMaxRadius = 130
     self._radius = 50
-    self._attackRange = 100
+    self._attackRange = 130
+    
     self._attackMaxRadius = 130
     self._attackAngle = 30
     self._attackKnock = 50
@@ -136,7 +137,7 @@ end
 do
     Piglet._action = {
         idle = createAnimation(file,0,40,0.7),
-        walk = createAnimation(file,135,147,1),
+        walk = createAnimation(file,135,147,1.5),
         attack1 = createAnimation(file,45,60,0.7),
         attack2 = createAnimation(file,60,75,0.7),
         defend = createAnimation(file,92,96,0.7),

@@ -15,6 +15,7 @@ function Knight:ctor()
     self._particle = nil
     self._attack = 300  
     self._attackFrequency = 3
+    self._AIFrequency = 1.1
     
     self._attackKnock = 100
     
@@ -45,13 +46,13 @@ function Knight.create()
         ret:knockMode({x=-1000,y=00}, 150)
     end
 
-    delayExecute(ret,test,0.5)
+    --delayExecute(ret,test,0.5)
 
 --    delayExecute(ret,test2,2.5)
 --    delayExecute(ret,test,3.5)
 --    delayExecute(ret,test3,4.5)
     --=====testing block
-    
+    ret._AIEnabled = true
     --this update function do not do AI
     function update(dt)
         ret:baseUpdate(dt)

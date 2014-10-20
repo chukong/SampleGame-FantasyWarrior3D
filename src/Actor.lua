@@ -355,11 +355,13 @@ function Actor:AI()
         if not self._target or not self._target._isalive and not self._cooldown then
             local allDead
             self._target, allDead = self:_findEnemy()
---            if allDead then
---                self:idleMode()
---            else
+            if self._target then
                 self:walkMode()
---            end
+            else
+                print("can't find")
+                self._goRight = false
+            end
+            
         end
         if state == EnumStateType.ATTACKING and not inRange and not self._cooldown then
             self:walkMode()
@@ -419,7 +421,7 @@ function Actor:attackUpdate(dt)
 end
 function Actor:walkUpdate(dt)
     --Walking state, switch to attack state when target in range
-    if self._target  then
+    if self._target and self._target._isalive then
         local attackDistance = self._attackRange + self._target._radius -1
         local p1 = self._myPos
         local p2 = getPosTable(self._target)
@@ -431,6 +433,7 @@ function Actor:walkUpdate(dt)
         end
     else
         --our hero doesn't have a target, lets move
+        self._target = self:_findEnemy()
         local curx,cury = self:getPosition()
         if self._goRight then
             self._targetFacing = 0
