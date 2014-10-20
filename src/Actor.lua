@@ -13,6 +13,7 @@ EnumRaceType =
     "SORCERESS",
     "MONSTER",
     "BOSS", 
+    "DRAGON",
 }
 EnumRaceType = CreateEnumTable(EnumRaceType) 
 
@@ -302,6 +303,7 @@ function Actor:stateMachineUpdate(dt)
         self:knockingUpdate(dt)
     elseif state == EnumStateType.DYING then
         --I am dying.. there is not much i can do right?
+        
     end
 end
 function Actor:_findEnemy()

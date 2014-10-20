@@ -37,7 +37,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     // initialize director
 #if (COCOS2D_DEBUG > 0)
     // NOTE:Please don't remove this call if you want to debug with Cocos Code IDE
-    initRuntime();
+    //initRuntime();
 #endif
     
     auto director = Director::getInstance();
@@ -67,12 +67,12 @@ bool AppDelegate::applicationDidFinishLaunching()
     //LuaStack* stack = engine->getLuaStack();
     //register_custom_function(stack->getLuaState());
     
-#if (COCOS2D_DEBUG > 0)
+//#if (COCOS2D_DEBUG > 0)
     // NOTE:Please don't remove this call if you want to debug with Cocos Code IDE
-    startRuntime();
-#else
+//    startRuntime();
+//#else
     engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
-#endif
+//#endif
 
     return true;
 }

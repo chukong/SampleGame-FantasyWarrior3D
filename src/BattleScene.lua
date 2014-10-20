@@ -1,3 +1,4 @@
+require "Cocos2d"
 require "Helper"
 require "Actor"
 require "Monster"
@@ -8,6 +9,7 @@ require "Mage"
 require "MessageDispatchCenter"
 require "AttackCommand"
 require "Knight"
+require "Dragon"
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
@@ -145,23 +147,34 @@ local function addParticleToRole(role)
     role._particle:setStartColor({r=234,g=123,b=245,a=255})
     currentLayer:addChild(role._particle,5)
     role._particle:setEmissionRate(0)
+    cclog("particle create...")
 end
 
 local function addNewSprite(x, y, raceType, isVisible)
     local sprite = nil
     local animation = nil
     if raceType == EnumRaceType.WARRIOR then
-        sprite = Warrior.create()    
+        sprite = Warrior.create()
+        cclog("warrior create...")    
     elseif raceType == EnumRaceType.MAGE then
         sprite = Mage.create()
+        cclog("mage create...")
     elseif raceType == EnumRaceType.MONSTER then
         sprite = Monster.create()
         sprite._sprite3d:setScale(15)
         List.pushlast(MonsterPool, sprite)
+        cclog("monster create...")
     elseif raceType == EnumRaceType.BOSS then
         sprite = Boss.create()
         sprite._sprite3d:setScale(35)        
         List.pushlast(BossPool, sprite)
+        cclog("boss create...")
+    elseif raceType == EnumRaceType.DRAGON then
+        sprite = Dragon.create()
+        sprite._sprite3d:setScale(30)
+--        sprite._sprite3d:setRotation3D({x=90,y=0,z=90})        
+        List.pushlast(MonsterPool, sprite)
+        cclog("dragon create...")
     else
         return
     end
@@ -190,22 +203,24 @@ end
 
 local function createBackground()
     local spriteBg = cc.Sprite3D:create("model/scene1.c3b", "model/zhenghe.png")
-    --local spriteBg = cc.Sprite3D:create("model/changjing.c3b")
-    --spriteBg:setTexture(cc.Director:getInstance():getTextureCache():addImage("model/zhenghe.png"))
+--    local spriteBg = cc.Sprite3D:create("model/changjing.c3b")
+--    spriteBg:setTexture(cc.Director:getInstance():getTextureCache():addImage("model/zhenghe.png"))
 
-
-    
     currentLayer:addChild(spriteBg)
     spriteBg:setScale(2.5)
     spriteBg:setGlobalZOrder(-9)
     spriteBg:setPosition3D(cc.V3(-3500,0,0))
     spriteBg:setRotation3D(cc.V3(90,0,0))
     
+    cclog("background create...")
+    
     local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=4500, height=400}, 0.77, 0.3797, 1.2)
     currentLayer:addChild(water)
     water:setPosition3D(cc.V3(-3500,-400,-35))
     water:setAnchorPoint(0,0)
     water:setGlobalZOrder(-9)
+    
+    cclog("water create...")
 end
 
 local function createEnemy(step)
@@ -324,14 +339,15 @@ local BattleScene = class("BattleScene",function()
 end)
 
 function BattleScene.create()
-
     local scene = BattleScene:new()
     currentLayer = cc.Layer:create()
     scene:addChild(currentLayer)
-
     createBackground()
+
     createRole()
+
     setCamera()
+
     initUILayer()
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,registerBloodDrop)

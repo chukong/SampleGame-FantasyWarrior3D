@@ -42,10 +42,11 @@ local function main()
     
     cc.Director:getInstance():setDisplayStats(true)
 
+    print("Iam main.lua...")
     --create scene
---    local scene = require("ChooseRoleScene")
+    local scene = require("ChooseChapterScene")
 --   local scene = require("BattleScene")
-    local scene = require("MainMenuScene")
+--    local scene = require("MainMenuScene")
     local activateGameScene = scene.create()
     --activateGameScene:playBgMusic()
     

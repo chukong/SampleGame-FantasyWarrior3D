@@ -1,7 +1,7 @@
 require "Cocos2d"
 require "Helper"
---require "Warrior"
---require "Mage"
+require "Warrior"
+require "Mage"
 
 --declare a class extends scene
 local MainMenuScene = class("MainMenuScene",function()
@@ -45,7 +45,7 @@ function MainMenuScene:createLayer()
     --add pointlight
     self:addPointLight(mainLayer)
     
---    self:addHero(mainLayer)
+    self:addHero(mainLayer)
     
     --when replease scene unschedule schedule
     local function onExit(event)
@@ -203,10 +203,6 @@ function MainMenuScene:addPointLight(layer)
         
         local location = touch:getLocation()
         self._prePosition = location
-        
---       cc.pRotateByAngle(point,point,float)
---        self._angle =cc.pToAngleSelf(cc.pSub(location,getPosTable(self._lightSprite)))
-        
 
         local function movePoint(dt)
             local lightSpritePos = getPosTable(self._lightSprite)
@@ -214,9 +210,6 @@ function MainMenuScene:addPointLight(layer)
             self._lightSprite:setPosition(point)
             local z = math.sin(math.rad(math.random(0,2*math.pi)))*100+100
             self._lightSprite:setPositionZ(z)
-            
---            local deg = cc.fLerp(math.deg(self._angle),0,dt*2)
---            self._lightSprite:setRotation(deg)
         end
         self._scheduleMove = cc.Director:getInstance():getScheduler():scheduleScriptFunc(movePoint,0,false)
         

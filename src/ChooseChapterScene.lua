@@ -94,11 +94,12 @@ function ChooseChapter:addHero()
         {x=-self.size.width*0.59,y=self.size.height*0.17},
         {x=-self.size.width*0.73,y=self.size.height*0.28}}
     local cardinalSpline = cc.CardinalSplineBy:create(3,controlPoint,0)
---    hero:runAction(cardinalSpline)
+    hero:runAction(cardinalSpline)
 
     --test billboard
     local dropBlood = require("DropBlood")
     local blooda = dropBlood:showBloodLossNum(10)
+    blooda:setCameraMask(2) 
     hero:addChild(blooda)
     
     local offset = 1
@@ -109,7 +110,7 @@ function ChooseChapter:addHero()
 --    cc.Director:getInstance():getScheduler():scheduleScriptFunc(schedule_function,0,false)
 
     local function schedule_function2()
-        local blood = dropBlood:showBloodLossNum(10)
+        local blood = dropBlood:showBloodLossNum(math.random(0,300))
         hero:addChild(blood)
     end
     cc.Director:getInstance():getScheduler():scheduleScriptFunc(schedule_function2,1,false)
