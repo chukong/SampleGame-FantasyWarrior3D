@@ -195,56 +195,32 @@ local function createEnemy(step)
     end    
 end
 
-local function createRole()
---     local hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR, true)
---     addParticleToRole(hero)
---     hero:setState(EnumStateType.WALK)
---     hero:runAction(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1))
---     List.pushlast(HeroManager, hero)
---
---     hero = addNewSprite(heroOriginPositionX, 600, EnumRaceType.WARRIOR, true)
---     addParticleToRole(hero)    
---     hero:setState(EnumStateType.WALK)
---     List.pushlast(HeroManager, hero)
---
---     hero = addNewSprite(heroOriginPositionX, 0, EnumRaceType.MAGE, true)
---     addParticleToRole(hero)
---     hero:setState(EnumStateType.WALK)
---     List.pushlast(HeroManager, hero)
-   
-    local test = Knight:create()
-    test:setPosition(heroOriginPositionX+500, 300)
-    currentLayer:addChild(test)
-    List.pushlast(HeroManager, test)
-    
-    local test2 = Mage:create()
-    test2:setPosition(heroOriginPositionX+500, 000)
-    currentLayer:addChild(test2)
-    List.pushlast(HeroManager, test2)
- 
-    for i=1,4 do
-        local test3 = Piglet:create()
-        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
-        currentLayer:addChild(test3)
-        List.pushlast(MonsterManager, test3)
-        test3:setFacing(180)
-    end
-    
+--local function createRole()
+--   
+--    local test = Knight:create()
+--    test:setPosition(heroOriginPositionX+500, 300)
+--    currentLayer:addChild(test)
+--    List.pushlast(HeroManager, test)
+--    
+--    local test2 = Mage:create()
+--    test2:setPosition(heroOriginPositionX+500, 000)
+--    currentLayer:addChild(test2)
+--    List.pushlast(HeroManager, test2)
+-- 
+--    for i=1,4 do
+--        local test3 = Piglet:create()
+--        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
+--        currentLayer:addChild(test3)
+--        List.pushlast(MonsterManager, test3)
+--        test3:setFacing(180)
+--    end
+--    
 --    local rat = Rat:create()
 --    rat:setPosition(heroOriginPositionX+1500, 000)
 --    currentLayer:addChild(rat)
 --    List.pushlast(MonsterManager, rat)
 --    rat:setFacing(180)
-
-
---    addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER, false)
---    addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER, false)
---    addNewSprite(size.width/2-2000, size.height/2-100, EnumRaceType.MONSTER, false)
---    addNewSprite(size.width/2, size.height/2-200, EnumRaceType.MONSTER, false)
---    addNewSprite(size.width/2+100, size.height/2-200, EnumRaceType.MONSTER, false)
---    addNewSprite(size.width/2+100, size.height/2-100, EnumRaceType.MONSTER, false)
---    addNewSprite(size.width/2+2000, size.height/2-100, EnumRaceType.BOSS, false)
-end
+--end
 
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 1.0, 2000.0)
@@ -253,18 +229,6 @@ local function setCamera()
     currentLayer:addChild(camera)
     camera:setGlobalZOrder(10)
 end
-
---local function enemyEncounter()
---    local tempPos = camera:getPositionX()
---    --cclog("%f", tempPos)
---    if tempPos > -2500 and tempPos < -2100 then
---        createEnemy(1)    
---    elseif  tempPos > -1000 and tempPos < -900 then
---        createEnemy(2)
---    elseif  tempPos > 1000 and tempPos < 1100 then
---        createEnemy(3)        
---    end
---end
 
 --dropValuePercent is the dropValue/bloodValue*100
 local function sendDropBlood(dropValuePercent, hero)
