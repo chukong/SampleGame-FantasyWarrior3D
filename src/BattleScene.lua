@@ -306,13 +306,13 @@ end
 
 local function gameController(dt)
     collisionDetect(dt)
-    solveAttacks()
+    solveAttacks(dt)
     moveCamera(dt)
     updateParticlePos()
 
     enemyEncounter()
     --findAllEnemy()
-    commandControl()
+    --commandControl()
 end
 
 local function initUILayer()

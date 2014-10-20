@@ -101,9 +101,10 @@ function Actor:ctor()
     self._specialAttack = nil
     self._recoverTime = 0.8
     self._searchDistance = 5000 --distance which enemy can be found
+    self._attackRange = 100
     
     --normal attack
-    self._attackMinRadius = 0
+    self._attackMinRadius = 0 --IMPORTANT! those 2 value describes the collider size, for character attack range, use _attackRange
     self._attackRadius = 130 --TODO: rename to attackMaxRadius
     self._attack = 100
     self._attackAngle = 30
@@ -406,7 +407,7 @@ end
 function Actor:walkUpdate(dt)
     --Walking state, switch to attack state when target in range
     if self._target  then
-        local attackDistance = self._attackRadius + self._target._radius -1
+        local attackDistance = self._attackRange + self._target._radius -1
         local p1 = self._myPos
         local p2 = getPosTable(self._target)
         self._targetFacing = cc.pToAngleSelf(cc.pSub(p2, p1))
