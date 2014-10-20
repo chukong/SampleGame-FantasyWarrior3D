@@ -342,6 +342,11 @@ function Actor:AI()
     if self._isalive then
         local state = self:getStateType()
         local inRange = self:_inRange()
+        if inRange then
+            local p1 = self._myPos
+            local p2 = getPosTable(self._target)
+            self._targetFacing = cc.pToAngleSelf(cc.pSub(p2, p1))
+        end
         if not self._target or not self._target._isalive and not self._cooldown then
             local allDead
             self._target, allDead = self:_findEnemy()
@@ -376,7 +381,7 @@ function Actor:knockingUpdate(dt)
         self:walkMode()
     end
 end
-function Actor:attackUpdate(dt)
+function Actor:attackUpdate(dt)   
     self._attackTimer = self._attackTimer + dt
     if self._attackTimer > self._attackFrequency then
         self._attackTimer = self._attackTimer - self._attackFrequency
