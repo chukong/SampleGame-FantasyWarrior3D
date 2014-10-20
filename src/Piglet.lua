@@ -13,13 +13,13 @@ function Piglet:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 400  
+    self._attack = 100  
     self._racetype = EnumRaceType.MONSTER
-    self._speed = 800
+    self._speed = 400
     self._attackMinRadius = 0
     self._attackMaxRadius = 130
-    self._radius = 120
-    self._attackRange = 130
+    self._radius = 50
+    self._attackRange = 100
     
     self:init3D()
     self:initActions()
@@ -38,6 +38,21 @@ function Piglet.create()
     end
     ret:scheduleUpdateWithPriorityLua(update, 0.5) 
     return ret
+end
+
+function Piglet:dyingMode(knockSource, knockAmount)
+    self:setStateType(EnumStateType.DYING)
+    self:playAnimation("dead")
+    if knockAmount then
+        local p = getPosTable(self)
+        local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
+        local newPos = cc.pRotateByAngle(cc.pAdd({x=knockAmount,y=0}, p),p,angle)
+        self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
+    end
+    local function recircle()
+    	List.pushlast(PigletManager,self)
+    end
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create(),cc.CallFunc:create(recircle)))
 end
 
 function Piglet:initAttackInfo()
