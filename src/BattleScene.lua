@@ -195,6 +195,33 @@ local function createEnemy(step)
     end    
 end
 
+--local function createRole()
+--   
+--    local test = Knight:create()
+--    test:setPosition(heroOriginPositionX+500, 300)
+--    currentLayer:addChild(test)
+--    List.pushlast(HeroManager, test)
+--    
+--    local test2 = Mage:create()
+--    test2:setPosition(heroOriginPositionX+500, 000)
+--    currentLayer:addChild(test2)
+--    List.pushlast(HeroManager, test2)
+-- 
+--    for i=1,4 do
+--        local test3 = Piglet:create()
+--        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
+--        currentLayer:addChild(test3)
+--        List.pushlast(MonsterManager, test3)
+--        test3:setFacing(180)
+--    end
+--    
+--    local rat = Rat:create()
+--    rat:setPosition(heroOriginPositionX+1500, 000)
+--    currentLayer:addChild(rat)
+--    List.pushlast(MonsterManager, rat)
+--    rat:setFacing(180)
+--end
+
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 1.0, 2000.0)
     camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height*1.45, size.height/2+50))
@@ -202,18 +229,6 @@ local function setCamera()
     currentLayer:addChild(camera)
     camera:setGlobalZOrder(10)
 end
-
---local function enemyEncounter()
---    local tempPos = camera:getPositionX()
---    --cclog("%f", tempPos)
---    if tempPos > -2500 and tempPos < -2100 then
---        createEnemy(1)    
---    elseif  tempPos > -1000 and tempPos < -900 then
---        createEnemy(2)
---    elseif  tempPos > 1000 and tempPos < 1100 then
---        createEnemy(3)        
---    end
---end
 
 --dropValuePercent is the dropValue/bloodValue*100
 local function sendDropBlood(dropValuePercent, hero)
