@@ -155,8 +155,6 @@ function MainMenuScene:getLightSprite()
     swing_r1:runAction(cc.RepeatForever:create(cc.Spawn:create(sequence_r1,scale_action)))
     swing_l2:runAction(cc.RepeatForever:create(cc.Spawn:create(sequence_l2,scale_action)))
     swing_r2:runAction(cc.RepeatForever:create(cc.Spawn:create(sequence_r2,scale_action)))
-
-    
 end
 
 --add pointlight
