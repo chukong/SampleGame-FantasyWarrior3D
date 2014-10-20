@@ -5,17 +5,21 @@ require "AttackCommand"
 
 local file = "model/piglet/piglet.c3b"
 
-Dragon = class("Dragon", function()
+Piglet = class("Piglet", function()
     return require "Actor".create()
 end)
 
-function Dragon:ctor()
+function Piglet:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
     self._attack = 150  
     self._racetype = EnumRaceType.MONSTER
-    self._speed = 500
+    self._speed = 800
+    self._attackMinRadius = 0
+    self._attackMaxRadius = 130
+    self._radius = 50
+    self._attackRange = 130
     
     self._attackRange = 100
     self._attackMaxRadius = 130
@@ -28,32 +32,10 @@ function Dragon:ctor()
     self:initActions()
 end
 
-function Dragon.create()
-    local ret = Dragon.new()
-
-    --=====Testing block
-    function test()
-        ret:walkMode()
-        --        ret._targetFacing = DEGREES_TO_RADIANS(120)
-        ret._AIEnabled = true
-    end
-    function test2()
-        ret:idleMode()
-        ret._targetFacing = 0
-    end
-    function test3()
-        ret:attackMode()
-    end
-    function test4()
-        ret:knockMode({x=-1000,y=00}, 150)
-    end
+function Piglet.create()
+    local ret = Piglet.new()
+    ret:initAttackInfo()
     ret._AIEnabled = true
-    --delayExecute(ret,test,0.5)
-
-    --    delayExecute(ret,test2,2.5)
-    --    delayExecute(ret,test,3.5)
-    --    delayExecute(ret,test3,4.5)
-    --=====testing block
 
     --this update function do not do AI
     function update(dt)
@@ -65,7 +47,32 @@ function Dragon.create()
     ret:initAttackInfo()
     return ret
 end
-function Dragon:attackUpdate(dt)
+
+function Piglet:initAttackInfo()
+    --build the attack Infos
+    self._normalAttack = {
+        minRange = self._attackMinRadius,
+        maxRange = self._attackMaxRadius,
+        angle    = DEGREES_TO_RADIANS(self._attackAngle),
+        knock    = self._attackKnock,
+        damage   = self._attack,
+        mask     = self._racetype,
+        duration = 0, -- 0 duration means it will be removed upon calculation
+        speed    = 0
+    }
+    self._specialAttack = {
+        minRange = self._attackMinRadius,
+        maxRange = self._attackMaxRadius+50,
+        angle    = DEGREES_TO_RADIANS(150),
+        knock    = self._attackKnock,
+        damage   = self._attack,
+        mask     = self._racetype,
+        duration = 0,
+        speed    = 0
+    }
+end
+
+function Piglet:attackUpdate(dt)
     self._attackTimer = self._attackTimer + dt
     if self._attackTimer > self._attackFrequency then
         self._attackTimer = self._attackTimer - self._attackFrequency
@@ -84,7 +91,7 @@ function Dragon:attackUpdate(dt)
             self._cooldown = true
     end
 end
-function Dragon:_findEnemy()
+function Piglet:_findEnemy()
     local shortest = self._searchDistance
     local target = nil
     local allDead = true
@@ -101,32 +108,20 @@ function Dragon:_findEnemy()
     end
     return target, allDead
 end
-function Dragon:initAttackInfo()
-    --build the attack Infos
-    self._normalAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius,
-        angle    = DEGREES_TO_RADIANS(self._attackAngle),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 0, -- 0 duration means it will be removed upon calculation
-        speed    = 0
-    }
-end
-function Dragon:init3D()
+
+function Piglet:init3D()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setTexture("model/piglet/zhu0928.jpg")
-    self._sprite3d:setScale(1.3)
+    self._sprite3d:setScale(2)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
 end
 
--- init Dragon animations=============================
+-- init Piglet animations=============================
 do
-    Dragon._action = {
+    Piglet._action = {
         idle = createAnimation(file,0,40,0.7),
         walk = createAnimation(file,135,147,1),
         attack1 = createAnimation(file,45,60,0.7),
@@ -136,7 +131,7 @@ do
         dead = createAnimation(file,95,127,1)
     }
 end
--- end init Dragon animations========================
-function Dragon:initActions()
-    self._action = Dragon._action
+-- end init Piglet animations========================
+function Piglet:initActions()
+    self._action = Piglet._action
 end

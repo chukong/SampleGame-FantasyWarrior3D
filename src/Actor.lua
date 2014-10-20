@@ -240,6 +240,8 @@ function Actor:hurt(collider)
             self:dyingMode(getPosTable(collider),collider.knock)        
         end
     end
+    local blood = require "DropBlood":create():showBloodLossNum(collider.damage)
+    self:addChild(blood)
 end
 --======attacking collision check
 function Actor:normalAttack()
