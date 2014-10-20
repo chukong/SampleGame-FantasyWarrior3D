@@ -14,7 +14,7 @@ function Dragon:ctor()
     self._useArmourId = 0
     self._particle = nil
     self._attack = 800  
-    self._racetype = EnumRaceType.DRAGON
+    self._racetype = EnumRaceType.MONSTER
     self._speed = 500
     
     self:init3D()
@@ -40,8 +40,8 @@ function Dragon.create()
     function test4()
         ret:knockMode({x=-1000,y=00}, 150)
     end
-
-    delayExecute(ret,test,0.5)
+    ret._AIEnabled = true
+    --delayExecute(ret,test,0.5)
 
     --    delayExecute(ret,test2,2.5)
     --    delayExecute(ret,test,3.5)
@@ -56,6 +56,24 @@ function Dragon.create()
     end
     ret:scheduleUpdateWithPriorityLua(update, 0.5) 
     return ret
+end
+
+function Dragon:_findEnemy()
+    local shortest = self._searchDistance
+    local target = nil
+    local allDead = true
+    for val = HeroManager.first, HeroManager.last do
+        local temp = HeroManager[val]
+        local dis = cc.pGetDistance(self._myPos,getPosTable(temp))
+        if temp._isalive then
+            if dis < shortest then
+                shortest = dis
+                target = temp
+            end
+            allDead = false
+        end
+    end
+    return target, allDead
 end
 
 function Dragon:init3D()

@@ -22,7 +22,7 @@ function Mage:ctor()
     --normal attack
     self._attackMinRadius = 0
 	self._attackMaxRadius = 5
-    self._attack = 300
+    self._attack = 150
     self._attackAngle = 360
     self._attackKnock = 0
 
@@ -57,7 +57,7 @@ end
 function Mage:init3D()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setScale(1.9)
-    self._sprite3d:addEffect(cc.V3(1,0,0),0.01, -1)
+    self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)

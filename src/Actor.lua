@@ -109,7 +109,7 @@ function Actor:ctor()
     self._attackMaxRadius = 130
     self._attack = 100
     self._attackAngle = 30
-    self._attackKnock = 0
+    self._attackKnock = 50
     
     --target variables
     self._targetFacing = 0
@@ -243,15 +243,24 @@ function Actor:setTarget(target)
         self._target = target
     end
 end
+function Actor:setFacing(degrees)
+    self._curFacing = DEGREES_TO_RADIANS(degrees)
+    self._targetFacing = self._curFacing
+    self:setRotation(degrees)
+end
 
-function Actor:hurt(damage)
+
+function Actor:hurt(collider)
     if self._isalive == true then
-        self._hp = self._hp - damage
+        self._hp = self._hp - collider.damage
         if self._hp > 0 then
-            self:setState(EnumStateType.KNOCKED)
+            if collider.knock then
+                self:knockMode(getPosTable(collider),collider.knock)
+            end
+            --self:setState(EnumStateType.KNOCKED)
         else
             self._isalive = false
-            self:setState(EnumStateType.DEAD)          
+            self:dyingMode(getPosTable(collider),collider.knock)        
         end
     end
 end
@@ -280,10 +289,23 @@ function Actor:knockMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.KNOCKING)
     self:playAnimation("knocked")
     self._timeKnocked = self._aliveTime
-    local p = getPosTable(self)
-    local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
-    local newPos = cc.pRotateByAngle(cc.pAdd({x=knockAmount,y=0}, p),p,angle)
-    self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
+    if knockAmount then
+        local p = getPosTable(self)
+        local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
+        local newPos = cc.pRotateByAngle(cc.pAdd({x=knockAmount,y=0}, p),p,angle)
+        self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
+    end
+end
+function Actor:dyingMode(knockSource, knockAmount)
+    self:setStateType(EnumStateType.DYING)
+    self:playAnimation("dead")
+    if knockAmount then
+        local p = getPosTable(self)
+        local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
+        local newPos = cc.pRotateByAngle(cc.pAdd({x=knockAmount,y=0}, p),p,angle)
+        self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
+    end
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create()))
 end
 --=======Base Update Functions
 function Actor:stateMachineUpdate(dt)
