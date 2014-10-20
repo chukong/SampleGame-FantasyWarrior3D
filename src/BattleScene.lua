@@ -269,32 +269,21 @@ local function createRole()
     test2:setPosition(heroOriginPositionX+500, 000)
     currentLayer:addChild(test2)
     List.pushlast(HeroManager, test2)
-    
-    
-    local test3 = Piglet:create()
-    test3:setPosition(heroOriginPositionX+1500, 300)
-    currentLayer:addChild(test3)
-    List.pushlast(MonsterManager, test3)
+ 
+    for i=1,4 do
+        local test3 = Piglet:create()
+        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
+        currentLayer:addChild(test3)
+        List.pushlast(MonsterManager, test3)
+        test3:setFacing(180)
+    end
     
 --    local rat = Rat:create()
 --    rat:setPosition(heroOriginPositionX+1500, 000)
 --    currentLayer:addChild(rat)
 --    List.pushlast(MonsterManager, rat)
-    
-    local test4 = Piglet:create()
-    test4:setPosition(heroOriginPositionX+1600, 400)
-    currentLayer:addChild(test4)
-    List.pushlast(MonsterManager, test4)
-    
---    local test5 = Piglet:create()
---    test5:setPosition(heroOriginPositionX+1500, 500)
---    currentLayer:addChild(test5)
---    List.pushlast(MonsterManager, test5)
-    
-    test3:setFacing(180)
 --    rat:setFacing(180)
-    test4:setFacing(-180)
---    test5:setFacing(-180)
+
 
 --    addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER, false)
 --    addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER, false)

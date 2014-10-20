@@ -15,7 +15,7 @@ function Piglet:ctor()
     self._particle = nil
     self._attack = 150  
     self._racetype = EnumRaceType.MONSTER
-    self._speed = 800
+    self._speed = 300
     self._attackMinRadius = 0
     self._attackMaxRadius = 130
     self._radius = 50
@@ -112,7 +112,7 @@ end
 function Piglet:init3D()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setTexture("model/piglet/zhu0928.jpg")
-    self._sprite3d:setScale(2)
+    self._sprite3d:setScale(1.3)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
