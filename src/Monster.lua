@@ -32,7 +32,7 @@ function Monster.create()
     local function MainLoop(dt)
 --        getDebugStateType(monster)
         if EnumStateType.WALK == monster._statetype and monster._target ~= nil then
-            local miniDistance = monster._attackRadius + monster._target._radius
+            local miniDistance = monster._attackMaxRadius + monster._target._radius
             local p1 = getPosTable(monster)
             local p2 = getPosTable(monster._target)
             local distance = cc.pGetDistance(p1, p2)

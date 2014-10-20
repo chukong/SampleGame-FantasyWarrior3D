@@ -14,7 +14,7 @@ function Mage:ctor()
     self._useArmourId = 0
     self._particle = nil
     self._attack = 300  
-    self._attackRadius = 50*10
+    self._attackMaxRadius = 50*10
 end
 
 function Mage.create()
@@ -34,7 +34,7 @@ function Mage.create()
         if EnumStateType.WALK == hero._statetype then
             local targetPos = {x=3000, y=0}
             if hero._target ~= nil  then
-                local miniDistance = hero._attackRadius + hero._target._radius
+                local miniDistance = hero._attackMaxRadius + hero._target._radius
                 local p1 = getPosTable(hero)
                 local p2 = getPosTable(hero._target)
                 local distance = cc.pGetDistance(p1, p2)

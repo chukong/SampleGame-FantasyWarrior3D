@@ -29,10 +29,10 @@ function Hero3D.create(type)
         if EnumStateType.WALK == hero._statetype then
             --move
             local targetPos = {x=3000, y=0}
-            local dis = hero._attackRadius
+            local dis = hero._attackMaxRadius
             if nil ~= hero._target then
                 targetPos = getPosTable(hero._target)
-                dis = hero._attackRadius+hero._target._radius
+                dis = hero._attackMaxRadius+hero._target._radius
             end
             local curPos = getPosTable(hero)
             if cc.pGetDistance(curPos,targetPos)>(dis) then
