@@ -21,37 +21,33 @@ local uiLayer = nil
 
 local function collisionDetect(dt)
     --cclog("collisionDetect")
-    --TODO: change the for loop so that you can remove elements without break
-    for val = HeroManager.first, HeroManager.last do
+    for val = HeroManager.last, HeroManager.first, -1 do
         local sprite = HeroManager[val]
         if sprite._isalive == true then
             collision(sprite)
             isOutOfBound(sprite)
         else
             List.remove(HeroManager, val)
-            break
         end
     end
 
-    for val = MonsterManager.first, MonsterManager.last do
+    for val = MonsterManager.last, MonsterManager.first, -1 do
         local sprite = MonsterManager[val]
         if sprite._isalive == true then
             collision(sprite)
             isOutOfBound(sprite)            
         else
             List.remove(MonsterManager, val)
-            break
         end
     end    
 
-    for val = BossManager.first, BossManager.last do
+    for val = BossManager.last, MonsterManager.first, -1 do
         local sprite = BossManager[val]
         if sprite._isalive == true then
             collision(sprite)
             isOutOfBound(sprite)            
         else
             List.remove(BossManager, val)
-            break
         end
     end        
 end
@@ -232,18 +228,17 @@ end
 
 local function createRole()
 
-   --  local hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR, true)
-
-   --  addParticleToRole(hero)    
-   --  hero:setState(EnumStateType.WALK)
-   --  hero:runAction(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1))
-   --  List.pushlast(HeroManager, hero)
-
-   -- hero = addNewSprite(heroOriginPositionX, 600, EnumRaceType.WARRIOR, true)
-   -- addParticleToRole(hero)    
-   -- hero:setState(EnumStateType.WALK)
-   -- List.pushlast(HeroManager, hero)
-
+--     local hero = addNewSprite(heroOriginPositionX, 300, EnumRaceType.WARRIOR, true)
+--     addParticleToRole(hero)
+--     hero:setState(EnumStateType.WALK)
+--     hero:runAction(cc.JumpBy3D:create(0.8,{x=200,y=0,z=0},300,1))
+--     List.pushlast(HeroManager, hero)
+--
+--     hero = addNewSprite(heroOriginPositionX, 600, EnumRaceType.WARRIOR, true)
+--     addParticleToRole(hero)    
+--     hero:setState(EnumStateType.WALK)
+--     List.pushlast(HeroManager, hero)
+--
 --     hero = addNewSprite(heroOriginPositionX, 0, EnumRaceType.MAGE, true)
 --     addParticleToRole(hero)
 --     hero:setState(EnumStateType.WALK)

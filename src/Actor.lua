@@ -104,7 +104,7 @@ function Actor:ctor()
     
     --normal attack
     self._attackMinRadius = 0
-    self._attackRadius = 130 --TODO: rename to attackMaxRadius
+    self._attackMaxRadius = 130
     self._attack = 100
     self._attackAngle = 30
     self._attackKnock = 0
@@ -131,7 +131,7 @@ function Actor:initAttackInfo()
     --build the attack Infos
     self._normalAttack = {
         minRange = self._attackMinRadius,
-        maxRange = self._attackRadius,
+        maxRange = self._attackMaxRadius,
         angle    = DEGREES_TO_RADIANS(self._attackAngle),
         knock    = self._attackKnock,
         damage   = self._attack,
@@ -141,7 +141,7 @@ function Actor:initAttackInfo()
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
-        maxRange = self._attackRadius+50,
+        maxRange = self._attackMaxRadius+50,
         angle    = DEGREES_TO_RADIANS(150),
         knock    = self._attackKnock,
         damage   = self._attack,
@@ -324,7 +324,7 @@ function Actor:_inRange()
     if not self._target then
         return false
     elseif self._target._isalive then
-        local attackDistance = self._attackRadius + self._target._radius -1
+        local attackDistance = self._attackMaxRadius + self._target._radius -1
         local p1 = self._myPos
         local p2 = getPosTable(self._target)
         return (cc.pGetDistance(p1,p2) < attackDistance)
@@ -406,7 +406,7 @@ end
 function Actor:walkUpdate(dt)
     --Walking state, switch to attack state when target in range
     if self._target  then
-        local attackDistance = self._attackRadius + self._target._radius -1
+        local attackDistance = self._attackMaxRadius + self._target._radius -1
         local p1 = self._myPos
         local p2 = getPosTable(self._target)
         self._targetFacing = cc.pToAngleSelf(cc.pSub(p2, p1))

@@ -96,7 +96,7 @@ function AttackCommand.create(object)
     command.target = object._target
     command.attackType.attack = object.attack
     command.attackType.validDistance = 0
-    command.attackType.attackRadius = object._attackRadius
+    command.attackType.attackRadius = object._attackMaxRadius
     command.attackType.melee = true
     command.attackType.AOE = false
     command.attackType.validDistance = 0
