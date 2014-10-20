@@ -241,7 +241,7 @@ function MainMenuScene:addButton(layer)
     local button_callback = function(sender,eventType)
         print(eventType)
         if eventType == ccui.TouchEventType.ended then
-        	cc.Director:getInstance():replaceScene(require("ChooseRoleScene.lua").create())
+        	cc.Director:getInstance():replaceScene(require("BattleScene.lua").create())
         end
     end
 

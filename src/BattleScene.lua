@@ -285,7 +285,7 @@ local function createRole()
     currentLayer:addChild(test5)
     List.pushlast(MonsterManager, test5)
     
-    test3:setFacing(-180)
+    test3:setFacing(180)
     test4:setFacing(-180)
     test5:setFacing(-180)
 
