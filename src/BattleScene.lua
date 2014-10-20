@@ -269,18 +269,33 @@ local function createRole()
     currentLayer:addChild(test2)
     List.pushlast(HeroManager, test2)
     
+    
     local test3 = Dragon:create()
-    test3:setPosition(heroOriginPositionX+1500, 000)
+    test3:setPosition(heroOriginPositionX+1500, 300)
     currentLayer:addChild(test3)
     List.pushlast(MonsterManager, test3)
+    
+    local test4 = Dragon:create()
+    test4:setPosition(heroOriginPositionX+1600, 400)
+    currentLayer:addChild(test4)
+    List.pushlast(MonsterManager, test4)
+    
+    local test5 = Dragon:create()
+    test5:setPosition(heroOriginPositionX+1500, 500)
+    currentLayer:addChild(test5)
+    List.pushlast(MonsterManager, test5)
+    
+    test3:setFacing(180)
+    test4:setFacing(-180)
+    test5:setFacing(-180)
 
-    addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER, false)
-    addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER, false)
-    addNewSprite(size.width/2-2000, size.height/2-100, EnumRaceType.MONSTER, false)
-    addNewSprite(size.width/2, size.height/2-200, EnumRaceType.MONSTER, false)
-    addNewSprite(size.width/2+100, size.height/2-200, EnumRaceType.MONSTER, false)
-    addNewSprite(size.width/2+100, size.height/2-100, EnumRaceType.MONSTER, false)
-    addNewSprite(size.width/2+2000, size.height/2-100, EnumRaceType.BOSS, false)
+--    addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER, false)
+--    addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER, false)
+--    addNewSprite(size.width/2-2000, size.height/2-100, EnumRaceType.MONSTER, false)
+--    addNewSprite(size.width/2, size.height/2-200, EnumRaceType.MONSTER, false)
+--    addNewSprite(size.width/2+100, size.height/2-200, EnumRaceType.MONSTER, false)
+--    addNewSprite(size.width/2+100, size.height/2-100, EnumRaceType.MONSTER, false)
+--    addNewSprite(size.width/2+2000, size.height/2-100, EnumRaceType.BOSS, false)
 end
 
 local function setCamera()
@@ -325,7 +340,7 @@ local function gameController(dt)
     moveCamera(dt)
     updateParticlePos()
 
-    enemyEncounter()
+    --enemyEncounter()
     --findAllEnemy()
     --commandControl()
 end

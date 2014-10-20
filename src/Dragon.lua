@@ -14,7 +14,7 @@ function Dragon:ctor()
     self._useArmourId = 0
     self._particle = nil
     self._attack = 800  
-    self._racetype = EnumRaceType.DRAGON
+    self._racetype = EnumRaceType.MONSTER
     self._speed = 500
     
     self:init3D()
@@ -40,8 +40,8 @@ function Dragon.create()
     function test4()
         ret:knockMode({x=-1000,y=00}, 150)
     end
-
-    delayExecute(ret,test,0.5)
+    ret._AIEnabled = true
+    --delayExecute(ret,test,0.5)
 
     --    delayExecute(ret,test2,2.5)
     --    delayExecute(ret,test,3.5)
@@ -57,12 +57,48 @@ function Dragon.create()
     ret:scheduleUpdateWithPriorityLua(update, 0.5) 
     return ret
 end
+function Dragon:attackUpdate(dt)
+    self._attackTimer = self._attackTimer + dt
+    if self._attackTimer > self._attackFrequency then
+        self._attackTimer = self._attackTimer - self._attackFrequency
+        local function playIdle()
+            self:playAnimation("idle", true)
+            self._cooldown = false
+        end
+        --time for an attack, which attack should i do?
+            local function createCol()
+                self:normalAttack()
+            end
+            local attackAction = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(createCol),self._action.attack2:clone(),cc.CallFunc:create(playIdle))
+            self._sprite3d:stopAction(self._curAnimation3d)
+            self._sprite3d:runAction(attackAction)
+            self._curAnimation = attackAction
+            self._cooldown = true
+    end
+end
+function Dragon:_findEnemy()
+    local shortest = self._searchDistance
+    local target = nil
+    local allDead = true
+    for val = HeroManager.first, HeroManager.last do
+        local temp = HeroManager[val]
+        local dis = cc.pGetDistance(self._myPos,getPosTable(temp))
+        if temp._isalive then
+            if dis < shortest then
+                shortest = dis
+                target = temp
+            end
+            allDead = false
+        end
+    end
+    return target, allDead
+end
 
 function Dragon:init3D()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setTexture("model/piglet/zhu0928.jpg")
-    self._sprite3d:setScale(2)
-    self._sprite3d:addEffect(cc.V3(0,0,1),0.01, -1)
+    self._sprite3d:setScale(1.3)
+    self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
@@ -73,8 +109,8 @@ do
     Dragon._action = {
         idle = createAnimation(file,0,40,0.7),
         walk = createAnimation(file,135,147,0.5),
-        attack1 = createAnimation(file,45,75,0.7),
---        attack2 = createAnimation(file,130,154,0.7),
+        attack1 = createAnimation(file,45,60,0.7),
+        attack2 = createAnimation(file,60,75,0.7),
 --        specialattack1 = createAnimation(file,160,190,0.3),
 --        specialattack2 = createAnimation(file,191,220,0.4),
         defend = createAnimation(file,92,96,0.7),

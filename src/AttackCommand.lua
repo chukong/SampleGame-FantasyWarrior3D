@@ -68,7 +68,7 @@ function BasicCollider:onTimeOut()
     self:removeFromParent()
 end
 function BasicCollider:onCollide(target)
-    target:hurt(self.damage)
+    target:hurt(self)
 end
 function BasicCollider:onUpdate()
     -- implement this function if this is a projectile
@@ -132,7 +132,7 @@ function MageNormalAttack:onTimeOut()
     self:runAction(cc.RemoveSelf:create())
 end
 function MageNormalAttack:onCollide(target)
-    target:hurt(self.damage)
+    target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
 end
