@@ -102,6 +102,7 @@ function Actor:ctor()
     self._specialAttack = nil
     self._recoverTime = 0.8
     self._searchDistance = 5000 --distance which enemy can be found
+    self._attackRange = 100
     
     --normal attack
     self._attackMinRadius = 0
@@ -408,7 +409,7 @@ end
 function Actor:walkUpdate(dt)
     --Walking state, switch to attack state when target in range
     if self._target  then
-        local attackDistance = self._attackMaxRadius + self._target._radius -1
+        local attackDistance = self._attackRange + self._target._radius -1
         local p1 = self._myPos
         local p2 = getPosTable(self._target)
         self._targetFacing = cc.pToAngleSelf(cc.pSub(p2, p1))

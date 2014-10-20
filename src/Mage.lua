@@ -17,9 +17,11 @@ function Mage:ctor()
     self._attackFrequency = 4.7
     self._AIFrequency = 1.3
     
+    self._attackRange = 500
+    
     --normal attack
     self._attackMinRadius = 0
-    self._attackMaxRadius = 260
+	self._attackMaxRadius = 5
     self._attack = 300
     self._attackAngle = 360
     self._attackKnock = 0
@@ -40,8 +42,12 @@ function Mage.create()
         ret:stateMachineUpdate(dt)
         ret:movementUpdate(dt)
     end
+    ret:initAttackInfo()
     ret:scheduleUpdateWithPriorityLua(update, 0) 
     return ret
+end
+function Mage:normalAttack()
+    MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
 end
 
 

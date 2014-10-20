@@ -61,7 +61,9 @@ function Knight.create()
     ret:scheduleUpdateWithPriorityLua(update, 0) 
     return ret
 end
-
+function Knight:normalAttack()
+    KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+end
 
 
 

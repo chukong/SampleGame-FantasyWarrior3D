@@ -16,7 +16,7 @@ function solveAttacks(dt)
                     --range test passed, now angle test
                     local angle = cc.pToAngleSelf(cc.pSub(mpos,getPosTable(attack)))
                     if(attack.facing + attack.angle/2)>angle and angle > (attack.facing- attack.angle/2) then
-                        monster:hurt(attack.damage)
+                        attack:onCollide(monster)
                     end
                 end
             end
@@ -31,14 +31,18 @@ function solveAttacks(dt)
                     --range test passed, now angle test
                     local angle = cc.pToAngleSelf(cc.pSub(hpos,getPosTable(attack)))
                     if(attack.facing + attack.angle/2)>angle and angle > (attack.facing- attack.angle/2) then
-                        hero:hurt(attack.damage)
+                        attack:onCollide(hero)
                     end
                 end
             end
         end
-        --print(attack.damage)
-        attack:delete()
-        List.remove(AttackManager,val)
+        if attack.curDuration > attack.duration then
+            attack:onTimeOut()
+            List.remove(AttackManager,val)
+        else
+            attack:onUpdate(dt)
+            attack.curDuration = attack.curDuration+dt
+        end
     end
 end
 
@@ -58,105 +62,84 @@ function BasicCollider:ctor()
     self.curDuration = 0
     self.speed = 0 --traveling speed}
 end
-function BasicCollider:delete()
+--callback when the collider has being solved by the attack manager, 
+--make sure you delete it from node tree, if say you have an effect attached to the collider node
+function BasicCollider:onTimeOut()
     self:removeFromParent()
+end
+function BasicCollider:onCollide(target)
+    target:hurt(self.damage)
+end
+function BasicCollider:onUpdate()
+    -- implement this function if this is a projectile
+end
+function BasicCollider:initData(pos, facing, attackInfo)
+    self.minRange = attackInfo.minRange or self.minRange
+    self.maxRange = attackInfo.maxRange or self.minRange
+    self.angle = attackInfo.angle or self.angle
+    self.knock = attackInfo.knock or self.knock
+    self.mask = attackInfo.mask or self.mask
+    self.facing = facing or self.facing
+    self.damage = attackInfo.damage or self.damage
+    self.duration = attackInfo.duration or self.duration
+    self.speed = attackInfo.speed or self.speed
+    
+    self:setPosition(pos)
+    List.pushlast(AttackManager, self)
+    currentLayer:addChild(self)
 end
 function BasicCollider.create(pos, facing, attackInfo)
     local ret = BasicCollider.new()    
-    ret.minRange = attackInfo.minRange or ret.minRange
-    ret.maxRange = attackInfo.maxRange or ret.minRange
-    ret.angle = attackInfo.angle or ret.angle
-    ret.knock = attackInfo.knock or ret.knock
-    ret.mask = attackInfo.mask or ret.mask
-    ret.facing = facing or ret.facing
-    ret.damage = attackInfo.damage or ret.damage
-    ret.duration = attackInfo.duration or ret.duration
-    ret.speed = attackInfo.speed or ret.speed
-
-    ret:setPosition(pos)
-    List.pushlast(AttackManager, ret)
-    currentLayer:addChild(ret)
+    ret:initData(pos,facing,attackInfo)
     return ret
 end
 
-
-
-
-AttackCommand = 
-class("AttackCommand",function() 
-        return {raceType = 0, position = cc.p(0,0), target = 0, attackType = {attack = 0, attackRadius = 0, melee = true, AOE = false, validDistance = 0}} 
-      end)
-      
-AttackCommandManager = List.new()
-
-function AttackCommand.create(object)
-    local command = AttackCommand.new()
-    command.raceType = object._racetype
-    command.position = getPosTable(object)
-    command.target = object._target
-    command.attackType.attack = object.attack
-    command.attackType.validDistance = 0
-    command.attackType.attackRadius = object._attackMaxRadius
-    command.attackType.melee = true
-    command.attackType.AOE = false
-    command.attackType.validDistance = 0
-    List.pushlast(AttackCommandManager, command)
-end
-
-local function isInCircleSector(command, object2)
-    local attackDistance = command.attackRadius + object2._radius
-    local tempDistance = cc.pGetDistance(command.position, object2:getPosition())
-    if tempDistance < attackDistance then
-        return true
-    end 
-
-    return false
-end
-
-function AttackCommand:attack()
-    if self.target ~= nil then 
-        self.target:setState(EnumStateType.KNOCKED)
-    end
-end
-
-function AttackCommand:attackAll()
-    if self.raceType ~= EnumRaceType.WARRIOR and self.raceType ~= EnumRaceType.MAGE and self.raceType ~= EnumRaceType.ARCHER then
-        for val = HeroManager.first, HeroManager.last do
-            local sprite = HeroManager[val]
-            if sprite._isalive == true and isInCircleSector(self, sprite) then
-                sprite:setState(EnumStateType.KNOCKED)
-            end
-        end
-    else
-        for val = MonsterManager.first, MonsterManager.last do
-            local sprite = MonsterManager[val]
-            if sprite._isalive == true and isInCircleSector(self, sprite) then
-                sprite:setState(EnumStateType.KNOCKED)
-            end
-        end 
-
-        for val = BossManager.first, BossManager.last do
-            local sprite = BossManager[val]
-            if sprite._isalive == true and isInCircleSector(self, sprite) then
-                sprite:setState(EnumStateType.KNOCKED)
-            end
-        end 
-    end            
-end
-
-function commandControl()
-    if List.getSize(AttackCommandManager) == 0 then return end
+KnightNormalAttack = class("KnightNormalAttack", function()
+    return BasicCollider.new()
+end)
+function KnightNormalAttack.create(pos, facing, attackInfo)
+    local ret = KnightNormalAttack.new()
+    ret:initData(pos,facing,attackInfo)
+    ret.sp = cc.Sprite:create("btn_circle_normal.png")
+    ret.sp:setPosition3D(cc.V3(100,0,50))
+    ret.sp:setScale(5)
+    ret:addChild(ret.sp)
+    ret:setRotation(RADIANS_TO_DEGREES(facing))
     
-    repeat 
-        local command = List.popfirst(AttackCommandManager)
-        if command ~= nil then 
-            if command.attackType.AOE == true then
-                command:attackAll() 
-            else
-                command:attack() 
-            end
-        end
-    until command  == nil
+    return ret
+end
+function KnightNormalAttack:onTimeOut()
+    self.sp:runAction(cc.FadeOut:create(1))
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
 end
 
-return AttackCommand
+MageNormalAttack = class("MageNormalAttack", function()
+    return BasicCollider.new()
+end)
+function MageNormalAttack.create(pos,facing,attackInfo)
+    local ret = MageNormalAttack.new()
+    ret:initData(pos,facing,attackInfo)
+    
+    ret.sp = cc.Sprite:create("btn_circle_normal.png")
+    ret.sp:setPosition3D(cc.V3(0,0,50))
+    ret.sp:setScale(2)
+    ret.sp:setColor({r=255,g=0,b=0})
+    ret:addChild(ret.sp)
+    
+    return ret
+end
+function MageNormalAttack:onTimeOut()
+    self:runAction(cc.RemoveSelf:create())
+end
+function MageNormalAttack:onCollide(target)
+    target:hurt(self.damage)
+    --set cur duration to its max duration, so it will be removed when checking time out
+    self.curDuration = self.duration+1
+end
+function MageNormalAttack:onUpdate(dt)
+    local selfPos = getPosTable(self)
+    local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
+    self:setPosition(nextPos)
+end
+
+return AttackManager
