@@ -268,6 +268,11 @@ local function createRole()
     test2:setPosition(heroOriginPositionX+500, 000)
     currentLayer:addChild(test2)
     List.pushlast(HeroManager, test2)
+    
+    local test3 = Dragon:create()
+    test3:setPosition(heroOriginPositionX+1500, 000)
+    currentLayer:addChild(test3)
+    List.pushlast(MonsterManager, test3)
 
     addNewSprite(size.width/2-1900, size.height/2-200, EnumRaceType.MONSTER, false)
     addNewSprite(size.width/2-2000, size.height/2-200, EnumRaceType.MONSTER, false)
