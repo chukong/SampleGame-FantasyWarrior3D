@@ -207,7 +207,7 @@ local function createBackground()
     currentLayer:addChild(spriteBg)
     spriteBg:setScale(2.5)
     spriteBg:setGlobalZOrder(-9)
-    spriteBg:setPosition3D(cc.V3(-3500,0,0))
+    spriteBg:setPosition3D(cc.V3(-3500,0,-1))
     spriteBg:setRotation3D(cc.V3(90,0,0))
     
     cclog("background create...")

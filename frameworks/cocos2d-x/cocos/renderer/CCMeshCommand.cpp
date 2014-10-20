@@ -192,8 +192,8 @@ void MeshCommand::restoreRenderState()
     }
     if (s_depthTestEnabled)
     {
-        glDisable(GL_DEPTH_TEST);
-        s_depthTestEnabled = false;
+//        glDisable(GL_DEPTH_TEST);
+        //s_depthTestEnabled = false;
     }
     if (s_depthWriteEnabled)
     {
