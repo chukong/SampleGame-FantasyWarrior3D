@@ -10,7 +10,7 @@ function DropBlood:create()
     return DropBlood.new()
 end
 
-function DropBlood:showBloodLossNum(num)
+function DropBlood:showBloodLossNum(dmage)
     local time = 1
     local function getRandomXYZ()
         local rand_x = 20*math.sin(math.rad(time*0.5+4356))
@@ -20,7 +20,7 @@ function DropBlood:showBloodLossNum(num)
     end
     
     local function getBlood()
-        num = self._num
+        local num = self._num
         local ttfconfig = {outlineSize=7,fontSize=50,fontFilePath="fonts/britanic bold.ttf"}
         local blood = cc.BillBoardLable:createWithTTF(ttfconfig,"-"..num,cc.TEXT_ALIGNMENT_CENTER,400)
         blood:enableOutline(cc.c4b(0,0,0,255))
@@ -41,7 +41,6 @@ function DropBlood:showBloodLossNum(num)
             cc.FadeOut:create(0.5),
             cc.RemoveSelf:create(),
             cc.CallFunc:create(function()
-                print("end")
                 self._isBlooding=false 
                 self._num = 0
             end)
@@ -57,15 +56,17 @@ function DropBlood:showBloodLossNum(num)
     
     if self._isBlooding == false then
         self._isBlooding = true
-        self._num = num
+        self._num = dmage
+        
     else
-        print(self._num)
         self._blood:stopAllActions()
-        self._blood:removeFromParent(true)
-        self._num = self._num+num
+        self._blood:removeFromParent()
+        
+        self._num = self._num+dmage
     end
     
-    return getBlood()
+    getBlood()
+    return self._blood
 end
 
 return DropBlood
