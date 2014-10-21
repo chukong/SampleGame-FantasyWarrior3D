@@ -97,6 +97,7 @@ function Piglet:attackUpdate(dt)
         --time for an attack, which attack should i do?
             local function createCol()
                 self:normalAttack()
+            AUDIO_ID.PIGLETATTACK1 = ccexp.AudioEngine:play2d(MonsterPigletValues.attack1, false,1)
             end
             local attackAction = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(createCol),self._action.attack2:clone(),cc.CallFunc:create(playIdle))
             self._sprite3d:stopAction(self._curAnimation3d)
