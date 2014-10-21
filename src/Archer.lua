@@ -3,7 +3,7 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/archer/archer.c3b"
+local file = "model/archer/gongjiashou_an_v005.c3b"
 
 Archer = class("Archer", function()
     return require "Actor".create()
@@ -115,7 +115,7 @@ do
     Archer._action = {
         idle = createAnimation(file,208,253,0.7),
         walk = createAnimation(file,110,130,0.7),
-        attack1 = createAnimation(file,0,11,0.7),
+        attack1 = createAnimation(file,0,12,0.7),
         attack2 = createAnimation(file,12,24,0.7),
         specialattack1 = createAnimation(file,30,43,0.2),
         specialattack2 = createAnimation(file,44,56,0.2),
