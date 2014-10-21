@@ -66,6 +66,22 @@ end
 function Knight:normalAttack()
     KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
 end
+
+function Knight:specialAttack()
+    -- knight will create 2 attacks one by one  
+    local normalAttack = self._normalAttack
+    normalAttack.knock = 0
+    KnightNormalAttack.create(getPosTable(self), self._curFacing, normalAttack)
+    
+    local pos = getPosTable(self)
+    pos.x = pos.x+50
+    pos = cc.pRotateByAngle(pos, self._myPos, self._curFacing)    
+    local function punch()
+        KnightNormalAttack.create(pos, self._curFacing, self._specialAttack)
+    end
+    delayExecute(self,punch,0.2)
+end
+
 function Knight:initAttackInfo()
     --build the attack Infos
     self._normalAttack = {

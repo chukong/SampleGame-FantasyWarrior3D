@@ -246,7 +246,7 @@ local function gameController(dt)
 
     --enemyEncounter()
     --findAllEnemy()
---    gameMaster:update(dt)
+    gameMaster:update(dt)
 end
 
 local function initUILayer()
@@ -269,8 +269,8 @@ function BattleScene.create()
     scene:addChild(currentLayer)
     createBackground()
 
---    gameMaster = require "GameMaster".create()
-    createRole()
+    gameMaster = require "GameMaster".create()
+    --    createRole()
 
     setCamera()
 
