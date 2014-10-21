@@ -374,7 +374,7 @@ function Actor:AI()
             if self._target then
                 self:walkMode()
             else
-                print("can't find")
+                --print("can't find")
                 self._goRight = false
             end
             

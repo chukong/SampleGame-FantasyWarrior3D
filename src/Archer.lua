@@ -3,7 +3,7 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "Model/Archer/Archer.c3b"
+local file = "model/archer/archer.c3b"
 
 Archer = class("Archer", function()
     return require "Actor".create()
