@@ -135,6 +135,7 @@ end
 function Piglet:dyingMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.DYING)
     self:playAnimation("dead")
+    ccexp.AudioEngine:play2d(MonsterPigletValues.dead, false,1)
     if knockAmount then
         local p = getPosTable(self)
         local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
