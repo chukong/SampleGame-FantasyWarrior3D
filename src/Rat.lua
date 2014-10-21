@@ -117,7 +117,8 @@ do
         idle = createAnimation(file,0,23,0.7),
         knocked = createAnimation(file,30,37,0.7),
         dead = createAnimation(file,41,76,1),
-        attack1 = createAnimation(file,81,117,0.7),
+        attack1 = createAnimation(file,81,99,0.7),
+        attack2 = createAnimation(file,99,117,0.7),
         walk = createAnimation(file,122,142,0.7)
     }
 end

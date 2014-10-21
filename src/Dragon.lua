@@ -3,7 +3,7 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/dragon/dragon.c3b"
+local file = "model/dragon/xiaohuolong_ani_v05.c3b"
 
 Dragon = class("Dragon", function()
     return require "Actor".create()
@@ -114,13 +114,12 @@ end
 -- init Dragon animations=============================
 do
     Dragon._action = {
-        idle = createAnimation(file,0,40,0.7),
-        walk = createAnimation(file,135,147,1),
-        attack1 = createAnimation(file,45,60,0.7),
-        attack2 = createAnimation(file,60,75,0.7),
-        defend = createAnimation(file,92,96,0.7),
-        knocked = createAnimation(file,81,87,0.7),
-        dead = createAnimation(file,95,127,1)
+        idle = createAnimation(file,0,24,0.7),
+        knocked = createAnimation(file,30,37,0.7),
+        dead = createAnimation(file,42,80,1),
+        attack1 = createAnimation(file,85,100,0.7),
+        attack2 = createAnimation(file,100,115,0.7),
+        walk = createAnimation(file,120,140,1),
     }
 end
 -- end init Dragon animations========================

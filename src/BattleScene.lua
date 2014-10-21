@@ -12,7 +12,6 @@ require "Knight"
 require "Piglet"
 require "Mage"
 require "Rat"
-require "Slime"
 require "Dragon"
 require "DropBlood"
 
@@ -148,7 +147,6 @@ local function addParticleToRole(role)
     role._particle:setStartColor({r=234,g=123,b=245,a=255})
     currentLayer:addChild(role._particle,5)
     role._particle:setEmissionRate(0)
-    cclog("particle create...")
 end
 
 local function createBackground()
@@ -161,16 +159,13 @@ local function createBackground()
     spriteBg:setGlobalZOrder(-9)
     spriteBg:setPosition3D(cc.V3(-3500,0,-1))
     spriteBg:setRotation3D(cc.V3(90,0,0))
-    
-    cclog("background create...")
-    
+        
     local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=4500, height=400}, 0.77, 0.3797, 1.2)
     currentLayer:addChild(water)
-    water:setPosition3D(cc.V3(-3500,-400,-35))
+    water:setPosition3D(cc.V3(-3500,-600,-35))
     water:setAnchorPoint(0,0)
     water:setGlobalZOrder(-9)
     
-    cclog("water create...")
 end
 
 local function createEnemy(step)
@@ -210,18 +205,13 @@ local function createRole()
     List.pushlast(HeroManager, test2)
  
     for i=1,4 do
-        local test3 = Piglet:create()
+        local test3 = Rat:create()
         test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
         currentLayer:addChild(test3)
         List.pushlast(MonsterManager, test3)
         test3:setFacing(180)
     end
-    
---    local rat = Slime:create()
---    rat:setPosition(heroOriginPositionX+1500, 000)
---    currentLayer:addChild(rat)
---    List.pushlast(MonsterManager, rat)
---    rat:setFacing(180)
+   
 end
 
 local function setCamera()
@@ -262,8 +252,8 @@ end
 local function initUILayer()
     uiLayer = require("BattleFieldUI").create()
 
-    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye())
-    uiLayer:setScale(1)
+    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye()/2)
+    uiLayer:setScale(0.5)
     uiLayer:ignoreAnchorPointForPosition(false)
     uiLayer:setLocalZOrder(999)
     camera:addChild(uiLayer)
