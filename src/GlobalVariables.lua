@@ -11,6 +11,21 @@ G =
 }
 cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
 
+--Audios
+AUDIO_RES = 
+{
+        MAINMENUBGM = "audios/Royal Flush Party.mp3",
+        BATTLEFIELDBGM = "audios/The Last Encounter Short Loop.mp3"
+}
+
+--play2d id
+AUDIO_ID = 
+{
+    MAINMENUBGM,
+    BATTLEFIELDBGM,
+    CHOOSEROLECHAPTERBGM
+}
+
 --Monster Slime
 MonsterSlimeValues =
 {
