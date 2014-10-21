@@ -258,7 +258,7 @@ function Actor:hurt(collider)
         local blood = self._dropBlood:showBloodLossNum(damage)
         blood:setPositionZ(120)
         self:addChild(blood)   
-        cclog("%d", damage)     
+--        print(damage)     
     end
 end
 --======attacking collision check

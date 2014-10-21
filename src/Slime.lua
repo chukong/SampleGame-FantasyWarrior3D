@@ -104,7 +104,7 @@ end
 function Slime:init3D()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setTexture("model/slime/baozi.jpg")
-    self._sprite3d:setScale(30)
+    self._sprite3d:setScale(17)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
