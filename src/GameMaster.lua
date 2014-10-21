@@ -121,11 +121,28 @@ end
 
 function GameMaster:ShowPiglet()
     if List.getSize(PigletPool) ~= 0 then
-    cclog(List.getSize(PigletPool))
         local piglet = List.popfirst(PigletPool)
         piglet:setPosition({x=800,y=100})
         currentLayer:addChild(piglet)
         List.pushlast(MonsterManager, piglet)
+    end
+end
+
+function GameMaster:ShowSlime()
+	if List.getSize(SlimePool) ~= 0 then
+        local slime = List.popfirst(SlimePool)
+        slime:setPosition({x=800,y=100})
+        currentLayer:addChild(slime)
+        List.pushlast(MonsterManager, slime)
+    end
+end
+
+function GameMaster:ShowRat()
+	if List.getSize(RatPool) ~= 0 then
+        local rat = List.popfirst(RatPool)
+        rat:setPosition({x=800,y=100})
+        currentLayer:addChild(rat)
+        List.pushlast(MonsterManager, rat)
     end
 end
 
@@ -137,9 +154,9 @@ function GameMaster:randomShowMonster()
 	elseif random_var<0.5 then
 		self:ShowPiglet()
 	elseif random_var<0.75 then
-		--todo
+		self:ShowSlime()
 	else
-		--todo
+		self:ShowRat()
 	end
 end
 
