@@ -135,6 +135,7 @@ end
 function Piglet:dyingMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.DYING)
     self:playAnimation("dead")
+    ccexp.AudioEngine:play2d(MonsterPigletValues.dead, false,1)
     if knockAmount then
         local p = getPosTable(self)
         local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
@@ -185,15 +186,14 @@ function Piglet:attackUpdate(dt)
         --time for an attack, which attack should i do?
             local function createCol()
                 self:normalAttack()
-                local randomEffect =  math.random()  
-                 
-            if randomEffect<=0.3 and randomEffect>=0 then
-                ccexp.AudioEngine:play2d(MonsterPigletValues.attack1, false,1)
-            elseif randomEffect<=0.6 and randomEffect>0.3 then
-                ccexp.AudioEngine:play2d(MonsterPigletValues.attack2, false,1)  
-            elseif randomEffect>0.6 and randomEffect<=1 then
-                ccexp.AudioEngine:play2d(MonsterPigletValues.attack3, false,1)              
-            end
+                local randomEffect =  math.random()                   
+                if randomEffect<=0.3 and randomEffect>=0 then
+                    ccexp.AudioEngine:play2d(MonsterPigletValues.attack1, false,1)
+                elseif randomEffect<=0.6 and randomEffect>0.3 then
+                    ccexp.AudioEngine:play2d(MonsterPigletValues.attack2, false,1)  
+                elseif randomEffect>0.6 and randomEffect<=1 then
+                    ccexp.AudioEngine:play2d(MonsterPigletValues.attack3, false,1)              
+                end
             end
             local attackAction = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(createCol),self._action.attack2:clone(),cc.CallFunc:create(playIdle))
             self._sprite3d:stopAction(self._curAnimation3d)
@@ -202,6 +202,7 @@ function Piglet:attackUpdate(dt)
             self._cooldown = true
     end
 end
+
 function Piglet:_findEnemy()
     local shortest = self._searchDistance
     local target = nil
