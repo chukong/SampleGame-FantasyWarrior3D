@@ -24,6 +24,9 @@ local function main()
     cc.FileUtils:getInstance():addSearchPath("src")
     cc.FileUtils:getInstance():addSearchPath("res")
     
+    --show frame
+    cc.Director:getInstance():setDisplayStats(true)
+    
     --adaptation
     local pEGLView = cc.Director:getInstance():getOpenGLView()
     local frameSize = pEGLView:getFrameSize()
