@@ -13,7 +13,7 @@ function Piglet:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 150  
+    self._attack = 500  
     self._racetype = EnumRaceType.MONSTER
     self._speed = 400
     self._attackMinRadius = 0
@@ -185,7 +185,15 @@ function Piglet:attackUpdate(dt)
         --time for an attack, which attack should i do?
             local function createCol()
                 self:normalAttack()
-            AUDIO_ID.PIGLETATTACK1 = ccexp.AudioEngine:play2d(MonsterPigletValues.attack1, false,1)
+                local randomEffect =  math.random()  
+                 
+            if randomEffect<=0.3 and randomEffect>=0 then
+                ccexp.AudioEngine:play2d(MonsterPigletValues.attack1, false,1)
+            elseif randomEffect<=0.6 and randomEffect>0.3 then
+                ccexp.AudioEngine:play2d(MonsterPigletValues.attack2, false,1)  
+            elseif randomEffect>0.6 and randomEffect<=1 then
+                ccexp.AudioEngine:play2d(MonsterPigletValues.attack3, false,1)              
+            end
             end
             local attackAction = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(createCol),self._action.attack2:clone(),cc.CallFunc:create(playIdle))
             self._sprite3d:stopAction(self._curAnimation3d)
