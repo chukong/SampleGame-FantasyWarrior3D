@@ -101,7 +101,7 @@ function Mage:initAttackInfo()
         knock    = self._attackKnock,
         damage   = self._attack,
         mask     = self._racetype,
-        duration = 3, -- 0 duration means it will be removed upon calculation
+        duration = 2, -- 0 duration means it will be removed upon calculation
         speed    = 500
     }
     self._specialAttack = {

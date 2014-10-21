@@ -75,7 +75,7 @@ function BasicCollider:onUpdate()
 end
 function BasicCollider:initData(pos, facing, attackInfo)
     self.minRange = attackInfo.minRange or self.minRange
-    self.maxRange = attackInfo.maxRange or self.minRange
+    self.maxRange = attackInfo.maxRange or self.maxRange
     self.angle = attackInfo.angle or self.angle
     self.knock = attackInfo.knock or self.knock
     self.mask = attackInfo.mask or self.mask
