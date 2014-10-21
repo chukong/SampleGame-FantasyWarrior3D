@@ -8,6 +8,7 @@ G =
     winSize = cc.Director:getInstance():getWinSize(),
     bloodPercentDropSpeed = 2
 }
+cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
 
 --Monster Slime
 MonsterSlimeValues =

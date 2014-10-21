@@ -97,7 +97,7 @@ function Actor:ctor()
     self._AIFrequency = 1.0 --how often AI executes in seconds
     self._attackFrequency = 4.0 --an attack move every few seconds
     self._specialAttackChance = 0.33
-    self._shadowSize = 50
+    self._shadowSize = 70
     self._normalAttack = nil
     self._specialAttack = nil
     self._recoverTime = 0.8
