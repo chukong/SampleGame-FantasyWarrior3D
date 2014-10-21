@@ -75,7 +75,7 @@ function BasicCollider:onUpdate()
 end
 function BasicCollider:initData(pos, facing, attackInfo)
     self.minRange = attackInfo.minRange or self.minRange
-    self.maxRange = attackInfo.maxRange or self.minRange
+    self.maxRange = attackInfo.maxRange or self.maxRange
     self.angle = attackInfo.angle or self.angle
     self.knock = attackInfo.knock or self.knock
     self.mask = attackInfo.mask or self.mask
@@ -170,6 +170,58 @@ end
 function MageIceSpikes:onUpdate(dt)
 -- implement this function if this is a projectile
     self.curDOTTime = self.curDOTTime + dt
+end
+
+ArcherNormalAttack = class("ArcherNormalAttack", function()
+    return BasicCollider.new()
+end)
+function ArcherNormalAttack.create(pos,facing,attackInfo)
+    local ret = ArcherNormalAttack.new()
+    ret:initData(pos,facing,attackInfo)
+
+    ret.sp = cc.Sprite:create("chooseRole/cr_rotate.png")
+    ret.sp:setPosition3D(cc.V3(0,0,50))
+    ret.sp:setScale(2)
+    ret.sp:setColor({r=255,g=0,b=0})
+    ret:addChild(ret.sp)
+
+    return ret
+end
+function ArcherNormalAttack:onTimeOut()
+    self:runAction(cc.RemoveSelf:create())
+end
+function ArcherNormalAttack:onCollide(target)
+    target:hurt(self)
+    --set cur duration to its max duration, so it will be removed when checking time out
+    self.curDuration = self.duration+1
+end
+function ArcherNormalAttack:onUpdate(dt)
+    local selfPos = getPosTable(self)
+    local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
+    self:setPosition(nextPos)
+end
+
+ArcherArrowRainFall = class("ArcherArrowRainFall", function()
+    return BasicCollider.new()
+end)
+function ArcherArrowRainFall.create(pos, facing, attackInfo)
+    local ret = ArcherArrowRainFall.new()
+    ret:initData(pos,facing,attackInfo)
+    ret.sp = cc.Sprite:create("chooseRole/cr_rotate.png")
+    ret.sp:setColor({r=0,g=0,b=255})
+    ret.sp:setPosition3D(cc.V3(0,0,5))
+    ret.sp:setScale(2)
+    ret:addChild(ret.sp)
+    --ret:setRotation(RADIANS_TO_DEGREES(facing))
+
+    return ret
+end
+function ArcherArrowRainFall:onTimeOut()
+    self.sp:runAction(cc.FadeOut:create(1))
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
+end
+function ArcherArrowRainFall:onCollide(target)
+    target:hurt(self)
 end
 
 return AttackManager

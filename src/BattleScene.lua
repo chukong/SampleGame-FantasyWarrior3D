@@ -12,6 +12,7 @@ require "Knight"
 require "Piglet"
 require "Mage"
 require "Rat"
+require "Dragon"
 require "DropBlood"
 
 local size = cc.Director:getInstance():getWinSize()
@@ -146,7 +147,6 @@ local function addParticleToRole(role)
     role._particle:setStartColor({r=234,g=123,b=245,a=255})
     currentLayer:addChild(role._particle,5)
     role._particle:setEmissionRate(0)
-    cclog("particle create...")
 end
 
 local function createBackground()
@@ -159,16 +159,13 @@ local function createBackground()
     --spriteBg:setGlobalZOrder(-9)
     spriteBg:setPosition3D(cc.V3(-1000,350,0))
     spriteBg:setRotation3D(cc.V3(90,0,0))
-    
-    cclog("background create...")
-    
+        
     local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=4500, height=400}, 0.77, 0.3797, 1.2)
     currentLayer:addChild(water)
-    water:setPosition3D(cc.V3(-3500,-400,-35))
+    water:setPosition3D(cc.V3(-3500,-600,-35))
     water:setAnchorPoint(0,0)
     water:setGlobalZOrder(-9)
     
-    cclog("water create...")
 end
 
 local function createEnemy(step)
@@ -195,32 +192,27 @@ local function createEnemy(step)
     end    
 end
 
---local function createRole()
---   
---    local test = Knight:create()
---    test:setPosition(heroOriginPositionX+500, 300)
---    currentLayer:addChild(test)
---    List.pushlast(HeroManager, test)
---    
---    local test2 = Mage:create()
---    test2:setPosition(heroOriginPositionX+500, 000)
---    currentLayer:addChild(test2)
---    List.pushlast(HeroManager, test2)
--- 
---    for i=1,4 do
---        local test3 = Piglet:create()
---        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
---        currentLayer:addChild(test3)
---        List.pushlast(MonsterManager, test3)
---        test3:setFacing(180)
---    end
---    
---    local rat = Rat:create()
---    rat:setPosition(heroOriginPositionX+1500, 000)
---    currentLayer:addChild(rat)
---    List.pushlast(MonsterManager, rat)
---    rat:setFacing(180)
---end
+local function createRole()
+    local heroOriginPositionX = -2000
+    local test = Knight:create()
+    test:setPosition(heroOriginPositionX+500, 300)
+    currentLayer:addChild(test)
+    List.pushlast(HeroManager, test)
+    
+    local test2 = Mage:create()
+    test2:setPosition(heroOriginPositionX+500, 000)
+    currentLayer:addChild(test2)
+    List.pushlast(HeroManager, test2)
+ 
+    for i=1,4 do
+        local test3 = Rat:create()
+        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
+        currentLayer:addChild(test3)
+        List.pushlast(MonsterManager, test3)
+        test3:setFacing(180)
+    end
+   
+end
 
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 10.0, 4000.0)
@@ -254,7 +246,7 @@ local function gameController(dt)
 
     --enemyEncounter()
     --findAllEnemy()
-    gameMaster:update(dt)
+--    gameMaster:update(dt)
 end
 
 local function initUILayer()
@@ -277,7 +269,8 @@ function BattleScene.create()
     scene:addChild(currentLayer)
     createBackground()
 
-    gameMaster = require "GameMaster".create()
+--    gameMaster = require "GameMaster".create()
+    createRole()
 
     setCamera()
 

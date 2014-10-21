@@ -233,21 +233,33 @@ end
 
 
 function Actor:hurt(collider)
-    if self._isalive == true then
-        self._hp = self._hp - collider.damage
+    if self._isalive == true then        
+        local damage = collider.damage
+        if math.random() >= 0.5 then
+           damage = damage + damage * 0.15
+        else
+           damage = damage - damage * 0.15
+        end
+        
+        if damage < self._defense then
+            damage = 1
+        end
+        self._hp = self._hp - damage
+        
         if self._hp > 0 then
             if collider.knock then
                 self:knockMode(getPosTable(collider),collider.knock)
             end
-            --self:setState(EnumStateType.KNOCKED)
         else
             self._isalive = false
             self:dyingMode(getPosTable(collider),collider.knock)        
         end
+        
+        local blood = self._dropBlood:showBloodLossNum(damage)
+        blood:setPositionZ(120)
+        self:addChild(blood)   
+        cclog("%d", damage)     
     end
-    local blood = self._dropBlood:showBloodLossNum(collider.damage)
-    blood:setPositionZ(120)
-    self:addChild(blood)
 end
 --======attacking collision check
 function Actor:normalAttack()
@@ -451,6 +463,8 @@ function Actor:movementUpdate(dt)
     --Facing
     if self._curFacing ~= self._targetFacing then
         local angleDt = self._curFacing - self._targetFacing
+        if angleDt >= math.pi then angleDt = angleDt-2*math.pi
+        elseif angleDt <=-math.pi then angleDt = angleDt+2*math.pi end
         local turnby = self._turnSpeed*dt
         if self._curFacing > self._targetFacing then
             if turnby > angleDt then 
