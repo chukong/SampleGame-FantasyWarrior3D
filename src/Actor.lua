@@ -446,6 +446,8 @@ function Actor:movementUpdate(dt)
     --Facing
     if self._curFacing ~= self._targetFacing then
         local angleDt = self._curFacing - self._targetFacing
+        if angleDt >= math.pi then angleDt = angleDt-2*math.pi
+        elseif angleDt <=-math.pi then angleDt = angleDt+2*math.pi end
         local turnby = self._turnSpeed*dt
         if self._curFacing > self._targetFacing then
             if turnby > angleDt then 
