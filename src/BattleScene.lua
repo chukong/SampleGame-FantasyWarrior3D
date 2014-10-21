@@ -224,22 +224,6 @@ local function setCamera()
     camera:setGlobalZOrder(10)
 end
 
---dropValuePercent is the dropValue/bloodValue*100
-local function sendDropBlood(dropValuePercent, hero)
-    local function initBloodDrop(dropValuePercent, hero)
-        if uiLayer~=nil then
-            uiLayer:bloodDrop(dropValuePercent,hero)    
-        end
-    end
-
-    MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, initBloodDrop(dropValuePercent, hero))  
-end
-
-local function registerBloodDrop(struct)
-    
-
-end
-
 local function gameController(dt)
     collisionDetect(dt)
     solveAttacks(dt)
@@ -262,19 +246,32 @@ local BattleScene = class("BattleScene",function()
     return cc.Scene:create()
 end)
 
+--dropValuePercent is the dropValue/bloodValue*100
+function BattleScene.sendDropBlood(dropValuePercent, hero)
+    local function initBloodDrop(dropValuePercent, hero)
+        if uiLayer~=nil then
+            uiLayer:bloodDrop(dropValuePercent,hero)    
+        end
+    end
+
+    MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, initBloodDrop(dropValuePercent, hero))  
+end
+
+function BattleScene.registerBloodDrop(struct)
+
+
+end
+
 function BattleScene.create()
     local scene = BattleScene:new()
+    G.battleScene = scene
     currentLayer = cc.Layer:create()
     scene:addChild(currentLayer)
     createBackground()
 
     gameMaster = require "GameMaster".create()
---    createRole()
-
     setCamera()
-
     initUILayer()
-
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,registerBloodDrop)
     
