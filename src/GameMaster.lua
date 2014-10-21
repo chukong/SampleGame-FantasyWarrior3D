@@ -5,6 +5,7 @@ require "Monster"
 require "Actor"
 require "GlobalVariables"
 require "Piglet"
+require "Archer"
 
 local heroOriginPositionX = -2900
 local gloableZOrder = 1
@@ -61,6 +62,12 @@ function GameMaster:AddHeros()
    	currentLayer:addChild(mage)
    	mage:idleMode()
    	List.pushlast(HeroManager, mage)
+   	
+    local archer = Archer:create()
+    archer:setPosition(heroOriginPositionX+300, -100)
+    currentLayer:addChild(archer)
+    archer:idleMode()
+    List.pushlast(HeroManager, archer)   	
 
 end
 
