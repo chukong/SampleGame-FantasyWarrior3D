@@ -57,7 +57,7 @@ function Piglet:dyingMode(knockSource, knockAmount)
         self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
     end
     local function recircle()
-    	List.pushlast(PigletManager,self)
+    	List.pushlast(PigletPool,self)
     end
     self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create(),cc.CallFunc:create(recircle)))
 end
