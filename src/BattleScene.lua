@@ -12,7 +12,9 @@ require "Knight"
 require "Piglet"
 require "Mage"
 require "Rat"
+require "Slime"
 require "Dragon"
+require "Archer"
 require "DropBlood"
 
 local size = cc.Director:getInstance():getWinSize()
@@ -155,9 +157,9 @@ local function createBackground()
 --    spriteBg:setTexture(cc.Director:getInstance():getTextureCache():addImage("model/zhenghe.png"))
 
     currentLayer:addChild(spriteBg)
-    spriteBg:setScale(2.5)
-    spriteBg:setGlobalZOrder(-9)
-    spriteBg:setPosition3D(cc.V3(-3500,0,-1))
+    spriteBg:setScale(2.65)
+    --spriteBg:setGlobalZOrder(-9)
+    spriteBg:setPosition3D(cc.V3(-1000,350,0))
     spriteBg:setRotation3D(cc.V3(90,0,0))
         
     local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=4500, height=400}, 0.77, 0.3797, 1.2)
@@ -192,31 +194,31 @@ local function createEnemy(step)
     end    
 end
 
-local function createRole()
-    local heroOriginPositionX = -2000
-    local test = Knight:create()
-    test:setPosition(heroOriginPositionX+500, 300)
-    currentLayer:addChild(test)
-    List.pushlast(HeroManager, test)
-    
-    local test2 = Mage:create()
-    test2:setPosition(heroOriginPositionX+500, 000)
-    currentLayer:addChild(test2)
-    List.pushlast(HeroManager, test2)
- 
-    for i=1,4 do
-        local test3 = Rat:create()
-        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
-        currentLayer:addChild(test3)
-        List.pushlast(MonsterManager, test3)
-        test3:setFacing(180)
-    end
-   
-end
+--local function createRole()
+--    local heroOriginPositionX = -2000
+--    local test = Knight:create()
+--    test:setPosition(heroOriginPositionX+500, 300)
+--    currentLayer:addChild(test)
+--    List.pushlast(HeroManager, test)
+--    
+--    local test2 = Mage:create()
+--    test2:setPosition(heroOriginPositionX+600, 300)
+--    currentLayer:addChild(test2)
+--    List.pushlast(HeroManager, test2)
+-- 
+--    for i=1,1 do
+--        local test3 = Dragon:create()
+--        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
+--        currentLayer:addChild(test3)
+--        List.pushlast(MonsterManager, test3)
+--        test3:setFacing(180)
+--    end
+--   
+--end
 
 local function setCamera()
-    camera = cc.Camera:createPerspective(60.0, size.width/size.height, 1.0, 2000.0)
-    camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height*1.45, size.height/2+50))
+    camera = cc.Camera:createPerspective(60.0, size.width/size.height, 10.0, 4000.0)
+    camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height*1.3, size.height/2-30))
     camera:lookAt(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y, 0.0), cc.V3(0.0, 1.0, 0.0))
     currentLayer:addChild(camera)
     camera:setGlobalZOrder(10)
@@ -270,12 +272,8 @@ function BattleScene.create()
     createBackground()
 
     gameMaster = require "GameMaster".create()
-    --    createRole()
-
     setCamera()
-
     initUILayer()
-
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,registerBloodDrop)
     

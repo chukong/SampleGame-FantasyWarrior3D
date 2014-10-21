@@ -13,13 +13,15 @@ function Rat:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 400  
+    self._attack = 150  
     self._racetype = EnumRaceType.MONSTER
     self._speed = 300
     self._attackMinRadius = 0
     self._attackMaxRadius = 130
-    self._radius = 120
+    self._radius = 50
     self._attackRange = 130
+    self._AIFrequency = 1.9
+    self._attackFrequency = 3.5
 
     self:init3D()
     self:initActions()

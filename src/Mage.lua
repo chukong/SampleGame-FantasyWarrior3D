@@ -72,7 +72,7 @@ function Mage:specialAttack()
     local function spike2()
         MageIceSpikes.create(pos2, self._curFacing, self._specialAttack)
     end
-        local function spike3()
+    local function spike3()
         MageIceSpikes.create(pos3, self._curFacing, self._specialAttack)
     end
     delayExecute(self,spike2,0.4)
@@ -111,7 +111,7 @@ function Mage:initAttackInfo()
         knock    = self._specialKnock,
         damage   = self._specialattack,
         mask     = self._racetype,
-        duration = 1.5,
+        duration = 1.5
     }
 end
 

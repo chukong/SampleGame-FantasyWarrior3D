@@ -13,9 +13,9 @@ function Knight:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 200 
+    self._attack = 200  
+    self._attackFrequency = 2.5
     self._defense = 150       
-    self._attackFrequency = 3
     self._AIFrequency = 1.1
     
     self._attackKnock = 100

@@ -97,7 +97,7 @@ function Actor:ctor()
     self._AIFrequency = 1.0 --how often AI executes in seconds
     self._attackFrequency = 4.0 --an attack move every few seconds
     self._specialAttackChance = 0.33
-    self._shadowSize = 50
+    self._shadowSize = 70
     self._normalAttack = nil
     self._specialAttack = nil
     self._recoverTime = 0.8
@@ -163,7 +163,8 @@ function Actor:_blendAnimationTo(anim, loop)
     end
     self:runAction(cc.Sequence:create(cc.DelayTime:create(self._blendTime), cc.CallFunc:create(stopBlend)))
 end
-function Actor:playAnimationWithBlend(anim, loop)
+function Actor:playAnimationWithBlend(name, loop)
+    local anim = self._action[name]:clone()
     if self._curAnimation ~= nil  then
         if self._curAnimation ~= anim then
             --if we are playing the same animation, then do nothing
@@ -260,7 +261,7 @@ function Actor:hurt(collider)
         local blood = self._dropBlood:showBloodLossNum(damage)
         blood:setPositionZ(120)
         self:addChild(blood)   
-        cclog("%d", damage)     
+--        print(damage)     
     end
 end
 --======attacking collision check
@@ -400,7 +401,11 @@ function Actor:knockingUpdate(dt)
     if self._aliveTime - self._timeKnocked > self._recoverTime then
         --i have recovered from a knock
         self._timeKnocked = nil
-        self:walkMode()
+        if self:_inRange() then
+            self:attackMode()
+        else
+            self:walkMode()
+        end
     end
 end
 function Actor:attackUpdate(dt)   
