@@ -62,6 +62,10 @@ WarriorProperty =
     defense = 100,
     speed = 50,
     special_attack_chance = 0.33,
+    normalAttack1 = "audios/effects/swish-1.mp3",
+    normalAttack2 = "audios/effects/swish-2.mp3",
+    normalAttack3 = "audios/effects/swish-3.mp3",
+    normalAttack4 = "audios/effects/swish-4.mp3"
 }
 
 --Mage property
