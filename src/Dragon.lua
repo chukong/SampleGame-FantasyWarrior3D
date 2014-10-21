@@ -40,6 +40,10 @@ function Dragon.create()
     return ret
 end
 
+function Dragon:normalAttack()
+    DragonAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+end
+
 function Dragon:initAttackInfo()
     --build the attack Infos
     self._normalAttack = {
@@ -49,8 +53,8 @@ function Dragon:initAttackInfo()
         knock    = self._attackKnock,
         damage   = self._attack,
         mask     = self._racetype,
-        duration = 0, -- 0 duration means it will be removed upon calculation
-        speed    = 0
+        duration = 1.2, -- 0 duration means it will be removed upon calculation
+        speed    = 900
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
