@@ -155,9 +155,9 @@ local function createBackground()
 --    spriteBg:setTexture(cc.Director:getInstance():getTextureCache():addImage("model/zhenghe.png"))
 
     currentLayer:addChild(spriteBg)
-    spriteBg:setScale(2.5)
-    spriteBg:setGlobalZOrder(-9)
-    spriteBg:setPosition3D(cc.V3(-3500,0,-1))
+    spriteBg:setScale(2.65)
+    --spriteBg:setGlobalZOrder(-9)
+    spriteBg:setPosition3D(cc.V3(-1000,350,0))
     spriteBg:setRotation3D(cc.V3(90,0,0))
         
     local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=4500, height=400}, 0.77, 0.3797, 1.2)
@@ -215,8 +215,8 @@ local function createRole()
 end
 
 local function setCamera()
-    camera = cc.Camera:createPerspective(60.0, size.width/size.height, 1.0, 2000.0)
-    camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height*1.45, size.height/2+50))
+    camera = cc.Camera:createPerspective(60.0, size.width/size.height, 10.0, 4000.0)
+    camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height*1.3, size.height/2-30))
     camera:lookAt(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y, 0.0), cc.V3(0.0, 1.0, 0.0))
     currentLayer:addChild(camera)
     camera:setGlobalZOrder(10)
