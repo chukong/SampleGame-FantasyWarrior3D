@@ -1,5 +1,6 @@
 require "Cocos2d"
 require "Helper"
+require "GlobalVariables"
 
 --declare a class extends scene
 local MainMenuScene = class("MainMenuScene",function()
@@ -13,6 +14,7 @@ function MainMenuScene:ctor()
     self.size = cc.Director:getInstance():getVisibleSize()
     self._isBloodLabelShowing = false
     math.randomseed(os.time())
+    AUDIO_ID.MAINMENUBGM = ccexp.AudioEngine:play2d(BGM_RES.MAINMENUBGM, true,1)
 end
 
 function MainMenuScene.create()
@@ -224,9 +226,8 @@ end
 --add button to start game
 function MainMenuScene:addButton(layer)
     local button_callback = function(sender,eventType)
-        print(eventType)
         if eventType == ccui.TouchEventType.ended then
-        	cc.Director:getInstance():replaceScene(require("BattleScene.lua").create())
+        	cc.Director:getInstance():replaceScene(require("BattleScene").create())
         end
     end
 

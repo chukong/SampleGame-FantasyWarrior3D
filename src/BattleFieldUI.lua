@@ -12,7 +12,9 @@ function BattlefieldUI:ctor()
     self:avatarInit()
     self:bloodbarInit()
     self:touchButtonInit()
-    ccexp.AudioEngine:play2d("audios/The Last Encounter Short Loop.mp3", true,100)
+    ccexp.AudioEngine:stop(AUDIO_ID.MAINMENUBGM)
+    
+    AUDIO_ID.BATTLEFIELDBGM = ccexp.AudioEngine:play2d(BGM_RES.BATTLEFIELDBGM, true,1)
 end
 
 function BattlefieldUI:avatarInit()
