@@ -235,6 +235,7 @@ end
 function Actor:hurt(collider)
     if self._isalive == true then        
         local damage = collider.damage
+        G.battleScene.sendDropBlood(damage,self)
         if math.random() >= 0.5 then
            damage = damage + damage * 0.15
         else
@@ -260,6 +261,7 @@ function Actor:hurt(collider)
         
         local blood = self._dropBlood:showBloodLossNum(damage)
         blood:setPositionZ(120)
+        G.battleScene.sendDropBlood(damage,self)
         self:addChild(blood)   
 --        print(damage)     
     end

@@ -142,22 +142,42 @@ end
 
 local scheduleID = nil
 
-function BattlefieldUI:bloodDrop(dropValuePercent,hero)
+function BattlefieldUI:bloodDrop(damage,hero)
 
-    local progressTo = cc.ProgressTo:create(0.5,100-dropValuePercent)
-    local progressToClone = cc.ProgressTo:create(1,100-dropValuePercent)
+    local progressTo
+    local progressToClone
 
-    if hero._racetype==EnumRaceType.WARRIOR then
+    if damage>=hero._hp then
+    
+        progressTo = cc.ProgressTo:create(0.5,10)
+        progressToClone = cc.ProgressTo:create(0.8,10)
+    else
+        local dropPercent = damage/hero._maxhp*100
+        local current = hero._hp / hero._maxhp*100;
+        progressTo = cc.ProgressTo:create(0.5,current-dropPercent)
+        progressToClone = cc.ProgressTo:create(0.8,current-dropPercent)
+    end
+    
+    if hero._name=="Knight" then
+        
+        self.WarriorBlood:stopAllActions()
+        self.WarriorBloodClone:stopAllActions()
         self.WarriorBlood:runAction(progressTo)
         self.WarriorBloodClone:runAction(progressToClone)
     end
 
-    if hero._racetype==EnumRaceType.ARCHER then
+    if hero._name=="Archer" then
+        self.ArcherBlood:stopAllActions()
+        self.ArcherBloodClone:stopAllActions()
         self.ArcherBlood:runAction(progressTo)
+        self.ArcherBloodClone:runAction(progressToClone)
     end
 
-    if hero._racetype==EnumRaceType.MAGE then
+    if hero._name=="Mage" then
+        self.MageBlood:stopAllActions()
+        self.MageBloodClone:stopAllActions()
         self.MageBlood:runAction(progressTo)
+        self.MageBloodClone:runAction(progressToClone)
     end
 end
 
