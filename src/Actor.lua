@@ -241,9 +241,12 @@ function Actor:hurt(collider)
            damage = damage - damage * 0.15
         end
         
-        if damage < self._defense then
+        damage = damage - self._defense
+        damage = math.floor(damage)
+        if damage <= 0 then
             damage = 1
         end
+
         self._hp = self._hp - damage
         
         if self._hp > 0 then
@@ -371,7 +374,7 @@ function Actor:AI()
             if self._target then
                 self:walkMode()
             else
-                print("can't find")
+                --print("can't find")
                 self._goRight = false
             end
             

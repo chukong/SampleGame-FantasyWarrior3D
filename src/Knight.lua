@@ -13,8 +13,9 @@ function Knight:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 300  
+    self._attack = 200  
     self._attackFrequency = 2.5
+    self._defense = 150       
     self._AIFrequency = 1.1
     
     self._attackKnock = 100
@@ -66,6 +67,22 @@ end
 function Knight:normalAttack()
     KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
 end
+
+function Knight:specialAttack()
+    -- knight will create 2 attacks one by one  
+    local normalAttack = self._normalAttack
+    normalAttack.knock = 0
+    KnightNormalAttack.create(getPosTable(self), self._curFacing, normalAttack)
+    
+    local pos = getPosTable(self)
+    pos.x = pos.x+50
+    pos = cc.pRotateByAngle(pos, self._myPos, self._curFacing)    
+    local function punch()
+        KnightNormalAttack.create(pos, self._curFacing, self._specialAttack)
+    end
+    delayExecute(self,punch,0.2)
+end
+
 function Knight:initAttackInfo()
     --build the attack Infos
     self._normalAttack = {

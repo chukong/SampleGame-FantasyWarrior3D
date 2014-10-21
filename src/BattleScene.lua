@@ -272,12 +272,8 @@ function BattleScene.create()
     createBackground()
 
     gameMaster = require "GameMaster".create()
---    createRole()
-
     setCamera()
-
     initUILayer()
-
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,registerBloodDrop)
     
