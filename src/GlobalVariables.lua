@@ -24,7 +24,6 @@ AUDIO_ID =
     MAINMENUBGM,
     BATTLEFIELDBGM,
     CHOOSEROLECHAPTERBGM,
-    PIGLETATTACK1
 }
 
 --Monster Slime
@@ -50,7 +49,9 @@ MonsterRatValues =
 MonsterPigletValues = 
     {
         fileName = "model/piglet/piglet.c3b",
-        attack1 = "audios/effects/piglet1.mp3"
+        attack1 = "audios/effects/piglet1.mp3",
+        attack2 = "audios/effects/piglet2.mp3",
+        attack3 = "audios/effects/piglet3.mp3"
     }
     
 --Warroir property
