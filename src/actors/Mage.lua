@@ -16,6 +16,7 @@ function Mage:ctor()
     self._racetype = EnumRaceType.HERO
     self._attackFrequency = 4.7
     self._AIFrequency = 1.3
+    self._name = "Mage"
     
     self._attackRange = 800
     

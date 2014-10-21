@@ -3,7 +3,7 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/Archer/Archer.c3b"
+local file = "model/archer/archer.c3b"
 
 Archer = class("Archer", function()
     return require "Actor".create()
@@ -16,6 +16,7 @@ function Archer:ctor()
     self._racetype = EnumRaceType.HERO
     self._attackFrequency = 4.7
     self._AIFrequency = 1.3
+    self._name = "Archer"
 
     self._attackRange = 1000
 
@@ -50,13 +51,36 @@ function Archer:normalAttack()
 end
 
 function Archer:specialAttack()
-    ArcherArrowRainFall.create(getPosTable(self), self._curFacing, self._specialAttack)
+    --archer will create 3 attack circle on the ground
+    --get 3 positions
+    local normalAttack = self._normalAttack
+    normalAttack.knock = 10
+    normalAttack.angle = 360
+    
+    local pos1 = getPosTable(self)
+    local pos2 = getPosTable(self)
+    local pos3 = getPosTable(self)
+    pos1.x = pos1.x
+    pos2.x = pos2.x
+    pos3.x = pos3.x
+    pos1 = cc.pRotateByAngle(pos1, self._myPos, self._curFacing)
+    pos2 = cc.pRotateByAngle(pos2, self._myPos, self._curFacing)
+    pos3 = cc.pRotateByAngle(pos3, self._myPos, self._curFacing)
+    ArcherNormalAttack.create(pos1, self._curFacing, self._specialAttack)
+    local function spike2()
+        ArcherNormalAttack.create(pos2, self._curFacing, self._specialAttack)
+    end
+    local function spike3()
+        ArcherNormalAttack.create(pos3, self._curFacing, self._specialAttack)
+    end
+    delayExecute(self,spike2,0.2)
+    delayExecute(self,spike3,0.4)
 end
 
 function Archer:init3D()
     self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
-    self._sprite3d:setScale(1.9)
+    self._sprite3d:setScale(1.6)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
@@ -77,12 +101,12 @@ function Archer:initAttackInfo()
     self._specialAttack = {
         minRange = self._attackMinRadius,
         maxRange = self._attackMaxRadius+50,
-        angle    = DEGREES_TO_RADIANS(150),
-        knock    = self._attackKnock,
+        angle    = DEGREES_TO_RADIANS(360),
+        knock    = 50,--self._attackKnock,
         damage   = self._attack,
         mask     = self._racetype,
         duration = 3,
-        speed    = 500
+        speed    = 800
     }
 end
 

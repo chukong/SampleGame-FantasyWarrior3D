@@ -16,6 +16,7 @@ function Warrior:ctor()
     self._useArmourId = 0
     self._particle = nil
     self._attack = 300  
+    self._name = "Warrior"
 end
 
 function Warrior.create()

@@ -13,7 +13,7 @@ function Dragon:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 500  
+    self._attack = 100  
     self._racetype = EnumRaceType.MONSTER
     self._speed = 500
     self._attackMinRadius = 0
@@ -105,7 +105,7 @@ function Dragon:init3D()
     self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setTexture("model/dragon/xiaohuolong_body.jpg")
-    self._sprite3d:setScale(30)
+    self._sprite3d:setScale(10)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        

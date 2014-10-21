@@ -36,12 +36,12 @@ function solveAttacks(dt)
                 end
             end
         end
+        attack.curDuration = attack.curDuration+dt
         if attack.curDuration > attack.duration then
             attack:onTimeOut()
             List.remove(AttackManager,val)
         else
             attack:onUpdate(dt)
-            attack.curDuration = attack.curDuration+dt
         end
     end
 end
@@ -67,12 +67,15 @@ end
 function BasicCollider:onTimeOut()
     self:removeFromParent()
 end
+
 function BasicCollider:onCollide(target)
     target:hurt(self)
 end
+
 function BasicCollider:onUpdate()
     -- implement this function if this is a projectile
 end
+
 function BasicCollider:initData(pos, facing, attackInfo)
     self.minRange = attackInfo.minRange or self.minRange
     self.maxRange = attackInfo.maxRange or self.maxRange
@@ -88,15 +91,18 @@ function BasicCollider:initData(pos, facing, attackInfo)
     List.pushlast(AttackManager, self)
     currentLayer:addChild(self, -10)
 end
+
 function BasicCollider.create(pos, facing, attackInfo)
     local ret = BasicCollider.new()    
     ret:initData(pos,facing,attackInfo)
     return ret
 end
 
+
 KnightNormalAttack = class("KnightNormalAttack", function()
     return BasicCollider.new()
 end)
+
 function KnightNormalAttack.create(pos, facing, attackInfo)
     local ret = KnightNormalAttack.new()
     ret:initData(pos,facing,attackInfo)
@@ -108,6 +114,7 @@ function KnightNormalAttack.create(pos, facing, attackInfo)
     
     return ret
 end
+
 function KnightNormalAttack:onTimeOut()
     self.sp:runAction(cc.FadeOut:create(1))
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
@@ -116,6 +123,7 @@ end
 MageNormalAttack = class("MageNormalAttack", function()
     return BasicCollider.new()
 end)
+
 function MageNormalAttack.create(pos,facing,attackInfo)
     local ret = MageNormalAttack.new()
     ret:initData(pos,facing,attackInfo)
@@ -128,22 +136,28 @@ function MageNormalAttack.create(pos,facing,attackInfo)
     
     return ret
 end
+
 function MageNormalAttack:onTimeOut()
     self:runAction(cc.RemoveSelf:create())
 end
+
 function MageNormalAttack:onCollide(target)
     target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
 end
+
 function MageNormalAttack:onUpdate(dt)
     local selfPos = getPosTable(self)
     local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
     self:setPosition(nextPos)
 end
+
+
 MageIceSpikes = class("MageIceSpikes", function()
     return BasicCollider.new()
 end)
+
 function MageIceSpikes.create(pos, facing, attackInfo)
     local ret = MageIceSpikes.new()
     ret:initData(pos,facing,attackInfo)
@@ -189,16 +203,19 @@ function MageIceSpikes.create(pos, facing, attackInfo)
     
     return ret
 end
+
 function MageIceSpikes:onTimeOut()
     self:runAction(cc.FadeOut:create(1))
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
 end
+
 function MageIceSpikes:onCollide(target)
     if self.curDOTTime > self.DOTTimer then
         target:hurt(self)
         self.DOTApplied = true
     end
 end
+
 function MageIceSpikes:onUpdate(dt)
 -- implement this function if this is a projectile
     self.curDOTTime = self.curDOTTime + dt
@@ -211,6 +228,7 @@ end
 ArcherNormalAttack = class("ArcherNormalAttack", function()
     return BasicCollider.new()
 end)
+
 function ArcherNormalAttack.create(pos,facing,attackInfo)
     local ret = ArcherNormalAttack.new()
     ret:initData(pos,facing,attackInfo)
@@ -223,23 +241,28 @@ function ArcherNormalAttack.create(pos,facing,attackInfo)
 
     return ret
 end
+
 function ArcherNormalAttack:onTimeOut()
     self:runAction(cc.RemoveSelf:create())
 end
+
 function ArcherNormalAttack:onCollide(target)
     target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
 end
+
 function ArcherNormalAttack:onUpdate(dt)
     local selfPos = getPosTable(self)
     local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
     self:setPosition(nextPos)
 end
 
+
 ArcherArrowRainFall = class("ArcherArrowRainFall", function()
     return BasicCollider.new()
 end)
+
 function ArcherArrowRainFall.create(pos, facing, attackInfo)
     local ret = ArcherArrowRainFall.new()
     ret:initData(pos,facing,attackInfo)
@@ -252,10 +275,12 @@ function ArcherArrowRainFall.create(pos, facing, attackInfo)
 
     return ret
 end
+
 function ArcherArrowRainFall:onTimeOut()
     self.sp:runAction(cc.FadeOut:create(1))
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
 end
+
 function ArcherArrowRainFall:onCollide(target)
     target:hurt(self)
 end

@@ -1,7 +1,5 @@
 require "Cocos2d"
 require "Helper"
-require "Warrior"
-require "Mage"
 
 --declare a class extends scene
 local MainMenuScene = class("MainMenuScene",function()
@@ -45,8 +43,6 @@ function MainMenuScene:createLayer()
     --add pointlight
     self:addPointLight(mainLayer)
     
-    self:addHero(mainLayer)
-    
     --when replease scene unschedule schedule
     local function onExit(event)
         if "exit" == event then
@@ -59,27 +55,16 @@ function MainMenuScene:createLayer()
     return mainLayer
 end
 
-function MainMenuScene:addHero(layer)
-    local warrior = Warrior:create()
-    warrior:setPosition(cc.p(300,200))
-    warrior:setRotation3D({x=-90,y=-60,z=0})
-    layer:addChild(warrior,5)
-    
-    local mage = Mage:create()
-    mage:setPosition(cc.p(450,190))
-    mage:setRotation3D({x=-90,y=-60,z=0})
-    layer:addChild(mage,5)
-end
-
 function MainMenuScene:addLogo(layer)
     --add logo
     local logo = cc.EffectSprite:create("mainmenuscene/logo.png")
     self._logoSize = logo:getContentSize()
-    logo:setPosition(self.size.width*0.68,self.size.height+self._logoSize.height*0.4)
+    logo:setPosition(self.size.width*0.53,self.size.height*0.65)
+    logo:setScale(0.1)
     self._logo = logo
     layer:addChild(logo,4)
     
-    local action = cc.EaseElasticOut:create(cc.MoveBy:create(2,cc.p(0, -self.size.height*0.45)))
+    local action = cc.EaseElasticOut:create(cc.ScaleTo:create(2,1.2))
     
     logo:runAction(action)
     
@@ -247,10 +232,8 @@ function MainMenuScene:addButton(layer)
 
     local button = ccui.Button:create("mainmenuscene/button.png")
     button:setPressedActionEnabled(true)
-    button:setPosition(self.size.width*0.87,self.size.height*0.28)
+    button:setPosition(self.size.width*0.5,self.size.height*0.2)
     button:addTouchEventListener(button_callback)
-    button:setOpacity(0)
-    button:runAction(cc.Sequence:create(cc.FadeIn:create(3)))
     layer:addChild(button,4)
 end
 
@@ -259,29 +242,29 @@ function MainMenuScene:addCloud(layer)
     --cloud
     local cloud0 = cc.Sprite:create("mainmenuscene/cloud1.png")
     local cloud1 = cc.Sprite:create("mainmenuscene/cloud1.png")
-    local cloud2 = cc.Sprite:create("mainmenuscene/cloud3.png")
     local cloud3 = cc.Sprite:create("mainmenuscene/cloud2.png")
-    local cloud4 = cc.Sprite:create("mainmenuscene/cloud3.png")
+    
+    --setScale
+    local scale = 2
+    cloud0:setScale(scale)
+    cloud1:setScale(scale)
+    cloud3:setScale(2)
     
     --setPosition
-    cloud0:setPosition(self.size.width*1.1,self.size.height*0.7)
-    cloud1:setPosition(self.size.width*0.38,self.size.height*0.7)
-    cloud2:setPosition(self.size.width*0.65,self.size.height*0.83)
-    cloud3:setPosition(self.size.width*0.9,self.size.height*0.7)
-    cloud4:setPosition(self.size.width*1.4,self.size.height*0.83)
+    cloud0:setPosition(self.size.width*1.1,self.size.height*0.5)
+    cloud1:setPosition(self.size.width*0.38,self.size.height*0.6)
+    cloud3:setPosition(self.size.width*0.95,self.size.height*0.83)
     
     --add to layer
     layer:addChild(cloud0,2)
     layer:addChild(cloud1,2)
-    layer:addChild(cloud2,2)
     layer:addChild(cloud3,2)
-    layer:addChild(cloud4,2)
-    local clouds = {cloud0,cloud1,cloud2,cloud3,cloud4}
+    local clouds = {cloud0,cloud1,cloud3}
     
     --move cloud
     local function cloud_move()
         --set cloud move speed
-        local offset = {-0.5,-0.5,-1.2,-1,-1.2}
+        local offset = {-1.2,-1.2,-0.5}
         for i,v in pairs(clouds) do
             local point = v:getPositionX()+offset[i]
             if(point<-v:getContentSize().width/2) then
@@ -297,11 +280,8 @@ end
 function MainMenuScene:addBg(layer)
     --background
     local bg_back = cc.Sprite:create("mainmenuscene/bg_back.png")
-    local bg_front = cc.Sprite:create("mainmenuscene/bg_front.png")
     bg_back:setPosition(self.size.width/2,self.size.height/2)
-    bg_front:setPosition(self.size.width/2,self.size.height/2)
     layer:addChild(bg_back,1)
-    layer:addChild(bg_front,3)
 end
 
 return MainMenuScene

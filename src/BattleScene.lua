@@ -12,7 +12,9 @@ require "Knight"
 require "Piglet"
 require "Mage"
 require "Rat"
+require "Slime"
 require "Dragon"
+require "Archer"
 require "DropBlood"
 
 local size = cc.Director:getInstance():getWinSize()
@@ -192,27 +194,27 @@ local function createEnemy(step)
     end    
 end
 
-local function createRole()
-    local heroOriginPositionX = -2000
-    local test = Knight:create()
-    test:setPosition(heroOriginPositionX+500, 300)
-    currentLayer:addChild(test)
-    List.pushlast(HeroManager, test)
-    
-    local test2 = Mage:create()
-    test2:setPosition(heroOriginPositionX+500, 000)
-    currentLayer:addChild(test2)
-    List.pushlast(HeroManager, test2)
- 
-    for i=1,4 do
-        local test3 = Rat:create()
-        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
-        currentLayer:addChild(test3)
-        List.pushlast(MonsterManager, test3)
-        test3:setFacing(180)
-    end
-   
-end
+--local function createRole()
+--    local heroOriginPositionX = -2000
+--    local test = Knight:create()
+--    test:setPosition(heroOriginPositionX+500, 300)
+--    currentLayer:addChild(test)
+--    List.pushlast(HeroManager, test)
+--    
+--    local test2 = Mage:create()
+--    test2:setPosition(heroOriginPositionX+600, 300)
+--    currentLayer:addChild(test2)
+--    List.pushlast(HeroManager, test2)
+-- 
+--    for i=1,1 do
+--        local test3 = Dragon:create()
+--        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
+--        currentLayer:addChild(test3)
+--        List.pushlast(MonsterManager, test3)
+--        test3:setFacing(180)
+--    end
+--   
+--end
 
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 10.0, 4000.0)
@@ -220,22 +222,6 @@ local function setCamera()
     camera:lookAt(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y, 0.0), cc.V3(0.0, 1.0, 0.0))
     currentLayer:addChild(camera)
     camera:setGlobalZOrder(10)
-end
-
---dropValuePercent is the dropValue/bloodValue*100
-local function sendDropBlood(dropValuePercent, hero)
-    local function initBloodDrop(dropValuePercent, hero)
-        if uiLayer~=nil then
-            uiLayer:bloodDrop(dropValuePercent,hero)    
-        end
-    end
-
-    MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, initBloodDrop(dropValuePercent, hero))  
-end
-
-local function registerBloodDrop(struct)
-    
-
 end
 
 local function gameController(dt)
@@ -246,7 +232,7 @@ local function gameController(dt)
 
     --enemyEncounter()
     --findAllEnemy()
---    gameMaster:update(dt)
+    gameMaster:update(dt)
 end
 
 local function initUILayer()
@@ -263,19 +249,32 @@ local BattleScene = class("BattleScene",function()
     return cc.Scene:create()
 end)
 
+--dropValuePercent is the dropValue/bloodValue*100
+function BattleScene.sendDropBlood(dropValuePercent, hero)
+    local function initBloodDrop(dropValuePercent, hero)
+        if uiLayer~=nil then
+            uiLayer:bloodDrop(dropValuePercent,hero)    
+        end
+    end
+
+    MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, initBloodDrop(dropValuePercent, hero))  
+end
+
+function BattleScene.registerBloodDrop(struct)
+
+
+end
+
 function BattleScene.create()
     local scene = BattleScene:new()
+    G.battleScene = scene
     currentLayer = cc.Layer:create()
     scene:addChild(currentLayer)
     createBackground()
 
---    gameMaster = require "GameMaster".create()
-    createRole()
-
+    gameMaster = require "GameMaster".create()
     setCamera()
-
     initUILayer()
-
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,registerBloodDrop)
     
