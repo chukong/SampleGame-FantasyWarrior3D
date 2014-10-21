@@ -3,19 +3,19 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/rat/rat.c3b"
+local file = "model/slime/slime_ani.c3b"
 
-Rat = class("Rat", function()
+Slime = class("Slime", function()
     return require "Actor".create()
 end)
 
-function Rat:ctor()
+function Slime:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 400  
+    self._attack = 500  
     self._racetype = EnumRaceType.MONSTER
-    self._speed = 300
+    self._speed = 500
     self._attackMinRadius = 0
     self._attackMaxRadius = 130
     self._radius = 120
@@ -25,8 +25,8 @@ function Rat:ctor()
     self:initActions()
 end
 
-function Rat.create()
-    local ret = Rat.new()
+function Slime.create()
+    local ret = Slime.new()
     ret:initAttackInfo()
     ret._AIEnabled = true
 
@@ -40,7 +40,7 @@ function Rat.create()
     return ret
 end
 
-function Rat:initAttackInfo()
+function Slime:initAttackInfo()
     --build the attack Infos
     self._normalAttack = {
         minRange = self._attackMinRadius,
@@ -64,7 +64,7 @@ function Rat:initAttackInfo()
     }
 end
 
-function Rat:attackUpdate(dt)
+function Slime:attackUpdate(dt)
     self._attackTimer = self._attackTimer + dt
     if self._attackTimer > self._attackFrequency then
         self._attackTimer = self._attackTimer - self._attackFrequency
@@ -83,7 +83,7 @@ function Rat:attackUpdate(dt)
         self._cooldown = true
     end
 end
-function Rat:_findEnemy()
+function Slime:_findEnemy()
     local shortest = self._searchDistance
     local target = nil
     local allDead = true
@@ -101,27 +101,23 @@ function Rat:_findEnemy()
     return target, allDead
 end
 
-function Rat:init3D()
+function Slime:init3D()
     self._sprite3d = cc.EffectSprite3D:create(file)
-    self._sprite3d:setTexture("model/Rat/shenti.jpg")
-    self._sprite3d:setScale(10)
+    self._sprite3d:setTexture("model/slime/baozi.jpg")
+    self._sprite3d:setScale(30)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
 end
 
--- init Rat animations=============================
+-- init Slime animations=============================
 do
-    Rat._action = {
-        idle = createAnimation(file,0,23,0.7),
-        knocked = createAnimation(file,30,37,0.7),
-        dead = createAnimation(file,41,76,1),
-        attack1 = createAnimation(file,81,117,0.7),
-        walk = createAnimation(file,122,142,0.7)
+    Slime._action = {
+        idle = createAnimation(file,0,22,0.7)
     }
 end
--- end init Rat animations========================
-function Rat:initActions()
-    self._action = Rat._action
+-- end init Slime animations========================
+function Slime:initActions()
+    self._action = Slime._action
 end
