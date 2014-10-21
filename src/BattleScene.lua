@@ -260,8 +260,8 @@ end
 local function initUILayer()
     uiLayer = require("BattleFieldUI").create()
 
-    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye())
-    uiLayer:setScale(1)
+    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye()/2)
+    uiLayer:setScale(0.5)
     uiLayer:ignoreAnchorPointForPosition(false)
     uiLayer:setLocalZOrder(999)
     camera:addChild(uiLayer)

@@ -141,5 +141,29 @@ function MageNormalAttack:onUpdate(dt)
     local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
     self:setPosition(nextPos)
 end
+MageIceSpikes = class("MageIceSpikes", function()
+    return BasicCollider.new()
+end)
+function MageIceSpikes.create(pos, facing, attackInfo)
+    local ret = MageIceSpikes.new()
+    ret:initData(pos,facing,attackInfo)
+    ret.sp = cc.Sprite:create("btn_circle_normal.png")
+    ret.sp:setColor({r=0,g=0,b=255})
+    ret.sp:setPosition3D(cc.V3(0,0,5))
+    ret.sp:setScale(2)
+    ret:addChild(ret.sp)
+    --ret:setRotation(RADIANS_TO_DEGREES(facing))
+
+    return ret
+end
+function MageIceSpikes:onTimeOut()
+    self.sp:runAction(cc.FadeOut:create(1))
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
+end
+function MageIceSpikes:onCollide(target)
+    target:hurt(self)
+    --set cur duration to its max duration, so it will be removed when checking time out
+    --self.curDuration = self.duration+1
+end
 
 return AttackManager
