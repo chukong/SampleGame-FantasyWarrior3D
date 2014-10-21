@@ -26,8 +26,6 @@ function Archer:ctor()
     self._attackAngle = 360
     self._attackKnock = 0
 
-
-
     self:init3D()
     self:initActions()
 end
@@ -46,16 +44,14 @@ function Archer.create()
     ret:scheduleUpdateWithPriorityLua(update, 0) 
     return ret
 end
+
 function Archer:normalAttack()
-    MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+    ArcherNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
 end
+
 function Archer:specialAttack()
-    MageNormalAttack.create(getPosTable(self), self._curFacing, self._specialAttack)
+    ArcherArrowRainFall.create(getPosTable(self), self._curFacing, self._specialAttack)
 end
-
-
-
-
 
 function Archer:init3D()
     self._sprite3d = cc.EffectSprite3D:create(file)
@@ -74,7 +70,7 @@ function Archer:initAttackInfo()
         knock    = self._attackKnock,
         damage   = self._attack,
         mask     = self._racetype,
-        duration = 3, -- 0 duration means it will be removed upon calculation
+        duration = 2, -- 0 duration means it will be removed upon calculation
         speed    = 500
     }
     self._specialAttack = {
