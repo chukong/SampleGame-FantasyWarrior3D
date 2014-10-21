@@ -260,10 +260,13 @@ function Actor:hurt(collider)
         end
         
         local blood = self._dropBlood:showBloodLossNum(damage)
-        blood:setPositionZ(120)
+        if self._racetype == EnumRaceType.MONSTER then
+            blood:setPositionZ(70)
+        else
+            blood:setPositionZ(150)
+        end
         G.battleScene.sendDropBlood(damage,self)
         self:addChild(blood)   
---        print(damage)     
     end
 end
 --======attacking collision check

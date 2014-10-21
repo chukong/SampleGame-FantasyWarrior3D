@@ -164,7 +164,7 @@ local function createBackground()
         
     local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=4500, height=400}, 0.77, 0.3797, 1.2)
     currentLayer:addChild(water)
-    water:setPosition3D(cc.V3(-3500,-600,-35))
+    water:setPosition3D(cc.V3(-3500,-400,-35))
     water:setAnchorPoint(0,0)
     water:setGlobalZOrder(-9)
     
@@ -194,27 +194,27 @@ local function createEnemy(step)
     end    
 end
 
---local function createRole()
---    local heroOriginPositionX = -2000
---    local test = Knight:create()
---    test:setPosition(heroOriginPositionX+500, 300)
---    currentLayer:addChild(test)
---    List.pushlast(HeroManager, test)
---    
---    local test2 = Mage:create()
---    test2:setPosition(heroOriginPositionX+600, 300)
---    currentLayer:addChild(test2)
---    List.pushlast(HeroManager, test2)
--- 
---    for i=1,1 do
---        local test3 = Dragon:create()
---        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
---        currentLayer:addChild(test3)
---        List.pushlast(MonsterManager, test3)
---        test3:setFacing(180)
---    end
---   
---end
+local function createRole()
+    local heroOriginPositionX = -2000
+    local test = Knight:create()
+    test:setPosition(heroOriginPositionX+500, 300)
+    currentLayer:addChild(test)
+    List.pushlast(HeroManager, test)
+    
+    local test2 = Mage:create()
+    test2:setPosition(heroOriginPositionX+600, 300)
+    currentLayer:addChild(test2)
+    List.pushlast(HeroManager, test2)
+ 
+    for i=1,1 do
+        local test3 = Dragon:create()
+        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
+        currentLayer:addChild(test3)
+        List.pushlast(MonsterManager, test3)
+        test3:setFacing(180)
+    end
+   
+end
 
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 10.0, 4000.0)
@@ -229,9 +229,6 @@ local function gameController(dt)
     solveAttacks(dt)
     moveCamera(dt)
     updateParticlePos()
-
-    --enemyEncounter()
-    --findAllEnemy()
     gameMaster:update(dt)
 end
 
@@ -273,6 +270,8 @@ function BattleScene.create()
     createBackground()
 
     gameMaster = require "GameMaster".create()
+--    createRole()
+
     setCamera()
     initUILayer()
 

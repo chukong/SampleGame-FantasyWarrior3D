@@ -285,4 +285,38 @@ function ArcherArrowRainFall:onCollide(target)
     target:hurt(self)
 end
 
+
+DragonAttack = class("DragonAttack", function()
+    return BasicCollider.new()
+end)
+
+function DragonAttack.create(pos,facing,attackInfo)
+    local ret = DragonAttack.new()
+    ret:initData(pos,facing,attackInfo)
+
+    ret.sp = cc.Sprite:create("btn_circle_normal.png")
+    ret.sp:setPosition3D(cc.V3(0,0,50))
+    ret.sp:setScale(2)
+    ret.sp:setColor({r=255,g=0,b=0})
+    ret:addChild(ret.sp)
+
+    return ret
+end
+
+function DragonAttack:onTimeOut()
+    self:runAction(cc.RemoveSelf:create())
+end
+
+function DragonAttack:onCollide(target)
+    target:hurt(self)
+    --set cur duration to its max duration, so it will be removed when checking time out
+    self.curDuration = self.duration+1
+end
+
+function DragonAttack:onUpdate(dt)
+    local selfPos = getPosTable(self)
+    local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
+    self:setPosition(nextPos)
+end
+
 return AttackManager

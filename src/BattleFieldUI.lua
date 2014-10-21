@@ -12,7 +12,9 @@ function BattlefieldUI:ctor()
     self:avatarInit()
     self:bloodbarInit()
     self:touchButtonInit()
-    ccexp.AudioEngine:play2d("audios/The Last Encounter Short Loop.mp3", true,100)
+    ccexp.AudioEngine:stop(AUDIO_ID.MAINMENUBGM)
+    
+    AUDIO_ID.BATTLEFIELDBGM = ccexp.AudioEngine:play2d(BGM_RES.BATTLEFIELDBGM, true,0.6)
 end
 
 function BattlefieldUI:avatarInit()
@@ -149,8 +151,8 @@ function BattlefieldUI:bloodDrop(damage,hero)
 
     if damage>=hero._hp then
     
-        progressTo = cc.ProgressTo:create(0.5,10)
-        progressToClone = cc.ProgressTo:create(0.8,10)
+        progressTo = cc.ProgressTo:create(0.5,0)
+        progressToClone = cc.ProgressTo:create(0.8,0)
     else
         local dropPercent = damage/hero._maxhp*100
         local current = hero._hp / hero._maxhp*100;
@@ -160,22 +162,22 @@ function BattlefieldUI:bloodDrop(damage,hero)
     
     if hero._name=="Knight" then
         
-        self.WarriorBlood:stopAllActions()
-        self.WarriorBloodClone:stopAllActions()
+--        self.WarriorBlood:stopAllActions()
+--        self.WarriorBloodClone:stopAllActions()
         self.WarriorBlood:runAction(progressTo)
         self.WarriorBloodClone:runAction(progressToClone)
     end
 
     if hero._name=="Archer" then
-        self.ArcherBlood:stopAllActions()
-        self.ArcherBloodClone:stopAllActions()
+--        self.ArcherBlood:stopAllActions()
+--        self.ArcherBloodClone:stopAllActions()
         self.ArcherBlood:runAction(progressTo)
         self.ArcherBloodClone:runAction(progressToClone)
     end
 
     if hero._name=="Mage" then
-        self.MageBlood:stopAllActions()
-        self.MageBloodClone:stopAllActions()
+--        self.MageBlood:stopAllActions()
+--        self.MageBloodClone:stopAllActions()
         self.MageBlood:runAction(progressTo)
         self.MageBloodClone:runAction(progressToClone)
     end
