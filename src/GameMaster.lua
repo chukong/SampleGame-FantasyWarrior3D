@@ -108,7 +108,8 @@ end
 function GameMaster:addPiglet()
     for var=1, monsterCount.piglet do
     	local piglet = Piglet:create()
-    	piglet:retain()
+    	currentLayer:addChild(piglet)
+    	piglet:setVisible(false)
     	List.pushlast(PigletPool,piglet)
     end   
 end
@@ -136,10 +137,13 @@ function GameMaster:ShowPiglet()
         local piglet = List.popfirst(PigletPool)
         local appearPos = getFocusPointOfHeros()
         local randomvar = math.random()
-        if randomvar < 0.5 then appearPos.x = appearPos.x -1200
-        else appearPos.x = appearPos.x + 1200 end
+        if randomvar < 0.5 then appearPos.x = appearPos.x - 300
+        else appearPos.x = appearPos.x + 300 end
+        if appearPos.x < heroOriginPositionX then appearPos.x = appearPos.x + 2400 end
+        if appearPos.x > 0 then appearPos.x = appearPos.x - 2400 end
         piglet:setPosition(appearPos)
-        currentLayer:addChild(piglet)
+        --currentLayer:addChild(piglet)
+        piglet:setVisible(true)
         List.pushlast(MonsterManager, piglet)
         kill_count = kill_count + 1
     end
