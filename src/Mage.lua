@@ -21,10 +21,17 @@ function Mage:ctor()
     
     --normal attack
     self._attackMinRadius = 0
-	self._attackMaxRadius = 5
+	self._attackMaxRadius = 10
     self._attack = 150
     self._attackAngle = 360
     self._attackKnock = 0
+    
+    --special Attack
+    self._specialMinRadius = 0
+    self._specialMaxRadius = 100
+    self._specialattack = 100
+    self._specialAngle = 360
+    self._specialKnock = 100
 
 
 
@@ -50,7 +57,27 @@ function Mage:normalAttack()
     MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
 end
 function Mage:specialAttack()
-    MageNormalAttack.create(getPosTable(self), self._curFacing, self._specialAttack)
+    --mage will create 3 ice spikes on the ground
+    --get 3 positions
+    local pos1 = getPosTable(self)
+    local pos2 = getPosTable(self)
+    local pos3 = getPosTable(self)
+    pos1.x = pos1.x+100
+    pos2.x = pos2.x+200
+    pos3.x = pos3.x+300
+    pos1 = cc.pRotateByAngle(pos1, self._myPos, self._curFacing)
+    pos2 = cc.pRotateByAngle(pos2, self._myPos, self._curFacing)
+    pos3 = cc.pRotateByAngle(pos3, self._myPos, self._curFacing)
+    MageIceSpikes.create(pos1, self._curFacing, self._specialAttack)
+    local function spike2()
+        MageIceSpikes.create(pos2, self._curFacing, self._specialAttack)
+    end
+        local function spike3()
+        MageIceSpikes.create(pos3, self._curFacing, self._specialAttack)
+    end
+    delayExecute(self,spike2,0.4)
+    delayExecute(self,spike3,0.8)
+
 end
 
 
@@ -78,11 +105,11 @@ function Mage:initAttackInfo()
         speed    = 500
     }
     self._specialAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius+50,
-        angle    = DEGREES_TO_RADIANS(150),
-        knock    = self._attackKnock,
-        damage   = self._attack,
+        minRange = self._specialMinRadius,
+        maxRange = self._specialMaxRadius,
+        angle    = DEGREES_TO_RADIANS(self._attackAngle),
+        knock    = self._specialKnock,
+        damage   = self._specialattack,
         mask     = self._racetype,
         duration = 3,
         speed    = 500
