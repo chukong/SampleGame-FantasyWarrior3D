@@ -122,13 +122,13 @@ end
 
 function Actor.create()
     local base = Actor.new()	
-    base:initShadow()
 	return base
 end
-
 function Actor:initShadow()
-    self._circle = cc.Sprite:create("shadow.png")
-	self._circle:setScale(self._shadowSize/32)
+    self._circle = cc.Sprite:createWithSpriteFrameName("shadow.png")
+    --use Shadow size for aesthetic, use radius to see collision size
+    --self._circle:setScale(self._shadowSize/16)
+    self._circle:setScale(self._radius/8)
 	self._circle:setOpacity(255*0.7)
 	self:addChild(self._circle)
 end

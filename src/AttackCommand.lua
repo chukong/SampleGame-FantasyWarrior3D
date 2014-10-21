@@ -86,7 +86,7 @@ function BasicCollider:initData(pos, facing, attackInfo)
     
     self:setPosition(pos)
     List.pushlast(AttackManager, self)
-    currentLayer:addChild(self)
+    currentLayer:addChild(self, -10)
 end
 function BasicCollider.create(pos, facing, attackInfo)
     local ret = BasicCollider.new()    
@@ -147,19 +147,50 @@ end)
 function MageIceSpikes.create(pos, facing, attackInfo)
     local ret = MageIceSpikes.new()
     ret:initData(pos,facing,attackInfo)
-    ret.sp = cc.Sprite:create("btn_circle_normal.png")
-    ret.sp:setColor({r=0,g=0,b=255})
-    ret.sp:setPosition3D(cc.V3(0,0,5))
-    ret.sp:setScale(2)
+    ret.sp = cc.Sprite:createWithSpriteFrameName("shadow.png")
+    ret.sp:setLocalZOrder(-999)
+    ret.sp:setOpacity(100)
+    ret.sp:setPosition3D(cc.V3(0,0,1))
+    ret.sp:setScale(ret.maxRange/12)
     ret:addChild(ret.sp)
-    --ret:setRotation(RADIANS_TO_DEGREES(facing))
     ret.DOTTimer = 0.5 --it will be able to hurt every 0.5 seconds
     ret.curDOTTime = 0.5
     ret.DOTApplied = false
+    ---========
+    --create 3 spikes
+    local x = cc.Node:create()
+    ret:addChild(x)
+    for var=0, 7 do
+        local rand = math.ceil(math.random()*3)
+        print(rand)
+        local spike = cc.Sprite:createWithSpriteFrameName(string.format("iceSpike%d.png",rand))
+        spike:setAnchorPoint(0.5,0)
+        spike:setRotation3D(cc.V3(90,0,0))
+        x:addChild(spike)
+        if rand == 3 then
+            spike:setScale(1.5)
+        else
+            spike:setScale(2)
+        end
+        spike:setOpacity(200)
+        spike:setFlippedX(not(math.floor(math.random()*2)))
+        spike:setPosition3D(cc.V3(math.random(-ret.maxRange/1.5, ret.maxRange/1.5),math.random(-ret.maxRange/1.5, ret.maxRange/1.5),1))
+        spike:setLocalZOrder(-spike:getPositionY())
+        x:setScale(0)
+    end
+    local function test()
+        x:setPositionZ(-105)
+    end
+    x:runAction(cc.Sequence:create(cc.CallFunc:create(test),cc.EaseElasticOut:create(cc.MoveBy:create(0.6,cc.V3(0,0,100)))))
+    x:runAction(cc.EaseElasticOut:create(cc.ScaleTo:create(0.7, 1)))
+    
+    
+    
+    
     return ret
 end
 function MageIceSpikes:onTimeOut()
-    self.sp:runAction(cc.FadeOut:create(1))
+    self:runAction(cc.FadeOut:create(1))
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
 end
 function MageIceSpikes:onCollide(target)

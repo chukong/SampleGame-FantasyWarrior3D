@@ -54,6 +54,7 @@ function Archer:specialAttack()
 end
 
 function Archer:init3D()
+    self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setScale(1.9)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)

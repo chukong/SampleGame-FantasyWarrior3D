@@ -3,36 +3,32 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/piglet/zhu_ani_v05.c3b"
+local file = "model/rat/rat.c3b"
 
-Piglet = class("Piglet", function()
+Rat = class("Rat", function()
     return require "Actor".create()
 end)
 
-function Piglet:ctor()
+function Rat:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
     self._attack = 150  
     self._racetype = EnumRaceType.MONSTER
-    self._speed = 400
+    self._speed = 300
     self._attackMinRadius = 0
     self._attackMaxRadius = 130
     self._radius = 50
     self._attackRange = 130
-    
-    self._attackMaxRadius = 130
-    self._attackAngle = 30
-    self._attackKnock = 50
-    
-    self._goRight = false
-    
+    self._AIFrequency = 1.9
+    self._attackFrequency = 3.5
+
     self:init3D()
     self:initActions()
 end
 
-function Piglet.create()
-    local ret = Piglet.new()
+function Rat.create()
+    local ret = Rat.new()
     ret:initAttackInfo()
     ret._AIEnabled = true
 
@@ -43,26 +39,10 @@ function Piglet.create()
         ret:movementUpdate(dt)
     end
     ret:scheduleUpdateWithPriorityLua(update, 0.5) 
-    ret:initAttackInfo()
     return ret
 end
 
-function Piglet:dyingMode(knockSource, knockAmount)
-    self:setStateType(EnumStateType.DYING)
-    self:playAnimation("dead")
-    if knockAmount then
-        local p = getPosTable(self)
-        local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
-        local newPos = cc.pRotateByAngle(cc.pAdd({x=knockAmount,y=0}, p),p,angle)
-        self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
-    end
-    local function recircle()
-    	List.pushlast(PigletPool,self)
-    end
-    self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create(),cc.CallFunc:create(recircle)))
-end
-
-function Piglet:initAttackInfo()
+function Rat:initAttackInfo()
     --build the attack Infos
     self._normalAttack = {
         minRange = self._attackMinRadius,
@@ -86,7 +66,7 @@ function Piglet:initAttackInfo()
     }
 end
 
-function Piglet:attackUpdate(dt)
+function Rat:attackUpdate(dt)
     self._attackTimer = self._attackTimer + dt
     if self._attackTimer > self._attackFrequency then
         self._attackTimer = self._attackTimer - self._attackFrequency
@@ -95,17 +75,17 @@ function Piglet:attackUpdate(dt)
             self._cooldown = false
         end
         --time for an attack, which attack should i do?
-            local function createCol()
-                self:normalAttack()
-            end
-            local attackAction = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(createCol),self._action.attack2:clone(),cc.CallFunc:create(playIdle))
-            self._sprite3d:stopAction(self._curAnimation3d)
-            self._sprite3d:runAction(attackAction)
-            self._curAnimation = attackAction
-            self._cooldown = true
+        local function createCol()
+            self:normalAttack()
+        end
+        local attackAction = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(createCol),self._action.attack2:clone(),cc.CallFunc:create(playIdle))
+        self._sprite3d:stopAction(self._curAnimation3d)
+        self._sprite3d:runAction(attackAction)
+        self._curAnimation = attackAction
+        self._cooldown = true
     end
 end
-function Piglet:_findEnemy()
+function Rat:_findEnemy()
     local shortest = self._searchDistance
     local target = nil
     local allDead = true
@@ -123,29 +103,29 @@ function Piglet:_findEnemy()
     return target, allDead
 end
 
-function Piglet:init3D()
+function Rat:init3D()
+    self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
-    self._sprite3d:setTexture("model/piglet/zhu0928.jpg")
-    self._sprite3d:setScale(1.3)
+    self._sprite3d:setTexture("model/Rat/shenti.jpg")
+    self._sprite3d:setScale(10)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
 end
 
--- init Piglet animations=============================
+-- init Rat animations=============================
 do
-    Piglet._action = {
-        idle = createAnimation(file,0,40,0.7),
-        walk = createAnimation(file,135,147,1.5),
-        attack1 = createAnimation(file,45,60,0.7),
-        attack2 = createAnimation(file,60,75,0.7),
-        defend = createAnimation(file,92,96,0.7),
-        knocked = createAnimation(file,81,87,0.7),
-        dead = createAnimation(file,95,127,1)
+    Rat._action = {
+        idle = createAnimation(file,0,23,0.7),
+        knocked = createAnimation(file,30,37,0.7),
+        dead = createAnimation(file,41,76,1),
+        attack1 = createAnimation(file,81,99,0.7),
+        attack2 = createAnimation(file,99,117,0.7),
+        walk = createAnimation(file,122,142,0.7)
     }
 end
--- end init Piglet animations========================
-function Piglet:initActions()
-    self._action = Piglet._action
+-- end init Rat animations========================
+function Rat:initActions()
+    self._action = Rat._action
 end

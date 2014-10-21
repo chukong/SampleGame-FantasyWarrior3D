@@ -19,7 +19,7 @@ local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
 local touchPos = nil
 currentLayer = nil
-local currentStep = 1;
+local currentStep = 1
 local uiLayer = nil
 local gameMaster = nil
 

@@ -155,13 +155,13 @@
             <filename>hit5.png</filename>
             <filename>icebolt.png</filename>
             <filename>iceSpike1.png</filename>
-            <filename>IceSpike2.png</filename>
             <filename>iceSpike3.png</filename>
             <filename>particle.png</filename>
             <filename>puff.png</filename>
             <filename>shadow.png</filename>
             <filename>specialLight.png</filename>
             <filename>specialAttack.jpg</filename>
+            <filename>iceSpike2.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

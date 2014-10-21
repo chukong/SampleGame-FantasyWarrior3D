@@ -17,7 +17,7 @@ function Mage:ctor()
     self._attackFrequency = 4.7
     self._AIFrequency = 1.3
     
-    self._attackRange = 1000
+    self._attackRange = 800
     
     --normal attack
     self._attackMinRadius = 0
@@ -54,7 +54,8 @@ function Mage.create()
     return ret
 end
 function Mage:normalAttack()
-    MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+    self:specialAttack()
+--    MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
 end
 function Mage:specialAttack()
     --mage will create 3 ice spikes on the ground
@@ -62,9 +63,9 @@ function Mage:specialAttack()
     local pos1 = getPosTable(self)
     local pos2 = getPosTable(self)
     local pos3 = getPosTable(self)
-    pos1.x = pos1.x+100
-    pos2.x = pos2.x+200
-    pos3.x = pos3.x+300
+    pos1.x = pos1.x+150
+    pos2.x = pos2.x+350
+    pos3.x = pos3.x+550
     pos1 = cc.pRotateByAngle(pos1, self._myPos, self._curFacing)
     pos2 = cc.pRotateByAngle(pos2, self._myPos, self._curFacing)
     pos3 = cc.pRotateByAngle(pos3, self._myPos, self._curFacing)
@@ -85,6 +86,7 @@ end
 
 
 function Mage:init3D()
+    self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setScale(1.9)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
