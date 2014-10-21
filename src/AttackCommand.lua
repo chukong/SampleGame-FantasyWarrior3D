@@ -36,12 +36,12 @@ function solveAttacks(dt)
                 end
             end
         end
+        attack.curDuration = attack.curDuration+dt
         if attack.curDuration > attack.duration then
             attack:onTimeOut()
             List.remove(AttackManager,val)
         else
             attack:onUpdate(dt)
-            attack.curDuration = attack.curDuration+dt
         end
     end
 end
