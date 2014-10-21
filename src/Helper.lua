@@ -151,7 +151,16 @@ function List.remove(list, index)
     list.last = list.last -1
 end
 
-
+function List.removeObj(list, obj)
+    if obj == nil or List.getSize(list) == 0 then return end
+    
+    for index=list.first, List.getSize(list) do
+    	if list[index] == obj then
+    		List.remove(list,index)
+    		break
+    	end
+    end    
+end
 
 
 function delayExecute(target, func, delay)

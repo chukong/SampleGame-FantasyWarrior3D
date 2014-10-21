@@ -27,18 +27,18 @@ function DropBlood:showBloodLossNum(dmage)
         blood:setScale(0.1)
         blood:setRotation3D(getRandomXYZ())
 
-        local targetScale = 1
+        local targetScale = 0.7
         if num > 200 then 
             blood:setColor(cc.c3b(255,0,0))
         elseif num > 100 then
             blood:setColor(cc.c3b(250,121,65))
-            targetScale = 0.75
+            targetScale = 0.55
         else
             blood:setColor(cc.c3b(250,191,65))
-            targetScale = 0.85
+            targetScale = 0.65
         end
-        local sequence = cc.Sequence:create(cc.EaseElasticOut:create(cc.ScaleTo:create(0.5,targetScale),0.4),
-            cc.FadeOut:create(0.5),
+        local sequence = cc.Sequence:create(cc.EaseElasticOut:create(cc.ScaleTo:create(0.25,targetScale),0.4),
+            cc.FadeOut:create(0.25),
             cc.RemoveSelf:create(),
             cc.CallFunc:create(function()
                 self._isBlooding=false 
@@ -46,8 +46,8 @@ function DropBlood:showBloodLossNum(dmage)
             end)
         )
         local spawn = cc.Spawn:create(sequence,
-            cc.MoveBy:create(1,{x=0,y=0,z=150}),
-            cc.RotateBy:create(1,math.random(-40,40)))
+            cc.MoveBy:create(0.5,{x=0,y=0,z=50}),
+            cc.RotateBy:create(0.5,math.random(-40,40)))
         blood:runAction(spawn)
         self._blood = blood
         
@@ -65,8 +65,8 @@ function DropBlood:showBloodLossNum(dmage)
         self._num = self._num+dmage
     end
     
-    getBlood()
-    return self._blood
+    
+    return getBlood()
 end
 
 return DropBlood

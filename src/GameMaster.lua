@@ -5,12 +5,18 @@ require "Monster"
 require "Actor"
 require "GlobalVariables"
 require "Piglet"
+require "Slime"
+require "Rat"
+require "Dragon"
 require "Archer"
 
 local heroOriginPositionX = -2900
 local gloableZOrder = 1
-local monsterCount = {dragon=3,slime=3,piglet=3,rat=3}
-local minMonsterCount = 2
+local monsterCount = {dragon=3,slime=3,piglet=1,rat=3}
+local EXIST_MIN_MONSTER = 1
+local kill_count = 0
+local KILL_MAX_MONSTER = 15
+local showboss = false
 
 local GameMaster = class("GameMaster")
 
@@ -42,10 +48,15 @@ function GameMaster:update(dt)
 end
 
 function GameMaster:logicUpdate()
-    local max_const_count = monsterCount.piglet
-    local last_count = List.getSize(DragonPool) + List.getSize(SlimePool) + List.getSize(SlimePool) + List.getSize(PigletPool)
-    if max_const_count - last_count < minMonsterCount then
-    	self:randomShowMonster()
+    if kill_count < KILL_MAX_MONSTER then
+        local max_const_count = monsterCount.piglet + monsterCount.dragon + monsterCount.rat + monsterCount.slime
+        local last_count = List.getSize(DragonPool) + List.getSize(SlimePool) + List.getSize(SlimePool) + List.getSize(PigletPool)
+        if max_const_count - last_count < EXIST_MIN_MONSTER then
+            self:randomShowMonster()
+        end
+    elseif showboss == false then
+        showboss = true
+        self:ShowBoss()
     end
 end
 
@@ -63,19 +74,19 @@ function GameMaster:AddHeros()
    	mage:idleMode()
    	List.pushlast(HeroManager, mage)
    	
-    local archer = Archer:create()
-    archer:setPosition(heroOriginPositionX+300, 100)
-    currentLayer:addChild(archer)
-    archer:idleMode()
-    List.pushlast(HeroManager, archer)   	
+--    local archer = Archer:create()
+--    archer:setPosition(heroOriginPositionX+300, 100)
+--    currentLayer:addChild(archer)
+--    archer:idleMode()
+--    List.pushlast(HeroManager, archer)   	
 
 end
 
 function GameMaster:addMonsters()
---	self:addDragon()
-	-- self:addSlime()
+	self:addDragon()
+	 self:addSlime()
 	 self:addPiglet()
---	 self:addRat()
+	 self:addRat()
 end
 
 function GameMaster:addDragon()
@@ -97,7 +108,8 @@ end
 function GameMaster:addPiglet()
     for var=1, monsterCount.piglet do
     	local piglet = Piglet:create()
-    	piglet:retain()
+    	currentLayer:addChild(piglet)
+    	piglet:setVisible(false)
     	List.pushlast(PigletPool,piglet)
     end   
 end
@@ -116,15 +128,24 @@ function GameMaster:ShowDragon()
         dragon:setPosition({x=800,y=0})
         currentLayer:addChild(dragon)
         List.pushlast(MonsterManager, dragon)
+        kill_count = kill_count + 1
     end
 end
 
 function GameMaster:ShowPiglet()
     if List.getSize(PigletPool) ~= 0 then
         local piglet = List.popfirst(PigletPool)
-        piglet:setPosition({x=800,y=100})
-        currentLayer:addChild(piglet)
+        local appearPos = getFocusPointOfHeros()
+        local randomvar = math.random()
+        if randomvar < 0.5 then appearPos.x = appearPos.x - 300
+        else appearPos.x = appearPos.x + 300 end
+        if appearPos.x < heroOriginPositionX then appearPos.x = appearPos.x + 2400 end
+        if appearPos.x > 0 then appearPos.x = appearPos.x - 2400 end
+        piglet:setPosition(appearPos)
+        --currentLayer:addChild(piglet)
+        piglet:setVisible(true)
         List.pushlast(MonsterManager, piglet)
+        kill_count = kill_count + 1
     end
 end
 
@@ -134,6 +155,7 @@ function GameMaster:ShowSlime()
         slime:setPosition({x=800,y=100})
         currentLayer:addChild(slime)
         List.pushlast(MonsterManager, slime)
+        kill_count = kill_count + 1
     end
 end
 
@@ -143,6 +165,7 @@ function GameMaster:ShowRat()
         rat:setPosition({x=800,y=100})
         currentLayer:addChild(rat)
         List.pushlast(MonsterManager, rat)
+        kill_count = kill_count + 1
     end
 end
 
@@ -158,6 +181,12 @@ function GameMaster:randomShowMonster()
 	else
 		self:ShowRat()
 	end
+end
+
+function GameMaster:ShowBoss()
+	--TODO  show warning
+	--TODO  show text dialog
+	--TODO  show boss
 end
 
 return GameMaster
