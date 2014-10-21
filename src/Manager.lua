@@ -4,15 +4,14 @@ local scheduler = cc.Director:getInstance():getScheduler()
 local activearea = {width = 500, height = 640}
 
 HeroPool = List.new()
-MonsterPool = List.new()
+DragonPool = List.new()
+SlimePool = List.new()
+PigletPool = List.new()
+RatPool = List.new()
 BossPool = List.new()
 
 HeroManager = List.new()
 MonsterManager = List.new()
-DragonManager = List.new()
-SlimeManager = List.new()
-PigletManager = List.new()
-RatManager = List.new()
 BossManager = List.new()
 
 function findAliveMonster()

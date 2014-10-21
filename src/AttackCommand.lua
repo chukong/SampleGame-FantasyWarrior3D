@@ -153,7 +153,8 @@ function MageIceSpikes.create(pos, facing, attackInfo)
     ret.sp:setScale(2)
     ret:addChild(ret.sp)
     --ret:setRotation(RADIANS_TO_DEGREES(facing))
-
+    ret.DOTTimer = 0.5 --it will be able to hurt every 0.5 seconds
+    ret.curDOTTime = 0.5
     return ret
 end
 function MageIceSpikes:onTimeOut()
@@ -161,9 +162,14 @@ function MageIceSpikes:onTimeOut()
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
 end
 function MageIceSpikes:onCollide(target)
-    target:hurt(self)
-    --set cur duration to its max duration, so it will be removed when checking time out
-    --self.curDuration = self.duration+1
+    if self.curDOTTime > self.DOTTimer then
+        target:hurt(self)
+        self.curDOTTime = 0
+    end
+end
+function MageIceSpikes:onUpdate(dt)
+-- implement this function if this is a projectile
+    self.curDOTTime = self.curDOTTime + dt
 end
 
 ArcherNormalAttack = class("ArcherNormalAttack", function()
