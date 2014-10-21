@@ -16,7 +16,7 @@ function Knight:ctor()
     self._attack = 300  
     self._attackFrequency = 2.5
     self._AIFrequency = 1.1
-    
+    self._name = "Knight"    
     self._attackKnock = 100
     
     self:init3D()
