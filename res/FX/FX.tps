@@ -111,7 +111,7 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>FX.plist</filename>
+        <filename>../../../Documents/FX.plist</filename>
         <key>multiPack</key>
         <false/>
         <key>mainExtension</key>
@@ -148,20 +148,20 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../../Desktop/战斗特效/hi2.png</filename>
-            <filename>../../Desktop/战斗特效/hi3.png</filename>
-            <filename>../../Desktop/战斗特效/hi4.png</filename>
-            <filename>../../Desktop/战斗特效/hit1.png</filename>
-            <filename>../../Desktop/战斗特效/hit5.png</filename>
-            <filename>../../Desktop/战斗特效/specialLight.png</filename>
-            <filename>../../Desktop/战斗特效/particle.png</filename>
-            <filename>../../Desktop/战斗特效/icebolt.png</filename>
-            <filename>../../Desktop/战斗特效/iceSpike1.png</filename>
-            <filename>../../Desktop/战斗特效/IceSpike2.png</filename>
-            <filename>../../Desktop/战斗特效/iceSpike3.png</filename>
-            <filename>shadow.png</filename>
-            <filename>effect/specialAttack.jpg</filename>
+            <filename>hi2.png</filename>
+            <filename>hi3.png</filename>
+            <filename>hi4.png</filename>
+            <filename>hit1.png</filename>
+            <filename>hit5.png</filename>
+            <filename>icebolt.png</filename>
+            <filename>iceSpike1.png</filename>
+            <filename>IceSpike2.png</filename>
+            <filename>iceSpike3.png</filename>
+            <filename>particle.png</filename>
             <filename>puff.png</filename>
+            <filename>shadow.png</filename>
+            <filename>specialLight.png</filename>
+            <filename>specialAttack.jpg</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
