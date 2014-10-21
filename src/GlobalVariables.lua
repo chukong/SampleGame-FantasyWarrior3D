@@ -15,7 +15,7 @@ cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
 AUDIO_RES = 
 {
         MAINMENUBGM = "audios/Royal Flush Party.mp3",
-        BATTLEFIELDBGM = "audios/The Last Encounter Short Loop.mp3"
+        BATTLEFIELDBGM = "audios/The_Last_Encounter_Short_Loop.mp3"
 }
 
 --play2d id
