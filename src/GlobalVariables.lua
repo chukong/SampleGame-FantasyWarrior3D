@@ -11,6 +11,22 @@ G =
 }
 cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
 
+--Audios
+BGM_RES = 
+{
+    MAINMENUBGM = "audios/Royal Flush Party.mp3",
+    BATTLEFIELDBGM = "audios/The_Last_Encounter_Short_Loop.mp3"
+}
+
+--play2d id
+AUDIO_ID = 
+{
+    MAINMENUBGM,
+    BATTLEFIELDBGM,
+    CHOOSEROLECHAPTERBGM,
+    PIGLETATTACK1
+}
+
 --Monster Slime
 MonsterSlimeValues =
 {
@@ -33,7 +49,8 @@ MonsterRatValues =
 --Monster Piglet
 MonsterPigletValues = 
     {
-        fileName = "model/piglet/piglet.c3b"
+        fileName = "model/piglet/piglet.c3b",
+        attack1 = "audios/effects/piglet1.mp3"
     }
     
 --Warroir property
