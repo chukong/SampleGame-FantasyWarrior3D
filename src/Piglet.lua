@@ -31,6 +31,17 @@ function Piglet:ctor()
     self:initActions()
 end
 
+function Piglet:reset()
+    self._goRight = false
+    self._isalive = true
+    self._maxhp = 1000
+    self:walkMode()
+    self._AIEnabled = true
+    self._target = nil
+    self._cooldown = 0
+    self:setPositionZ(0)
+end
+
 function Piglet.create()
     local ret = Piglet.new()
     ret:initAttackInfo()
@@ -57,6 +68,7 @@ function Piglet:dyingMode(knockSource, knockAmount)
         self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
     end
     local function recircle()
+        self:reset()
     	List.pushlast(PigletPool,self)
     end
     self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create(),cc.CallFunc:create(recircle)))

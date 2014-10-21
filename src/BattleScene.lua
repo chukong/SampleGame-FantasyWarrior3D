@@ -162,7 +162,7 @@ local function createBackground()
         
     local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=4500, height=400}, 0.77, 0.3797, 1.2)
     currentLayer:addChild(water)
-    water:setPosition3D(cc.V3(-3500,-600,-35))
+    water:setPosition3D(cc.V3(-3500,-400,-35))
     water:setAnchorPoint(0,0)
     water:setGlobalZOrder(-9)
     
@@ -244,9 +244,7 @@ local function gameController(dt)
     moveCamera(dt)
     updateParticlePos()
 
-    --enemyEncounter()
-    --findAllEnemy()
---    gameMaster:update(dt)
+    gameMaster:update(dt)
 end
 
 local function initUILayer()
@@ -269,8 +267,8 @@ function BattleScene.create()
     scene:addChild(currentLayer)
     createBackground()
 
---    gameMaster = require "GameMaster".create()
-    createRole()
+    gameMaster = require "GameMaster".create()
+--    createRole()
 
     setCamera()
 
