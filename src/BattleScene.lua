@@ -12,6 +12,7 @@ require "Knight"
 require "Piglet"
 require "Mage"
 require "Rat"
+require "Dragon"
 require "DropBlood"
 
 local size = cc.Director:getInstance():getWinSize()
@@ -191,32 +192,27 @@ local function createEnemy(step)
     end    
 end
 
---local function createRole()
---   
---    local test = Knight:create()
---    test:setPosition(heroOriginPositionX+500, 300)
---    currentLayer:addChild(test)
---    List.pushlast(HeroManager, test)
---    
---    local test2 = Mage:create()
---    test2:setPosition(heroOriginPositionX+500, 000)
---    currentLayer:addChild(test2)
---    List.pushlast(HeroManager, test2)
--- 
---    for i=1,4 do
---        local test3 = Piglet:create()
---        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
---        currentLayer:addChild(test3)
---        List.pushlast(MonsterManager, test3)
---        test3:setFacing(180)
---    end
---    
---    local rat = Rat:create()
---    rat:setPosition(heroOriginPositionX+1500, 000)
---    currentLayer:addChild(rat)
---    List.pushlast(MonsterManager, rat)
---    rat:setFacing(180)
---end
+local function createRole()
+    local heroOriginPositionX = -2000
+    local test = Knight:create()
+    test:setPosition(heroOriginPositionX+500, 300)
+    currentLayer:addChild(test)
+    List.pushlast(HeroManager, test)
+    
+    local test2 = Mage:create()
+    test2:setPosition(heroOriginPositionX+500, 000)
+    currentLayer:addChild(test2)
+    List.pushlast(HeroManager, test2)
+ 
+    for i=1,4 do
+        local test3 = Rat:create()
+        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
+        currentLayer:addChild(test3)
+        List.pushlast(MonsterManager, test3)
+        test3:setFacing(180)
+    end
+   
+end
 
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 1.0, 2000.0)
@@ -250,7 +246,7 @@ local function gameController(dt)
 
     --enemyEncounter()
     --findAllEnemy()
-    gameMaster:update(dt)
+--    gameMaster:update(dt)
 end
 
 local function initUILayer()
@@ -273,7 +269,8 @@ function BattleScene.create()
     scene:addChild(currentLayer)
     createBackground()
 
-    gameMaster = require "GameMaster".create()
+--    gameMaster = require "GameMaster".create()
+    createRole()
 
     setCamera()
 

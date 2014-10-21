@@ -41,6 +41,7 @@ function DropBlood:showBloodLossNum(num)
             cc.FadeOut:create(0.5),
             cc.RemoveSelf:create(),
             cc.CallFunc:create(function()
+                print("end")
                 self._isBlooding=false 
                 self._num = 0
             end)
@@ -58,9 +59,10 @@ function DropBlood:showBloodLossNum(num)
         self._isBlooding = true
         self._num = num
     else
-        self._num = self._num+num
+        print(self._num)
         self._blood:stopAllActions()
         self._blood:removeFromParent(true)
+        self._num = self._num+num
     end
     
     return getBlood()

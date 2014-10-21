@@ -72,10 +72,10 @@ function GameMaster:AddHeros()
 end
 
 function GameMaster:addMonsters()
-	--self:addDragon()
+--	self:addDragon()
 	-- self:addSlime()
 	 self:addPiglet()
-	-- self:addRat()
+--	 self:addRat()
 end
 
 function GameMaster:addDragon()
