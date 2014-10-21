@@ -163,7 +163,8 @@ function Actor:_blendAnimationTo(anim, loop)
     end
     self:runAction(cc.Sequence:create(cc.DelayTime:create(self._blendTime), cc.CallFunc:create(stopBlend)))
 end
-function Actor:playAnimationWithBlend(anim, loop)
+function Actor:playAnimationWithBlend(name, loop)
+    local anim = self._action[name]:clone()
     if self._curAnimation ~= nil  then
         if self._curAnimation ~= anim then
             --if we are playing the same animation, then do nothing
@@ -397,7 +398,11 @@ function Actor:knockingUpdate(dt)
     if self._aliveTime - self._timeKnocked > self._recoverTime then
         --i have recovered from a knock
         self._timeKnocked = nil
-        self:walkMode()
+        if self:_inRange() then
+            self:attackMode()
+        else
+            self:walkMode()
+        end
     end
 end
 function Actor:attackUpdate(dt)   
