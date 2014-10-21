@@ -14,7 +14,7 @@ function BattlefieldUI:ctor()
     self:touchButtonInit()
     ccexp.AudioEngine:stop(AUDIO_ID.MAINMENUBGM)
     
-    AUDIO_ID.BATTLEFIELDBGM = ccexp.AudioEngine:play2d(AUDIO_RES.BATTLEFIELDBGM, true,1)
+    AUDIO_ID.BATTLEFIELDBGM = ccexp.AudioEngine:play2d(BGM_RES.BATTLEFIELDBGM, true,1)
 end
 
 function BattlefieldUI:avatarInit()
