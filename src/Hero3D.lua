@@ -237,7 +237,7 @@ function Hero3D:setState(type)
 
     elseif type == EnumStateType.DEFEND then
         local x = 0
-        if self._racetype == EnumRaceType.HERO then
+        if self._racetype == EnumRaceType.KNIGHT or self._racetype == EnumRaceType.ARCHER or self._racetype == EnumRaceType.MAGE then
             x = -15
         else
             x = 15

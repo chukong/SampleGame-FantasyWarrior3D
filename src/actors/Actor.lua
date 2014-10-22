@@ -9,6 +9,7 @@ EnumRaceType =
     "BASE",
     "HERO",  --only this
     "WARRIOR",
+    "KNIGHT",
     "ARCHER",
     "SORCERESS",
     "MONSTER", --and this

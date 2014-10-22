@@ -13,7 +13,7 @@ function Archer:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._racetype = EnumRaceType.HERO
+    self._racetype = EnumRaceType.ARCHER
     self._attackFrequency = 4.7
     self._AIFrequency = 1.3
     self._name = "Archer"

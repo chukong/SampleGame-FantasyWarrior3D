@@ -232,7 +232,7 @@ function MainMenuScene:addButton(layer)
         end        
         if eventType == ccui.TouchEventType.ended then
             ccexp.AudioEngine:stop(AUDIO_ID.MAINMENUBGM)
-        	cc.Director:getInstance():replaceScene(require("BattleScene").create())
+        	cc.Director:getInstance():replaceScene(require("ChooseRoleScene").create())
         end
     end
 
