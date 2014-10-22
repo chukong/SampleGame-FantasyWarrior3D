@@ -9,6 +9,7 @@
 #include "custom/EffectSprite.h"
 #include "custom/BillBoardLable.h"
 #include "custom/CCSequence3D.h"
+#include "custom/GreyShader.h"
 #include "tolua_fix.h"
 #include "LuaBasicConversions.h"
 
@@ -6114,6 +6115,58 @@ int lua_register_cocos2dx_custom_Sequence3D(lua_State* tolua_S)
     g_typeCast["Sequence3D"] = "cc.Sequence3D";
     return 1;
 }
+
+int lua_cocos2dx_custom_GreyShader_setGreyShader(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"cc.GreyShader",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        cocos2d::Sprite* arg0;
+        ok &= luaval_to_object<cocos2d::Sprite>(tolua_S, 2, "cc.Sprite",&arg0);
+        if(!ok)
+            return 0;
+        cocos2d::GreyShader::setGreyShader(arg0);
+        return 0;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d\n ", "cc.GreyShader:setGreyShader",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_GreyShader_setGreyShader'.",&tolua_err);
+#endif
+    return 0;
+}
+static int lua_cocos2dx_custom_GreyShader_finalize(lua_State* tolua_S)
+{
+    printf("luabindings: finalizing LUA object (GreyShader)");
+    return 0;
+}
+
+int lua_register_cocos2dx_custom_GreyShader(lua_State* tolua_S)
+{
+    tolua_usertype(tolua_S,"cc.GreyShader");
+    tolua_cclass(tolua_S,"GreyShader","cc.GreyShader","cc.Ref",nullptr);
+
+    tolua_beginmodule(tolua_S,"GreyShader");
+        tolua_function(tolua_S,"setGreyShader", lua_cocos2dx_custom_GreyShader_setGreyShader);
+    tolua_endmodule(tolua_S);
+    std::string typeName = typeid(cocos2d::GreyShader).name();
+    g_luaType[typeName] = "cc.GreyShader";
+    g_typeCast["GreyShader"] = "cc.GreyShader";
+    return 1;
+}
 TOLUA_API int register_all_cocos2dx_custom(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
@@ -6128,6 +6181,7 @@ TOLUA_API int register_all_cocos2dx_custom(lua_State* tolua_S)
 	lua_register_cocos2dx_custom_EffectSprite(tolua_S);
 	lua_register_cocos2dx_custom_Effect(tolua_S);
 	lua_register_cocos2dx_custom_Water(tolua_S);
+	lua_register_cocos2dx_custom_GreyShader(tolua_S);
 	lua_register_cocos2dx_custom_EffectNormalMapped(tolua_S);
 	lua_register_cocos2dx_custom_BillboardParticleSystem(tolua_S);
 	lua_register_cocos2dx_custom_Effect3DOutline(tolua_S);
