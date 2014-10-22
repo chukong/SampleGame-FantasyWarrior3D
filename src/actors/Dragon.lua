@@ -3,17 +3,17 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/slime/slime_ani.c3b"
+local file = "model/dragon/xiaohuolong_ani_v05.c3b"
 
-Slime = class("Slime", function()
+Dragon = class("Dragon", function()
     return require "Actor".create()
 end)
 
-function Slime:ctor()
+function Dragon:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 500  
+    self._attack = 100  
     self._racetype = EnumRaceType.MONSTER
     self._speed = 500
     self._attackMinRadius = 0
@@ -25,8 +25,8 @@ function Slime:ctor()
     self:initActions()
 end
 
-function Slime.create()
-    local ret = Slime.new()
+function Dragon.create()
+    local ret = Dragon.new()
     ret:initAttackInfo()
     ret._AIEnabled = true
 
@@ -40,7 +40,11 @@ function Slime.create()
     return ret
 end
 
-function Slime:initAttackInfo()
+function Dragon:normalAttack()
+    DragonAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+end
+
+function Dragon:initAttackInfo()
     --build the attack Infos
     self._normalAttack = {
         minRange = self._attackMinRadius,
@@ -49,8 +53,8 @@ function Slime:initAttackInfo()
         knock    = self._attackKnock,
         damage   = self._attack,
         mask     = self._racetype,
-        duration = 0, -- 0 duration means it will be removed upon calculation
-        speed    = 0
+        duration = 1.2, -- 0 duration means it will be removed upon calculation
+        speed    = 900
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
@@ -64,7 +68,7 @@ function Slime:initAttackInfo()
     }
 end
 
-function Slime:attackUpdate(dt)
+function Dragon:attackUpdate(dt)
     self._attackTimer = self._attackTimer + dt
     if self._attackTimer > self._attackFrequency then
         self._attackTimer = self._attackTimer - self._attackFrequency
@@ -83,7 +87,7 @@ function Slime:attackUpdate(dt)
         self._cooldown = true
     end
 end
-function Slime:_findEnemy()
+function Dragon:_findEnemy()
     local shortest = self._searchDistance
     local target = nil
     local allDead = true
@@ -101,23 +105,29 @@ function Slime:_findEnemy()
     return target, allDead
 end
 
-function Slime:init3D()
+function Dragon:init3D()
+    self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
-    self._sprite3d:setTexture("model/slime/baozi.jpg")
-    self._sprite3d:setScale(17)
+    self._sprite3d:setTexture("model/dragon/xiaohuolong_body.jpg")
+    self._sprite3d:setScale(10)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
 end
 
--- init Slime animations=============================
+-- init Dragon animations=============================
 do
-    Slime._action = {
-        idle = createAnimation(file,0,22,0.7)
+    Dragon._action = {
+        idle = createAnimation(file,0,24,0.7),
+        knocked = createAnimation(file,30,37,0.7),
+        dead = createAnimation(file,42,80,1),
+        attack1 = createAnimation(file,85,100,0.7),
+        attack2 = createAnimation(file,100,115,0.7),
+        walk = createAnimation(file,120,140,1),
     }
 end
--- end init Slime animations========================
-function Slime:initActions()
-    self._action = Slime._action
+-- end init Dragon animations========================
+function Dragon:initActions()
+    self._action = Dragon._action
 end

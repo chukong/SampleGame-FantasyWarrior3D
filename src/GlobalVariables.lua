@@ -9,6 +9,8 @@ G =
     bloodPercentDropSpeed = 2,
 }
 cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
+FXZorder = 1999
+
 
 --Audios
 BGM_RES = 

@@ -34,13 +34,14 @@ NS_CC_BEGIN
 TrianglesCommand::TrianglesCommand()
 :_materialID(0)
 ,_textureID(0)
+,_depthWriteMask(true)
 ,_glProgramState(nullptr)
 ,_blendType(BlendFunc::DISABLE)
 {
     _type = RenderCommand::Type::TRIANGLES_COMMAND;
 }
 
-void TrianglesCommand::init(float globalOrder, GLuint textureID, GLProgramState* glProgramState, BlendFunc blendType, const Triangles& triangles,const Mat4& mv)
+void TrianglesCommand::init(float globalOrder, GLuint textureID, GLProgramState* glProgramState, BlendFunc blendType, const Triangles& triangles,const Mat4& mv, bool depthWrite)
 {
     CCASSERT(glProgramState, "Invalid GLProgramState");
     CCASSERT(glProgramState->getVertexAttribsFlags() == 0, "No custom attributes are supported in QuadCommand");
@@ -56,12 +57,12 @@ void TrianglesCommand::init(float globalOrder, GLuint textureID, GLProgramState*
     }
     _mv = mv;
     
-    if( _textureID != textureID || _blendType.src != blendType.src || _blendType.dst != blendType.dst || _glProgramState != glProgramState) {
+    if( _textureID != textureID || _blendType.src != blendType.src || _blendType.dst != blendType.dst || _glProgramState != glProgramState || _depthWriteMask != depthWrite) {
         
         _textureID = textureID;
         _blendType = blendType;
         _glProgramState = glProgramState;
-        
+        _depthWriteMask = depthWrite;
         generateMaterialID();
     }
 }
@@ -80,7 +81,7 @@ void TrianglesCommand::generateMaterialID()
     else
     {
         int glProgram = (int)_glProgramState->getGLProgram()->getProgram();
-        int intArray[4] = { glProgram, (int)_textureID, (int)_blendType.src, (int)_blendType.dst};
+        int intArray[5] = { glProgram, (int)_textureID, (int)_blendType.src, (int)_blendType.dst, (int) _depthWriteMask};
         
         _materialID = XXH32((const void*)intArray, sizeof(intArray), 0);
     }
@@ -93,6 +94,7 @@ void TrianglesCommand::useMaterial() const
     
     //set blend mode
     GL::blendFunc(_blendType.src, _blendType.dst);
+    glDepthMask(_depthWriteMask);
     
     _glProgramState->apply(_mv);
 }

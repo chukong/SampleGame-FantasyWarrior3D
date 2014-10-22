@@ -3,30 +3,32 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/dragon/xiaohuolong_ani_v05.c3b"
+local file = "model/rat/rat.c3b"
 
-Dragon = class("Dragon", function()
+Rat = class("Rat", function()
     return require "Actor".create()
 end)
 
-function Dragon:ctor()
+function Rat:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 100  
+    self._attack = 150  
     self._racetype = EnumRaceType.MONSTER
-    self._speed = 500
+    self._speed = 300
     self._attackMinRadius = 0
     self._attackMaxRadius = 130
-    self._radius = 120
+    self._radius = 50
     self._attackRange = 130
+    self._AIFrequency = 1.9
+    self._attackFrequency = 3.5
 
     self:init3D()
     self:initActions()
 end
 
-function Dragon.create()
-    local ret = Dragon.new()
+function Rat.create()
+    local ret = Rat.new()
     ret:initAttackInfo()
     ret._AIEnabled = true
 
@@ -40,11 +42,7 @@ function Dragon.create()
     return ret
 end
 
-function Dragon:normalAttack()
-    DragonAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
-end
-
-function Dragon:initAttackInfo()
+function Rat:initAttackInfo()
     --build the attack Infos
     self._normalAttack = {
         minRange = self._attackMinRadius,
@@ -53,8 +51,8 @@ function Dragon:initAttackInfo()
         knock    = self._attackKnock,
         damage   = self._attack,
         mask     = self._racetype,
-        duration = 1.2, -- 0 duration means it will be removed upon calculation
-        speed    = 900
+        duration = 0, -- 0 duration means it will be removed upon calculation
+        speed    = 0
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
@@ -68,7 +66,7 @@ function Dragon:initAttackInfo()
     }
 end
 
-function Dragon:attackUpdate(dt)
+function Rat:attackUpdate(dt)
     self._attackTimer = self._attackTimer + dt
     if self._attackTimer > self._attackFrequency then
         self._attackTimer = self._attackTimer - self._attackFrequency
@@ -87,7 +85,7 @@ function Dragon:attackUpdate(dt)
         self._cooldown = true
     end
 end
-function Dragon:_findEnemy()
+function Rat:_findEnemy()
     local shortest = self._searchDistance
     local target = nil
     local allDead = true
@@ -105,9 +103,10 @@ function Dragon:_findEnemy()
     return target, allDead
 end
 
-function Dragon:init3D()
+function Rat:init3D()
+    self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
-    self._sprite3d:setTexture("model/dragon/xiaohuolong_body.jpg")
+    self._sprite3d:setTexture("model/rat/shenti.jpg")
     self._sprite3d:setScale(10)
     self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
     self:addChild(self._sprite3d)
@@ -115,18 +114,18 @@ function Dragon:init3D()
     self._sprite3d:setRotation(-90)
 end
 
--- init Dragon animations=============================
+-- init Rat animations=============================
 do
-    Dragon._action = {
-        idle = createAnimation(file,0,24,0.7),
+    Rat._action = {
+        idle = createAnimation(file,0,23,0.7),
         knocked = createAnimation(file,30,37,0.7),
-        dead = createAnimation(file,42,80,1),
-        attack1 = createAnimation(file,85,100,0.7),
-        attack2 = createAnimation(file,100,115,0.7),
-        walk = createAnimation(file,120,140,1),
+        dead = createAnimation(file,41,76,1),
+        attack1 = createAnimation(file,81,99,0.7),
+        attack2 = createAnimation(file,99,117,0.7),
+        walk = createAnimation(file,122,142,0.7)
     }
 end
--- end init Dragon animations========================
-function Dragon:initActions()
-    self._action = Dragon._action
+-- end init Rat animations========================
+function Rat:initActions()
+    self._action = Rat._action
 end
