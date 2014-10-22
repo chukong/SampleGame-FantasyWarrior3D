@@ -13,8 +13,9 @@ require "Archer"
 local gloableZOrder = 1
 local monsterCount = {dragon=3,slime=3,piglet=3,rat=3}
 local EXIST_MIN_MONSTER = 3
-local kill_count = 0
-local KILL_MAX_MONSTER = 15
+kill_count = 0
+show_count = 0
+local KILL_MAX_MONSTER = 3
 local showboss = false
 local scheduleid
 
@@ -48,13 +49,13 @@ function GameMaster:update(dt)
 end
 
 function GameMaster:logicUpdate()
-    if kill_count < KILL_MAX_MONSTER then
+    if show_count < KILL_MAX_MONSTER then
         local max_const_count = monsterCount.piglet + monsterCount.dragon + monsterCount.rat + monsterCount.slime
         local last_count = List.getSize(DragonPool) + List.getSize(SlimePool) + List.getSize(SlimePool) + List.getSize(PigletPool)
         if max_const_count - last_count < EXIST_MIN_MONSTER then
             self:randomshowMonster()
         end
-    elseif showboss == false then
+    elseif kill_count == KILL_MAX_MONSTER and showboss == false then
         showboss = true
         self:showBoss()
     end
@@ -63,19 +64,19 @@ end
 function GameMaster:AddHeros()
 
 	local knight = Knight:create()
-   	knight:setPosition(-2100, 250)
+   	knight:setPosition(-1100, 250)
     currentLayer:addChild(knight)
     knight:idleMode()
     List.pushlast(HeroManager, knight)
 --
 	local mage = Mage:create()
-   	mage:setPosition(-2200, 200)
+   	mage:setPosition(-1200, 200)
    	currentLayer:addChild(mage)
    	mage:idleMode()
    	List.pushlast(HeroManager, mage)
    	
     local archer = Archer:create()
-    archer:setPosition(-2200, 100)
+    archer:setPosition(-1200, 100)
     currentLayer:addChild(archer)
     archer:idleMode()
     List.pushlast(HeroManager, archer)   	
@@ -129,7 +130,6 @@ function GameMaster:showDragon()
         dragon:setPosition({x=800,y=0})
         currentLayer:addChild(dragon)
         List.pushlast(MonsterManager, dragon)
-        kill_count = kill_count + 1
     end
 end
 
@@ -149,7 +149,7 @@ function GameMaster:showPiglet()
         piglet:setVisible(true)
         piglet:setAIEnabled(true)
         List.pushlast(MonsterManager, piglet)
-        kill_count = kill_count + 1
+        show_count = show_count + 1
     end
 end
 

@@ -146,6 +146,7 @@ function Piglet:dyingMode(knockSource, knockAmount)
     List.removeObj(MonsterManager,self) 
     local function recycle()
         self:setVisible(false)
+        kill_count = kill_count + 1
         --self:reset()
     	List.pushlast(PigletPool,self)
     end
