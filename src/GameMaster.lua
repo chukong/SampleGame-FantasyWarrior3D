@@ -12,8 +12,8 @@ require "Archer"
 
 local heroOriginPositionX = -2900
 local gloableZOrder = 1
-local monsterCount = {dragon=3,slime=3,piglet=1,rat=3}
-local EXIST_MIN_MONSTER = 1
+local monsterCount = {dragon=3,slime=3,piglet=10,rat=3}
+local EXIST_MIN_MONSTER = 10
 local kill_count = 0
 local KILL_MAX_MONSTER = 15
 local showboss = false
@@ -110,6 +110,7 @@ function GameMaster:addPiglet()
     	local piglet = Piglet:create()
     	currentLayer:addChild(piglet)
     	piglet:setVisible(false)
+    	piglet._AIEnabled = false
     	List.pushlast(PigletPool,piglet)
     end   
 end
@@ -135,6 +136,7 @@ end
 function GameMaster:ShowPiglet()
     if List.getSize(PigletPool) ~= 0 then
         local piglet = List.popfirst(PigletPool)
+        piglet:reset()
         local appearPos = getFocusPointOfHeros()
         local randomvar = math.random()
         if randomvar < 0.5 then appearPos.x = appearPos.x - 300
@@ -144,6 +146,8 @@ function GameMaster:ShowPiglet()
         piglet:setPosition(appearPos)
         --currentLayer:addChild(piglet)
         piglet:setVisible(true)
+        piglet._AIEnabled = true
+        piglet:walkMode()
         List.pushlast(MonsterManager, piglet)
         kill_count = kill_count + 1
     end

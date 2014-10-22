@@ -10,6 +10,8 @@ G =
     battleScene = nil
 }
 cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
+FXZorder = 1999
+
 
 --Audios
 BGM_RES = 

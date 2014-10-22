@@ -18,7 +18,7 @@ function Mage:ctor()
     self._AIFrequency = 1.3
     self._name = "Mage"
     
-    self._attackRange = 800
+    self._attackRange = 666
     
     --normal attack
     self._attackMinRadius = 0

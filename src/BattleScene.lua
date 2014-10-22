@@ -201,10 +201,10 @@ local function createRole()
     currentLayer:addChild(test)
     List.pushlast(HeroManager, test)
     
-    local test2 = Mage:create()
-    test2:setPosition(heroOriginPositionX+600, 300)
-    currentLayer:addChild(test2)
-    List.pushlast(HeroManager, test2)
+--    local test2 = Mage:create()
+--    test2:setPosition(heroOriginPositionX+600, 300)
+--    currentLayer:addChild(test2)
+--    List.pushlast(HeroManager, test2)
  
     for i=1,1 do
         local test3 = Dragon:create()

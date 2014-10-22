@@ -14,8 +14,8 @@ function Knight:ctor()
     self._useArmourId = 0
     self._particle = nil
     self._attack = 1000  
-    self._attackFrequency = 2.5
-    self._defense = 150       
+    self._attackFrequency = 2
+    self._defense = 5       
     self._AIFrequency = 1.1
     self._name = "Knight"    
     self._attackKnock = 100
@@ -66,7 +66,7 @@ function Knight.create()
 end
 function Knight:normalAttack()
     KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
-    self._sprite:runAction(self._action.attackEffect:clone()) 
+    --self._sprite:runAction(self._action.attackEffect:clone()) 
     local randomEffect =  math.random()                       
     if randomEffect<=0.5 and randomEffect>=0 then
         ccexp.AudioEngine:play2d(WarriorProperty.normalAttack1, false,1)
@@ -80,7 +80,7 @@ function Knight:specialAttack()
     local normalAttack = self._normalAttack
     normalAttack.knock = 0
     KnightNormalAttack.create(getPosTable(self), self._curFacing, normalAttack)
-    self._sprite:runAction(self._action.attackEffect:clone())                
+    --self._sprite:runAction(self._action.attackEffect:clone())                
 
     local pos = getPosTable(self)
     pos.x = pos.x+50
@@ -93,9 +93,9 @@ function Knight:specialAttack()
     end
     local function punch()
         KnightNormalAttack.create(pos, self._curFacing, self._specialAttack)
-        self._sprite:runAction(self._action.attackEffect:clone())                
+        --self._sprite:runAction(self._action.attackEffect:clone())                
     end
-    delayExecute(self,punch,0.2)
+    delayExecute(self,punch,0.4)
 end
 
 function Knight:initAttackInfo()
@@ -126,17 +126,18 @@ function Knight:initAttackEffect()
     local speed = 0.1
     local startRotate = 145
     local rotate = -60
-    local sprite = cc.Sprite:create("effect/specialAttack.jpg")
-    sprite:setVisible(false)
+    local sprite = cc.Sprite:createWithSpriteFrameName("specialAttack.jpg")
+    --sprite:setVisible(false)
     sprite:setBlendFunc(gl.ONE_MINUS_SRC_ALPHA,gl.ONE)
-    sprite:setScaleX(0.01)
+    sprite:setScale(4)
+    --sprite:setScaleX(0.01)
     sprite:setRotation(startRotate)
-    sprite:setOpacity(0)
+    --sprite:setOpacity(0)
     sprite:setAnchorPoint(cc.p(0.5, -1))    
-    sprite:setPosition3D(cc.V3(0, 50, 50))
+    sprite:setPosition3D(cc.V3(0, 0, 50))
     self:addChild(sprite)
 
-    local scaleAction = cc.ScaleBy:create(speed, 100, 1)
+    local scaleAction = cc.ScaleBy:create(speed, 100, 2)
     local rotateAction = cc.RotateBy:create(speed, rotate)
     local attack = cc.Spawn:create(scaleAction, rotateAction)
     local attack = cc.EaseCircleActionOut:create(attack)

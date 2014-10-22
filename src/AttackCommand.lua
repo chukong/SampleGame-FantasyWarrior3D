@@ -7,7 +7,7 @@ function solveAttacks(dt)
         local attack = AttackManager[val]
         if attack.mask == EnumRaceType.HERO then
             --if heroes attack, then lets check monsters
-            for mkey = MonsterManager.first, MonsterManager.last do
+            for mkey = MonsterManager.last, MonsterManager.first, -1 do
                 --check distance first
                 local monster = MonsterManager[mkey]
                 local mpos = getPosTable(monster)
@@ -22,7 +22,7 @@ function solveAttacks(dt)
             end
         elseif attack.mask == EnumRaceType.MONSTER then
             --if heroes attack, then lets check monsters
-            for hkey = HeroManager.first, HeroManager.last do
+            for hkey = HeroManager.last, HeroManager.first, -1 do
                 --check distance first
                 local hero = HeroManager[hkey]
                 local hpos = getPosTable(hero)
@@ -106,18 +106,19 @@ end)
 function KnightNormalAttack.create(pos, facing, attackInfo)
     local ret = KnightNormalAttack.new()
     ret:initData(pos,facing,attackInfo)
-    ret.sp = cc.Sprite:create("btn_circle_normal.png")
-    ret.sp:setPosition3D(cc.V3(100,0,50))
-    ret.sp:setScale(5)
-    ret:addChild(ret.sp)
-    ret:setRotation(RADIANS_TO_DEGREES(facing))
-    
+--    ret.sp = cc.Sprite:create("btn_circle_normal.png")
+--    ret.sp:setPosition3D(cc.V3(100,0,50))
+--    ret.sp:setScale(5)
+--    ret:addChild(ret.sp)
+--    ret:setRotation(RADIANS_TO_DEGREES(facing))
+--    ret:setGlobalZOrder(-ret:getPositionY()+FXZorder)
     return ret
 end
 
 function KnightNormalAttack:onTimeOut()
-    self.sp:runAction(cc.FadeOut:create(1))
-    self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
+    --self.sp:runAction(cc.FadeOut:create(1))
+    --self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
+    self:removeFromParent()
 end
 
 MageNormalAttack = class("MageNormalAttack", function()
@@ -162,7 +163,7 @@ function MageIceSpikes.create(pos, facing, attackInfo)
     local ret = MageIceSpikes.new()
     ret:initData(pos,facing,attackInfo)
     ret.sp = cc.Sprite:createWithSpriteFrameName("shadow.png")
-    ret.sp:setLocalZOrder(-999)
+    ret.sp:setGlobalZOrder(-ret:getPositionY()+FXZorder)
     ret.sp:setOpacity(100)
     ret.sp:setPosition3D(cc.V3(0,0,1))
     ret.sp:setScale(ret.maxRange/12)
@@ -189,7 +190,7 @@ function MageIceSpikes.create(pos, facing, attackInfo)
         spike:setOpacity(200)
         spike:setFlippedX(not(math.floor(math.random()*2)))
         spike:setPosition3D(cc.V3(math.random(-ret.maxRange/1.5, ret.maxRange/1.5),math.random(-ret.maxRange/1.5, ret.maxRange/1.5),1))
-        spike:setLocalZOrder(-spike:getPositionY())
+        spike:setGlobalZOrder(-ret:getPositionY()-spike:getPositionY()+FXZorder)
         x:setScale(0)
     end
     local function test()
