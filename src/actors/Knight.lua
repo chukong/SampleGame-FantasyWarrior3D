@@ -66,12 +66,52 @@ function Knight.create()
     return ret
 end
 
+function Knight:hurt(collider)
+    if self._isalive == true then        
+        local damage = collider.damage
+        if math.random() >= 0.5 then
+            damage = damage + damage * 0.15
+        else
+            damage = damage - damage * 0.15
+        end
+
+        damage = damage - self._defense
+        damage = math.floor(damage)
+        if damage <= 0 then
+            damage = 1
+        end
+
+        self._hp = self._hp - damage
+
+        if self._hp > 0 then
+            if collider.knock then
+                self:knockMode(getPosTable(collider),collider.knock)
+            end
+        else
+            self._hp = 0
+            self._isalive = false
+            self:dyingMode(getPosTable(collider),collider.knock)        
+        end
+
+        local blood = self._dropBlood:showBloodLossNum(damage)
+        if self._racetype == EnumRaceType.MONSTER then
+            blood:setPositionZ(70)
+        else
+            blood:setPositionZ(150)
+        end
+        self:addChild(blood)
+
+        local dropBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, dropBlood)
+    end
+end
+
 local function KnightNormalAttackCallback(audioID,filePath)
     ccexp.AudioEngine:play2d(WarriorProperty.normalAttack2, false,1)
 end
 
 local function KninghtSpecialAttackCallback(audioID, filePatch)
-    ccexp.AudioEngine:play2d(WarriorProperty.normalAttack4, false,1)  
+    ccexp.AudioEngine:play2d(WarriorProperty.specialAttack2, false,1)  
 end
 
 function Knight:normalAttack()
@@ -95,7 +135,7 @@ function Knight:specialAttack()
     pos.x = pos.x+50
     pos = cc.pRotateByAngle(pos, self._myPos, self._curFacing)    
 
-    AUDIO_ID.KNIGHTSPECIALATTACK = ccexp.AudioEngine:play2d(WarriorProperty.normalAttack3, false,1)
+    AUDIO_ID.KNIGHTSPECIALATTACK = ccexp.AudioEngine:play2d(WarriorProperty.specialAttack1, false,1)
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.KNIGHTSPECIALATTACK,KninghtSpecialAttackCallback)
     
     local function punch()
