@@ -74,11 +74,11 @@ function GameMaster:AddHeros()
    	mage:idleMode()
    	List.pushlast(HeroManager, mage)
    	
---    local archer = Archer:create()
---    archer:setPosition(heroOriginPositionX+300, 100)
---    currentLayer:addChild(archer)
---    archer:idleMode()
---    List.pushlast(HeroManager, archer)   	
+    local archer = Archer:create()
+    archer:setPosition(heroOriginPositionX+300, 100)
+    currentLayer:addChild(archer)
+    archer:idleMode()
+    List.pushlast(HeroManager, archer)   	
 
 end
 
@@ -110,6 +110,7 @@ function GameMaster:addPiglet()
     	local piglet = Piglet:create()
     	currentLayer:addChild(piglet)
     	piglet:setVisible(false)
+    	piglet:setAIEnabled(false)
     	List.pushlast(PigletPool,piglet)
     end   
 end
@@ -142,8 +143,8 @@ function GameMaster:ShowPiglet()
         if appearPos.x < heroOriginPositionX then appearPos.x = appearPos.x + 2400 end
         if appearPos.x > 0 then appearPos.x = appearPos.x - 2400 end
         piglet:setPosition(appearPos)
-        --currentLayer:addChild(piglet)
         piglet:setVisible(true)
+        piglet:setAIEnabled(true)
         List.pushlast(MonsterManager, piglet)
         kill_count = kill_count + 1
     end

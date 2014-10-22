@@ -231,6 +231,13 @@ function Actor:setFacing(degrees)
     self:setRotation(degrees)
 end
 
+function Actor:getAIEnabled()
+    return self._AIEnabled
+end
+
+function Actor:setAIEnabled(enable)
+    self._AIEnabled = enable
+end
 
 function Actor:hurt(collider)
     if self._isalive == true then        
