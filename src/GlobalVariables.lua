@@ -28,7 +28,8 @@ AUDIO_ID =
     BATTLEFIELDBGM,
     CHOOSEROLECHAPTERBGM,
     KNIGHTNORMALATTACK,
-    KNIGHTSPECIALATTACK
+    KNIGHTSPECIALATTACK,
+    ARCHERATTACK
 }
 
 --Monster Slime
@@ -54,11 +55,11 @@ MonsterRatValues =
 MonsterPigletValues = 
     {
         fileName = "model/piglet/piglet.c3b",
-        attack1 = "audios/effects/piglet1.mp3",
-        attack2 = "audios/effects/piglet2.mp3",
-        attack3 = "audios/effects/piglet3.mp3",
-        dead = "audios/effects/pigletDead.mp3",
-        hurt = "audios/effects/hit16.mp3"    
+        attack1 = "audios/effects/piglet/piglet1.mp3",
+        attack2 = "audios/effects/piglet/piglet2.mp3",
+        attack3 = "audios/effects/piglet/piglet3.mp3",
+        dead = "audios/effects/piglet/dead.mp3",
+        hurt = "audios/effects/piglet/hurt.mp3"    
 }
     
 --Warroir property
@@ -73,13 +74,15 @@ WarriorProperty =
     normalAttack1 = "audios/effects/swish-1.mp3",
     normalAttack2 = "audios/effects/swish-2.mp3",
     specialAttack1 = "audios/effects/swish-3.mp3",
-    specialAttack2 = "audios/effects/swish-4.mp3"
+    specialAttack2 = "audios/effects/swish-4.mp3",
+    hurt = "audios/effects/gruntsound.mp3"
 }
 
 --Archer property
 Archerproperty =
 {
-    
+    attack1 = "audios/effects/archer/swish-3.mp3",
+    attack2 = "audios/effects/archer/swish-4.mp3"
 }
 
 --Mage property
