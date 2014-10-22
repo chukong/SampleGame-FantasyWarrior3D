@@ -1,62 +1,15 @@
 require "Cocos2d"
 require "Helper"
-require "Actor"
-require "Monster"
-require "Boss"
 require "Manager"
-require "Warrior"
-require "Mage"
 require "MessageDispatchCenter"
-require "AttackCommand"
-require "Knight"
-require "Piglet"
-require "Mage"
-require "Rat"
-require "Slime"
-require "Dragon"
-require "Archer"
-require "DropBlood"
 
-local size = cc.Director:getInstance():getWinSize()
-local scheduler = cc.Director:getInstance():getScheduler()
-local touchPos = nil
 currentLayer = nil
 local currentStep = 1;
 uiLayer = nil
 local gameMaster = nil
 
-local function collisionDetect(dt)
-    --cclog("collisionDetect")
-    for val = HeroManager.last, HeroManager.first, -1 do
-        local sprite = HeroManager[val]
-        if sprite._isalive == true then
-            collision(sprite)
-            isOutOfBound(sprite)
-        else
-            List.remove(HeroManager, val)
-        end
-    end
-
-    for val = MonsterManager.last, MonsterManager.first, -1 do
-        local sprite = MonsterManager[val]
-        if sprite._isalive == true then
-            collision(sprite)
-            isOutOfBound(sprite)            
-        else
-            List.remove(MonsterManager, val)
-        end
-    end    
-
-    for val = BossManager.last, MonsterManager.first, -1 do
-        local sprite = BossManager[val]
-        if sprite._isalive == true then
-            collision(sprite)
-            isOutOfBound(sprite)            
-        else
-            List.remove(BossManager, val)
-        end
-    end        
-end
+local size = cc.Director:getInstance():getWinSize()
+local scheduler = cc.Director:getInstance():getScheduler()
 
 local function moveCamera(dt)
     --cclog("moveCamera")
@@ -94,7 +47,6 @@ local function createBackground()
     
 end
 
-
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 10.0, 4000.0)
     camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height*1.3, size.height/2-30))
@@ -108,6 +60,8 @@ local function setCamera()
             sprite._particle:setCamera(camera)
         end
     end      
+    
+    camera:addChild(uiLayer)
 end
 
 local function gameController(dt)
@@ -125,7 +79,6 @@ local function initUILayer()
     uiLayer:setScale(0.5)
     uiLayer:ignoreAnchorPointForPosition(false)
     uiLayer:setLocalZOrder(999)
-    camera:addChild(uiLayer)
 end
 
 local BattleScene = class("BattleScene",function()
@@ -145,9 +98,9 @@ function BattleScene.create()
     scene:addChild(currentLayer)
     
     createBackground()
-    gameMaster = require "GameMaster".create()
-    setCamera()
+    gameMaster = require("GameMaster").create()
     initUILayer()
+    setCamera()
     scheduler:scheduleScriptFunc(gameController, 0, false)
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,BattleScene.sendDropBlood)

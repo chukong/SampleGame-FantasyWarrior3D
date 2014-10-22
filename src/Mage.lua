@@ -34,7 +34,7 @@ function Mage:ctor()
     self._specialAngle = 360
     self._specialKnock = 100
 
-
+    self._mass = 500
 
     self:init3D()
     self:initActions()
