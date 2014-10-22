@@ -15,7 +15,7 @@ local gloableZOrder = 1
 local monsterCount = {dragon=3,slime=3,piglet=2,rat=3}
 local EXIST_MIN_MONSTER = 2
 local kill_count = 0
-local KILL_MAX_MONSTER = 0
+local KILL_MAX_MONSTER = 5
 local showboss = false
 local scheduleid
 
@@ -173,16 +173,13 @@ end
 
 function GameMaster:randomshowMonster()
 	local random_var = math.random()
+	random_var = 0.4
 	if random_var<0.25 then
 		self:showDragon()
 	elseif random_var<0.5 then
 		self:showPiglet()
 	elseif random_var<0.75 then
-<<<<<<< HEAD
 		self:showSlime()
-=======
-		--self:ShowSlime()
->>>>>>> 1f447d26488c12c6979aa92a6bb7fc6464ad65c5
 	else
 		self:showRat()
 	end
