@@ -176,11 +176,7 @@ void MeshCommand::applyRenderState()
         glEnable(GL_DEPTH_TEST);
         s_depthTestEnabled = true;
     }
-    if (_depthWriteEnabled && !s_depthWriteEnabled)
-    {
         glDepthMask(GL_TRUE);
-        s_depthWriteEnabled = true;
-    }
 }
 
 void MeshCommand::restoreRenderState()
@@ -194,11 +190,6 @@ void MeshCommand::restoreRenderState()
     {
 //        glDisable(GL_DEPTH_TEST);
         //s_depthTestEnabled = false;
-    }
-    if (s_depthWriteEnabled)
-    {
-        glDepthMask(GL_FALSE);
-        s_depthWriteEnabled = false;
     }
     s_cullFace = 0;
 }
