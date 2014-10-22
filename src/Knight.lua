@@ -75,17 +75,19 @@ local function KninghtSpecialAttackCallback(audioID, filePatch)
 end
 
 function Knight:normalAttack()
+    ccexp.AudioEngine:play2d(WarriorProperty.shout, false,1)
     KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
     self._sprite:runAction(self._action.attackEffect:clone()) 
 
-    AUDIO_ID.KNIGHTNORMALATTACK1 = ccexp.AudioEngine:play2d(WarriorProperty.normalAttack1, false,1)
-    ccexp.AudioEngine:setFinishCallback(AUDIO_ID.KNIGHTNORMALATTACK1,KnightNormalAttackCallback)
+    AUDIO_ID.KNIGHTNORMALATTACK = ccexp.AudioEngine:play2d(WarriorProperty.normalAttack1, false,1)
+    ccexp.AudioEngine:setFinishCallback(AUDIO_ID.KNIGHTNORMALATTACK,KnightNormalAttackCallback)
 end
 
 function Knight:specialAttack()
     -- knight will create 2 attacks one by one  
     local normalAttack = self._normalAttack
     normalAttack.knock = 0
+    ccexp.AudioEngine:play2d(WarriorProperty.shout, false,1)
     KnightNormalAttack.create(getPosTable(self), self._curFacing, normalAttack)
     self._sprite:runAction(self._action.attackEffect:clone())                
 

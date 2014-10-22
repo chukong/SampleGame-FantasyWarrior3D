@@ -14,6 +14,7 @@ cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
 BGM_RES = 
 {
     MAINMENUBGM = "audios/Royal Flush Party.mp3",
+    MAINMENUSTART= "audios/effects/magical_3.mp3",
     BATTLEFIELDBGM = "audios/The_Last_Encounter_Short_Loop.mp3"
 }
 
@@ -64,10 +65,11 @@ WarriorProperty =
     defense = 100,
     speed = 50,
     special_attack_chance = 0.33,
+    shout = "audios/effects/Knight1.mp3",
     normalAttack1 = "audios/effects/swish-1.mp3",
     normalAttack2 = "audios/effects/swish-2.mp3",
     normalAttack3 = "audios/effects/swish-3.mp3",
-    normalAttack4 = "audios/effects/swish-4.mp3",
+    normalAttack4 = "audios/effects/swish-4.mp3"
 }
 
 --Mage property
