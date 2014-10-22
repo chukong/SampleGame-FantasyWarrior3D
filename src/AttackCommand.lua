@@ -175,7 +175,7 @@ function MageIceSpikes.create(pos, facing, attackInfo)
     --create 3 spikes
     local x = cc.Node:create()
     ret:addChild(x)
-    for var=0, 7 do
+    for var=0, 10 do
         local rand = math.ceil(math.random()*3)
         print(rand)
         local spike = cc.Sprite:createWithSpriteFrameName(string.format("iceSpike%d.png",rand))
@@ -187,20 +187,21 @@ function MageIceSpikes.create(pos, facing, attackInfo)
         else
             spike:setScale(2)
         end
-        spike:setOpacity(200)
+        spike:setOpacity(165)
         spike:setFlippedX(not(math.floor(math.random()*2)))
         spike:setPosition3D(cc.V3(math.random(-ret.maxRange/1.5, ret.maxRange/1.5),math.random(-ret.maxRange/1.5, ret.maxRange/1.5),1))
         spike:setGlobalZOrder(-ret:getPositionY()-spike:getPositionY()+FXZorder)
         x:setScale(0)
+        x:setPositionZ(-210)
     end
-    local function test()
-        x:setPositionZ(-105)
-    end
-    x:runAction(cc.Sequence:create(cc.CallFunc:create(test),cc.EaseElasticOut:create(cc.MoveBy:create(0.6,cc.V3(0,0,100)))))
-    x:runAction(cc.EaseElasticOut:create(cc.ScaleTo:create(0.7, 1)))
+    x:runAction(cc.EaseBackOut:create(cc.MoveBy:create(0.3,cc.V3(0,0,200))))
+    x:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.4, 1)))
     
+    local puff = cc.BillboardParticleSystem:create("FX/puffRing.plist")
+    local puffFrame = cc.SpriteFrameCache:getInstance():getSpriteFrame("puff.png")
+    puff:setTextureWithRect(puffFrame:getTexture(), puffFrame:getRect())
     
-    
+    ret:addChild(puff)
     
     return ret
 end

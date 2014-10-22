@@ -397,15 +397,8 @@ bool BillboardParticleSystem::initWithFile(const std::string& plistFile)
     
     // XXX compute path from a path, should define a function somewhere to do it
     string listFilePath = plistFile;
-    if (listFilePath.find('/') != string::npos)
-    {
-        listFilePath = listFilePath.substr(0, listFilePath.rfind('/') + 1);
-        ret = this->initWithDictionary(dict, listFilePath.c_str());
-    }
-    else
-    {
-        ret = this->initWithDictionary(dict, "");
-    }
+
+    ret = this->initWithDictionary(dict, "");
     
     return ret;
 }
@@ -569,76 +562,76 @@ bool BillboardParticleSystem::initWithDictionary(ValueMap& dictionary, const std
             // Set a compatible default for the alpha transfer
             _opacityModifyRGB = false;
             
-            // texture
-            // Try to get the texture from the cache
-            std::string textureName = dictionary["textureFileName"].asString();
-            
-            size_t rPos = textureName.rfind('/');
-            
-            if (rPos != string::npos)
-            {
-                string textureDir = textureName.substr(0, rPos + 1);
-                
-                if (!dirname.empty() && textureDir != dirname)
-                {
-                    textureName = textureName.substr(rPos+1);
-                    textureName = dirname + textureName;
-                }
-            }
-            else if (!dirname.empty() && !textureName.empty())
-            {
-                textureName = dirname + textureName;
-            }
-            
-            Texture2D *tex = nullptr;
-            
-            if (textureName.length() > 0)
-            {
-                // set not pop-up message box when load image failed
-                bool notify = FileUtils::getInstance()->isPopupNotify();
-                FileUtils::getInstance()->setPopupNotify(false);
-                tex = Director::getInstance()->getTextureCache()->addImage(textureName);
-                // reset the value of UIImage notify
-                FileUtils::getInstance()->setPopupNotify(notify);
-            }
-            
-            if (tex)
-            {
-                setTexture(tex);
-            }
-            else if( dictionary.find("textureImageData") != dictionary.end() )
-            {
-                std::string textureData = dictionary.at("textureImageData").asString();
-                CCASSERT(!textureData.empty(), "");
-                
-                auto dataLen = textureData.size();
-                if (dataLen != 0)
-                {
-                    // if it fails, try to get it from the base64-gzipped data
-                    int decodeLen = base64Decode((unsigned char*)textureData.c_str(), (unsigned int)dataLen, &buffer);
-                    CCASSERT( buffer != nullptr, "CCParticleSystem: error decoding textureImageData");
-                    CC_BREAK_IF(!buffer);
-                    
-                    ssize_t deflatedLen = ZipUtils::inflateMemory(buffer, decodeLen, &deflated);
-                    CCASSERT( deflated != nullptr, "CCParticleSystem: error ungzipping textureImageData");
-                    CC_BREAK_IF(!deflated);
-                    
-                    // For android, we should retain it in VolatileTexture::addImage which invoked in Director::getInstance()->getTextureCache()->addUIImage()
-                    image = new (std::nothrow) Image();
-                    bool isOK = image->initWithImageData(deflated, deflatedLen);
-                    CCASSERT(isOK, "CCParticleSystem: error init image with Data");
-                    CC_BREAK_IF(!isOK);
-                    
-                    setTexture(Director::getInstance()->getTextureCache()->addImage(image, textureName.c_str()));
-                    
-                    image->release();
-                }
-            }
+//            // texture
+//            // Try to get the texture from the cache
+//            std::string textureName = dictionary["textureFileName"].asString();
+//            
+//            size_t rPos = textureName.rfind('/');
+//            
+//            if (rPos != string::npos)
+//            {
+//                string textureDir = textureName.substr(0, rPos + 1);
+//                
+//                if (!dirname.empty() && textureDir != dirname)
+//                {
+//                    textureName = textureName.substr(rPos+1);
+//                    textureName = dirname + textureName;
+//                }
+//            }
+//            else if (!dirname.empty() && !textureName.empty())
+//            {
+//                textureName = dirname + textureName;
+//            }
+//            
+//            Texture2D *tex = nullptr;
+//            
+//            if (textureName.length() > 0)
+//            {
+//                // set not pop-up message box when load image failed
+//                bool notify = FileUtils::getInstance()->isPopupNotify();
+//                FileUtils::getInstance()->setPopupNotify(false);
+//                tex = Director::getInstance()->getTextureCache()->addImage(textureName);
+//                // reset the value of UIImage notify
+//                FileUtils::getInstance()->setPopupNotify(notify);
+//            }
+//            
+//            if (tex)
+//            {
+//                setTexture(tex);
+//            }
+//            else if( dictionary.find("textureImageData") != dictionary.end() )
+//            {
+//                std::string textureData = dictionary.at("textureImageData").asString();
+//                CCASSERT(!textureData.empty(), "");
+//                
+//                auto dataLen = textureData.size();
+//                if (dataLen != 0)
+//                {
+//                    // if it fails, try to get it from the base64-gzipped data
+//                    int decodeLen = base64Decode((unsigned char*)textureData.c_str(), (unsigned int)dataLen, &buffer);
+//                    CCASSERT( buffer != nullptr, "CCParticleSystem: error decoding textureImageData");
+//                    CC_BREAK_IF(!buffer);
+//                    
+//                    ssize_t deflatedLen = ZipUtils::inflateMemory(buffer, decodeLen, &deflated);
+//                    CCASSERT( deflated != nullptr, "CCParticleSystem: error ungzipping textureImageData");
+//                    CC_BREAK_IF(!deflated);
+//                    
+//                    // For android, we should retain it in VolatileTexture::addImage which invoked in Director::getInstance()->getTextureCache()->addUIImage()
+//                    image = new (std::nothrow) Image();
+//                    bool isOK = image->initWithImageData(deflated, deflatedLen);
+//                    CCASSERT(isOK, "CCParticleSystem: error init image with Data");
+//                    CC_BREAK_IF(!isOK);
+//                    
+//                    setTexture(Director::getInstance()->getTextureCache()->addImage(image, textureName.c_str()));
+//                    
+//                    image->release();
+//                }
+//            }
             
             _yCoordFlipped = dictionary.find("yCoordFlipped") == dictionary.end() ? 1 : dictionary.at("yCoordFlipped").asInt();
             
-            if( !this->_texture)
-                CCLOGWARN("cocos2d: Warning: ParticleSystemQuad system without a texture");
+//            if( !this->_texture)
+//                CCLOGWARN("cocos2d: Warning: ParticleSystemQuad system without a texture");
             ret = true;
         }
     } while (0);

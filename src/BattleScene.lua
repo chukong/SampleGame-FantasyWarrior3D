@@ -43,7 +43,7 @@ local function createBackground()
     currentLayer:addChild(water)
     water:setPosition3D(cc.V3(-3500,-400,-35))
     water:setAnchorPoint(0,0)
-    water:setGlobalZOrder(-9)
+    water:setGlobalZOrder(1)
     
 end
 
