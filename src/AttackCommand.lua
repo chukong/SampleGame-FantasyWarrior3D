@@ -5,7 +5,7 @@ AttackManager = List.new()
 function solveAttacks(dt)
     for val = AttackManager.last, AttackManager.first, -1 do
         local attack = AttackManager[val]
-        if attack.mask == EnumRaceType.HERO then
+        if attack.mask == EnumRaceType.KNIGHT or attack.mask == EnumRaceType.ARCHER or attack.mask == EnumRaceType.MAGE then
             --if heroes attack, then lets check monsters
             for mkey = MonsterManager.last, MonsterManager.first, -1 do
                 --check distance first
@@ -130,7 +130,7 @@ function MageNormalAttack.create(pos,facing,attackInfo, target)
     ret:initData(pos,facing,attackInfo)
     ret._target = target
     
-    ret.sp = cc.BillBoard:create("FX/FX.png", cc.rect(208,290,45,44))
+    ret.sp = cc.BillBoard:create("FX/FX.png", cc.rect(208,290,45,44), 0)
     --ret.sp:setCamera(camera)
     ret.sp:setPosition3D(cc.V3(0,0,50))
     ret.sp:setScale(2)
@@ -174,7 +174,7 @@ function MageNormalAttack:onTimeOut()
     magic:setGlobalZOrder(-self:getPositionY()*2+FXZorder)
     magic:setPositionZ(0)
     
-    local ice = cc.BillBoard:create("FX/FX.png", cc.rect(75,327,35,25))
+    local ice = cc.BillBoard:create("FX/FX.png", cc.rect(75,327,35,25),0)
     ice:setScale(4)
     self:addChild(ice)
     ice:setPositionZ(50)
@@ -225,7 +225,6 @@ function MageIceSpikes.create(pos, facing, attackInfo)
     ret:addChild(x)
     for var=0, 10 do
         local rand = math.ceil(math.random()*3)
-        print(rand)
         local spike = cc.Sprite:createWithSpriteFrameName(string.format("iceSpike%d.png",rand))
         spike:setAnchorPoint(0.5,0)
         spike:setRotation3D(cc.V3(90,0,0))

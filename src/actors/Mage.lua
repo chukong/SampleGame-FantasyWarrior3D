@@ -13,7 +13,7 @@ function Mage:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._racetype = EnumRaceType.HERO
+    self._racetype = EnumRaceType.MAGE
     self._attackFrequency = 4.7
     self._AIFrequency = 1.3
     self._name = "Mage"
@@ -22,7 +22,7 @@ function Mage:ctor()
     
     --normal attack
     self._attackMinRadius = 0
-	self._attackMaxRadius = 10
+	self._attackMaxRadius = 50
     self._attack = 300
     self._attackAngle = 360
     self._attackKnock = 0
@@ -55,36 +55,32 @@ function Mage.create()
     return ret
 end
 function Mage:normalAttack()
+    ccexp.AudioEngine:play2d(MageProperty.normalAttack, false,1)
     MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack, self._target)
 end
 function Mage:specialAttack()
-    self:normalAttack()
     --mage will create 3 ice spikes on the ground
     --get 3 positions
---    local pos1 = getPosTable(self)
---    local pos2 = getPosTable(self)
---    local pos3 = getPosTable(self)
---    pos1.x = pos1.x+130
---    pos2.x = pos2.x+330
---    pos3.x = pos3.x+530
---    pos1 = cc.pRotateByAngle(pos1, self._myPos, self._curFacing)
---    pos2 = cc.pRotateByAngle(pos2, self._myPos, self._curFacing)
---    pos3 = cc.pRotateByAngle(pos3, self._myPos, self._curFacing)
---    MageIceSpikes.create(pos1, self._curFacing, self._specialAttack)
---    local function spike2()
---        MageIceSpikes.create(pos2, self._curFacing, self._specialAttack)
---    end
---    local function spike3()
---        MageIceSpikes.create(pos3, self._curFacing, self._specialAttack)
---    end
---    delayExecute(self,spike2,0.25)
---    delayExecute(self,spike3,0.5)
+    local pos1 = getPosTable(self)
+    local pos2 = getPosTable(self)
+    local pos3 = getPosTable(self)
+    pos1.x = pos1.x+130
+    pos2.x = pos2.x+330
+    pos3.x = pos3.x+530
+    pos1 = cc.pRotateByAngle(pos1, self._myPos, self._curFacing)
+    pos2 = cc.pRotateByAngle(pos2, self._myPos, self._curFacing)
+    pos3 = cc.pRotateByAngle(pos3, self._myPos, self._curFacing)
+    MageIceSpikes.create(pos1, self._curFacing, self._specialAttack)
+    local function spike2()
+        MageIceSpikes.create(pos2, self._curFacing, self._specialAttack)
+    end
+    local function spike3()
+        MageIceSpikes.create(pos3, self._curFacing, self._specialAttack)
+    end
+    delayExecute(self,spike2,0.25)
+    delayExecute(self,spike3,0.5)
 
 end
-
-
-
-
 
 function Mage:init3D()
     self:initShadow()
@@ -105,7 +101,7 @@ function Mage:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 1.2, -- 0 duration means it will be removed upon calculation
-        speed    = 900
+        speed    = 500
     }
     self._specialAttack = {
         minRange = self._specialMinRadius,

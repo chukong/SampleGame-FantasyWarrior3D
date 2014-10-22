@@ -5,8 +5,16 @@ require "AttackCommand"
 
 EnumRaceType = 
 { 
-    "HERO",
-    "MONSTER"
+    "DEBUG",
+    "BASE",
+    "HERO",  --only this
+    "WARRIOR",
+    "KNIGHT",
+    "ARCHER",
+    "MAGE",
+    "MONSTER", --and this
+    "BOSS", 
+    "DRAGON",
 }
 EnumRaceType = CreateEnumTable(EnumRaceType) 
 
