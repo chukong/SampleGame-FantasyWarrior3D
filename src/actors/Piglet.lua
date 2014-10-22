@@ -135,7 +135,11 @@ end
 function Piglet:dyingMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.DYING)
     self:playAnimation("dead")
+    
+    --Twice play in order to inhance the sounds,
     ccexp.AudioEngine:play2d(MonsterPigletValues.dead, false,1)
+    ccexp.AudioEngine:play2d(MonsterPigletValues.dead, false,1)
+    
     if knockAmount then
         local p = getPosTable(self)
         local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
@@ -177,6 +181,59 @@ function Piglet:initAttackInfo()
     }
 end
 
+function Piglet:normalAttack()
+    BasicCollider.create(getPosTable(self), self._curFacing, self._normalAttack)
+    
+    local randomEffect =  math.random()                   
+    if randomEffect<=0.3 and randomEffect>=0 then
+        ccexp.AudioEngine:play2d(MonsterPigletValues.attack1, false,1)
+    elseif randomEffect<=0.6 and randomEffect>0.3 then
+        ccexp.AudioEngine:play2d(MonsterPigletValues.attack2, false,1)  
+    elseif randomEffect>0.6 and randomEffect<=1 then
+        ccexp.AudioEngine:play2d(MonsterPigletValues.attack3, false,1)              
+    end
+end
+
+function Piglet:hurt(collider)
+    if self._isalive == true then        
+        ccexp.AudioEngine:play2d(MonsterPigletValues.hurt, false,0.5)
+        local damage = collider.damage
+        if math.random() >= 0.5 then
+            damage = damage + damage * 0.15
+        else
+            damage = damage - damage * 0.15
+        end
+
+        damage = damage - self._defense
+        damage = math.floor(damage)
+        if damage <= 0 then
+            damage = 1
+        end
+
+        self._hp = self._hp - damage
+
+        if self._hp > 0 then
+            if collider.knock then
+                self:knockMode(getPosTable(collider),collider.knock)
+            end
+        else
+            self._hp = 0
+            self._isalive = false
+            self:dyingMode(getPosTable(collider),collider.knock)        
+        end
+
+        local blood = self._dropBlood:showBloodLossNum(damage)
+        if self._racetype == EnumRaceType.MONSTER then
+            blood:setPositionZ(70)
+        else
+            blood:setPositionZ(150)
+        end
+        self:addChild(blood)
+
+        local dropBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, dropBlood)
+    end
+end
 --function Piglet:attackUpdate(dt)
 --    self._attackTimer = self._attackTimer + dt
 --    if self._attackTimer > self._attackFrequency then

@@ -56,6 +56,7 @@ function Mage.create()
 end
 function Mage:normalAttack()
     self:specialAttack()
+    ccexp.AudioEngine:play2d(MageProperty.normalAttack, false,1)
 --    MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
 end
 function Mage:specialAttack()
