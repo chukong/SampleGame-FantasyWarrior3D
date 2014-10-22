@@ -87,7 +87,7 @@ function Knight:specialAttack()
     local normalAttack = self._normalAttack
     normalAttack.knock = 0
     KnightNormalAttack.create(getPosTable(self), self._curFacing, normalAttack)
-    --self._sprite:runAction(self._action.attackEffect:clone())                
+    self._sprite:runAction(self._action.attackEffect:clone())                
 
     local pos = getPosTable(self)
     pos.x = pos.x+50
@@ -98,9 +98,9 @@ function Knight:specialAttack()
     
     local function punch()
         KnightNormalAttack.create(pos, self._curFacing, self._specialAttack)
-        --self._sprite:runAction(self._action.attackEffect:clone())                
+        self._sprite:runAction(self._action.attackEffect:clone())                
     end
-    delayExecute(self,punch,0.4)
+    delayExecute(self,punch,0.2)
 end
 
 function Knight:initAttackInfo()
@@ -131,24 +131,25 @@ function Knight:initAttackEffect()
     local speed = 0.1
     local startRotate = 145
     local rotate = -60
+    local scale = 0.01
     local sprite = cc.Sprite:createWithSpriteFrameName("specialAttack.jpg")
-    --sprite:setVisible(false)
+    sprite:setVisible(false)
     sprite:setBlendFunc(gl.ONE_MINUS_SRC_ALPHA,gl.ONE)
-    sprite:setScale(4)
-    --sprite:setScaleX(0.01)
+    sprite:setScaleX(scale)
     sprite:setRotation(startRotate)
-    --sprite:setOpacity(0)
+    sprite:setOpacity(0)
     sprite:setAnchorPoint(cc.p(0.5, -1))    
-    sprite:setPosition3D(cc.V3(0, 0, 50))
+    sprite:setPosition3D(cc.V3(10, 0, 50))
     self:addChild(sprite)
 
-    local scaleAction = cc.ScaleBy:create(speed, 100, 2)
+    local scaleAction = cc.ScaleTo:create(speed, 1, 1)
     local rotateAction = cc.RotateBy:create(speed, rotate)
     local attack = cc.Spawn:create(scaleAction, rotateAction)
     local attack = cc.EaseCircleActionOut:create(attack)
     local fadeAction = cc.FadeIn:create(speed)
+    
     local fadeAction2 = cc.FadeOut:create(0)
-    local scaleAction2 = cc.ScaleBy:create(0, 0.01, 1)
+    local scaleAction2 = cc.ScaleTo:create(0, scale, 1)
     local rotateAction2 = cc.RotateTo:create(0, startRotate)
     local restore = cc.Spawn:create(fadeAction2, scaleAction2, rotateAction2, cc.Hide:create())
 
