@@ -135,7 +135,11 @@ end
 function Piglet:dyingMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.DYING)
     self:playAnimation("dead")
+    
+    --Twice play in order to inhance the sounds,
     ccexp.AudioEngine:play2d(MonsterPigletValues.dead, false,1)
+    ccexp.AudioEngine:play2d(MonsterPigletValues.dead, false,1)
+    
     if knockAmount then
         local p = getPosTable(self)
         local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
@@ -191,7 +195,7 @@ end
 
 function Piglet:hurt(collider)
     if self._isalive == true then        
-        ccexp.AudioEngine:play2d(MonsterPigletValues.hurt, false,1)
+        ccexp.AudioEngine:play2d(MonsterPigletValues.hurt, false,0.5)
         local damage = collider.damage
         if math.random() >= 0.5 then
             damage = damage + damage * 0.15
