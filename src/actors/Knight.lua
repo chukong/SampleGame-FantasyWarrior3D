@@ -68,6 +68,7 @@ end
 
 function Knight:hurt(collider)
     if self._isalive == true then        
+        ccexp.AudioEngine:play2d(WarriorProperty.hurt, false,1)
         local damage = collider.damage
         if math.random() >= 0.5 then
             damage = damage + damage * 0.15
