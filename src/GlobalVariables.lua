@@ -7,7 +7,6 @@ G =
 {
     winSize = cc.Director:getInstance():getWinSize(),
     bloodPercentDropSpeed = 2,
-    battleScene = nil
 }
 cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
 
@@ -51,7 +50,8 @@ MonsterPigletValues =
         fileName = "model/piglet/piglet.c3b",
         attack1 = "audios/effects/piglet1.mp3",
         attack2 = "audios/effects/piglet2.mp3",
-        attack3 = "audios/effects/piglet3.mp3"
+        attack3 = "audios/effects/piglet3.mp3",
+        dead = "audios/effects/pigletDead.mp3"
     }
     
 --Warroir property
@@ -62,6 +62,10 @@ WarriorProperty =
     defense = 100,
     speed = 50,
     special_attack_chance = 0.33,
+    normalAttack1 = "audios/effects/swish-1.mp3",
+    normalAttack2 = "audios/effects/swish-2.mp3",
+    normalAttack3 = "audios/effects/swish-3.mp3",
+    normalAttack4 = "audios/effects/swish-4.mp3",
 }
 
 --Mage property

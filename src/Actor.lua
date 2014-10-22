@@ -231,11 +231,17 @@ function Actor:setFacing(degrees)
     self:setRotation(degrees)
 end
 
+function Actor:getAIEnabled()
+    return self._AIEnabled
+end
+
+function Actor:setAIEnabled(enable)
+    self._AIEnabled = enable
+end
 
 function Actor:hurt(collider)
     if self._isalive == true then        
         local damage = collider.damage
-        G.battleScene.sendDropBlood(damage,self)
         if math.random() >= 0.5 then
            damage = damage + damage * 0.15
         else
@@ -255,6 +261,7 @@ function Actor:hurt(collider)
                 self:knockMode(getPosTable(collider),collider.knock)
             end
         else
+            self._hp = 0
             self._isalive = false
             self:dyingMode(getPosTable(collider),collider.knock)        
         end
@@ -265,8 +272,10 @@ function Actor:hurt(collider)
         else
             blood:setPositionZ(150)
         end
-        G.battleScene.sendDropBlood(damage,self)
-        self:addChild(blood)   
+        self:addChild(blood)
+
+        local dropBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, dropBlood)
     end
 end
 --======attacking collision check

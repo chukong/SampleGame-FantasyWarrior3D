@@ -111,6 +111,7 @@ function GameMaster:addPiglet()
     	local piglet = Piglet:create()
     	currentLayer:addChild(piglet)
     	piglet:setVisible(false)
+    	piglet:setAIEnabled(false)
     	List.pushlast(PigletPool,piglet)
     end   
 end
@@ -143,8 +144,8 @@ function GameMaster:showPiglet()
         if appearPos.x < heroOriginPositionX then appearPos.x = appearPos.x + 2400 end
         if appearPos.x > 0 then appearPos.x = appearPos.x - 2400 end
         piglet:setPosition(appearPos)
-        --currentLayer:addChild(piglet)
         piglet:setVisible(true)
+        piglet:setAIEnabled(true)
         List.pushlast(MonsterManager, piglet)
         kill_count = kill_count + 1
     end
@@ -172,13 +173,16 @@ end
 
 function GameMaster:randomshowMonster()
 	local random_var = math.random()
-	random_var = 0.4
 	if random_var<0.25 then
 		self:showDragon()
 	elseif random_var<0.5 then
 		self:showPiglet()
 	elseif random_var<0.75 then
+<<<<<<< HEAD
 		self:showSlime()
+=======
+		--self:ShowSlime()
+>>>>>>> 1f447d26488c12c6979aa92a6bb7fc6464ad65c5
 	else
 		self:showRat()
 	end

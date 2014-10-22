@@ -58,69 +58,6 @@ local function collisionDetect(dt)
     end        
 end
 
-local function findEnemy(object, manager)
-    if object == nil or object._isalive == false then return end
-
-    local find = false
-    local shortest_distance = 1000
-    for val = manager.first, manager.last do
-        local objectTemp = manager[val]
-        local dis = cc.pGetDistance(getPosTable(object),getPosTable(objectTemp))
-        if dis < shortest_distance and objectTemp._isalive then
-            object:setTarget(objectTemp)
-            shortest_distance = dis
-            find = true
-        end
-    end
-    
-    if find == false then
-        object:setRotation(0)
-        object:setState(EnumStateType.WALK)
-        object:setTarget(nil)
-    else
-        if isInCircleSector(object, object._target) then
-            object:setState(EnumStateType.ATTACK)
-        else
-            object:setState(EnumStateType.WALK)    
-            faceToEnemy(object, object._target)
-        end
-    end
-end
-
-local function findAllEnemy()
-    if currentStep > 3 and findAliveBoss() == 0 and findAliveMonster() == 0 then
-        return
-    end
-
-    local monsterSize = List.getSize(MonsterManager)
-    local bossSize = List.getSize(BossManager)    
-    --hero find monster and boss
-    for val = HeroManager.first, HeroManager.last do
-        local sprite = HeroManager[val]
-        findEnemy(sprite, MonsterManager)
-    end
-        
-    if bossSize > 0 then  
-        for val = HeroManager.first, HeroManager.last do
-            local sprite = HeroManager[val]
-            findEnemy(sprite, BossManager)
-        end           
-    end        
-        
-    --monster and boss find hero
-    for val = MonsterManager.first, MonsterManager.last do
-       local objectTemp = MonsterManager[val]
-       findEnemy(objectTemp, HeroManager)
-   end
-
-    if bossSize > 0 then  
-        for val = BossManager.first, BossManager.last do
-            local objectTemp = BossManager[val]
-            findEnemy(objectTemp, HeroManager)
-        end          
-    end   
-end
-
 local function moveCamera(dt)
     --cclog("moveCamera")
     if camera and List.getSize(HeroManager) > 0 then
@@ -140,21 +77,8 @@ local function updateParticlePos()
     end
 end
 
-local function addParticleToRole(role)
-    role._particle = cc.BillboardParticleSystem:create("effect/walkingPuff.plist")
-    role._particle:setDepthTestEnabled(true)
-    role._particle:setScale(1)
-    role._particle:setPositionZ(15)
-    role._particle:setDuration(-1)    
-    role._particle:setStartColor({r=234,g=123,b=245,a=255})
-    currentLayer:addChild(role._particle,5)
-    role._particle:setEmissionRate(0)
-end
-
 local function createBackground()
     local spriteBg = cc.Sprite3D:create("model/scene1.c3b", "model/zhenghe.png")
---    local spriteBg = cc.Sprite3D:create("model/changjing.c3b")
---    spriteBg:setTexture(cc.Director:getInstance():getTextureCache():addImage("model/zhenghe.png"))
 
     currentLayer:addChild(spriteBg)
     spriteBg:setScale(2.65)
@@ -170,51 +94,6 @@ local function createBackground()
     
 end
 
-local function createEnemy(step)
-    if  step ~= currentStep  then return end
-
-    --On step 1&2, three monsters would attack you
-    --On step 3, boss would bite you 
-    if currentStep == 1 or currentStep == 2 then
-        for val = 1, 3 do
-            local sprite = List.popfirst(MonsterPool)
-            if sprite ~= nil then
-                sprite:setVisible(true)
-                List.pushlast(MonsterManager, sprite)
-            end
-        end
-        currentStep = currentStep + 1
-    elseif currentStep == 3 then
-        local sprite = List.popfirst(BossPool)
-        if sprite ~= nil then
-            sprite:setVisible(true)    
-            List.pushlast(BossManager, sprite)
-        end
-        currentStep = currentStep + 1                    
-    end    
-end
-
-local function createRole()
-    local heroOriginPositionX = -2000
-    local test = Knight:create()
-    test:setPosition(heroOriginPositionX+500, 300)
-    currentLayer:addChild(test)
-    List.pushlast(HeroManager, test)
-    
-    local test2 = Mage:create()
-    test2:setPosition(heroOriginPositionX+600, 300)
-    currentLayer:addChild(test2)
-    List.pushlast(HeroManager, test2)
- 
-    for i=1,1 do
-        local test3 = Dragon:create()
-        test3:setPosition(heroOriginPositionX+1700, math.random(0,400))
-        currentLayer:addChild(test3)
-        List.pushlast(MonsterManager, test3)
-        test3:setFacing(180)
-    end
-   
-end
 
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 10.0, 4000.0)
@@ -222,6 +101,13 @@ local function setCamera()
     camera:lookAt(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y, 0.0), cc.V3(0.0, 1.0, 0.0))
     currentLayer:addChild(camera)
     camera:setGlobalZOrder(10)
+    
+    for val = HeroManager.first, HeroManager.last do
+        local sprite = HeroManager[val]
+        if sprite._particle then
+            sprite._particle:setCamera(camera)
+        end
+    end      
 end
 
 local function gameController(dt)
@@ -247,45 +133,25 @@ local BattleScene = class("BattleScene",function()
 end)
 
 --dropValuePercent is the dropValue/bloodValue*100
-function BattleScene.sendDropBlood(dropValuePercent, hero)
-    local function initBloodDrop(dropValuePercent, hero)
-        if uiLayer~=nil then
-            uiLayer:bloodDrop(dropValuePercent,hero)    
-        end
+function BattleScene.sendDropBlood(blood)
+    if blood._racetype == EnumRaceType.HERO then    
+        uiLayer:bloodDrop(blood)
     end
-
-    MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, initBloodDrop(dropValuePercent, hero))  
-end
-
-function BattleScene.registerBloodDrop(struct)
-
-
 end
 
 function BattleScene.create()
     local scene = BattleScene:new()
-    G.battleScene = scene
     currentLayer = cc.Layer:create()
     scene:addChild(currentLayer)
+    
     createBackground()
-
     gameMaster = require "GameMaster".create()
---    createRole()
-
     setCamera()
     initUILayer()
-
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,registerBloodDrop)
-    
-    for val = HeroManager.first, HeroManager.last do
-        local sprite = HeroManager[val]
-        if sprite._particle then
-            sprite._particle:setCamera(camera)
-        end
-    end    
-
     scheduler:scheduleScriptFunc(gameController, 0, false)
-    
+
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,BattleScene.sendDropBlood)
+
     return scene
 end
 
