@@ -54,6 +54,7 @@ end
 function Archer:normalAttack()
     ArcherNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
     AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
+    ccexp.AudioEngine:play2d(Archerproperty.wow, false,1)
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
 end
 

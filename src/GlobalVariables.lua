@@ -71,10 +71,10 @@ WarriorProperty =
     speed = 50,
     special_attack_chance = 0.33,
     shout = "audios/effects/Knight1.mp3",
-    normalAttack1 = "audios/effects/swish-1.mp3",
-    normalAttack2 = "audios/effects/swish-2.mp3",
-    specialAttack1 = "audios/effects/swish-3.mp3",
-    specialAttack2 = "audios/effects/swish-4.mp3",
+    normalAttack1 = "audios/effects/knight/swish-1.mp3",
+    normalAttack2 = "audios/effects/knight/swish-2.mp3",
+    specialAttack1 = "audios/effects/knight/swish-3.mp3",
+    specialAttack2 = "audios/effects/knight/swish-4.mp3",
     hurt = "audios/effects/gruntsound.mp3"
 }
 
@@ -82,7 +82,8 @@ WarriorProperty =
 Archerproperty =
 {
     attack1 = "audios/effects/archer/swish-3.mp3",
-    attack2 = "audios/effects/archer/swish-4.mp3"
+    attack2 = "audios/effects/archer/swish-4.mp3",
+    wow = "audios/effects/archer/wow.mp3"
 }
 
 --Mage property
@@ -93,4 +94,5 @@ MageProperty =
     defense = 100,
     speed = 50,
     special_attack_chance = 0.33,
+    normalAttack = "audios/effects/mage/yeaha.mp3"
 }
