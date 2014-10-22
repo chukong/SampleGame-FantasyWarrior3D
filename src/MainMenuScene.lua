@@ -61,7 +61,7 @@ function MainMenuScene:addLogo(layer)
     --add logo
     local logo = cc.EffectSprite:create("mainmenuscene/logo.png")
     self._logoSize = logo:getContentSize()
-    logo:setPosition(self.size.width*0.53,self.size.height*0.65)
+    logo:setPosition(self.size.width*0.53,self.size.height*0.55)
     logo:setScale(0.1)
     self._logo = logo
     layer:addChild(logo,4)
@@ -86,18 +86,17 @@ end
 
 function MainMenuScene:getLightSprite()
     self._lightSprite = cc.Sprite:create("mainmenuscene/light.png")
-    self._lightSprite:setBlendFunc(gl.ONE , gl.ONE_MINUS_SRC_ALPHA)
+    self._lightSprite:setBlendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA)
+    self._lightSprite:setScale(1.2)
     
-    self._lightSprite:setPosition3D(cc.vec3(self.size.width*0.5,self.size.height*0.5,100))
+    self._lightSprite:setPosition3D(cc.vec3(self.size.width*0.5,self.size.height*0.5,0))
     local light_size = self._lightSprite:getContentSize()
-    
     local rotate_top = cc.RotateBy:create(0.05,50)
     local rotate_bottom = cc.RotateBy:create(0.05,-50)
     local origin_degree = 20
     local sprite_scale = 0
     local opacity = 100
     local scale_action = cc.ScaleTo:create(0.07,0.7)
-    
     
     local swing_l1 = cc.Sprite:create("mainmenuscene/swing_l1.png")
     swing_l1:setScale(sprite_scale)
@@ -154,25 +153,26 @@ function MainMenuScene:addPointLight(layer)
     --add lightsprite
     self:getLightSprite()
     self._lightSprite:addChild(self._pointLight)
+    self._pointLight:setPositionZ(-1)
     self:addChild(self._lightSprite,10)
 
     -- effectNormalMap
     local effectNormalMapped = cc.EffectNormalMapped:create("mainmenuscene/logo_normal.png");
     effectNormalMapped:setPointLight(self._pointLight)
-    effectNormalMapped:setKBump(100)
+    effectNormalMapped:setKBump(50)
     self._logo:setEffect(effectNormalMapped)
     
     --action
     local function getBezierAction()
         local bezierConfig1 = {
-            cc.p(self.size.width*1,self.size.height*0.5),
-            cc.p(self.size.width*1,self.size.height*0.9),
-            cc.p(self.size.width*0.5,self.size.height*0.9)
+            cc.p(self.size.width*0.9,self.size.height*0.4),
+            cc.p(self.size.width*0.9,self.size.height*0.8),
+            cc.p(self.size.width*0.5,self.size.height*0.8)
         }
         local bezierConfig2 = {
-            cc.p(self.size.width*0.3,self.size.height*0.9),
-            cc.p(self.size.width*0.3,self.size.height*0.5),
-            cc.p(self.size.width*0.5,self.size.height*0.5)
+            cc.p(self.size.width*0.1,self.size.height*0.8),
+            cc.p(self.size.width*0.1,self.size.height*0.4),
+            cc.p(self.size.width*0.5,self.size.height*0.4)
         }
         local bezier1 = cc.BezierTo:create(5,bezierConfig1)
         local bezier2 = cc.BezierTo:create(5,bezierConfig2)
@@ -194,7 +194,7 @@ function MainMenuScene:addPointLight(layer)
             local point = cc.pLerp(lightSpritePos,self._prePosition,dt*2)
             self._lightSprite:setPosition(point)
             local z = math.sin(math.rad(math.random(0,2*math.pi)))*100+100
-            self._lightSprite:setPositionZ(z)
+            --self._lightSprite:setPositionZ(z)
         end
         self._scheduleMove = cc.Director:getInstance():getScheduler():scheduleScriptFunc(movePoint,0,false)
         
@@ -211,7 +211,7 @@ function MainMenuScene:addPointLight(layer)
         --unschedule and stop action
         cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scheduleMove)
         self._lightSprite:stopAllActions()
-        self._lightSprite:setPositionZ(100)
+        --self._lightSprite:setPositionZ(100)
         self._lightSprite:runAction(cc.RepeatForever:create(getBezierAction()))      
     end
     
@@ -238,7 +238,7 @@ function MainMenuScene:addButton(layer)
 
     local button = ccui.Button:create("mainmenuscene/start.png")
     button:setPressedActionEnabled(true)
-    button:setPosition(self.size.width*0.85,self.size.height*0.25)
+    button:setPosition(self.size.width*0.5,self.size.height*0.15)
     button:addTouchEventListener(button_callback)
     layer:addChild(button,4)
     
@@ -247,7 +247,7 @@ function MainMenuScene:addButton(layer)
     effectNormalMapped:setKBump(100)
     
     local effectSprite = cc.EffectSprite:create("mainmenuscene/start.png")
-    effectSprite:setPosition(self.size.width*0.85,self.size.height*0.25)
+    effectSprite:setPosition(self.size.width*0.5,self.size.height*0.15)
     layer:addChild(effectSprite,5)
     effectSprite:setEffect(effectNormalMapped)
 end
