@@ -12,11 +12,12 @@ require "Archer"
 
 local heroOriginPositionX = -2900
 local gloableZOrder = 1
-local monsterCount = {dragon=3,slime=3,piglet=10,rat=3}
-local EXIST_MIN_MONSTER = 10
+local monsterCount = {dragon=3,slime=3,piglet=2,rat=3}
+local EXIST_MIN_MONSTER = 2
 local kill_count = 0
-local KILL_MAX_MONSTER = 15
+local KILL_MAX_MONSTER = 5
 local showboss = false
+local scheduleid
 
 local GameMaster = class("GameMaster")
 
@@ -52,11 +53,11 @@ function GameMaster:logicUpdate()
         local max_const_count = monsterCount.piglet + monsterCount.dragon + monsterCount.rat + monsterCount.slime
         local last_count = List.getSize(DragonPool) + List.getSize(SlimePool) + List.getSize(SlimePool) + List.getSize(PigletPool)
         if max_const_count - last_count < EXIST_MIN_MONSTER then
-            self:randomShowMonster()
+            self:randomshowMonster()
         end
     elseif showboss == false then
         showboss = true
-        self:ShowBoss()
+        self:showBoss()
     end
 end
 
@@ -74,11 +75,11 @@ function GameMaster:AddHeros()
    	mage:idleMode()
    	List.pushlast(HeroManager, mage)
    	
---    local archer = Archer:create()
---    archer:setPosition(heroOriginPositionX+300, 100)
---    currentLayer:addChild(archer)
---    archer:idleMode()
---    List.pushlast(HeroManager, archer)   	
+    local archer = Archer:create()
+    archer:setPosition(heroOriginPositionX+300, 100)
+    currentLayer:addChild(archer)
+    archer:idleMode()
+    List.pushlast(HeroManager, archer)   	
 
 end
 
@@ -110,7 +111,7 @@ function GameMaster:addPiglet()
     	local piglet = Piglet:create()
     	currentLayer:addChild(piglet)
     	piglet:setVisible(false)
-    	piglet._AIEnabled = false
+    	piglet:setAIEnabled(false)
     	List.pushlast(PigletPool,piglet)
     end   
 end
@@ -123,7 +124,7 @@ function GameMaster:addRat()
     end   
 end
 
-function GameMaster:ShowDragon()
+function GameMaster:showDragon()
     if List.getSize(DragonPool) ~= 0 then
         local dragon  = List.poplast(DragonPool)
         dragon:setPosition({x=800,y=0})
@@ -133,27 +134,25 @@ function GameMaster:ShowDragon()
     end
 end
 
-function GameMaster:ShowPiglet()
+function GameMaster:showPiglet()
     if List.getSize(PigletPool) ~= 0 then
         local piglet = List.popfirst(PigletPool)
         piglet:reset()
         local appearPos = getFocusPointOfHeros()
         local randomvar = math.random()
-        if randomvar < 0.5 then appearPos.x = appearPos.x - 300
-        else appearPos.x = appearPos.x + 300 end
+        if randomvar < 0.5 then appearPos.x = appearPos.x - 1200
+        else appearPos.x = appearPos.x + 1200 end
         if appearPos.x < heroOriginPositionX then appearPos.x = appearPos.x + 2400 end
         if appearPos.x > 0 then appearPos.x = appearPos.x - 2400 end
         piglet:setPosition(appearPos)
-        --currentLayer:addChild(piglet)
         piglet:setVisible(true)
-        piglet._AIEnabled = true
-        piglet:walkMode()
+        piglet:setAIEnabled(true)
         List.pushlast(MonsterManager, piglet)
         kill_count = kill_count + 1
     end
 end
 
-function GameMaster:ShowSlime()
+function GameMaster:showSlime()
 	if List.getSize(SlimePool) ~= 0 then
         local slime = List.popfirst(SlimePool)
         slime:setPosition({x=800,y=100})
@@ -163,7 +162,7 @@ function GameMaster:ShowSlime()
     end
 end
 
-function GameMaster:ShowRat()
+function GameMaster:showRat()
 	if List.getSize(RatPool) ~= 0 then
         local rat = List.popfirst(RatPool)
         rat:setPosition({x=800,y=100})
@@ -173,24 +172,67 @@ function GameMaster:ShowRat()
     end
 end
 
-function GameMaster:randomShowMonster()
+function GameMaster:randomshowMonster()
 	local random_var = math.random()
 	random_var = 0.4
 	if random_var<0.25 then
-		self:ShowDragon()
+		self:showDragon()
 	elseif random_var<0.5 then
-		self:ShowPiglet()
+		self:showPiglet()
 	elseif random_var<0.75 then
-		self:ShowSlime()
+		self:showSlime()
 	else
-		self:ShowRat()
+		self:showRat()
 	end
 end
 
-function GameMaster:ShowBoss()
-	--TODO  show warning
+function GameMaster:showBoss()
+	self:showDialog()
 	--TODO  show text dialog
 	--TODO  show boss
+end
+
+function GameMaster:showDialog()
+    local dialog = cc.Layer:create()
+    local outframe = cc.Sprite:create("battlefieldUI/outframe.png")
+    outframe:setPositionZ(1)
+    dialog:addChild(outframe)
+    local inframe = cc.Sprite:create("battlefieldUI/inframe.png")
+    inframe:setPositionX(180)
+    inframe:setPositionZ(2)
+    dialog:addChild(inframe)
+    local bossicon = cc.Sprite:create("battlefieldUI/bossicon.png")
+    bossicon:setPosition(cc.p(-300,145))
+    bossicon:setFlippedX(true)
+    bossicon:setPositionZ(3)
+    dialog:addChild(bossicon)
+    local bosslogo = cc.Sprite:create("battlefieldUI/bosslogo.png")
+    bosslogo:setPosition(cc.p(-300,-20))
+    bosslogo:setPositionZ(4)
+    dialog:addChild(bosslogo)
+    local text = cc.Label:createWithSystemFont("引擎技术哪家强？","arial",40)
+    text:setPosition(cc.p(200,0))
+    text:setPositionZ(5)
+    dialog:addChild(text)
+    dialog:setAnchorPoint(cc.p(0.5,0.5))
+    dialog:setPosition({x=300,y=50})
+    dialog:setScale(0.1)
+    dialog:setPositionZ(-cc.Director:getInstance():getZEye()/2)
+    dialog:ignoreAnchorPointForPosition(false)
+    dialog:setLocalZOrder(999)
+    camera:addChild(dialog,2)
+    dialog:runAction(cc.ScaleTo:create(0.5,0.5))
+    uiLayer:setVisible(false)
+    local function exitDialog( )
+        local function removeDialog()
+            dialog:removeFromParent()
+            uiLayer:setVisible(true)
+        end
+        dialog:runAction(cc.Sequence:create(cc.ScaleTo:create(0.5,0.1),cc.CallFunc:create(removeDialog)))
+    	cc.Director:getInstance():getScheduler():unscheduleScriptEntry(scheduleid)
+    end
+    
+    scheduleid = cc.Director:getInstance():getScheduler():scheduleScriptFunc(exitDialog,3,false)
 end
 
 return GameMaster

@@ -7,7 +7,6 @@ G =
 {
     winSize = cc.Director:getInstance():getWinSize(),
     bloodPercentDropSpeed = 2,
-    battleScene = nil
 }
 cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
 FXZorder = 1999

@@ -95,8 +95,8 @@ function Archer:initAttackInfo()
         knock    = self._attackKnock,
         damage   = self._attack,
         mask     = self._racetype,
-        duration = 2, -- 0 duration means it will be removed upon calculation
-        speed    = 500
+        duration = 3, -- 0 duration means it will be removed upon calculation
+        speed    = 800
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
