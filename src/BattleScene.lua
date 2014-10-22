@@ -22,7 +22,7 @@ local scheduler = cc.Director:getInstance():getScheduler()
 local touchPos = nil
 currentLayer = nil
 local currentStep = 1;
-local uiLayer = nil
+uiLayer = nil
 local gameMaster = nil
 
 local function collisionDetect(dt)
