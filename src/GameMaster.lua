@@ -12,8 +12,8 @@ require "Archer"
 
 local heroOriginPositionX = -2900
 local gloableZOrder = 1
-local monsterCount = {dragon=3,slime=3,piglet=1,rat=3}
-local EXIST_MIN_MONSTER = 1
+local monsterCount = {dragon=3,slime=3,piglet=3,rat=3}
+local EXIST_MIN_MONSTER = 30
 local kill_count = 0
 local KILL_MAX_MONSTER = 15
 local showboss = false
@@ -172,13 +172,12 @@ end
 
 function GameMaster:randomShowMonster()
 	local random_var = math.random()
-	random_var = 0.4
 	if random_var<0.25 then
 		self:ShowDragon()
 	elseif random_var<0.5 then
 		self:ShowPiglet()
 	elseif random_var<0.75 then
-		self:ShowSlime()
+		--self:ShowSlime()
 	else
 		self:ShowRat()
 	end
