@@ -23,8 +23,11 @@ local function solveCollision(object1, object2)
     if tempDistance < miniDistance then
         local angle = cc.pToAngleSelf(cc.pSub(obj1Pos, obj2Pos))
         local distance = miniDistance - tempDistance + 1 -- Add extra 1 to avoid 'tempDistance < miniDistance' is always true
-        object1:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(distance/2,0),obj1Pos), obj1Pos, angle))
-        object2:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(-distance/2,0),obj2Pos), obj2Pos, angle))
+        local distance1 = (1 - object1._mass / (object1._mass + object2._mass) ) * distance
+        local distance2 = distance - distance1
+
+        object1:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(distance1,0),obj1Pos), obj1Pos, angle))
+        object2:setPosition(cc.pRotateByAngle(cc.pAdd(cc.p(-distance2,0),obj2Pos), obj2Pos, angle))
     end  
 end
 
