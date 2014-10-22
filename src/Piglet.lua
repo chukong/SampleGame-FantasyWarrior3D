@@ -108,7 +108,7 @@ function Piglet:reset()
     self._isalive = true
     self._maxhp = 1000
     self:walkMode()
-    self._AIEnabled = true
+    self._AIEnabled = false
     self._target = nil
     self._cooldown = 0
     self:setPositionZ(0)
