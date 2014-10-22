@@ -22,15 +22,15 @@ function Mage:ctor()
     
     --normal attack
     self._attackMinRadius = 0
-	self._attackMaxRadius = 10
-    self._attack = 150
+	self._attackMaxRadius = 50
+    self._attack = 300
     self._attackAngle = 360
     self._attackKnock = 0
     
     --special Attack
     self._specialMinRadius = 0
-    self._specialMaxRadius = 100
-    self._specialattack = 100
+    self._specialMaxRadius = 140
+    self._specialattack = 250
     self._specialAngle = 360
     self._specialKnock = 100
 
@@ -55,9 +55,8 @@ function Mage.create()
     return ret
 end
 function Mage:normalAttack()
-    self:specialAttack()
     ccexp.AudioEngine:play2d(MageProperty.normalAttack, false,1)
---    MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+    MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack, self._target)
 end
 function Mage:specialAttack()
     --mage will create 3 ice spikes on the ground
@@ -65,9 +64,9 @@ function Mage:specialAttack()
     local pos1 = getPosTable(self)
     local pos2 = getPosTable(self)
     local pos3 = getPosTable(self)
-    pos1.x = pos1.x+150
-    pos2.x = pos2.x+350
-    pos3.x = pos3.x+550
+    pos1.x = pos1.x+130
+    pos2.x = pos2.x+330
+    pos3.x = pos3.x+530
     pos1 = cc.pRotateByAngle(pos1, self._myPos, self._curFacing)
     pos2 = cc.pRotateByAngle(pos2, self._myPos, self._curFacing)
     pos3 = cc.pRotateByAngle(pos3, self._myPos, self._curFacing)
@@ -78,8 +77,8 @@ function Mage:specialAttack()
     local function spike3()
         MageIceSpikes.create(pos3, self._curFacing, self._specialAttack)
     end
-    delayExecute(self,spike2,0.4)
-    delayExecute(self,spike3,0.8)
+    delayExecute(self,spike2,0.25)
+    delayExecute(self,spike3,0.5)
 
 end
 
@@ -102,7 +101,7 @@ function Mage:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 1.2, -- 0 duration means it will be removed upon calculation
-        speed    = 900
+        speed    = 500
     }
     self._specialAttack = {
         minRange = self._specialMinRadius,
