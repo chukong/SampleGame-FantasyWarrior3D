@@ -314,6 +314,8 @@ end
 function Actor:dyingMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.DYING)
     self:playAnimation("dead")
+    uiLayer:heroDead(self)    
+    
     if knockAmount then
         local p = getPosTable(self)
         local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
