@@ -7,23 +7,23 @@
 	<key>angleVariance</key>
 	<real>180</real>
 	<key>blendFuncDestination</key>
-	<integer>771</integer>
+	<integer>1</integer>
 	<key>blendFuncSource</key>
-	<integer>771</integer>
+	<integer>1</integer>
 	<key>configName</key>
-	<string>puffRing</string>
+	<string>magic</string>
 	<key>duration</key>
-	<real>0.01</real>
-	<key>emitterType</key>
-	<integer>0</integer>
-	<key>finishColorAlpha</key>
 	<real>0.1</real>
+	<key>emitterType</key>
+	<integer>1</integer>
+	<key>finishColorAlpha</key>
+	<real>1</real>
 	<key>finishColorBlue</key>
-	<real>0.7122651934623718</real>
+	<integer>1</integer>
 	<key>finishColorGreen</key>
-	<real>0.5495566129684448</real>
+	<integer>1</integer>
 	<key>finishColorRed</key>
-	<real>0.3286994397640228</real>
+	<integer>1</integer>
 	<key>finishColorVarianceAlpha</key>
 	<real>0</real>
 	<key>finishColorVarianceBlue</key>
@@ -35,33 +35,33 @@
 	<key>finishParticleSize</key>
 	<real>0</real>
 	<key>finishParticleSizeVariance</key>
-	<real>18.39726066589355</real>
+	<real>0</real>
 	<key>gravityx</key>
 	<real>0</real>
 	<key>gravityy</key>
 	<real>0</real>
 	<key>maxParticles</key>
-	<integer>150</integer>
+	<integer>175</integer>
 	<key>maxRadius</key>
 	<integer>0</integer>
 	<key>maxRadiusVariance</key>
 	<real>0</real>
 	<key>minRadius</key>
-	<integer>300</integer>
+	<real>115.6624603271484</real>
 	<key>minRadiusVariance</key>
 	<real>0</real>
 	<key>particleLifespan</key>
 	<real>0.5</real>
 	<key>particleLifespanVariance</key>
-	<real>0.25</real>
+	<real>0.2</real>
 	<key>radialAccelVariance</key>
-	<real>20</real>
-	<key>radialAcceleration</key>
-	<real>-100</real>
-	<key>rotatePerSecond</key>
-	<integer>360</integer>
-	<key>rotatePerSecondVariance</key>
 	<real>0</real>
+	<key>radialAcceleration</key>
+	<real>0</real>
+	<key>rotatePerSecond</key>
+	<real>0</real>
+	<key>rotatePerSecondVariance</key>
+	<real>225.973876953125</real>
 	<key>rotationEnd</key>
 	<real>0</real>
 	<key>rotationEndVariance</key>
@@ -71,21 +71,25 @@
 	<key>rotationStartVariance</key>
 	<real>0</real>
 	<key>sourcePositionVariancex</key>
-	<real>10</real>
+	<real>7</real>
 	<key>sourcePositionVariancey</key>
-	<real>10</real>
+	<real>7</real>
+	<key>sourcePositionx</key>
+	<integer>0</integer>
+	<key>sourcePositiony</key>
+	<integer>0</integer>
 	<key>speed</key>
-	<real>100</real>
+	<integer>225</integer>
 	<key>speedVariance</key>
-	<real>0</real>
+	<real>30</real>
 	<key>startColorAlpha</key>
-	<real>0.1</real>
+	<real>1</real>
 	<key>startColorBlue</key>
-	<real>1</real>
+	<real>0.9098039865493774</real>
 	<key>startColorGreen</key>
-	<real>1</real>
+	<real>0.7098039388656616</real>
 	<key>startColorRed</key>
-	<real>0.9999960064888</real>
+	<real>0.4431372880935669</real>
 	<key>startColorVarianceAlpha</key>
 	<real>0</real>
 	<key>startColorVarianceBlue</key>
@@ -95,15 +99,15 @@
 	<key>startColorVarianceRed</key>
 	<real>0</real>
 	<key>startParticleSize</key>
-	<real>32</real>
+	<real>50</real>
 	<key>startParticleSizeVariance</key>
-	<real>12</real>
+	<real>10</real>
 	<key>tangentialAccelVariance</key>
 	<real>0</real>
 	<key>tangentialAcceleration</key>
 	<real>0</real>
 	<key>textureFileName</key>
-	<string>puffRing.png</string>
+	<string></string>
 	<key>textureImageData</key>
 	<string></string>
 	<key>yCoordFlipped</key>
