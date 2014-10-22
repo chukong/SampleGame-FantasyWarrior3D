@@ -65,15 +65,21 @@ function Knight.create()
     ret:initAttackInfo()
     return ret
 end
+
+local function KnightNormalAttackCallback(audioID,filePath)
+    ccexp.AudioEngine:play2d(WarriorProperty.normalAttack2, false,1)
+end
+
+local function KninghtSpecialAttackCallback(audioID, filePatch)
+    ccexp.AudioEngine:play2d(WarriorProperty.normalAttack4, false,1)  
+end
+
 function Knight:normalAttack()
     KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
     self._sprite:runAction(self._action.attackEffect:clone()) 
-    local randomEffect =  math.random()                       
-    if randomEffect<=0.5 and randomEffect>=0 then
-        ccexp.AudioEngine:play2d(WarriorProperty.normalAttack1, false,1)
-    elseif randomEffect<=1 and randomEffect>0.5 then
-        ccexp.AudioEngine:play2d(WarriorProperty.normalAttack2, false,1)
-    end                   
+
+    AUDIO_ID.KNIGHTNORMALATTACK1 = ccexp.AudioEngine:play2d(WarriorProperty.normalAttack1, false,1)
+    ccexp.AudioEngine:setFinishCallback(AUDIO_ID.KNIGHTNORMALATTACK1,KnightNormalAttackCallback)
 end
 
 function Knight:specialAttack()
@@ -86,12 +92,10 @@ function Knight:specialAttack()
     local pos = getPosTable(self)
     pos.x = pos.x+50
     pos = cc.pRotateByAngle(pos, self._myPos, self._curFacing)    
-    local randomEffect =  math.random()                   
-    if randomEffect<=0.5 and randomEffect>=0 then
-        ccexp.AudioEngine:play2d(WarriorProperty.normalAttack3, false,1)
-    elseif randomEffect<=1 and randomEffect>0.5 then
-        ccexp.AudioEngine:play2d(WarriorProperty.normalAttack4, false,1)  
-    end
+
+    AUDIO_ID.KNIGHTSPECIALATTACK = ccexp.AudioEngine:play2d(WarriorProperty.normalAttack3, false,1)
+    ccexp.AudioEngine:setFinishCallback(AUDIO_ID.KNIGHTSPECIALATTACK,KninghtSpecialAttackCallback)
+    
     local function punch()
         KnightNormalAttack.create(pos, self._curFacing, self._specialAttack)
         self._sprite:runAction(self._action.attackEffect:clone())                
