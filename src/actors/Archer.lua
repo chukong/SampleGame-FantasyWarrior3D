@@ -27,6 +27,7 @@ function Archer:ctor()
     self._attackAngle = 360
     self._attackKnock = 0
 
+    self._mass = 500
     self:init3D()
     self:initActions()
 end

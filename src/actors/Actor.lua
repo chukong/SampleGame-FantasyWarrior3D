@@ -103,7 +103,7 @@ function Actor:ctor()
     self._recoverTime = 0.8
     self._searchDistance = 5000 --distance which enemy can be found
     self._attackRange = 100
-    
+    self._mass = 100    --weight of the role, it affects collision
     --normal attack
     self._attackMinRadius = 0
     self._attackMaxRadius = 130
