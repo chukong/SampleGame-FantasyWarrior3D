@@ -13,7 +13,7 @@ function Mage:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._racetype = EnumRaceType.HERO
+    self._racetype = EnumRaceType.MAGE
     self._attackFrequency = 4.7
     self._AIFrequency = 1.3
     self._name = "Mage"
@@ -82,10 +82,6 @@ function Mage:specialAttack()
     delayExecute(self,spike3,0.8)
 
 end
-
-
-
-
 
 function Mage:init3D()
     self:initShadow()

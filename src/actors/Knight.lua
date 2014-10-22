@@ -20,6 +20,7 @@ function Knight:ctor()
     self._name = "Knight"    
     self._attackKnock = 100
     self._mass = 1000
+    self._racetype = EnumRaceType.KNIGHT
 
     self:init3D()
     self:initActions()

@@ -89,7 +89,7 @@ end)
 
 --dropValuePercent is the dropValue/bloodValue*100
 function BattleScene.sendDropBlood(blood)
-    if blood._racetype == EnumRaceType.HERO then    
+    if blood._racetype == EnumRaceType.KNIGHT or blood._racetype == EnumRaceType.ARCHER or blood._racetype == EnumRaceType.MAGE then    
         uiLayer:bloodDrop(blood)
     end
 end
