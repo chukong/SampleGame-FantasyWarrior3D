@@ -10,12 +10,11 @@ require "Rat"
 require "Dragon"
 require "Archer"
 
-local heroOriginPositionX = -2900
 local gloableZOrder = 1
-local monsterCount = {dragon=3,slime=3,piglet=2,rat=3}
-local EXIST_MIN_MONSTER = 2
+local monsterCount = {dragon=3,slime=3,piglet=3,rat=3}
+local EXIST_MIN_MONSTER = 3
 local kill_count = 0
-local KILL_MAX_MONSTER = 5
+local KILL_MAX_MONSTER = 15
 local showboss = false
 local scheduleid
 
@@ -64,19 +63,19 @@ end
 function GameMaster:AddHeros()
 
 	local knight = Knight:create()
-   	knight:setPosition(heroOriginPositionX+500, 400)
+   	knight:setPosition(-2100, 250)
     currentLayer:addChild(knight)
     knight:idleMode()
     List.pushlast(HeroManager, knight)
-
+--
 	local mage = Mage:create()
-   	mage:setPosition(heroOriginPositionX+500, 200)
+   	mage:setPosition(-2200, 200)
    	currentLayer:addChild(mage)
    	mage:idleMode()
    	List.pushlast(HeroManager, mage)
    	
     local archer = Archer:create()
-    archer:setPosition(heroOriginPositionX+300, 100)
+    archer:setPosition(-2200, 100)
     currentLayer:addChild(archer)
     archer:idleMode()
     List.pushlast(HeroManager, archer)   	
@@ -139,11 +138,13 @@ function GameMaster:showPiglet()
         local piglet = List.popfirst(PigletPool)
         piglet:reset()
         local appearPos = getFocusPointOfHeros()
+        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
         local randomvar = math.random()
         if randomvar < 0.5 then appearPos.x = appearPos.x - 1200
         else appearPos.x = appearPos.x + 1200 end
-        if appearPos.x < heroOriginPositionX then appearPos.x = appearPos.x + 2400 end
+        if appearPos.x < G.activearea.left then appearPos.x = appearPos.x + 2400 end
         if appearPos.x > 0 then appearPos.x = appearPos.x - 2400 end
+        appearPos.y = appearPos.y -30 + randomvar*60
         piglet:setPosition(appearPos)
         piglet:setVisible(true)
         piglet:setAIEnabled(true)
@@ -187,8 +188,8 @@ function GameMaster:randomshowMonster()
 end
 
 function GameMaster:showBoss()
+    --TODO  show warning
 	self:showDialog()
-	--TODO  show text dialog
 	--TODO  show boss
 end
 
