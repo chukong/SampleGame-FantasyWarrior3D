@@ -66,4 +66,9 @@
 -- @field [parent=#cc] Sequence3D#Sequence3D Sequence3D preloaded module
 
 
+--------------------------------------------------------
+-- the cc GreyShader
+-- @field [parent=#cc] GreyShader#GreyShader GreyShader preloaded module
+
+
 return nil

@@ -8,6 +8,10 @@ function BattlefieldUI.create()
 	return layer
 end
 
+function BattlefieldUI:setGreyShader(sprite)
+
+end
+
 function BattlefieldUI:ctor()
     self:avatarInit()
     self:bloodbarInit()
@@ -17,14 +21,20 @@ function BattlefieldUI:ctor()
 end
 
 function BattlefieldUI:avatarInit()
+
     self.WarriorPng = cc.Sprite:create("battlefieldUI/UI-1136-640_03.png")
     self.WarriorPng:setPosition3D(cc.V3(860/1136*G.winSize.width,50/640*G.winSize.height,2))
     self.WarriorPng:setScale(0.5)
-    self:addChild(self.WarriorPng,2)    
+    self:addChild(self.WarriorPng,2)   
+    cc.GreyShader:setGreyShader(self.WarriorPng)
+     
     self.WarriorPngFrame = cc.Sprite:create("battlefieldUI/UI-2.png")
     self.WarriorPngFrame:setScale(0.5)
     self.WarriorPngFrame:setPosition3D(cc.V3(self.WarriorPng:getPositionX()+1,self.WarriorPng:getPositionY()-4,1))
     self:addChild(self.WarriorPngFrame,1)
+    
+    self:setGreyShader(WarriorPngFrame)
+    self:setGreyShader(WarriorPng)
     
        
     self.ArcherPng = cc.Sprite:create("battlefieldUI/UI-1136-640_11.png")
