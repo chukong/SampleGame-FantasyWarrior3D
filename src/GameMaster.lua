@@ -11,11 +11,11 @@ require "Dragon"
 require "Archer"
 
 local gloableZOrder = 1
-local monsterCount = {dragon=3,slime=3,piglet=3,rat=3}
-local EXIST_MIN_MONSTER = 3
+local monsterCount = {dragon=3,slime=3,piglet=8,rat=3}
+local EXIST_MIN_MONSTER = 5
 kill_count = 0
 show_count = 0
-local KILL_MAX_MONSTER = 3
+local KILL_MAX_MONSTER = 15
 local showboss = false
 local scheduleid
 

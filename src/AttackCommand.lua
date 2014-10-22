@@ -125,21 +125,60 @@ MageNormalAttack = class("MageNormalAttack", function()
     return BasicCollider.new()
 end)
 
-function MageNormalAttack.create(pos,facing,attackInfo)
+function MageNormalAttack.create(pos,facing,attackInfo, target)
     local ret = MageNormalAttack.new()
     ret:initData(pos,facing,attackInfo)
+    ret._target = target
     
-    ret.sp = cc.Sprite:create("btn_circle_normal.png")
+    ret.sp = cc.BillBoard:create("FX/FX.png", cc.rect(208,290,45,44), 0)
+    --ret.sp:setCamera(camera)
     ret.sp:setPosition3D(cc.V3(0,0,50))
     ret.sp:setScale(2)
-    ret.sp:setColor({r=255,g=0,b=0})
     ret:addChild(ret.sp)
     
+    local smoke = cc.ParticleSystemQuad:create("FX/iceTrail.plist")
+    local magicf = cc.SpriteFrameCache:getInstance():getSpriteFrame("puff.png")
+    smoke:setTextureWithRect(magicf:getTexture(), magicf:getRect())
+    smoke:setScale(2)
+    ret:addChild(smoke)
+    smoke:setRotation3D({x=90, y=0, z=0})
+    smoke:setGlobalZOrder(-ret:getPositionY()*2+FXZorder)
+    smoke:setPositionZ(50)
+    
+    local pixi = cc.ParticleSystemQuad:create("FX/pixi.plist")
+    local pixif = cc.SpriteFrameCache:getInstance():getSpriteFrame("particle.png")
+    pixi:setTextureWithRect(pixif:getTexture(), pixif:getRect())
+    pixi:setScale(2)
+    ret:addChild(pixi)
+    pixi:setRotation3D({x=90, y=0, z=0})
+    pixi:setGlobalZOrder(-ret:getPositionY()*2+FXZorder)
+    pixi:setPositionZ(50)
+    
+    ret.part1 = smoke
+    ret.part2 = pixi
     return ret
 end
 
 function MageNormalAttack:onTimeOut()
-    self:runAction(cc.RemoveSelf:create())
+    self.part1:stopSystem()
+    self.part2:stopSystem()
+    self.sp:removeFromParent()
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
+    
+    local magic = cc.ParticleSystemQuad:create("FX/magic.plist")
+    local magicf = cc.SpriteFrameCache:getInstance():getSpriteFrame("particle.png")
+    magic:setTextureWithRect(magicf:getTexture(), magicf:getRect())
+    magic:setScale(1.5)
+    magic:setRotation3D({x=90, y=0, z=0})
+    self:addChild(magic)
+    magic:setGlobalZOrder(-self:getPositionY()*2+FXZorder)
+    magic:setPositionZ(0)
+    
+    local ice = cc.BillBoard:create("FX/FX.png", cc.rect(75,327,35,25),0)
+    ice:setScale(4)
+    self:addChild(ice)
+    ice:setPositionZ(50)
+    ice:runAction(cc.FadeOut:create(1))
 end
 
 function MageNormalAttack:onCollide(target)
@@ -149,8 +188,16 @@ function MageNormalAttack:onCollide(target)
 end
 
 function MageNormalAttack:onUpdate(dt)
-    local selfPos = getPosTable(self)
-    local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
+    local nextPos
+    if self._target and self._target._isalive then
+        local selfPos = getPosTable(self)
+        local tpos = getPosTable(self._target)
+        local angle = cc.pToAngleSelf(cc.pSub(tpos,selfPos))
+        nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,angle)
+    else
+        local selfPos = getPosTable(self)
+        nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
+    end
     self:setPosition(nextPos)
 end
 
@@ -174,8 +221,9 @@ function MageIceSpikes.create(pos, facing, attackInfo)
     ---========
     --create 3 spikes
     local x = cc.Node:create()
+    ret.spikes = x
     ret:addChild(x)
-    for var=0, 7 do
+    for var=0, 10 do
         local rand = math.ceil(math.random()*3)
         local spike = cc.Sprite:createWithSpriteFrameName(string.format("iceSpike%d.png",rand))
         spike:setAnchorPoint(0.5,0)
@@ -186,26 +234,60 @@ function MageIceSpikes.create(pos, facing, attackInfo)
         else
             spike:setScale(2)
         end
-        spike:setOpacity(200)
+        spike:setOpacity(165)
         spike:setFlippedX(not(math.floor(math.random()*2)))
         spike:setPosition3D(cc.V3(math.random(-ret.maxRange/1.5, ret.maxRange/1.5),math.random(-ret.maxRange/1.5, ret.maxRange/1.5),1))
         spike:setGlobalZOrder(-ret:getPositionY()-spike:getPositionY()+FXZorder)
         x:setScale(0)
+        x:setPositionZ(-210)
     end
-    local function test()
-        x:setPositionZ(-105)
-    end
-    x:runAction(cc.Sequence:create(cc.CallFunc:create(test),cc.EaseElasticOut:create(cc.MoveBy:create(0.6,cc.V3(0,0,100)))))
-    x:runAction(cc.EaseElasticOut:create(cc.ScaleTo:create(0.7, 1)))
+    x:runAction(cc.EaseBackOut:create(cc.MoveBy:create(0.3,cc.V3(0,0,200))))
+    x:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.4, 1)))
     
+--    local puff = cc.BillboardParticleSystem:create("FX/puffRing2.plist")
+--    --local puff = cc.ParticleSystemQuad:create("FX/puffRing.plist")
+--    local puffFrame = cc.SpriteFrameCache:getInstance():getSpriteFrame("puff.png")
+--    puff:setTextureWithRect(puffFrame:getTexture(), puffFrame:getRect())
+--    puff:setCamera(camera)
+--    puff:setScale(3)
+--    ret:addChild(puff)
+--    puff:setGlobalZOrder(-ret:getPositionY()*2+FXZorder)
     
-    
+    local magic = cc.BillboardParticleSystem:create("FX/magic.plist")
+    local magicf = cc.SpriteFrameCache:getInstance():getSpriteFrame("particle.png")
+    magic:setTextureWithRect(magicf:getTexture(), magicf:getRect())
+    magic:setCamera(camera)
+    magic:setScale(1.5)
+    ret:addChild(magic)
+    magic:setGlobalZOrder(-ret:getPositionY()*2+FXZorder)
+    magic:setPositionZ(0)
+
     
     return ret
 end
 
 function MageIceSpikes:onTimeOut()
-    self:runAction(cc.FadeOut:create(1))
+    self.spikes:setVisible(false)
+    local puff = cc.BillboardParticleSystem:create("FX/puffRing.plist")
+    --local puff = cc.ParticleSystemQuad:create("FX/puffRing.plist")
+    local puffFrame = cc.SpriteFrameCache:getInstance():getSpriteFrame("puff.png")
+    puff:setTextureWithRect(puffFrame:getTexture(), puffFrame:getRect())
+    puff:setCamera(camera)
+    puff:setScale(3)
+    self:addChild(puff)
+    puff:setGlobalZOrder(-self:getPositionY()+FXZorder)
+    puff:setPositionZ(20)
+    
+    local magic = cc.BillboardParticleSystem:create("FX/magic.plist")
+    local magicf = cc.SpriteFrameCache:getInstance():getSpriteFrame("particle.png")
+    magic:setTextureWithRect(magicf:getTexture(), magicf:getRect())
+    magic:setCamera(camera)
+    magic:setScale(1.5)
+    self:addChild(magic)
+    magic:setGlobalZOrder(-self:getPositionY()+FXZorder)
+    magic:setPositionZ(0)
+        
+    self.sp:runAction(cc.FadeOut:create(1))
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
 end
 
