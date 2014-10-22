@@ -143,9 +143,9 @@ void BillBoardLable::setMode(Mode mode)
     _modeDirty = true;
 }
 
-BillBoard::Mode BillBoardLable::getMode() const
+BillBoardLable::Mode BillBoardLable::getMode() const
 {
-    
+    return _mode;
 }
 
 NS_CC_END

@@ -4,9 +4,11 @@
 #include "custom/BillboardParticleSystem.h"
 #include "custom/JumpBy3D.h"
 #include "custom/JumpTo3D.h"
+#include "custom/JumpBy3D.h"
 #include "custom/Water.h"
 #include "custom/EffectSprite.h"
 #include "custom/BillBoardLable.h"
+#include "custom/CCSequence3D.h"
 #include "tolua_fix.h"
 #include "LuaBasicConversions.h"
 
@@ -2511,6 +2513,55 @@ int lua_cocos2dx_custom_BillboardParticleSystem_getStartSize(lua_State* tolua_S)
 
     return 0;
 }
+int lua_cocos2dx_custom_BillboardParticleSystem_setTextureWithRect(lua_State* tolua_S)
+{
+    int argc = 0;
+    cocos2d::BillboardParticleSystem* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"cc.BillboardParticleSystem",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (cocos2d::BillboardParticleSystem*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_BillboardParticleSystem_setTextureWithRect'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 2) 
+    {
+        cocos2d::Texture2D* arg0;
+        cocos2d::Rect arg1;
+
+        ok &= luaval_to_object<cocos2d::Texture2D>(tolua_S, 2, "cc.Texture2D",&arg0);
+
+        ok &= luaval_to_rect(tolua_S, 3, &arg1, "cc.BillboardParticleSystem:setTextureWithRect");
+        if(!ok)
+            return 0;
+        cobj->setTextureWithRect(arg0, arg1);
+        return 0;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setTextureWithRect",argc, 2);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_BillboardParticleSystem_setTextureWithRect'.",&tolua_err);
+#endif
+
+    return 0;
+}
 int lua_cocos2dx_custom_BillboardParticleSystem_setStartSpinVar(lua_State* tolua_S)
 {
     int argc = 0;
@@ -4973,6 +5024,7 @@ int lua_register_cocos2dx_custom_BillboardParticleSystem(lua_State* tolua_S)
         tolua_function(tolua_S,"setEndColorVar",lua_cocos2dx_custom_BillboardParticleSystem_setEndColorVar);
         tolua_function(tolua_S,"getAtlasIndex",lua_cocos2dx_custom_BillboardParticleSystem_getAtlasIndex);
         tolua_function(tolua_S,"getStartSize",lua_cocos2dx_custom_BillboardParticleSystem_getStartSize);
+        tolua_function(tolua_S,"setTextureWithRect",lua_cocos2dx_custom_BillboardParticleSystem_setTextureWithRect);
         tolua_function(tolua_S,"setStartSpinVar",lua_cocos2dx_custom_BillboardParticleSystem_setStartSpinVar);
         tolua_function(tolua_S,"resetSystem",lua_cocos2dx_custom_BillboardParticleSystem_resetSystem);
         tolua_function(tolua_S,"setAtlasIndex",lua_cocos2dx_custom_BillboardParticleSystem_setAtlasIndex);
@@ -6009,6 +6061,59 @@ int lua_register_cocos2dx_custom_BillBoardLable(lua_State* tolua_S)
     g_typeCast["BillBoardLable"] = "cc.BillBoardLable";
     return 1;
 }
+
+int lua_cocos2dx_custom_Sequence3D_create(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"cc.Sequence3D",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        cocos2d::Vector<cocos2d::Animate3D *> arg0;
+        ok &= luaval_to_ccvector(tolua_S, 2, &arg0, "cc.Sequence3D:create");
+        if(!ok)
+            return 0;
+        cocos2d::Sequence3D* ret = cocos2d::Sequence3D::create(arg0);
+        object_to_luaval<cocos2d::Sequence3D>(tolua_S, "cc.Sequence3D",(cocos2d::Sequence3D*)ret);
+        return 1;
+    }
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d\n ", "cc.Sequence3D:create",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_Sequence3D_create'.",&tolua_err);
+#endif
+    return 0;
+}
+static int lua_cocos2dx_custom_Sequence3D_finalize(lua_State* tolua_S)
+{
+    printf("luabindings: finalizing LUA object (Sequence3D)");
+    return 0;
+}
+
+int lua_register_cocos2dx_custom_Sequence3D(lua_State* tolua_S)
+{
+    tolua_usertype(tolua_S,"cc.Sequence3D");
+    tolua_cclass(tolua_S,"Sequence3D","cc.Sequence3D","cc.ActionInterval",nullptr);
+
+    tolua_beginmodule(tolua_S,"Sequence3D");
+        tolua_function(tolua_S,"create", lua_cocos2dx_custom_Sequence3D_create);
+    tolua_endmodule(tolua_S);
+    std::string typeName = typeid(cocos2d::Sequence3D).name();
+    g_luaType[typeName] = "cc.Sequence3D";
+    g_typeCast["Sequence3D"] = "cc.Sequence3D";
+    return 1;
+}
 TOLUA_API int register_all_cocos2dx_custom(lua_State* tolua_S)
 {
 	tolua_open(tolua_S);
@@ -6028,6 +6133,7 @@ TOLUA_API int register_all_cocos2dx_custom(lua_State* tolua_S)
 	lua_register_cocos2dx_custom_Effect3DOutline(tolua_S);
 	lua_register_cocos2dx_custom_DrawNode3D(tolua_S);
 	lua_register_cocos2dx_custom_EffectSprite3D(tolua_S);
+	lua_register_cocos2dx_custom_Sequence3D(tolua_S);
 
 	tolua_endmodule(tolua_S);
 	return 1;
