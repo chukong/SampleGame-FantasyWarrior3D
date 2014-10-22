@@ -228,6 +228,13 @@
         
 --------------------------------
 -- 
+-- @function [parent=#BillboardParticleSystem] setTextureWithRect 
+-- @param self
+-- @param #cc.Texture2D texture
+-- @param #rect_table rect
+        
+--------------------------------
+-- 
 -- @function [parent=#BillboardParticleSystem] setStartSpinVar 
 -- @param self
 -- @param #float pinVar

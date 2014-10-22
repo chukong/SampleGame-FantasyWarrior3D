@@ -73,7 +73,7 @@ function Actor:ctor()
     self._speed = 500 --500units a second maximum
     self._turnSpeed = DEGREES_TO_RADIANS(225) --180 degrees a second
     self._acceleration = 750 --accelerates to 500 in a second
-    self._decceleration = 750*1.5 --stopping should be slightly faster than starting
+    self._decceleration = 750*1.7 --stopping should be slightly faster than starting
     self._goRight = true
     self._AIFrequency = 1.0 --how often AI executes in seconds
     self._attackFrequency = 4.0 --an attack move every few seconds

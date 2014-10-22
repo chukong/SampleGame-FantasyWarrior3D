@@ -75,6 +75,7 @@ public:
         START_RADIUS_EQUAL_TO_END_RADIUS = -1,
     };
     static BillboardParticleSystem * create(const std::string& filename);
+    void setTextureWithRect(Texture2D *texture, const Rect& rect);
     BillboardParticleSystem();
     ~BillboardParticleSystem();
     void setCamera(Camera* camera);
@@ -279,7 +280,6 @@ protected:
      */
     // virtual void postStep();
     void initTexCoordsWithRect(const Rect& rect);
-    void setTextureWithRect(Texture2D *texture, const Rect& rect);
     virtual void onEnter() override;
     virtual void onExit() override;
     void setupVBOandVAO();
