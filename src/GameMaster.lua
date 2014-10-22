@@ -188,9 +188,30 @@ function GameMaster:randomshowMonster()
 end
 
 function GameMaster:showBoss()
-    --TODO  show warning
-	self:showDialog()
+    self:showWarning()
+--	self:showDialog()
 	--TODO  show boss
+end
+
+function GameMaster:showWarning()
+	local warning = cc.Layer:create()
+	local warning_logo = cc.Sprite:create("battlefieldUI/caution.png")
+	warning_logo:setPosition(cc.p(100,200))
+	warning_logo:setPositionZ(1)
+	local function showdialog()
+	   warning:removeFromParent()
+	   self:showDialog()
+	end
+	warning_logo:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),cc.EaseSineOut:create(cc.Blink:create(1.5,3)),cc.CallFunc:create(showdialog)))
+	warning:addChild(warning_logo)
+	
+	warning:setScale(0.5)
+    warning:setPosition({x=250,y=80})
+    warning:setPositionZ(-cc.Director:getInstance():getZEye()/2)
+    warning:ignoreAnchorPointForPosition(false)
+    warning:setLocalZOrder(999)
+    camera:addChild(warning,2)
+
 end
 
 function GameMaster:showDialog()
@@ -222,12 +243,21 @@ function GameMaster:showDialog()
     dialog:ignoreAnchorPointForPosition(false)
     dialog:setLocalZOrder(999)
     camera:addChild(dialog,2)
-    dialog:runAction(cc.ScaleTo:create(0.5,0.5))
+    local function pausegame()
+        for var = HeroManager.first, HeroManager.last do
+            HeroManager[var]:idleMode()
+            HeroManager[var]:setAIEnabled(false)
+        end
+    end
+    dialog:runAction(cc.Sequence:create(cc.ScaleTo:create(0.5,0.5),cc.CallFunc:create(pausegame)))
     uiLayer:setVisible(false)
     local function exitDialog( )
         local function removeDialog()
             dialog:removeFromParent()
             uiLayer:setVisible(true)
+            for var = HeroManager.first, HeroManager.last do
+                HeroManager[var]:setAIEnabled(true)
+            end
         end
         dialog:runAction(cc.Sequence:create(cc.ScaleTo:create(0.5,0.1),cc.CallFunc:create(removeDialog)))
     	cc.Director:getInstance():getScheduler():unscheduleScriptEntry(scheduleid)
