@@ -56,9 +56,9 @@ end
 function LoadingScene:loadingImage_callback()
     self.numOfTexture = self.numOfTexture-1
     if self.numOfTexture == 0 then
-        print("end")
+        --print("end")
     end
-    print(self.numOfTexture)
+    --print(self.numOfTexture)
 end
 
 return LoadingScene

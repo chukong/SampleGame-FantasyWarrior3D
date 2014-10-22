@@ -226,7 +226,12 @@ end
 --add button to start game
 function MainMenuScene:addButton(layer)
     local button_callback = function(sender,eventType)
+
+        if eventType == ccui.TouchEventType.began then
+            ccexp.AudioEngine:play2d(BGM_RES.MAINMENUSTART, false,1)
+        end        
         if eventType == ccui.TouchEventType.ended then
+            ccexp.AudioEngine:stop(AUDIO_ID.MAINMENUBGM)
         	cc.Director:getInstance():replaceScene(require("BattleScene").create())
         end
     end

@@ -1,7 +1,6 @@
 require "Helper"
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
-local activearea = {width = 500, height = 640}
 
 HeroPool = List.new()
 DragonPool = List.new()
@@ -54,42 +53,26 @@ local function collision(object)
     end     
 end
 
-function getFocusPointOfHeros()
-    local ptFocus ={x=0, y=0}
-    for var =1, List.getSize(HeroManager) do
-        ptFocus.x=ptFocus.x+HeroManager[var-1]:getPositionX()
-        ptFocus.y=ptFocus.y+HeroManager[var-1]:getPositionY()
-    end
-    ptFocus.x = ptFocus.x/List.getSize(HeroManager)
-    ptFocus.y = ptFocus.y/List.getSize(HeroManager)
-    return ptFocus
-end
-
 local function isOutOfBound(object)
     local currentPos = cc.p(object:getPosition());
-    local state = false;
 
-    if currentPos.x < 0 then
-        currentPos.x = 0
-        state = true
+    if currentPos.x < G.activearea.left then
+        currentPos.x = G.activearea.left
     end    
 
-    if currentPos.x > activearea.width then
-        currentPos.x = activearea.width
-        state = true
+    if currentPos.x > G.activearea.right then
+        currentPos.x = G.activearea.right
     end
 
-    if currentPos.y < 0 then
-        currentPos.y = 0
-        state = true
+    if currentPos.y < G.activearea.bottom then
+        currentPos.y = G.activearea.bottom
     end
 
-    if currentPos.y > activearea.height then
-        currentPos.y = activearea.height
-        state = true
+    if currentPos.y > G.activearea.top then
+        currentPos.y = G.activearea.top
     end
 
-    return state
+    object:setPosition(currentPos)
 end
 
 function collisionDetect(dt)
@@ -123,4 +106,15 @@ function collisionDetect(dt)
             List.remove(BossManager, val)
         end
     end        
+end
+
+function getFocusPointOfHeros()
+    local ptFocus ={x=0, y=0}
+    for var =1, List.getSize(HeroManager) do
+        ptFocus.x=ptFocus.x+HeroManager[var-1]:getPositionX()
+        ptFocus.y=ptFocus.y+HeroManager[var-1]:getPositionY()
+    end
+    ptFocus.x = ptFocus.x/List.getSize(HeroManager)
+    ptFocus.y = ptFocus.y/List.getSize(HeroManager)
+    return ptFocus
 end

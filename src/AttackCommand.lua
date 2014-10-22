@@ -177,7 +177,6 @@ function MageIceSpikes.create(pos, facing, attackInfo)
     ret:addChild(x)
     for var=0, 7 do
         local rand = math.ceil(math.random()*3)
-        print(rand)
         local spike = cc.Sprite:createWithSpriteFrameName(string.format("iceSpike%d.png",rand))
         spike:setAnchorPoint(0.5,0)
         spike:setRotation3D(cc.V3(90,0,0))

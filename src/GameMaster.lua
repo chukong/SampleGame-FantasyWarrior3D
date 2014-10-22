@@ -10,12 +10,12 @@ require "Rat"
 require "Dragon"
 require "Archer"
 
-local heroOriginPositionX = -2900
 local gloableZOrder = 1
-local monsterCount = {dragon=3,slime=3,piglet=2,rat=3}
-local EXIST_MIN_MONSTER = 2
-local kill_count = 0
-local KILL_MAX_MONSTER = 5
+local monsterCount = {dragon=3,slime=3,piglet=3,rat=3}
+local EXIST_MIN_MONSTER = 3
+kill_count = 0
+show_count = 0
+local KILL_MAX_MONSTER = 3
 local showboss = false
 local scheduleid
 
@@ -49,13 +49,13 @@ function GameMaster:update(dt)
 end
 
 function GameMaster:logicUpdate()
-    if kill_count < KILL_MAX_MONSTER then
+    if show_count < KILL_MAX_MONSTER then
         local max_const_count = monsterCount.piglet + monsterCount.dragon + monsterCount.rat + monsterCount.slime
         local last_count = List.getSize(DragonPool) + List.getSize(SlimePool) + List.getSize(SlimePool) + List.getSize(PigletPool)
         if max_const_count - last_count < EXIST_MIN_MONSTER then
             self:randomshowMonster()
         end
-    elseif showboss == false then
+    elseif kill_count == KILL_MAX_MONSTER and showboss == false then
         showboss = true
         self:showBoss()
     end
@@ -64,19 +64,19 @@ end
 function GameMaster:AddHeros()
 
 	local knight = Knight:create()
-   	knight:setPosition(heroOriginPositionX+500, 400)
+   	knight:setPosition(-1100, 250)
     currentLayer:addChild(knight)
     knight:idleMode()
     List.pushlast(HeroManager, knight)
-
+--
 	local mage = Mage:create()
-   	mage:setPosition(heroOriginPositionX+500, 200)
+   	mage:setPosition(-1200, 200)
    	currentLayer:addChild(mage)
    	mage:idleMode()
    	List.pushlast(HeroManager, mage)
    	
     local archer = Archer:create()
-    archer:setPosition(heroOriginPositionX+300, 100)
+    archer:setPosition(-1200, 100)
     currentLayer:addChild(archer)
     archer:idleMode()
     List.pushlast(HeroManager, archer)   	
@@ -130,7 +130,6 @@ function GameMaster:showDragon()
         dragon:setPosition({x=800,y=0})
         currentLayer:addChild(dragon)
         List.pushlast(MonsterManager, dragon)
-        kill_count = kill_count + 1
     end
 end
 
@@ -139,16 +138,18 @@ function GameMaster:showPiglet()
         local piglet = List.popfirst(PigletPool)
         piglet:reset()
         local appearPos = getFocusPointOfHeros()
+        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
         local randomvar = math.random()
         if randomvar < 0.5 then appearPos.x = appearPos.x - 1200
         else appearPos.x = appearPos.x + 1200 end
-        if appearPos.x < heroOriginPositionX then appearPos.x = appearPos.x + 2400 end
+        if appearPos.x < G.activearea.left then appearPos.x = appearPos.x + 2400 end
         if appearPos.x > 0 then appearPos.x = appearPos.x - 2400 end
+        appearPos.y = appearPos.y -30 + randomvar*60
         piglet:setPosition(appearPos)
         piglet:setVisible(true)
         piglet:setAIEnabled(true)
         List.pushlast(MonsterManager, piglet)
-        kill_count = kill_count + 1
+        show_count = show_count + 1
     end
 end
 
@@ -187,9 +188,30 @@ function GameMaster:randomshowMonster()
 end
 
 function GameMaster:showBoss()
-	self:showDialog()
-	--TODO  show text dialog
+    self:showWarning()
+--	self:showDialog()
 	--TODO  show boss
+end
+
+function GameMaster:showWarning()
+	local warning = cc.Layer:create()
+	local warning_logo = cc.Sprite:create("battlefieldUI/caution.png")
+	warning_logo:setPosition(cc.p(100,200))
+	warning_logo:setPositionZ(1)
+	local function showdialog()
+	   warning:removeFromParent()
+	   self:showDialog()
+	end
+	warning_logo:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),cc.EaseSineOut:create(cc.Blink:create(1.5,3)),cc.CallFunc:create(showdialog)))
+	warning:addChild(warning_logo)
+	
+	warning:setScale(0.5)
+    warning:setPosition({x=250,y=80})
+    warning:setPositionZ(-cc.Director:getInstance():getZEye()/2)
+    warning:ignoreAnchorPointForPosition(false)
+    warning:setLocalZOrder(999)
+    camera:addChild(warning,2)
+
 end
 
 function GameMaster:showDialog()
@@ -221,12 +243,21 @@ function GameMaster:showDialog()
     dialog:ignoreAnchorPointForPosition(false)
     dialog:setLocalZOrder(999)
     camera:addChild(dialog,2)
-    dialog:runAction(cc.ScaleTo:create(0.5,0.5))
+    local function pausegame()
+        for var = HeroManager.first, HeroManager.last do
+            HeroManager[var]:idleMode()
+            HeroManager[var]:setAIEnabled(false)
+        end
+    end
+    dialog:runAction(cc.Sequence:create(cc.ScaleTo:create(0.5,0.5),cc.CallFunc:create(pausegame)))
     uiLayer:setVisible(false)
     local function exitDialog( )
         local function removeDialog()
             dialog:removeFromParent()
             uiLayer:setVisible(true)
+            for var = HeroManager.first, HeroManager.last do
+                HeroManager[var]:setAIEnabled(true)
+            end
         end
         dialog:runAction(cc.Sequence:create(cc.ScaleTo:create(0.5,0.1),cc.CallFunc:create(removeDialog)))
     	cc.Director:getInstance():getScheduler():unscheduleScriptEntry(scheduleid)
