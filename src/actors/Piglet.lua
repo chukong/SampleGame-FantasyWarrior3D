@@ -21,11 +21,11 @@ function Piglet:ctor()
     self._radius = 50
     self._attackRange = 130
     
-    self._attackMaxRadius = 130
     self._attackAngle = 30
     self._attackKnock = 50
     
     self._goRight = false
+    self._specialAttackChance = 0
     
     self:init3D()
     self:initActions()
@@ -65,8 +65,8 @@ function Piglet:reset()
     self._decceleration = 750*1.5 --stopping should be slightly faster than starting
     self._goRight = true
     self._AIFrequency = 1.0 --how often AI executes in seconds
-    self._attackFrequency = 4.0 --an attack move every few seconds
-    self._specialAttackChance = 0.33
+    self._attackFrequency = 5.0 --an attack move every few seconds
+    self._specialAttackChance = 0
     self._shadowSize = 70
     self._normalAttack = nil
     self._specialAttack = nil
@@ -110,7 +110,7 @@ function Piglet:reset()
     self:walkMode()
     self._AIEnabled = false
     self._target = nil
-    self._cooldown = 0
+    self._cooldown = false
     self:setPositionZ(0)
     
     self:initAttackInfo()
@@ -142,13 +142,14 @@ function Piglet:dyingMode(knockSource, knockAmount)
         local newPos = cc.pRotateByAngle(cc.pAdd({x=knockAmount,y=0}, p),p,angle)
         self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
     end
-    local function recircle()
+    self._AIEnabled = false
+    List.removeObj(MonsterManager,self) 
+    local function recycle()
         self:setVisible(false)
-        self:reset()
-        List.removeObj(MonsterManager,self)    	
+        --self:reset()
     	List.pushlast(PigletPool,self)
     end
-    self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(recircle)))
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(recycle)))
 end
 
 function Piglet:initAttackInfo()
@@ -175,33 +176,33 @@ function Piglet:initAttackInfo()
     }
 end
 
-function Piglet:attackUpdate(dt)
-    self._attackTimer = self._attackTimer + dt
-    if self._attackTimer > self._attackFrequency then
-        self._attackTimer = self._attackTimer - self._attackFrequency
-        local function playIdle()
-            self:playAnimation("idle", true)
-            self._cooldown = false
-        end
-        --time for an attack, which attack should i do?
-            local function createCol()
-                self:normalAttack()
-                local randomEffect =  math.random()                   
-                if randomEffect<=0.3 and randomEffect>=0 then
-                    ccexp.AudioEngine:play2d(MonsterPigletValues.attack1, false,1)
-                elseif randomEffect<=0.6 and randomEffect>0.3 then
-                    ccexp.AudioEngine:play2d(MonsterPigletValues.attack2, false,1)  
-                elseif randomEffect>0.6 and randomEffect<=1 then
-                    ccexp.AudioEngine:play2d(MonsterPigletValues.attack3, false,1)              
-                end
-            end
-            local attackAction = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(createCol),self._action.attack2:clone(),cc.CallFunc:create(playIdle))
-            self._sprite3d:stopAction(self._curAnimation3d)
-            self._sprite3d:runAction(attackAction)
-            self._curAnimation = attackAction
-            self._cooldown = true
-    end
-end
+--function Piglet:attackUpdate(dt)
+--    self._attackTimer = self._attackTimer + dt
+--    if self._attackTimer > self._attackFrequency then
+--        self._attackTimer = self._attackTimer - self._attackFrequency
+--        local function playIdle()
+--            self:playAnimation("idle", true)
+--            self._cooldown = false
+--        end
+--        --time for an attack, which attack should i do?
+--            local function createCol()
+--                self:normalAttack()
+--                local randomEffect =  math.random()                   
+--                if randomEffect<=0.3 and randomEffect>=0 then
+--                    ccexp.AudioEngine:play2d(MonsterPigletValues.attack1, false,1)
+--                elseif randomEffect<=0.6 and randomEffect>0.3 then
+--                    ccexp.AudioEngine:play2d(MonsterPigletValues.attack2, false,1)  
+--                elseif randomEffect>0.6 and randomEffect<=1 then
+--                    ccexp.AudioEngine:play2d(MonsterPigletValues.attack3, false,1)              
+--                end
+--            end
+--            local attackAction = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(createCol),self._action.attack2:clone(),cc.CallFunc:create(playIdle))
+--            self._sprite3d:stopAction(self._curAnimation3d)
+--            self._sprite3d:runAction(attackAction)
+--            self._curAnimation = attackAction
+--            self._cooldown = true
+--    end
+--end
 
 function Piglet:_findEnemy()
     local shortest = self._searchDistance
@@ -222,6 +223,7 @@ function Piglet:_findEnemy()
 end
 
 function Piglet:init3D()
+    self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setTexture("model/piglet/zhu0928.jpg")
     self._sprite3d:setScale(1.3)

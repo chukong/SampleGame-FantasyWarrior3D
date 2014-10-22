@@ -42,7 +42,7 @@ public:
     /** Initializes the command with a globalZOrder, a texture ID, a `GLProgram`, a blending function, a pointer to quads,
      * quantity of quads, and the Model View transform to be used for the quads */
     void init(float globalOrder, GLuint texutreID, GLProgramState* shader, BlendFunc blendType, V3F_C4B_T2F_Quad* quads, ssize_t quadCount,
-              const Mat4& mv);
+              const Mat4& mv, bool depthWrite = true);
 
     inline const V3F_C4B_T2F_Quad* getQuads() const { return _quads; }
     inline ssize_t getQuadCount() const { return _quadsCount; }

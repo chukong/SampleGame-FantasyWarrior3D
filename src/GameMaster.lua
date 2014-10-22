@@ -137,6 +137,7 @@ end
 function GameMaster:showPiglet()
     if List.getSize(PigletPool) ~= 0 then
         local piglet = List.popfirst(PigletPool)
+        piglet:reset()
         local appearPos = getFocusPointOfHeros()
         local randomvar = math.random()
         if randomvar < 0.5 then appearPos.x = appearPos.x - 1200

@@ -122,13 +122,13 @@ end
 
 function Actor.create()
     local base = Actor.new()	
-    base:initShadow()
 	return base
 end
-
 function Actor:initShadow()
-    self._circle = cc.Sprite:create("shadow.png")
-	self._circle:setScale(self._shadowSize/32)
+    self._circle = cc.Sprite:createWithSpriteFrameName("shadow.png")
+    --use Shadow size for aesthetic, use radius to see collision size
+    --self._circle:setScale(self._shadowSize/16)
+    self._circle:setScale(self._radius/8)
 	self._circle:setOpacity(255*0.7)
 	self:addChild(self._circle)
 end
@@ -371,9 +371,6 @@ function Actor:_inRange()
 end
 --AI function does not run every tick
 function Actor:AI()
-    --print("i think")
-    --my Brain, bleh
-    --if i don't have a target, i should try to aquire one
     if self._isalive then
         local state = self:getStateType()
         local inRange = self:_inRange()
@@ -382,20 +379,25 @@ function Actor:AI()
             local p2 = getPosTable(self._target)
             self._targetFacing = cc.pToAngleSelf(cc.pSub(p2, p1))
         end
-        if not self._target or not self._target._isalive and not self._cooldown then
+        if not self._target or not self._target._isalive then
+            --if my target is dead, find a new target
             local allDead
             self._target, allDead = self:_findEnemy()
-            if self._target then
-                self:walkMode()
-            else
-                --print("can't find")
-                self._goRight = false
+            inRange = self:_inRange()
+            if (not self._target or not self._target._isalive) and state ~= EnumStateType.IDLE then
+                self:idleMode()
+                return
             end
-            
         end
-        if state == EnumStateType.ATTACKING and not inRange and not self._cooldown then
+        if not inRange and state ~= EnumStateType.WALKING and not self._cooldown then
+            --If my target is out of range, i should walk
             self:walkMode()
+            return
         end
+--        if state == EnumStateType.ATTACKING and not inRange and  then
+--            self:walkMode()
+--            return
+--        end
     else
         -- logic when im dead 
     end

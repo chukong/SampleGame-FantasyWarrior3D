@@ -4,7 +4,7 @@ require "Manager"
 require "MessageDispatchCenter"
 
 currentLayer = nil
-local currentStep = 1;
+local currentStep = 1
 uiLayer = nil
 local gameMaster = nil
 
