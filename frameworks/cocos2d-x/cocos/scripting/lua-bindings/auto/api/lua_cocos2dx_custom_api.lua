@@ -61,4 +61,9 @@
 -- @field [parent=#cc] BillBoardLable#BillBoardLable BillBoardLable preloaded module
 
 
+--------------------------------------------------------
+-- the cc Sequence3D
+-- @field [parent=#cc] Sequence3D#Sequence3D Sequence3D preloaded module
+
+
 return nil
