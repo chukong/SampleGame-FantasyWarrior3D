@@ -36,14 +36,14 @@ function MainMenuScene:createLayer()
     --add cloud
     self:addCloud(mainLayer)
     
-    --add button
-    self:addButton(mainLayer)
-    
     --add logo
     self:addLogo(mainLayer)
     
     --add pointlight
     self:addPointLight(mainLayer)
+    
+    --add button
+    self:addButton(mainLayer)
     
     --when replease scene unschedule schedule
     local function onExit(event)
@@ -231,11 +231,20 @@ function MainMenuScene:addButton(layer)
         end
     end
 
-    local button = ccui.Button:create("mainmenuscene/button.png")
+    local button = ccui.Button:create("mainmenuscene/start.png")
     button:setPressedActionEnabled(true)
-    button:setPosition(self.size.width*0.5,self.size.height*0.2)
+    button:setPosition(self.size.width*0.85,self.size.height*0.25)
     button:addTouchEventListener(button_callback)
     layer:addChild(button,4)
+    
+    local effectNormalMapped = cc.EffectNormalMapped:create("mainmenuscene/start_normal.png")
+    effectNormalMapped:setPointLight(self._pointLight)
+    effectNormalMapped:setKBump(100)
+    
+    local effectSprite = cc.EffectSprite:create("mainmenuscene/start.png")
+    effectSprite:setPosition(self.size.width*0.85,self.size.height*0.25)
+    layer:addChild(effectSprite,5)
+    effectSprite:setEffect(effectNormalMapped)
 end
 
 -- cloud action
@@ -249,12 +258,12 @@ function MainMenuScene:addCloud(layer)
     local scale = 2
     cloud0:setScale(scale)
     cloud1:setScale(scale)
-    cloud3:setScale(2)
+    cloud3:setScale(scale)
     
     --setPosition
-    cloud0:setPosition(self.size.width*1.1,self.size.height*0.5)
+    cloud0:setPosition(self.size.width*1.1,self.size.height*0.9)
     cloud1:setPosition(self.size.width*0.38,self.size.height*0.6)
-    cloud3:setPosition(self.size.width*0.95,self.size.height*0.83)
+    cloud3:setPosition(self.size.width*0.95,self.size.height*0.5)
     
     --add to layer
     layer:addChild(cloud0,2)
@@ -265,11 +274,11 @@ function MainMenuScene:addCloud(layer)
     --move cloud
     local function cloud_move()
         --set cloud move speed
-        local offset = {-1.2,-1.2,-0.5}
+        local offset = {-0.5,-1.0,-1.2}
         for i,v in pairs(clouds) do
             local point = v:getPositionX()+offset[i]
-            if(point<-v:getContentSize().width/2) then
-                point = self.size.width+v:getContentSize().width/2
+            if(point<-v:getContentSize().width*scale/2) then
+                point = self.size.width+v:getContentSize().width*scale/2
             end
             v:setPositionX(point)
         end
@@ -280,7 +289,7 @@ end
 --bg
 function MainMenuScene:addBg(layer)
     --background
-    local bg_back = cc.Sprite:create("mainmenuscene/bg_back.png")
+    local bg_back = cc.Sprite:create("mainmenuscene/bg.png")
     bg_back:setPosition(self.size.width/2,self.size.height/2)
     layer:addChild(bg_back,1)
 end
