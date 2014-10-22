@@ -12,9 +12,8 @@ function BattlefieldUI:ctor()
     self:avatarInit()
     self:bloodbarInit()
     self:touchButtonInit()
-    ccexp.AudioEngine:stop(AUDIO_ID.MAINMENUBGM)
     
-    AUDIO_ID.BATTLEFIELDBGM = ccexp.AudioEngine:play2d(BGM_RES.BATTLEFIELDBGM, true,0.6)
+    AUDIO_ID.BATTLEFIELDBGM = ccexp.AudioEngine:play2d(BGM_RES.BATTLEFIELDBGM, true,1)
 end
 
 function BattlefieldUI:avatarInit()
