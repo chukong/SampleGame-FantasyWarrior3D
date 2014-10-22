@@ -14,38 +14,7 @@ HeroManager = List.new()
 MonsterManager = List.new()
 BossManager = List.new()
 
-function findAliveMonster()
-    for val = MonsterManager.first, MonsterManager.last do
-        if MonsterManager[val]._isalive == true then
-            return MonsterManager[val]
-        end                  
-    end
-
-    return 0
-end
-
-function findAliveHero()
-    for val = HeroManager.first, HeroManager.last do
-        if HeroManager[val]._isalive == true then
-            return HeroManager[val]
-        end                  
-    end  
-
-    return 0
-end
-
-function findAliveBoss()
-    for val = BossManager.first, BossManager.last do
-        if BossManager[val]._isalive == true then
-            return BossManager[val]
-        end                  
-    end  
-
-    return 0
-end
-
-function solveCollision(object1, object2)
-
+local function solveCollision(object1, object2)
     local miniDistance = object1._radius + object2._radius
     local obj1Pos = cc.p(object1:getPosition())
     local obj2Pos = cc.p(object2:getPosition())
@@ -59,7 +28,7 @@ function solveCollision(object1, object2)
     end  
 end
 
-function collision(object)
+local function collision(object)
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
         if sprite._isalive and sprite ~= object then
@@ -93,7 +62,7 @@ function getFocusPointOfHeros()
     return ptFocus
 end
 
-function isOutOfBound(object)
+local function isOutOfBound(object)
     local currentPos = cc.p(object:getPosition());
     local state = false;
 
@@ -120,107 +89,35 @@ function isOutOfBound(object)
     return state
 end
 
-function isInCircleSector(object1, object2)
-    local attackDistance = object1._attackRadius + object2._radius
-    local obj1Pos = cc.p(object1:getPosition())
-    local obj2Pos = cc.p(object2:getPosition())
-    local tempDistance = cc.pGetDistance(obj1Pos, obj2Pos)
-   
-    if tempDistance < attackDistance then
-    	local angle = getAngleFrom2Point(obj2Pos, obj1Pos)
-    	local rotation = object1:getRotation()
-    	
-    	if angle < 0 then
-    		angle = angle + 360
-    	end
-
-        if rotation < 0 then
-            rotation = rotation + 360
-        end    	
-    	
-    	local min = rotation
-        local max = rotation + 90
-        --cclog("%d [%f %f] %f", object1._racetype, rotation, rotation+90, angle)
-        if angle >= min  and angle <= max then
-            --cclog("in circle sector")
-    		return true
-    	end
-    	
-        if max > 360 and angle >= 0 and angle <= max - 360 then
-           --cclog("in circle sector")
-    	   return true
-    	else
-            faceToEnemy(object1, object2)
-            return true
-    	end
-    end 
-    
-    return false
-end
-
-function getAngleFrom2Point(p1, p2)
-    local distance = cc.pGetDistance(p1,p2)
-    local angle = math.acos( math.abs(p1.x-p2.x)/distance) * 57.2957795
-    if p1.x >= p2.x and p1.y >= p2.y then
-        angle = 90 - angle
-    elseif p1.x >= p2.x and p1.y <= p2.y then
-        angle = 90 + angle
-    elseif p1.x <= p2.x and p1.y <= p2.y then
-        angle = 270 - angle   
-    else
-        angle = 270 + angle   
-    end
-    
-    angle = angle - 90 
-    if angle > 180 then
-        angle = angle - 360
-    end
-    
-    return angle
-end
-
-function faceToEnemy(object1, object2)
-    local pos1 = getPosTable(object1)
-    local pos2 = getPosTable(object2)
-    
-    if cc.pGetDistance(pos1, pos2) > 500 then
-        object1:setRotation(0)    
-    else
-        local angle = getAngleFrom2Point(pos2, pos1)
-        object1:setRotation(angle)
-    end
-end
-
-function attackAll(object)
-    if object:getRaceType() ~= EnumRaceType.WARRIOR then
-        for val = HeroManager.first, HeroManager.last do
-            local sprite = HeroManager[val]
-            if sprite._isalive == true 
-                and sprite ~= object 
-                and isInCircleSector(object, sprite) then
-                    sprite._knockedMsgStruct = msgStruct
-                    sprite:setState(EnumStateType.KNOCKED)
-            end
+function collisionDetect(dt)
+    --cclog("collisionDetect")
+    for val = HeroManager.last, HeroManager.first, -1 do
+        local sprite = HeroManager[val]
+        if sprite._isalive == true then
+            collision(sprite)
+            isOutOfBound(sprite)
+        else
+            List.remove(HeroManager, val)
         end
-    else
-        for val = MonsterManager.first, MonsterManager.last do
-            local sprite = MonsterManager[val]
-            if sprite._isalive == true 
-                and sprite ~= object 
-                and isInCircleSector(object, sprite) then
-                    sprite._knockedMsgStruct = msgStruct
-                    sprite:setState(EnumStateType.KNOCKED)
-            end                
-        end 
+    end
 
-        for val = BossManager.first, BossManager.last do
-            local sprite = BossManager[val]
-            if sprite._isalive == true 
-                and sprite ~= object 
-                and isInCircleSector(object, sprite) then
-                    sprite._knockedMsgStruct = msgStruct
-                    sprite:setState(EnumStateType.KNOCKED)
-            end
-        end 
-    end            
+    for val = MonsterManager.last, MonsterManager.first, -1 do
+        local sprite = MonsterManager[val]
+        if sprite._isalive == true then
+            collision(sprite)
+            isOutOfBound(sprite)            
+        else
+            List.remove(MonsterManager, val)
+        end
+    end    
+
+    for val = BossManager.last, MonsterManager.first, -1 do
+        local sprite = BossManager[val]
+        if sprite._isalive == true then
+            collision(sprite)
+            isOutOfBound(sprite)            
+        else
+            List.remove(BossManager, val)
+        end
+    end        
 end
