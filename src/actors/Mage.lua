@@ -13,35 +13,14 @@ function Mage:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._useHelmetId = 0
-    self._particle = nil
-    self._racetype = EnumRaceType.MAGE
-    self._attackFrequency = 4.7
-    self._AIFrequency = 1.3
-    self._name = "Mage"
-    
     if uiLayer~=nil then
         self._bloodBar = uiLayer.MageBlood
         self._bloodBarClone = uiLayer.MageBloodClone
         self._avatar = uiLayer.MagePng
     end
-    
-    self._attackRange = 666
-    
-    --normal attack
-    self._attackMinRadius = 0
-	self._attackMaxRadius = 50
-    self._attack = 300
-    self._attackAngle = 360
-    self._attackKnock = 0
-    
-    --special Attack
-    self._specialMinRadius = 0
-    self._specialMaxRadius = 140
-    self._specialattack = 250
-    self._specialAngle = 360
-    self._specialKnock = 100
 
-    self._mass = 500
+    copyTable(ActorCommonValues, self)
+    copyTable(MageValues,self)
 
     self:init3D()
     self:initActions()
@@ -57,7 +36,6 @@ function Mage.create()
         ret:stateMachineUpdate(dt)
         ret:movementUpdate(dt)
     end
-    ret:initAttackInfo()
     ret:scheduleUpdateWithPriorityLua(update, 0) 
     return ret
 end
@@ -97,30 +75,6 @@ function Mage:init3D()
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
-end
-function Mage:initAttackInfo()
-    --build the attack Infos
-    self._normalAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius,
-        angle    = DEGREES_TO_RADIANS(self._attackAngle),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 1.2, -- 0 duration means it will be removed upon calculation
-        speed    = 500,
-        criticalChance = 0        
-    }
-    self._specialAttack = {
-        minRange = self._specialMinRadius,
-        maxRange = self._specialMaxRadius,
-        angle    = DEGREES_TO_RADIANS(self._attackAngle),
-        knock    = self._specialKnock,
-        damage   = self._specialattack,
-        mask     = self._racetype,
-        duration = 1.5,
-        criticalChance = 0.5        
-    }
 end
 
 

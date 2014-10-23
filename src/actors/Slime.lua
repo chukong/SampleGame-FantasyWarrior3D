@@ -10,25 +10,15 @@ Slime = class("Slime", function()
 end)
 
 function Slime:ctor()
-    self._useWeaponId = 0
-    self._useArmourId = 0
-    self._particle = nil
-    self._attack = 500  
-    self._racetype = EnumRaceType.MONSTER
-    self._speed = 500
-    self._attackMinRadius = 0
-    self._attackMaxRadius = 130
-    self._radius = 120
-    self._attackRange = 130
-    self._name = "Slime"
-    
+    copyTable(ActorCommonValues, self)
+    copyTable(SlimeValues,self)
+
     self:init3D()
     self:initActions()
 end
 
 function Slime.create()
     local ret = Slime.new()
-    ret:initAttackInfo()
     ret._AIEnabled = true
 
     --this update function do not do AI
@@ -38,33 +28,8 @@ function Slime.create()
         ret:movementUpdate(dt)
     end
     ret:scheduleUpdateWithPriorityLua(update, 0.5) 
+    ret:play3DAnim()
     return ret
-end
-
-function Slime:initAttackInfo()
-    --build the attack Infos
-    self._normalAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius,
-        angle    = DEGREES_TO_RADIANS(self._attackAngle),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 0, -- 0 duration means it will be removed upon calculation
-        speed    = 0,
-        criticalChance = 0
-    }
-    self._specialAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius+50,
-        angle    = DEGREES_TO_RADIANS(150),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 0,
-        speed    = 0,
-        criticalChance = 0
-    }
 end
 
 function Slime:attackUpdate(dt)
@@ -104,6 +69,22 @@ function Slime:_findEnemy()
     return target, allDead
 end
 
+function Slime:play3DAnim()
+    self._sprite3d:runAction(cc.RepeatForever:create(createAnimation(file,0,22,0.7)))
+    
+end
+function Slime:playAnimation(name, loop)
+    if self._curAnimation ~= name then --using name to check which animation is playing
+        self._sprite3d:stopAction(self._curAnimation3d)
+        if loop then
+            self._curAnimation3d = cc.RepeatForever:create(self._action[name]:clone())
+        else
+            self._curAnimation3d = self._action[name]:clone()
+        end
+        self._sprite3d:runAction(self._curAnimation3d)
+        self._curAnimation = name
+    end
+end
 function Slime:init3D()
     self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
@@ -117,8 +98,31 @@ end
 
 -- init Slime animations=============================
 do
+    local dur = 0.6
+    local bsc = 17
+    local walk = cc.Spawn:create(
+            cc.Sequence:create(
+                cc.DelayTime:create(dur/8),
+                cc.JumpBy3D:create(dur*7/8, cc.V3(0,0,0),30,1)
+            ),
+            cc.Sequence:create(
+                cc.EaseSineOut:create(cc.ScaleTo:create(dur/8, bsc*1.4, bsc*1.4, bsc*0.75)),
+                cc.EaseSineOut:create(cc.ScaleTo:create(dur/8, bsc*0.85, bsc*0.85, bsc*1.3)),
+                cc.EaseSineOut:create(cc.ScaleTo:create(dur/8, bsc*1.2, bsc*1.2, bsc*0.9)),
+                cc.EaseSineOut:create(cc.ScaleTo:create(dur/8, bsc*0.95, bsc*0.95, bsc*1.1)),
+                cc.EaseSineOut:create(cc.ScaleTo:create(dur*4/8, bsc, bsc, bsc))
+            )
+        )
+    walk:retain()
+    local idle = cc.Sequence:create(
+        cc.ScaleTo:create(dur/3, bsc*1.1, bsc*1.1, bsc*0.8),
+        cc.ScaleTo:create(dur/3, bsc,bsc,bsc)
+    )
+    idle:retain()
     Slime._action = {
-        idle = createAnimation(file,0,22,0.7)
+        idle = idle,
+        walk = walk
+        
     }
 end
 -- end init Slime animations========================

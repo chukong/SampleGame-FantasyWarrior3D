@@ -10,31 +10,19 @@ Archer = class("Archer", function()
 end)
 
 function Archer:ctor()
-    self._useWeaponId = 1
-    self._useArmourId = 1
-    self._useHelmetId = 1
-    self._particle = nil
-    self._racetype = EnumRaceType.ARCHER
-    self._attackFrequency = 4.7
-    self._AIFrequency = 1.3
-    self._name = "Archer"
+    self._useWeaponId = 0
+    self._useArmourId = 0
+    self._useHelmetId = 0
+    
+    copyTable(ActorCommonValues, self)
+    copyTable(ArcherValues,self)
     
     if uiLayer~=nil then
         self._bloodBar = uiLayer.ArcherBlood
         self._bloodBarClone = uiLayer.ArcherBloodClone
         self._avatar = uiLayer.ArcherPng
     end
-
-    self._attackRange = 1000
-
-    --normal attack
-    self._attackMinRadius = 0
-    self._attackMaxRadius = 5
-    self._attack = 150
-    self._attackAngle = 360
-    self._attackKnock = 0
-
-    self._mass = 500
+    
     self:init3D()
     self:initActions()
     self:setDefaultEqt()
@@ -50,7 +38,6 @@ function Archer.create()
         ret:stateMachineUpdate(dt)
         ret:movementUpdate(dt)
     end
-    ret:initAttackInfo()
     ret:scheduleUpdateWithPriorityLua(update, 0) 
     return ret
 end
@@ -118,31 +105,6 @@ function Archer:init3D()
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
-end
-function Archer:initAttackInfo()
-    --build the attack Infos
-    self._normalAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius,
-        angle    = DEGREES_TO_RADIANS(self._attackAngle),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 3, -- 0 duration means it will be removed upon calculation
-        speed    = 800,
-        criticalChance = 0        
-    }
-    self._specialAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius+50,
-        angle    = DEGREES_TO_RADIANS(360),
-        knock    = 50,--self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 3,
-        speed    = 800,
-        criticalChance = 0.5
-    }
 end
 
 
