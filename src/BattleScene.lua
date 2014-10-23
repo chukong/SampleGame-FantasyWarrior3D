@@ -45,7 +45,7 @@ local function createBackground()
     currentLayer:addChild(water)
     water:setPosition3D(cc.V3(-3500,-400,-35))
     water:setAnchorPoint(0,0)
-    water:setGlobalZOrder(1)
+    water:setGlobalZOrder(0)
     
 end
 
@@ -77,10 +77,10 @@ end
 local function initUILayer()
     uiLayer = require("BattleFieldUI").create()
 
-    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye()/2)
-    uiLayer:setScale(0.5)
+    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye()/3)
+    uiLayer:setScale(0.333)
     uiLayer:ignoreAnchorPointForPosition(false)
-    uiLayer:setLocalZOrder(999)
+    uiLayer:setGlobalZOrder(3000)
 end
 
 local BattleScene = class("BattleScene",function()
