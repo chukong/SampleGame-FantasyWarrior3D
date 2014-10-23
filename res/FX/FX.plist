@@ -17,7 +17,7 @@
 			<key>sourceSize</key>
 			<string>{35,25}</string>
 		</dict>
-		<key>hi2.png</key>
+		<key>hit2.png</key>
 		<dict>
 			<key>frame</key>
 			<string>{{2,55},{113,105}}</string>
@@ -30,7 +30,7 @@
 			<key>sourceSize</key>
 			<string>{113,109}</string>
 		</dict>
-		<key>hi3.png</key>
+		<key>hit3.png</key>
 		<dict>
 			<key>frame</key>
 			<string>{{107,220},{99,105}}</string>
@@ -43,7 +43,7 @@
 			<key>sourceSize</key>
 			<string>{113,109}</string>
 		</dict>
-		<key>hi4.png</key>
+		<key>hit4.png</key>
 		<dict>
 			<key>frame</key>
 			<string>{{2,162},{103,109}}</string>
