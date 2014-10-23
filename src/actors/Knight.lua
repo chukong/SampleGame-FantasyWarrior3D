@@ -3,7 +3,7 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/warrior/warrior.c3b"
+local file = "model/warrior/zhanshi_ALL_C.c3b"
 
 Knight = class("Knight", function()
     return require "Actor".create()
@@ -12,6 +12,7 @@ end)
 function Knight:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
+    self._useHelmetId = 1
     self._particle = nil
     self._attack = 1000  
     self._attackFrequency = 2.5
@@ -24,6 +25,7 @@ function Knight:ctor()
 
     self:init3D()
     self:initActions()
+    self:setDefaultEqt()
 end
 
 function Knight.create()
@@ -233,3 +235,97 @@ function Knight:initActions()
     self._action = Knight._action
     self._action.effect = self:initAttackEffect()    
 end
+
+-- set default equipments
+function Knight:setDefaultEqt()
+    self:updateWeapon()
+    self:updateHelmet()
+    self:updateArmour()
+end
+
+function Knight:updateWeapon()
+    if self._useWeaponId == 0 then
+        local weapon = self._sprite3d:getMeshByName("zhanshi_wuqi01")
+        weapon:setVisible(true)
+        weapon = self._sprite3d:getMeshByName("zhanshi_wuqi02")
+        weapon:setVisible(false)
+    else
+        local weapon = self._sprite3d:getMeshByName("zhanshi_wuqi02")
+        weapon:setVisible(true)
+        weapon = self._sprite3d:getMeshByName("zhanshi_wuqi01")
+        weapon:setVisible(false)
+    end
+end
+
+function Knight:updateHelmet()
+    if self._useHelmetId == 0 then
+        local helmet = self._sprite3d:getMeshByName("zhanshi_tou01")
+        helmet:setVisible(true)
+        helmet = self._sprite3d:getMeshByName("zhanshi_tou02")
+        helmet:setVisible(false)
+    else
+        local helmet = self._sprite3d:getMeshByName("zhanshi_tou02")
+        helmet:setVisible(true)
+        helmet = self._sprite3d:getMeshByName("zhanshi_tou01")
+        helmet:setVisible(false)
+    end
+end
+
+function Knight:updateArmour()
+    if self._useArmourId == 0 then
+        local armour = self._sprite3d:getMeshByName("zhanshi_shenti01")
+        armour:setVisible(true)
+        armour = self._sprite3d:getMeshByName("zhanshi_shenti02")
+        armour:setVisible(false)
+    else
+        local armour = self._sprite3d:getMeshByName("zhanshi_shenti02")
+        armour:setVisible(true)
+        armour = self._sprite3d:getMeshByName("zhanshi_shenti01")
+        armour:setVisible(false)
+    end
+end
+
+--swicth weapon
+function Knight:switchWeapon()
+    self._useWeaponId = self._useWeaponId+1
+    if self._useWeaponId > 1 then
+        self._useWeaponId = 0;
+    end
+    self:updateWeapon()
+end
+
+--switch helmet
+function Knight:switchHelmet()
+    self._useHelmetId = self._useHelmetId+1
+    if self._useHelmetId > 1 then
+        self._useHelmetId = 0;
+    end
+    self:updateHelmet()
+end
+
+--switch armour
+function Knight:switchArmour()
+    self._useArmourId = self._useArmourId+1
+    if self._useArmourId > 1 then
+        self._useArmourId = 0;
+    end
+    self:updateArmour()
+end
+
+
+-- get weapon id
+function Knight:getWeaponID()
+    return self._useWeaponId
+end
+
+-- get armour id
+function Knight:getArmourID()
+    return self._useArmourId
+end
+
+-- get helmet id
+function Knight:getHelmet()
+    return self._useHelmetId
+end
+
+return Knight
