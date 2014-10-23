@@ -89,7 +89,7 @@ function Knight:hurtSoundEffects()
 end
 
 function Knight:normalAttack()
-    ccexp.AudioEngine:play2d(WarriorProperty.shout, false,1)
+--    ccexp.AudioEngine:play2d(WarriorProperty.shout, false,1)
     KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
     self._sprite:runAction(self._action.attackEffect:clone()) 
 

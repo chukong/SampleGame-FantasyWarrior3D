@@ -28,6 +28,8 @@ function ChooseRoleScene.create()
     local layer = scene:createLayer()
     scene:addChild(layer)
     scene:initTouchDispatcher()
+    ccexp.AudioEngine:stop(AUDIO_ID.MAINMENUBGM)
+    AUDIO_ID.CHOOSEROLESCENEBGM = ccexp.AudioEngine:play2d(BGM_RES.CHOOSEROLESCENEBGM, true,1)
     return scene
 end
 
@@ -256,6 +258,7 @@ function ChooseRoleScene:rotate3Heroes(isRight)
             ),
             cc.CallFunc:create(function() 
                 isMoving = false
+                self:playAudioWhenRotate()
             end)))
         local left = self.layer:getChildByTag(sortorder[1])
         left:runAction(cc.MoveTo:create(rotatetime,pos[2]))
@@ -274,7 +277,10 @@ function ChooseRoleScene:rotate3Heroes(isRight)
             cc.Spawn:create(
                 cc.MoveTo:create(rotatetime,pos[1])
             ),
-            cc.CallFunc:create(function() isMoving = false end)))
+            cc.CallFunc:create(function()
+                isMoving = false 
+                self:playAudioWhenRotate()
+            end)))
         local left = self.layer:getChildByTag(sortorder[1])
         left:runAction(cc.MoveTo:create(rotatetime,pos[3]))
         local right = self.layer:getChildByTag(sortorder[3])
@@ -451,6 +457,19 @@ function ChooseRoleScene:switchTextWhenRotate()
     bag:addChild(actor,1,1)
     bag:addChild(text_label,1)
     bag:addChild(attr_label,1,2)
+end
+
+function ChooseRoleScene:playAudioWhenRotate()
+	
+    local hero = self.layer:getChildByTag(sortorder[2])
+    local type = hero:getRaceType()
+    if type==EnumRaceType.KNIGHT then
+        ccexp.AudioEngine:play2d(WarriorProperty.kickit, false,1)
+    elseif type==EnumRaceType.ARCHER then
+        ccexp.AudioEngine:play2d(Archerproperty.cheers, false,1)
+    elseif type==EnumRaceType.MAGE then
+        ccexp.AudioEngine:play2d(MageProperty.alright, false,1)
+    end
 end
 
 return ChooseRoleScene
