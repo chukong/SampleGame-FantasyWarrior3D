@@ -329,11 +329,9 @@ end)
 function ArcherNormalAttack.create(pos,facing,attackInfo)
     local ret = ArcherNormalAttack.new()
     ret:initData(pos,facing,attackInfo)
-
-    ret.sp = cc.Sprite:create("chooseRole/cr_rotate.png")
-    ret.sp:setPosition3D(cc.V3(0,0,50))
-    ret.sp:setScale(2)
-    ret.sp:setColor({r=255,g=0,b=0})
+    
+    ret.sp = Archer:createArrow()
+    ret.sp:setRotation(RADIANS_TO_DEGREES(-facing)-90)
     ret:addChild(ret.sp)
 
     return ret

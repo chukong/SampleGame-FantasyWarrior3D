@@ -3,7 +3,7 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/warrior/zhanshi_ALL_C.c3b"
+local file = "model/warrior/zhanshi_ALL_C2.c3b"
 
 Knight = class("Knight", function()
     return require "Actor".create()
@@ -297,7 +297,7 @@ function Knight:getArmourID()
 end
 
 -- get helmet id
-function Knight:getHelmet()
+function Knight:getHelmetID()
     return self._useHelmetId
 end
 
