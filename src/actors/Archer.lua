@@ -260,7 +260,7 @@ function Archer:getArmourID()
 end
 
 -- get helmet id
-function Archer:getHelmet()
+function Archer:getHelmetID()
     return self._useHelmetId
 end
 
