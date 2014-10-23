@@ -2,15 +2,27 @@
 Monster Actors Values：
 ]]--
 
+---hurtEffect
+cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
+animationCathe = cc.AnimationCache:getInstance()
+local hurtAnimation = cc.Animation:create()
+for i=1,5 do
+    name = "hit"..i..".png"
+    hurtAnimation:addSpriteFrame(cc.SpriteFrameCache:getInstance():getSpriteFrame(name))
+end
+hurtAnimation:setDelayPerUnit(0.1)
+animationCathe:addAnimation(hurtAnimation,"hurtAnimation")
+
+FXZorder = 1999
+
 --G values
 G =
 {
     winSize = cc.Director:getInstance():getWinSize(),
     bloodPercentDropSpeed = 2,
-    activearea = {left = -2800, right = 500, bottom = 100, top = 700}
+    activearea = {left = -2800, right = 500, bottom = 100, top = 700},
 }
-cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
-FXZorder = 1999
+
 
 
 --Audios

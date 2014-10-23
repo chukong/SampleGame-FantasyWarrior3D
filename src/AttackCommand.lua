@@ -1,5 +1,6 @@
 require "Helper"
 require "Manager"
+require "GlobalVariables"
 
 AttackManager = List.new()
 function solveAttacks(dt)
@@ -69,7 +70,19 @@ function BasicCollider:onTimeOut()
     self:removeFromParent()
 end
 
+function BasicCollider:hurtEffect(target)
+    
+    local hurtAction = cc.Animate:create(animationCathe:getAnimation("hurtAnimation"))
+    local hurtEffect = cc.BillBoard:create()
+    hurtEffect:setScale(1.5)
+    hurtEffect:runAction(cc.Sequence:create(hurtAction, cc.RemoveSelf:create()))
+    hurtEffect:setPosition3D(cc.V3(0,0,50))
+    target:addChild(hurtEffect)  
+end
+
 function BasicCollider:onCollide(target)
+    
+    self:hurtEffect(target)
     target:hurt(self)
 end
 
@@ -183,7 +196,7 @@ function MageNormalAttack:onTimeOut()
 end
 
 function MageNormalAttack:onCollide(target)
-    target:hurt(self)
+    self:hurtEffect(target)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
 end
@@ -294,6 +307,7 @@ end
 
 function MageIceSpikes:onCollide(target)
     if self.curDOTTime > self.DOTTimer then
+        self:hurtEffect(target)
         target:hurt(self)
         self.DOTApplied = true
     end
@@ -328,6 +342,7 @@ function ArcherNormalAttack:onTimeOut()
 end
 
 function ArcherNormalAttack:onCollide(target)
+    self:hurtEffect(target)
     target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
@@ -361,6 +376,7 @@ function DragonAttack:onTimeOut()
 end
 
 function DragonAttack:onCollide(target)
+    self:hurtEffect(target)
     target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
