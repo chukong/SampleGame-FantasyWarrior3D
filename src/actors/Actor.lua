@@ -227,12 +227,23 @@ function Actor:hurt(collider)
         self:hurtSoundEffects()
     end
 end
+
+function Actor:normalAttackSoundEffects()
+-- to override
+end
+
+function Actor:specialAttackSoundEffects()
+-- to override
+end
+
 --======attacking collision check
 function Actor:normalAttack()
     BasicCollider.create(getPosTable(self), self._curFacing, self._normalAttack)
+    self:normalAttackSoundEffects()
 end
 function Actor:specialAttack()
     BasicCollider.create(getPosTable(self), self._curFacing, self._specialAttack)
+    self:specialAttackSoundEffects()
 end
 --======State Machine switching functions
 function Actor:idleMode() --switch into idle mode

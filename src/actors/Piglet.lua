@@ -13,7 +13,7 @@ function Piglet:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 500  
+    self._attack = 200  
     self._racetype = EnumRaceType.MONSTER
     self._speed = 400
     self._attackMinRadius = 0
@@ -77,7 +77,7 @@ function Piglet:reset()
     --normal attack
     self._attackMinRadius = 0
     self._attackMaxRadius = 130
-    self._attack = 300
+    self._attack = 200
     self._attackAngle = 30
     self._attackKnock = 50
 
@@ -89,7 +89,7 @@ function Piglet:reset()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 300  
+    self._attack = 200  
     self._racetype = EnumRaceType.MONSTER
     self._speed = 400
     self._attackMinRadius = 0
@@ -187,9 +187,7 @@ function Piglet:initAttackInfo()
     }
 end
 
-function Piglet:normalAttack()
-    BasicCollider.create(getPosTable(self), self._curFacing, self._normalAttack)
-    
+function Piglet:normalAttackSoundEffects()
     local randomEffect =  math.random()                   
     if randomEffect<=0.3 and randomEffect>=0 then
         ccexp.AudioEngine:play2d(MonsterPigletValues.attack1, false,1)
