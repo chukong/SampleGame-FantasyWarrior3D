@@ -4,7 +4,6 @@
 #include "custom/BillboardParticleSystem.h"
 #include "custom/JumpBy3D.h"
 #include "custom/JumpTo3D.h"
-#include "custom/JumpBy3D.h"
 #include "custom/Water.h"
 #include "custom/EffectSprite.h"
 #include "custom/BillBoardLable.h"
@@ -4912,7 +4911,6 @@ int lua_cocos2dx_custom_BillboardParticleSystem_create(lua_State* tolua_S)
 {
     int argc = 0;
     bool ok  = true;
-
 #if COCOS2D_DEBUG >= 1
     tolua_Error tolua_err;
 #endif
@@ -4921,19 +4919,35 @@ int lua_cocos2dx_custom_BillboardParticleSystem_create(lua_State* tolua_S)
     if (!tolua_isusertable(tolua_S,1,"cc.BillboardParticleSystem",0,&tolua_err)) goto tolua_lerror;
 #endif
 
-    argc = lua_gettop(tolua_S) - 1;
+    argc = lua_gettop(tolua_S)-1;
 
-    if (argc == 1)
+    do 
     {
-        std::string arg0;
-        ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.BillboardParticleSystem:create");
-        if(!ok)
-            return 0;
-        cocos2d::BillboardParticleSystem* ret = cocos2d::BillboardParticleSystem::create(arg0);
-        object_to_luaval<cocos2d::BillboardParticleSystem>(tolua_S, "cc.BillboardParticleSystem",(cocos2d::BillboardParticleSystem*)ret);
-        return 1;
-    }
-    CCLOG("%s has wrong number of arguments: %d, was expecting %d\n ", "cc.BillboardParticleSystem:create",argc, 1);
+        if (argc == 1)
+        {
+            cocos2d::ValueMap arg0;
+            ok &= luaval_to_ccvaluemap(tolua_S, 2, &arg0, "cc.BillboardParticleSystem:create");
+            if (!ok) { break; }
+            cocos2d::BillboardParticleSystem* ret = cocos2d::BillboardParticleSystem::create(arg0);
+            object_to_luaval<cocos2d::BillboardParticleSystem>(tolua_S, "cc.BillboardParticleSystem",(cocos2d::BillboardParticleSystem*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    do 
+    {
+        if (argc == 1)
+        {
+            std::string arg0;
+            ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.BillboardParticleSystem:create");
+            if (!ok) { break; }
+            cocos2d::BillboardParticleSystem* ret = cocos2d::BillboardParticleSystem::create(arg0);
+            object_to_luaval<cocos2d::BillboardParticleSystem>(tolua_S, "cc.BillboardParticleSystem",(cocos2d::BillboardParticleSystem*)ret);
+            return 1;
+        }
+    } while (0);
+    ok  = true;
+    CCLOG("%s has wrong number of arguments: %d, was expecting %d", "cc.BillboardParticleSystem:create",argc, 1);
     return 0;
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
