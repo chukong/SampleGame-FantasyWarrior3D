@@ -77,7 +77,7 @@ function Piglet:reset()
     --normal attack
     self._attackMinRadius = 0
     self._attackMaxRadius = 130
-    self._attack = 100
+    self._attack = 300
     self._attackAngle = 30
     self._attackKnock = 50
 
@@ -89,7 +89,7 @@ function Piglet:reset()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._attack = 150  
+    self._attack = 300  
     self._racetype = EnumRaceType.MONSTER
     self._speed = 400
     self._attackMinRadius = 0

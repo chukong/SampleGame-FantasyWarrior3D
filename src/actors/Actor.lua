@@ -211,7 +211,7 @@ function Actor:hurt(collider)
         end
         self:addChild(blood)
 
-        local dropBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp}
+        local dropBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone}
         MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, dropBlood)
     end
 end

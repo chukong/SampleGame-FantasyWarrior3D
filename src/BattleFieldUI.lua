@@ -3,13 +3,19 @@ require "Actor"
 
 local BattlefieldUI = class("battlefieldUI",function() return cc.Layer:create() end)
 
+local function shakeWhenHurt()
+    
+    local shaky1 = cc.RotateBy:create(0.05,3,3)
+    local shaky2 = cc.RotateBy:create(0.1,-6,-6)
+    local shaky3 = cc.RotateBy:create(0.05,3,0)
+    local shaky = cc.RepeatForever:create(cc.Sequence:create(shaky1,shaky2,shaky3))
+    
+    return shaky
+end
+
 function BattlefieldUI.create()
     local layer = BattlefieldUI.new()
 	return layer
-end
-
-function BattlefieldUI:setGreyShader(sprite)
-
 end
 
 function BattlefieldUI:ctor()
@@ -25,7 +31,8 @@ function BattlefieldUI:avatarInit()
     self.WarriorPng = cc.Sprite:create("battlefieldUI/UI-1136-640_03.png")
     self.WarriorPng:setPosition3D(cc.V3(860/1136*G.winSize.width,50/640*G.winSize.height,2))
     self.WarriorPng:setScale(0.5)
-    self:addChild(self.WarriorPng,2)   
+    self:addChild(self.WarriorPng,2)  
+    
      
     self.WarriorPngFrame = cc.Sprite:create("battlefieldUI/UI-2.png")
     self.WarriorPngFrame:setScale(0.5)
@@ -53,12 +60,13 @@ end
 
 function BattlefieldUI:bloodbarInit()
 
-    self.WarriorBlood = cc.ProgressTimer:create(cc.Sprite:create("battlefieldUI/UI-1136-640_36.png"))
+    self.WarriorBlood = cc.ProgressTimer:create(cc.Sprite:create("battlefieldUI/UI-1136-640_36_clone.png"))
+    self.WarriorBlood:setColor(cc.c3b(149,254,26))
     self.WarriorBlood:setType(cc.PROGRESS_TIMER_TYPE_BAR)
     self.WarriorBlood:setBarChangeRate(cc.vertex2F(1,0))
     self.WarriorBlood:setMidpoint(cc.vertex2F(0,0))
     self.WarriorBlood:setPercentage(100)
-    self.WarriorBlood:setPosition3D(cc.V3(self.WarriorPng:getPositionX(), self.WarriorPng:getPositionY()-32,4))
+    self.WarriorBlood:setPosition3D(cc.V3(self.WarriorPng:getPositionX()-1, self.WarriorPng:getPositionY()-32,4))
     self.WarriorBlood:setScale(0.5)
     self:addChild(self.WarriorBlood,4)
         
@@ -68,16 +76,17 @@ function BattlefieldUI:bloodbarInit()
     self.WarriorBloodClone:setBarChangeRate(cc.vertex2F(1,0))
     self.WarriorBloodClone:setMidpoint(cc.vertex2F(0,0))
     self.WarriorBloodClone:setPercentage(100)
-    self.WarriorBloodClone:setPosition3D(cc.V3(self.WarriorPng:getPositionX(), self.WarriorPng:getPositionY()-32,3))
+    self.WarriorBloodClone:setPosition3D(cc.V3(self.WarriorPng:getPositionX()-1, self.WarriorPng:getPositionY()-32,3))
     self.WarriorBloodClone:setScale(0.5)
     self:addChild(self.WarriorBloodClone,3)
         
-    self.ArcherBlood = cc.ProgressTimer:create(cc.Sprite:create("battlefieldUI/UI-1136-640_36.png"))
+    self.ArcherBlood = cc.ProgressTimer:create(cc.Sprite:create("battlefieldUI/UI-1136-640_36_clone.png"))
+    self.ArcherBlood:setColor(cc.c3b(149,254,26))
     self.ArcherBlood:setType(cc.PROGRESS_TIMER_TYPE_BAR)
     self.ArcherBlood:setMidpoint(cc.vertex2F(0,0))
     self.ArcherBlood:setBarChangeRate(cc.vertex2F(1,0))
     self.ArcherBlood:setPercentage(100)
-    self.ArcherBlood:setPosition3D(cc.V3(self.ArcherPng:getPositionX(), self.ArcherPng:getPositionY()-32,4))
+    self.ArcherBlood:setPosition3D(cc.V3(self.ArcherPng:getPositionX()-1, self.ArcherPng:getPositionY()-32,4))
     self.ArcherBlood:setScale(0.5)
     self:addChild(self.ArcherBlood,4)
 
@@ -87,16 +96,17 @@ function BattlefieldUI:bloodbarInit()
     self.ArcherBloodClone:setBarChangeRate(cc.vertex2F(1,0))
     self.ArcherBloodClone:setMidpoint(cc.vertex2F(0,0))
     self.ArcherBloodClone:setPercentage(100)
-    self.ArcherBloodClone:setPosition3D(cc.V3(self.ArcherPng:getPositionX(), self.ArcherPng:getPositionY()-32,3))
+    self.ArcherBloodClone:setPosition3D(cc.V3(self.ArcherPng:getPositionX()-1, self.ArcherPng:getPositionY()-32,3))
     self.ArcherBloodClone:setScale(0.5)
     self:addChild(self.ArcherBloodClone,3)
  
-    self.MageBlood = cc.ProgressTimer:create(cc.Sprite:create("battlefieldUI/UI-1136-640_36.png"))
+    self.MageBlood = cc.ProgressTimer:create(cc.Sprite:create("battlefieldUI/UI-1136-640_36_clone.png"))
+    self.MageBlood:setColor(cc.c3b(149,254,26))
     self.MageBlood:setType(cc.PROGRESS_TIMER_TYPE_BAR)
     self.MageBlood:setMidpoint(cc.vertex2F(0,0))
     self.MageBlood:setBarChangeRate(cc.vertex2F(1,0))
     self.MageBlood:setPercentage(100)
-    self.MageBlood:setPosition3D(cc.V3(self.MagePng:getPositionX(), self.MagePng:getPositionY()-32,4))
+    self.MageBlood:setPosition3D(cc.V3(self.MagePng:getPositionX()-1, self.MagePng:getPositionY()-32,4))
     self.MageBlood:setScale(0.5)
     self:addChild(self.MageBlood,4)
     
@@ -106,7 +116,7 @@ function BattlefieldUI:bloodbarInit()
     self.MageBloodClone:setBarChangeRate(cc.vertex2F(1,0))
     self.MageBloodClone:setMidpoint(cc.vertex2F(0,0))
     self.MageBloodClone:setPercentage(100)
-    self.MageBloodClone:setPosition3D(cc.V3(self.MagePng:getPositionX(), self.MagePng:getPositionY()-32,3))
+    self.MageBloodClone:setPosition3D(cc.V3(self.MagePng:getPositionX()-1, self.MagePng:getPositionY()-32,3))
     self.MageBloodClone:setScale(0.5)
     self:addChild(self.MageBloodClone,3)
 end
@@ -148,33 +158,41 @@ end
 
 local scheduleID = nil
 
-function BattlefieldUI:bloodDrop(blood)
+function BattlefieldUI:bloodDrop(heroActor)
     local progressTo
     local progressToClone
-
-    if blood._hp >= 0 then
-        --local dropPercent = blood._damage/blood._maxhp*100
-        local current = blood._hp / blood._maxhp*100;
-        progressTo = cc.ProgressTo:create(0.5,current)
-        progressToClone = cc.ProgressTo:create(0.8,current)
-    else
-        progressTo = cc.ProgressTo:create(0.5,0)
-        progressToClone = cc.ProgressTo:create(0.8,0)
-    end
+    local tintTo
+    local percent = heroActor._hp/heroActor._maxhp*100
     
-    if blood._name=="Knight" then
-        self.WarriorBlood:runAction(progressTo)
-        self.WarriorBloodClone:runAction(progressToClone)
-    end
+    if heroActor._hp > 0 and percent>50 then
 
-    if blood._name=="Archer" then
-        self.ArcherBlood:runAction(progressTo)
-        self.ArcherBloodClone:runAction(progressToClone)
-    end
+        progressTo = cc.ProgressTo:create(0.5,percent)
+        progressToClone = cc.ProgressTo:create(0.8,percent+2)
+        heroActor._bloodBar:runAction(progressTo)
+        heroActor._bloodBarClone:runAction(progressToClone)
+        
+    elseif heroActor._hp>0 and percent <=50 then
+        
+        progressTo = cc.ProgressTo:create(0.5,percent)
+        progressToClone = cc.ProgressTo:create(0.8,percent+2) 
+        tintTo = cc.TintTo:create(0.5,254,225,26)   
+        
+        heroActor._bloodBar:runAction(cc.Spawn:create(progressTo,tintTo))
+        heroActor._bloodBarClone:runAction(progressToClone)
+    elseif heroActor._hp>0 and percent <=30 then
 
-    if blood._name=="Mage" then
-        self.MageBlood:runAction(progressTo)
-        self.MageBloodClone:runAction(progressToClone)
+        progressTo = cc.ProgressTo:create(0.5,percent)
+        progressToClone = cc.ProgressTo:create(0.8,percent+2) 
+        
+        tintTo = cc.TintTo:create(0.5,254,26,69)   
+        heroActor._bloodBar:runAction(cc.Spawn:create(progressTo,tintTo))
+        heroActor._bloodBarClone:runAction(progressToClone)
+    elseif heroActor._hp  <=0 then
+        progressTo = cc.ProgressTo:create(0.5,0)
+        progressToClone = cc.ProgressTo:create(0.8,2)
+        
+        heroActor._bloodBar:runAction(progressTo)
+        heroActor._bloodBarClone:runAction(progressToClone)
     end
 end
 

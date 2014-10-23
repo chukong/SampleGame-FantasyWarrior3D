@@ -17,6 +17,11 @@ function Archer:ctor()
     self._attackFrequency = 4.7
     self._AIFrequency = 1.3
     self._name = "Archer"
+    
+    if uiLayer~=nil then
+        self._bloodBar = uiLayer.ArcherBlood
+        self._bloodBarClone = uiLayer.ArcherBloodClone
+    end
 
     self._attackRange = 1000
 
