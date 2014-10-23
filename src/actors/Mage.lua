@@ -18,6 +18,11 @@ function Mage:ctor()
     self._AIFrequency = 1.3
     self._name = "Mage"
     
+    if uiLayer~=nil then
+        self._bloodBar = uiLayer.MageBlood
+        self._bloodBarClone = uiLayer.MageBloodClone
+    end
+    
     self._attackRange = 666
     
     --normal attack

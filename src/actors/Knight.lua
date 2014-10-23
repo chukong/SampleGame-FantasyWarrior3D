@@ -23,6 +23,10 @@ function Knight:ctor()
     self._attackKnock = 100
     self._mass = 1000
     self._racetype = EnumRaceType.KNIGHT
+    if uiLayer~=nil then
+        self._bloodBar = uiLayer.WarriorBlood
+        self._bloodBarClone = uiLayer.WarriorBloodClone
+    end
 
     self:init3D()
     self:initActions()
@@ -76,6 +80,11 @@ end
 
 local function KninghtSpecialAttackCallback(audioID, filePatch)
     ccexp.AudioEngine:play2d(WarriorProperty.specialAttack2, false,1)  
+end
+
+
+function Knight:hurtSoundEffects()
+    ccexp.AudioEngine:play2d(WarriorProperty.hurt, false,1)
 end
 
 function Knight:normalAttack()

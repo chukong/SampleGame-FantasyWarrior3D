@@ -94,9 +94,9 @@ local BattleScene = class("BattleScene",function()
     return cc.Scene:create()
 end)
 
-local function sendDropBlood(blood)
-    if blood._racetype == EnumRaceType.KNIGHT or blood._racetype == EnumRaceType.ARCHER or blood._racetype == EnumRaceType.MAGE then    
-        uiLayer:bloodDrop(blood)
+local function sendDropBlood(heroActor)
+    if heroActor._racetype == EnumRaceType.KNIGHT or heroActor._racetype == EnumRaceType.ARCHER or heroActor._racetype == EnumRaceType.MAGE then    
+        uiLayer:bloodDrop(heroActor)
     end
 end
 
@@ -121,8 +121,8 @@ function BattleScene.create()
     scene:addChild(currentLayer)
     
     createBackground()
-    gameMaster = require("GameMaster").create()
     initUILayer()
+    gameMaster = require("GameMaster").create()
     setCamera()
     scheduler:scheduleScriptFunc(gameController, 0, false)
 

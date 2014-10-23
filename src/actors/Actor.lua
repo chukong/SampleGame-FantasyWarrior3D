@@ -180,6 +180,10 @@ function Actor:setAIEnabled(enable)
     self._AIEnabled = enable
 end
 
+function Actor:hurtSoundEffects()
+-- to override
+end
+
 function Actor:hurt(collider)
     if self._isalive == true then 
         --TODO add sound effect
@@ -218,16 +222,28 @@ function Actor:hurt(collider)
         end
         self:addChild(blood)
 
-        local loseBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp}
+        local loseBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone}
         MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, loseBlood)
+        self:hurtSoundEffects()
     end
 end
+
+function Actor:normalAttackSoundEffects()
+-- to override
+end
+
+function Actor:specialAttackSoundEffects()
+-- to override
+end
+
 --======attacking collision check
 function Actor:normalAttack()
     BasicCollider.create(getPosTable(self), self._curFacing, self._normalAttack)
+    self:normalAttackSoundEffects()
 end
 function Actor:specialAttack()
     BasicCollider.create(getPosTable(self), self._curFacing, self._specialAttack)
+    self:specialAttackSoundEffects()
 end
 --======State Machine switching functions
 function Actor:idleMode() --switch into idle mode
