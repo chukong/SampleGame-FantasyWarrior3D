@@ -22,6 +22,7 @@ function Archer:ctor()
     if uiLayer~=nil then
         self._bloodBar = uiLayer.ArcherBlood
         self._bloodBarClone = uiLayer.ArcherBloodClone
+        self._avatar = uiLayer.ArcherPng
     end
 
     self._attackRange = 1000

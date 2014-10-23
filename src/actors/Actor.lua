@@ -222,7 +222,7 @@ function Actor:hurt(collider)
         end
         self:addChild(blood)
 
-        local loseBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone}
+        local loseBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
         MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, loseBlood)
         self:hurtSoundEffects()
     end

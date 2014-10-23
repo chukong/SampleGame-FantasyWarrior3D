@@ -32,7 +32,7 @@ function BattlefieldUI:avatarInit()
     self.WarriorPng:setPosition3D(cc.V3(860/1136*G.winSize.width,50/640*G.winSize.height,2))
     self.WarriorPng:setScale(0.5)
     self:addChild(self.WarriorPng,2)  
-    
+
      
     self.WarriorPngFrame = cc.Sprite:create("battlefieldUI/UI-2.png")
     self.WarriorPngFrame:setScale(0.5)
@@ -158,11 +158,16 @@ end
 
 local scheduleID = nil
 
+function BattlefieldUI:shakeAvatar()
+    return cc.Repeat:create(cc.Spawn:create(cc.Sequence:create(cc.ScaleTo:create(0.075,0.55), cc.ScaleTo:create(0.075,0.5)), cc.Sequence:create(cc.MoveBy:create(0.05,{x=6.5,y=0}),cc.MoveBy:create(0.05,{x=-13,y=0}),cc.MoveBy:create(0.05,{x=6.5,y=0}))),2)
+end
+
 function BattlefieldUI:bloodDrop(heroActor)
     local progressTo
     local progressToClone
     local tintTo
     local percent = heroActor._hp/heroActor._maxhp*100
+    heroActor._avatar:runAction(BattlefieldUI:shakeAvatar())
     
     if heroActor._hp > 0 and percent>50 then
 

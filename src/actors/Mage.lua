@@ -22,6 +22,7 @@ function Mage:ctor()
     if uiLayer~=nil then
         self._bloodBar = uiLayer.MageBlood
         self._bloodBarClone = uiLayer.MageBloodClone
+        self._avatar = uiLayer.MagePng
     end
     
     self._attackRange = 666
