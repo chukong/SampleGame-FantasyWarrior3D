@@ -3,6 +3,7 @@ require "GlobalVariables"
 require "Helper"
 require "Knight"
 require "Slime"
+require "Archer"
 
 --declare a class extends scene
 local ActorTestScene = class("ActorTestScene",function()

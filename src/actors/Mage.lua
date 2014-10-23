@@ -12,6 +12,12 @@ end)
 function Mage:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
+    self._useHelmetId = 0
+    if uiLayer~=nil then
+        self._bloodBar = uiLayer.MageBlood
+        self._bloodBarClone = uiLayer.MageBloodClone
+        self._avatar = uiLayer.MagePng
+    end
 
     copyTable(ActorCommonValues, self)
     copyTable(MageValues,self)
@@ -34,7 +40,7 @@ function Mage.create()
     return ret
 end
 function Mage:normalAttack()
-    ccexp.AudioEngine:play2d(MageProperty.normalAttack, false,1)
+--    ccexp.AudioEngine:play2d(MageProperty.normalAttack, false,1)
     MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack, self._target)
 end
 function Mage:specialAttack()
@@ -90,3 +96,97 @@ end
 function Mage:initActions()
     self._action = Mage._action
 end
+
+-- set default equipments
+function Mage:setDefaultEqt()
+    self:updateWeapon()
+    self:updateHelmet()
+    self:updateArmour()
+end
+
+function Mage:updateWeapon()
+    if self._useWeaponId == 0 then
+        local weapon = self._sprite3d:getMeshByName("zhanshi_wuqi01")
+        weapon:setVisible(true)
+        weapon = self._sprite3d:getMeshByName("zhanshi_wuqi02")
+        weapon:setVisible(false)
+    else
+        local weapon = self._sprite3d:getMeshByName("zhanshi_wuqi02")
+        weapon:setVisible(true)
+        weapon = self._sprite3d:getMeshByName("zhanshi_wuqi01")
+        weapon:setVisible(false)
+    end
+end
+
+function Mage:updateHelmet()
+    if self._useHelmetId == 0 then
+        local helmet = self._sprite3d:getMeshByName("zhanshi_tou01")
+        helmet:setVisible(true)
+        helmet = self._sprite3d:getMeshByName("zhanshi_tou02")
+        helmet:setVisible(false)
+    else
+        local helmet = self._sprite3d:getMeshByName("zhanshi_tou02")
+        helmet:setVisible(true)
+        helmet = self._sprite3d:getMeshByName("zhanshi_tou01")
+        helmet:setVisible(false)
+    end
+end
+
+function Mage:updateArmour()
+    if self._useArmourId == 0 then
+        local armour = self._sprite3d:getMeshByName("zhanshi_shenti01")
+        armour:setVisible(true)
+        armour = self._sprite3d:getMeshByName("zhanshi_shenti02")
+        armour:setVisible(false)
+    else
+        local armour = self._sprite3d:getMeshByName("zhanshi_shenti02")
+        armour:setVisible(true)
+        armour = self._sprite3d:getMeshByName("zhanshi_shenti01")
+        armour:setVisible(false)
+    end
+end
+
+--swicth weapon
+function Mage:switchWeapon()
+    self._useWeaponId = self._useWeaponId+1
+    if self._useWeaponId > 1 then
+        self._useWeaponId = 0;
+    end
+    self:updateWeapon()
+end
+
+--switch helmet
+function Mage:switchHelmet()
+    self._useHelmetId = self._useHelmetId+1
+    if self._useHelmetId > 1 then
+        self._useHelmetId = 0;
+    end
+    self:updateHelmet()
+end
+
+--switch armour
+function Mage:switchArmour()
+    self._useArmourId = self._useArmourId+1
+    if self._useArmourId > 1 then
+        self._useArmourId = 0;
+    end
+    self:updateArmour()
+end
+
+
+-- get weapon id
+function Mage:getWeaponID()
+    return self._useWeaponId
+end
+
+-- get armour id
+function Mage:getArmourID()
+    return self._useArmourId
+end
+
+-- get helmet id
+function Mage:getHelmetID()
+    return self._useHelmetId
+end
+
+return Mage

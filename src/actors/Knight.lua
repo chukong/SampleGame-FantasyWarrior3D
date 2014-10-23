@@ -3,21 +3,28 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/warrior/warrior.c3b"
+local file = "model/warrior/zhanshi_ALL_C2.c3b"
 
 Knight = class("Knight", function()
     return require "Actor".create()
 end)
 
 function Knight:ctor()
+    self._useWeaponId = 0
+    self._useArmourId = 0
+    self._useHelmetId = 0
     copyTable(ActorCommonValues, self)
     copyTable(KnightValues,self)
 
+    if uiLayer~=nil then
+        self._bloodBar = uiLayer.WarriorBlood
+        self._bloodBarClone = uiLayer.WarriorBloodClone
+        self._avatar = uiLayer.WarriorPng
+    end
 
-    self._useWeaponId = 0
-    self._useArmourId = 0
     self:init3D()
     self:initActions()
+    self:setDefaultEqt()
 end
 
 function Knight.create()
@@ -60,47 +67,6 @@ function Knight.create()
     return ret
 end
 
-function Knight:hurt(collider)
-    if self._isalive == true then        
-        ccexp.AudioEngine:play2d(WarriorProperty.hurt, false,1)
-        local damage = collider.damage
-        if math.random() >= 0.5 then
-            damage = damage + damage * 0.15
-        else
-            damage = damage - damage * 0.15
-        end
-
-        damage = damage - self._defense
-        damage = math.floor(damage)
-        if damage <= 0 then
-            damage = 1
-        end
-
-        self._hp = self._hp - damage
-
-        if self._hp > 0 then
-            if collider.knock then
-                self:knockMode(getPosTable(collider),collider.knock)
-            end
-        else
-            self._hp = 0
-            self._isalive = false
-            self:dyingMode(getPosTable(collider),collider.knock)        
-        end
-
-        local blood = self._dropBlood:showBloodLossNum(damage)
-        if self._racetype == EnumRaceType.MONSTER then
-            blood:setPositionZ(70)
-        else
-            blood:setPositionZ(150)
-        end
-        self:addChild(blood)
-
-        local dropBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp}
-        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, dropBlood)
-    end
-end
-
 local function KnightNormalAttackCallback(audioID,filePath)
     ccexp.AudioEngine:play2d(WarriorProperty.normalAttack2, false,1)
 end
@@ -109,8 +75,13 @@ local function KninghtSpecialAttackCallback(audioID, filePatch)
     ccexp.AudioEngine:play2d(WarriorProperty.specialAttack2, false,1)  
 end
 
+
+function Knight:hurtSoundEffects()
+    ccexp.AudioEngine:play2d(WarriorProperty.hurt, false,1)
+end
+
 function Knight:normalAttack()
-    ccexp.AudioEngine:play2d(WarriorProperty.shout, false,1)
+--    ccexp.AudioEngine:play2d(WarriorProperty.shout, false,1)
     KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
     self._sprite:runAction(self._action.attackEffect:clone()) 
 
@@ -120,11 +91,11 @@ end
 
 function Knight:specialAttack()
     -- knight will create 2 attacks one by one  
-    local normalAttack = self._normalAttack
-    normalAttack.knock = 0
+    local attack = self._specialAttack
+    attack.knock = 0
     ccexp.AudioEngine:play2d(WarriorProperty.shout, false,1)
-    KnightNormalAttack.create(getPosTable(self), self._curFacing, normalAttack)
-    --self._sprite:runAction(self._action.attackEffect:clone())                
+    KnightNormalAttack.create(getPosTable(self), self._curFacing, attack)
+    self._sprite:runAction(self._action.attackEffect:clone())
 
     local pos = getPosTable(self)
     pos.x = pos.x+50
@@ -135,33 +106,34 @@ function Knight:specialAttack()
     
     local function punch()
         KnightNormalAttack.create(pos, self._curFacing, self._specialAttack)
-        --self._sprite:runAction(self._action.attackEffect:clone())                
+        self._sprite:runAction(self._action.attackEffect:clone())                
     end
-    delayExecute(self,punch,0.4)
+    delayExecute(self,punch,0.2)
 end
 
 function Knight:initAttackEffect()
     local speed = 0.1
     local startRotate = 145
     local rotate = -60
+    local scale = 0.01
     local sprite = cc.Sprite:createWithSpriteFrameName("specialAttack.jpg")
-    --sprite:setVisible(false)
+    sprite:setVisible(false)
     sprite:setBlendFunc(gl.ONE_MINUS_SRC_ALPHA,gl.ONE)
-    sprite:setScale(4)
-    --sprite:setScaleX(0.01)
+    sprite:setScaleX(scale)
     sprite:setRotation(startRotate)
-    --sprite:setOpacity(0)
+    sprite:setOpacity(0)
     sprite:setAnchorPoint(cc.p(0.5, -1))    
-    sprite:setPosition3D(cc.V3(0, 0, 50))
+    sprite:setPosition3D(cc.V3(10, 0, 50))
     self:addChild(sprite)
 
-    local scaleAction = cc.ScaleBy:create(speed, 100, 2)
+    local scaleAction = cc.ScaleTo:create(speed, 1, 1)
     local rotateAction = cc.RotateBy:create(speed, rotate)
     local attack = cc.Spawn:create(scaleAction, rotateAction)
     local attack = cc.EaseCircleActionOut:create(attack)
     local fadeAction = cc.FadeIn:create(speed)
+    
     local fadeAction2 = cc.FadeOut:create(0)
-    local scaleAction2 = cc.ScaleBy:create(0, 0.01, 1)
+    local scaleAction2 = cc.ScaleTo:create(0, scale, 1)
     local rotateAction2 = cc.RotateTo:create(0, startRotate)
     local restore = cc.Spawn:create(fadeAction2, scaleAction2, rotateAction2, cc.Hide:create())
 
@@ -202,3 +174,97 @@ function Knight:initActions()
     self._action = Knight._action
     self._action.effect = self:initAttackEffect()    
 end
+
+-- set default equipments
+function Knight:setDefaultEqt()
+    self:updateWeapon()
+    self:updateHelmet()
+    self:updateArmour()
+end
+
+function Knight:updateWeapon()
+    if self._useWeaponId == 0 then
+        local weapon = self._sprite3d:getMeshByName("zhanshi_wuqi01")
+        weapon:setVisible(true)
+        weapon = self._sprite3d:getMeshByName("zhanshi_wuqi02")
+        weapon:setVisible(false)
+    else
+        local weapon = self._sprite3d:getMeshByName("zhanshi_wuqi02")
+        weapon:setVisible(true)
+        weapon = self._sprite3d:getMeshByName("zhanshi_wuqi01")
+        weapon:setVisible(false)
+    end
+end
+
+function Knight:updateHelmet()
+    if self._useHelmetId == 0 then
+        local helmet = self._sprite3d:getMeshByName("zhanshi_tou01")
+        helmet:setVisible(true)
+        helmet = self._sprite3d:getMeshByName("zhanshi_tou02")
+        helmet:setVisible(false)
+    else
+        local helmet = self._sprite3d:getMeshByName("zhanshi_tou02")
+        helmet:setVisible(true)
+        helmet = self._sprite3d:getMeshByName("zhanshi_tou01")
+        helmet:setVisible(false)
+    end
+end
+
+function Knight:updateArmour()
+    if self._useArmourId == 0 then
+        local armour = self._sprite3d:getMeshByName("zhanshi_shenti01")
+        armour:setVisible(true)
+        armour = self._sprite3d:getMeshByName("zhanshi_shenti02")
+        armour:setVisible(false)
+    else
+        local armour = self._sprite3d:getMeshByName("zhanshi_shenti02")
+        armour:setVisible(true)
+        armour = self._sprite3d:getMeshByName("zhanshi_shenti01")
+        armour:setVisible(false)
+    end
+end
+
+--swicth weapon
+function Knight:switchWeapon()
+    self._useWeaponId = self._useWeaponId+1
+    if self._useWeaponId > 1 then
+        self._useWeaponId = 0;
+    end
+    self:updateWeapon()
+end
+
+--switch helmet
+function Knight:switchHelmet()
+    self._useHelmetId = self._useHelmetId+1
+    if self._useHelmetId > 1 then
+        self._useHelmetId = 0;
+    end
+    self:updateHelmet()
+end
+
+--switch armour
+function Knight:switchArmour()
+    self._useArmourId = self._useArmourId+1
+    if self._useArmourId > 1 then
+        self._useArmourId = 0;
+    end
+    self:updateArmour()
+end
+
+
+-- get weapon id
+function Knight:getWeaponID()
+    return self._useWeaponId
+end
+
+-- get armour id
+function Knight:getArmourID()
+    return self._useArmourId
+end
+
+-- get helmet id
+function Knight:getHelmetID()
+    return self._useHelmetId
+end
+
+return Knight

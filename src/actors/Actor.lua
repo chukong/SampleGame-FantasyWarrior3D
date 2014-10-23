@@ -15,7 +15,7 @@ function Actor:ctor()
     copyTable(ActorCommonValues, self)
     
     --dropblood
-    self._dropBlood = require "DropBlood":create()
+    self._dropBlood = require "HPCounter":create()
     self:addChild(self._dropBlood)
 end
 
@@ -44,7 +44,6 @@ function Actor:playAnimation(name, loop)
         self._curAnimation = name
     end
 end
-
 
 function Actor:setState(type)
     if self._statetype == type then return end
@@ -90,15 +89,26 @@ function Actor:setAIEnabled(enable)
     self._AIEnabled = enable
 end
 
+function Actor:hurtSoundEffects()
+-- to override
+end
+
 function Actor:hurt(collider)
-    if self._isalive == true then        
+    if self._isalive == true then 
+        --TODO add sound effect
+                    
         local damage = collider.damage
-        damage = damage + damage * math.random(-1,1)*0.15
-        
+        --calculate the real damage
+        damage = damage + damage * math.random(-1,1) * 0.15        
         damage = damage - self._defense
         damage = math.floor(damage)
         if damage <= 0 then
             damage = 1
+        end
+        
+        --critical attact by random
+        if math.random(0,1) > collider.criticalChance then
+            damage = damage + collider.damage*2
         end
 
         self._hp = self._hp - damage
@@ -113,7 +123,7 @@ function Actor:hurt(collider)
             self:dyingMode(getPosTable(collider),collider.knock)        
         end
         
-        local blood = self._dropBlood:showBloodLossNum(damage)
+        local blood = self._dropBlood:showBloodLossNum(damage,self._racetype)
         if self._racetype == EnumRaceType.MONSTER then
             blood:setPositionZ(70)
         else
@@ -121,16 +131,28 @@ function Actor:hurt(collider)
         end
         self:addChild(blood)
 
-        local dropBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp}
-        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, dropBlood)
+        local loseBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, loseBlood)
+        self:hurtSoundEffects()
     end
 end
+
+function Actor:normalAttackSoundEffects()
+-- to override
+end
+
+function Actor:specialAttackSoundEffects()
+-- to override
+end
+
 --======attacking collision check
 function Actor:normalAttack()
     BasicCollider.create(getPosTable(self), self._curFacing, self._normalAttack)
+    self:normalAttackSoundEffects()
 end
 function Actor:specialAttack()
     BasicCollider.create(getPosTable(self), self._curFacing, self._specialAttack)
+    self:specialAttackSoundEffects()
 end
 --======State Machine switching functions
 function Actor:idleMode() --switch into idle mode
@@ -252,6 +274,7 @@ function Actor:AI()
     end
 end
 function Actor:baseUpdate(dt)
+    self._myPos = getPosTable(self)
     self._aliveTime = self._aliveTime+dt
     if self._AIEnabled then
         self._AITimer = self._AITimer+dt
@@ -260,7 +283,6 @@ function Actor:baseUpdate(dt)
             self:AI()
         end
     end
-    self._myPos = getPosTable(self)
 end
 function Actor:knockingUpdate(dt)
     if self._aliveTime - self._timeKnocked > self._recoverTime then
@@ -296,6 +318,7 @@ function Actor:attackUpdate(dt)
             local function createCol()
                 self:specialAttack()
             end
+            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE, self._myPos)            
             local attackAction = cc.Sequence:create(self._action.specialattack1:clone(),cc.CallFunc:create(createCol),self._action.specialattack2:clone(),cc.CallFunc:create(playIdle))
             self._sprite3d:stopAction(self._curAnimation3d)
             self._sprite3d:runAction(attackAction)

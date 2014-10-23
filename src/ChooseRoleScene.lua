@@ -6,7 +6,7 @@ require "Archer"
 require "Mage"
 
 --tag 3hero:1~3
---tag bag:10 weapon:11 armour:12
+--tag bag:10 weapon:11 armour:12 helmet:13
 
 local ChooseRoleScene  = class("ChooseRoleScene",function ()
 	return cc.Scene:create()
@@ -17,6 +17,7 @@ local rtt = {{x=-90,y=-60,z=0},{x=-90,y=-70,z=0},{x=-90,y=-60,z=0}}
 local pos = {{x=160,y=160,z=-180},{x=380,y=120,z=-40},{x=530,y=160,z=-180}} --heroes' pos
 local weapon_item_pos = {x=834,y=274}
 local armour_item_pos = {x=918,y=274}
+local helmet_item_pos = {x=1002,y=274}
 local isMoving = false
 local direction = 0
 local heroSize = cc.rect(155,120,465,420)
@@ -27,6 +28,8 @@ function ChooseRoleScene.create()
     local layer = scene:createLayer()
     scene:addChild(layer)
     scene:initTouchDispatcher()
+    ccexp.AudioEngine:stop(AUDIO_ID.MAINMENUBGM)
+    AUDIO_ID.CHOOSEROLESCENEBGM = ccexp.AudioEngine:play2d(BGM_RES.CHOOSEROLESCENEBGM, true,1)
     return scene
 end
 
@@ -39,6 +42,8 @@ function ChooseRoleScene:addBag()
     local bag = cc.Sprite:create("chooseRole/cr_bag.png")
     bag:setTag(10)
     bag:setAnchorPoint(1.0,0)
+    self._bag = bag
+    self:switchTextWhenRotate()
 
     self._weaponItem = cc.Sprite:create("equipment/cr_w_w_1.jpg")
     self._weaponItem:setTag(11)
@@ -52,6 +57,12 @@ function ChooseRoleScene:addBag()
     self._armourItem:setPosition(armour_item_pos)
     self.layer:addChild(self._armourItem,2)
     
+    self._helmetItem = cc.Sprite:create("equipment/cr_w_h_1.jpg")
+    self._helmetItem:setTag(13)
+    self._helmetItem:setScale(0.4)
+    self._helmetItem:setPosition(helmet_item_pos)
+    self.layer:addChild(self._helmetItem,2)
+
     bag:setPosition(self.origin.x + self.visibleSize.width - 10,self.origin.y + 50)
     self.layer:addChild(bag)
     
@@ -60,10 +71,15 @@ end
 
 function ChooseRoleScene:addButton()
     --button
+    local touch_return = false
+    local touch_next = false
     local function touchEvent_return(sender,eventType)
-        if eventType == ccui.TouchEventType.ended then
---            print("return to main menu")
-            cc.Director:getInstance():replaceScene(require("MainMenuScene"):create())
+        if touch_return == false then
+            touch_return = true
+            if eventType == ccui.TouchEventType.began then
+                ccexp.AudioEngine:play2d(BGM_RES.MAINMENUSTART, false,1)
+                cc.Director:getInstance():replaceScene(require("MainMenuScene"):create())
+            end
         end
     end  
 
@@ -76,10 +92,13 @@ function ChooseRoleScene:addButton()
     self.layer:addChild(return_Button)
 
     local function touchEvent_next(sender,eventType)
-        if eventType == ccui.TouchEventType.ended then
-            print("go to game")
-            local scene = require("BattleScene")
-            cc.Director:getInstance():replaceScene(scene.create())
+        if touch_next == false then
+            touch_next = true
+            if eventType == ccui.TouchEventType.began then
+                ccexp.AudioEngine:play2d(BGM_RES.MAINMENUSTART, false,1)
+                local scene = require("BattleScene")
+                cc.Director:getInstance():replaceScene(scene.create())
+            end
         end
     end  
 
@@ -103,7 +122,7 @@ function ChooseRoleScene:addHeros()
     knight:setScale(1.3)
     self.layer:addChild(knight)
 
-    local archer = Mage.create()
+    local archer = Archer.create()
     archer:setTag(1)
     archer:setRotation3D(rtt[1])
     archer:setPosition3D(pos[1])
@@ -111,7 +130,7 @@ function ChooseRoleScene:addHeros()
     archer:setScale(1.3)
     self.layer:addChild(archer)
 
-    local mage = Mage.create()
+    local mage = Archer.create()
     mage:setTag(3)
     mage:setRotation3D(rtt[3])
     mage:setPosition3D(pos[3])
@@ -152,6 +171,7 @@ function ChooseRoleScene:initTouchDispatcher()
     local isRotateavaliable = false
     local isWeaponItemavaliable = false
     local isArmourItemavaliable = false
+    local isHelmetItemavaliable = false
     local touchbeginPt
     local listenner = cc.EventListenerTouchOneByOne:create()
     listenner:setSwallowTouches(true)
@@ -159,13 +179,17 @@ function ChooseRoleScene:initTouchDispatcher()
         touchbeginPt = touch:getLocation()
         if cc.rectContainsPoint(heroSize,touchbeginPt) then --rotate
             isRotateavaliable = true
-        elseif cc.rectContainsPoint(self._weaponItem:getBoundingBox(),touchbeginPt) then -- weapon
+        elseif cc.rectContainsPoint(self._weaponItem:getBoundingBox(),touchbeginPt) then --weapon
             isWeaponItemavaliable = true
             self._weaponItem:setScale(0.5)
             self._weaponItem:setOpacity(100)
         elseif cc.rectContainsPoint(self._armourItem:getBoundingBox(),touchbeginPt) then --armour
             isArmourItemavaliable = true
             self._armourItem:setScale(0.5)
+            self._armourItem:setOpacity(100)
+        elseif cc.rectContainsPoint(self._helmetItem:getBoundingBox(),touchbeginPt) then --helmet
+            isHelmetItemavaliable = true
+            self._helmetItem:setScale(0.5)
             self._armourItem:setOpacity(100)
         end
         
@@ -189,6 +213,8 @@ function ChooseRoleScene:initTouchDispatcher()
             self._weaponItem:setPosition(touch:getLocation())
         elseif isArmourItemavaliable then --armour
             self._armourItem:setPosition(touch:getLocation())
+        elseif isHelmetItemavaliable then --helmet
+            self._helmetItem:setPosition(touch:getLocation())
         end
     end,cc.Handler.EVENT_TOUCH_MOVED )
     listenner:registerScriptHandler(function(touch, event)
@@ -208,6 +234,13 @@ function ChooseRoleScene:initTouchDispatcher()
             self._armourItem:setOpacity(255)
             self.layer:getChildByTag(sortorder[2]):switchArmour()
             self._armourItem:setTexture(self:getArmourTextureName())
+        elseif isHelmetItemavaliable then
+            isHelmetItemavaliable = false
+            self._helmetItem:setPosition(helmet_item_pos)
+            self._helmetItem:setScale(0.4)
+            self._helmetItem:setOpacity(255)
+            self.layer:getChildByTag(sortorder[2]):switchHelmet()
+            self._helmetItem:setTexture(self:getHelmetTextureName())
         end
     end,cc.Handler.EVENT_TOUCH_ENDED )
     local eventDispatcher = self.layer:getEventDispatcher()
@@ -225,6 +258,7 @@ function ChooseRoleScene:rotate3Heroes(isRight)
             ),
             cc.CallFunc:create(function() 
                 isMoving = false
+                self:playAudioWhenRotate()
             end)))
         local left = self.layer:getChildByTag(sortorder[1])
         left:runAction(cc.MoveTo:create(rotatetime,pos[2]))
@@ -243,7 +277,10 @@ function ChooseRoleScene:rotate3Heroes(isRight)
             cc.Spawn:create(
                 cc.MoveTo:create(rotatetime,pos[1])
             ),
-            cc.CallFunc:create(function() isMoving = false end)))
+            cc.CallFunc:create(function()
+                isMoving = false 
+                self:playAudioWhenRotate()
+            end)))
         local left = self.layer:getChildByTag(sortorder[1])
         left:runAction(cc.MoveTo:create(rotatetime,pos[3]))
         local right = self.layer:getChildByTag(sortorder[3])
@@ -254,13 +291,12 @@ function ChooseRoleScene:rotate3Heroes(isRight)
         sortorder[3]=t
     end
 
-    --self:switchItemtextureWhenRotate()
-    --self:switchTextWhenRotate()
+    self:switchItemtextureWhenRotate()
+    self:switchTextWhenRotate()
 end
 
 function ChooseRoleScene:getWeaponTextureName()
     local hero = self.layer:getChildByTag(sortorder[2])
-    local type = hero:getRaceType()
     if hero:getRaceType() == EnumRaceType.KNIGHT then --warriors
         if hero:getWeaponID() == 0 then
             return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_w_1.jpg")
@@ -301,6 +337,29 @@ function ChooseRoleScene:getArmourTextureName()
             return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_s_a_1.jpg")
         elseif hero:getArmourID() ==1 then
         return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_s_a_0.jpg")
+        end
+    end
+end
+
+function ChooseRoleScene:getHelmetTextureName()
+    local hero = self.layer:getChildByTag(sortorder[2])
+    if hero:getRaceType() == EnumRaceType.KNIGHT then --warriors
+        if hero:getHelmetID() == 0 then
+            return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_h_1.jpg")
+    elseif hero:getHelmetID() ==1 then
+        return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_h_0.jpg")
+        end
+    elseif hero:getRaceType() == EnumRaceType.ARCHER then --archer
+        if hero:getHelmetID() == 0 then
+            return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_a_h_1.jpg")
+        elseif hero:getHelmetID() ==1 then
+        return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_a_h_0.jpg")
+        end
+    elseif hero:getRaceType() == EnumRaceType.MAGE then --sorceress
+        if hero:getHelmetID() == 0 then
+            return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_s_h_1.jpg")
+        elseif hero:getHelmetID() ==1 then
+        return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_s_h_0.jpg")
         end
     end
 end
@@ -355,6 +414,62 @@ function ChooseRoleScene:switchItemtextureWhenRotate()
 end
 
 function ChooseRoleScene:switchTextWhenRotate()
-    --
+    --get hero type
+    local hero = self.layer:getChildByTag(sortorder[2])
+    local type = hero:getRaceType()
+    --get bag , bagSize and judge if has child
+    local bag = self._bag
+    local size = bag:getContentSize()
+    local actor = bag:getChildByTag(1)
+    if actor ~= nil then
+        bag:removeChildByTag(1)
+        bag:removeChildByTag(2)
+    end
+    --actor point
+    local point = 0
+    
+    --label
+    local ttfconfig = {outlineSize=0,fontSize=15,fontFilePath="chooseRole/actor_param.ttf"}
+    local text = "LEVEL".."\n".."TT".."\n".."HP".."\n".."DEF".."\n".."AGI".."\n".."CRT".."\n".."S.ATT"
+    local attr = nil
+    
+    --set actor and label
+    if type == EnumRaceType.KNIGHT then --warriors
+        actor = cc.Sprite:create("chooseRole/knight.png")
+        point = cc.p(size.width*0.395,size.height*0.9)
+        attr = "1234567890".."\n".."100".."\n".."100".."\n".."100".."\n".."100".."\n".."100".."\n".."100"
+    elseif type == EnumRaceType.ARCHER then --archer
+        actor = cc.Sprite:create("chooseRole/archer.png")
+        point = cc.p(size.width*0.4,size.height*0.905)
+        attr = "1234567890".."\n".."100".."\n".."200".."\n".."100".."\n".."200".."\n".."100".."\n".."100"
+    elseif type == EnumRaceType.MAGE then --sorceress
+        actor = cc.Sprite:create("chooseRole/mage.png")
+        point = cc.p(size.width*0.38,size.height*0.9)
+        attr = "1234567890".."\n".."300".."\n".."400".."\n".."100".."\n".."300".."\n".."100".."\n".."100"
+    end
+    
+    --add to bag
+    actor:setPosition(point)
+    local text_label = cc.Label:createWithTTF(ttfconfig,text,cc.TEXT_ALIGNMENT_RIGHT,400)
+    text_label:setPosition(cc.p(size.width*0.4,size.height*0.68))
+    local attr_label = cc.Label:createWithTTF(ttfconfig,attr,cc.TEXT_ALIGNMENT_CENTER,400)
+    attr_label:setPosition(cc.p(size.width*0.7,size.height*0.68))
+    bag:addChild(actor,1,1)
+    bag:addChild(text_label,1)
+    bag:addChild(attr_label,1,2)
 end
+
+function ChooseRoleScene:playAudioWhenRotate()
+	
+    local hero = self.layer:getChildByTag(sortorder[2])
+    local type = hero:getRaceType()
+    if type==EnumRaceType.KNIGHT then
+        ccexp.AudioEngine:play2d(WarriorProperty.kickit, false,1)
+    elseif type==EnumRaceType.ARCHER then
+        ccexp.AudioEngine:play2d(Archerproperty.cheers, false,1)
+    elseif type==EnumRaceType.MAGE then
+        ccexp.AudioEngine:play2d(MageProperty.alright, false,1)
+    end
+end
+
 return ChooseRoleScene

@@ -75,6 +75,7 @@ public:
         START_RADIUS_EQUAL_TO_END_RADIUS = -1,
     };
     static BillboardParticleSystem * create(const std::string& filename);
+    static BillboardParticleSystem * create(ValueMap &dictionary);
     void setTextureWithRect(Texture2D *texture, const Rect& rect);
     BillboardParticleSystem();
     ~BillboardParticleSystem();

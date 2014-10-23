@@ -4,10 +4,9 @@ require "Manager"
 require "MessageDispatchCenter"
 
 currentLayer = nil
-local currentStep = 1
 uiLayer = nil
 local gameMaster = nil
-
+local specialCamera = {valid = false, position = cc.p(0,0)}
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
 
@@ -15,10 +14,18 @@ local scheduler = cc.Director:getInstance():getScheduler()
 
 local function moveCamera(dt)
     --cclog("moveCamera")
-    if camera and List.getSize(HeroManager) > 0 then
-        local position = cc.pLerp({x=camera:getPositionX(),y=0},{x=getFocusPointOfHeros().x+size.width/5,y=0},2*dt)
-        camera:setPositionX(position.x)
-        camera:lookAt({x=position.x, y=size.width/2, z=0.0}, {x=0.0, y=1.0, z=0.0})
+    if camera == nil then return end
+
+    local cameraPosition = getPosTable(camera)
+    if specialCamera.valid == true then
+        --local position = cc.pRotateByAngle(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), -360/60/2*dt)
+        local position = cc.pLerp(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), 5*dt)
+        camera:setPosition(position)
+        camera:lookAt(cc.V3(position.x, specialCamera.position.y, 50.0), cc.V3(0.0, 0.0, 1.0))
+    elseif List.getSize(HeroManager) > 0 then
+        local position = cc.pLerp(cameraPosition, cc.p(getFocusPointOfHeros().x + size.width/5, getFocusPointOfHeros().y - size.height), 2*dt)
+        camera:setPosition(position)
+        camera:lookAt(cc.V3(position.x, size.height/2, 50.0), cc.V3(0.0, 1.0, 0.0))
     end
 end
 
@@ -51,7 +58,7 @@ end
 
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 10.0, 4000.0)
-    camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height*1.3, size.height/2-30))
+    camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height, size.height/2-100))
     camera:lookAt(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y, 0.0), cc.V3(0.0, 1.0, 0.0))
     currentLayer:addChild(camera)
     camera:setGlobalZOrder(10)
@@ -77,21 +84,35 @@ end
 local function initUILayer()
     uiLayer = require("BattleFieldUI").create()
 
-    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye()/2)
-    uiLayer:setScale(0.5)
+    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye()/3)
+    uiLayer:setScale(0.333)
     uiLayer:ignoreAnchorPointForPosition(false)
-    uiLayer:setLocalZOrder(999)
+    uiLayer:setGlobalZOrder(3000)
 end
 
 local BattleScene = class("BattleScene",function()
     return cc.Scene:create()
 end)
 
---dropValuePercent is the dropValue/bloodValue*100
-function BattleScene.sendDropBlood(blood)
-    if blood._racetype == EnumRaceType.KNIGHT or blood._racetype == EnumRaceType.ARCHER or blood._racetype == EnumRaceType.MAGE then    
-        uiLayer:bloodDrop(blood)
+local function sendDropBlood(heroActor)
+    if heroActor._racetype == EnumRaceType.KNIGHT or heroActor._racetype == EnumRaceType.ARCHER or heroActor._racetype == EnumRaceType.MAGE then    
+        uiLayer:bloodDrop(heroActor)
     end
+end
+
+local function specialPerspective(position)
+    if specialCamera.valid == true then return end
+    
+    specialCamera.valid = true
+    specialCamera.position = position
+    cc.Director:getInstance():getScheduler():setTimeScale(0.1)
+
+    local function restoreTimeScale()
+        specialCamera.valid = false
+        cc.Director:getInstance():getScheduler():setTimeScale(1.0)
+    end
+    delayExecute(currentLayer, restoreTimeScale, 0.5)      
+      
 end
 
 function BattleScene.create()
@@ -100,12 +121,13 @@ function BattleScene.create()
     scene:addChild(currentLayer)
     
     createBackground()
-    gameMaster = require("GameMaster").create()
     initUILayer()
+    gameMaster = require("GameMaster").create()
     setCamera()
     scheduler:scheduleScriptFunc(gameController, 0, false)
 
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,BattleScene.sendDropBlood)
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, sendDropBlood)
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE,specialPerspective)
 
     return scene
 end

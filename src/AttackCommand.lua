@@ -1,5 +1,6 @@
 require "Helper"
 require "Manager"
+require "GlobalVariables"
 
 AttackManager = List.new()
 function solveAttacks(dt)
@@ -61,6 +62,7 @@ function BasicCollider:ctor()
     self.duration = 0
     self.curDuration = 0
     self.speed = 0 --traveling speed}
+    self.criticalChance = 0
 end
 --callback when the collider has being solved by the attack manager, 
 --make sure you delete it from node tree, if say you have an effect attached to the collider node
@@ -68,7 +70,19 @@ function BasicCollider:onTimeOut()
     self:removeFromParent()
 end
 
+function BasicCollider:hurtEffect(target)
+    
+    local hurtAction = cc.Animate:create(animationCathe:getAnimation("hurtAnimation"))
+    local hurtEffect = cc.BillBoard:create()
+    hurtEffect:setScale(1.5)
+    hurtEffect:runAction(cc.Sequence:create(hurtAction, cc.RemoveSelf:create()))
+    hurtEffect:setPosition3D(cc.V3(0,0,50))
+    target:addChild(hurtEffect)  
+end
+
 function BasicCollider:onCollide(target)
+    
+    self:hurtEffect(target)
     target:hurt(self)
 end
 
@@ -86,7 +100,7 @@ function BasicCollider:initData(pos, facing, attackInfo)
     self.damage = attackInfo.damage or self.damage
     self.duration = attackInfo.duration or self.duration
     self.speed = attackInfo.speed or self.speed
-    
+    self.criticalChance = attackInfo.criticalChance
     self:setPosition(pos)
     List.pushlast(AttackManager, self)
     currentLayer:addChild(self, -10)
@@ -182,7 +196,7 @@ function MageNormalAttack:onTimeOut()
 end
 
 function MageNormalAttack:onCollide(target)
-    target:hurt(self)
+    self:hurtEffect(target)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
 end
@@ -253,7 +267,7 @@ function MageIceSpikes.create(pos, facing, attackInfo)
 --    ret:addChild(puff)
 --    puff:setGlobalZOrder(-ret:getPositionY()*2+FXZorder)
     
-    local magic = cc.BillboardParticleSystem:create("FX/magic.plist")
+    local magic = cc.BillboardParticleSystem:create(ParticleManager:getInstance():getPlistData("magic"))
     local magicf = cc.SpriteFrameCache:getInstance():getSpriteFrame("particle.png")
     magic:setTextureWithRect(magicf:getTexture(), magicf:getRect())
     magic:setCamera(camera)
@@ -268,7 +282,7 @@ end
 
 function MageIceSpikes:onTimeOut()
     self.spikes:setVisible(false)
-    local puff = cc.BillboardParticleSystem:create("FX/puffRing.plist")
+    local puff = cc.BillboardParticleSystem:create(ParticleManager:getInstance():getPlistData("puffRing"))
     --local puff = cc.ParticleSystemQuad:create("FX/puffRing.plist")
     local puffFrame = cc.SpriteFrameCache:getInstance():getSpriteFrame("puff.png")
     puff:setTextureWithRect(puffFrame:getTexture(), puffFrame:getRect())
@@ -278,7 +292,7 @@ function MageIceSpikes:onTimeOut()
     puff:setGlobalZOrder(-self:getPositionY()+FXZorder)
     puff:setPositionZ(20)
     
-    local magic = cc.BillboardParticleSystem:create("FX/magic.plist")
+    local magic = cc.BillboardParticleSystem:create(ParticleManager:getInstance():getPlistData("magic"))
     local magicf = cc.SpriteFrameCache:getInstance():getSpriteFrame("particle.png")
     magic:setTextureWithRect(magicf:getTexture(), magicf:getRect())
     magic:setCamera(camera)
@@ -293,6 +307,7 @@ end
 
 function MageIceSpikes:onCollide(target)
     if self.curDOTTime > self.DOTTimer then
+        self:hurtEffect(target)
         target:hurt(self)
         self.DOTApplied = true
     end
@@ -314,11 +329,9 @@ end)
 function ArcherNormalAttack.create(pos,facing,attackInfo)
     local ret = ArcherNormalAttack.new()
     ret:initData(pos,facing,attackInfo)
-
-    ret.sp = cc.Sprite:create("chooseRole/cr_rotate.png")
-    ret.sp:setPosition3D(cc.V3(0,0,50))
-    ret.sp:setScale(2)
-    ret.sp:setColor({r=255,g=0,b=0})
+    
+    ret.sp = Archer:createArrow()
+    ret.sp:setRotation(RADIANS_TO_DEGREES(-facing)-90)
     ret:addChild(ret.sp)
 
     return ret
@@ -329,6 +342,7 @@ function ArcherNormalAttack:onTimeOut()
 end
 
 function ArcherNormalAttack:onCollide(target)
+    self:hurtEffect(target)
     target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
@@ -339,34 +353,6 @@ function ArcherNormalAttack:onUpdate(dt)
     local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
     self:setPosition(nextPos)
 end
-
-
-ArcherArrowRainFall = class("ArcherArrowRainFall", function()
-    return BasicCollider.new()
-end)
-
-function ArcherArrowRainFall.create(pos, facing, attackInfo)
-    local ret = ArcherArrowRainFall.new()
-    ret:initData(pos,facing,attackInfo)
-    ret.sp = cc.Sprite:create("chooseRole/cr_rotate.png")
-    ret.sp:setColor({r=0,g=0,b=255})
-    ret.sp:setPosition3D(cc.V3(0,0,5))
-    ret.sp:setScale(2)
-    ret:addChild(ret.sp)
-    --ret:setRotation(RADIANS_TO_DEGREES(facing))
-
-    return ret
-end
-
-function ArcherArrowRainFall:onTimeOut()
-    self.sp:runAction(cc.FadeOut:create(1))
-    self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
-end
-
-function ArcherArrowRainFall:onCollide(target)
-    target:hurt(self)
-end
-
 
 DragonAttack = class("DragonAttack", function()
     return BasicCollider.new()
@@ -390,6 +376,7 @@ function DragonAttack:onTimeOut()
 end
 
 function DragonAttack:onCollide(target)
+    self:hurtEffect(target)
     target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
