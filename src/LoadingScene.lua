@@ -1,5 +1,6 @@
 require "Cocos2d"
 require "Cocos2dConstants"
+require "ParticleManager"
 
 local LoadingScene = class("loadingScene",
 function ()
@@ -35,20 +36,29 @@ function LoadingScene:init()
     layer:addChild(percent)
     
     --update
-    local update = function()
-        val = val-1
-        if(val == 0) then
-            cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self.scheduleID)
-            if self.numOfTexture == 0 then
-                local scene = require("ActivateGameScene")
-                cc.Director:getInstance():replaceScene(scene:create())
-            end
-        end
-        percent:setString(val .. "%")
-        --load other resource
-    end
-    self.scheduleID = cc.Director:getInstance():getScheduler():scheduleScriptFunc(update,1/60,false)
+--    local update = function()
+--        val = val-1
+--        if(val == 0) then
+--            cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self.scheduleID)
+--            if self.numOfTexture == 0 then
+--                local scene = require("MainMenuScene")
+--                cc.Director:getInstance():replaceScene(scene:create())
+--            end
+--        end
+--        percent:setString(val .. "%")
+--        --load other resource
+--    end
+--    self.scheduleID = cc.Director:getInstance():getScheduler():scheduleScriptFunc(update,1/60,false)
+
+    self:CachedParticleRes()
+    self:CachedTextureRes()
     
+    local function gotonextscene()
+        cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self.scheduleID)
+        local scene = require("MainMenuScene")
+        cc.Director:getInstance():replaceScene(scene:create())
+    end
+    self.scheduleID = cc.Director:getInstance():getScheduler():scheduleScriptFunc(gotonextscene,1,false)
     return layer
 end
 
@@ -59,6 +69,19 @@ function LoadingScene:loadingImage_callback()
         --print("end")
     end
     --print(self.numOfTexture)
+end
+
+function LoadingScene:CachedParticleRes()
+	local pm = ParticleManager:getInstance()
+    pm:AddPlistData("FX/iceTrail.plist","iceTrail")
+    pm:AddPlistData("FX/magic.plist","magic")
+    pm:AddPlistData("FX/pixi.plist","pixi")
+    pm:AddPlistData("FX/puffRing.plist","puffRing")
+    pm:AddPlistData("FX/puffRing2.plist","puffRing2")
+end
+
+function LoadingScene:CachedTextureRes()
+    cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
 end
 
 return LoadingScene
