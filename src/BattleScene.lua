@@ -4,10 +4,9 @@ require "Manager"
 require "MessageDispatchCenter"
 
 currentLayer = nil
-local currentStep = 1
 uiLayer = nil
 local gameMaster = nil
-
+local specialCamera = {valid = false, position = cc.p(0,0)}
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
 
@@ -15,10 +14,17 @@ local scheduler = cc.Director:getInstance():getScheduler()
 
 local function moveCamera(dt)
     --cclog("moveCamera")
-    if camera and List.getSize(HeroManager) > 0 then
-        local position = cc.pLerp({x=camera:getPositionX(),y=0},{x=getFocusPointOfHeros().x+size.width/5,y=0},2*dt)
-        camera:setPositionX(position.x)
-        camera:lookAt({x=position.x, y=size.width/2, z=0.0}, {x=0.0, y=1.0, z=0.0})
+    if camera == nil then return end
+
+    local cameraPosition = getPosTable(camera)
+    if specialCamera.valid == true then
+        local position = cc.pLerp(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), 5*dt)
+        camera:setPosition(position)
+        camera:lookAt(cc.V3(position.x, specialCamera.position.y, 0.0), cc.V3(0.0, 0.0, 1.0))
+    elseif List.getSize(HeroManager) > 0 then
+        local position = cc.pLerp(cameraPosition, cc.p(getFocusPointOfHeros().x + size.width/5, getFocusPointOfHeros().y - size.height*1.3), 2*dt)
+        camera:setPosition(position)
+        camera:lookAt(cc.V3(position.x, size.height/2, 0.0), cc.V3(0.0, 1.0, 0.0))
     end
 end
 
@@ -88,10 +94,21 @@ local BattleScene = class("BattleScene",function()
 end)
 
 --dropValuePercent is the dropValue/bloodValue*100
-function BattleScene.sendDropBlood(blood)
+local function sendDropBlood(blood)
     if blood._racetype == EnumRaceType.KNIGHT or blood._racetype == EnumRaceType.ARCHER or blood._racetype == EnumRaceType.MAGE then    
         uiLayer:bloodDrop(blood)
     end
+end
+
+local function specialPerspective(position)
+    specialCamera.valid = true
+    specialCamera.position = position
+    cc.Director:getInstance():getScheduler():setTimeScale(0.1)
+    local function restoreAnimation()
+        specialCamera.valid = false
+        cc.Director:getInstance():getScheduler():setTimeScale(1.0)
+    end
+    delayExecute(currentLayer, restoreAnimation, 0.5)        
 end
 
 function BattleScene.create()
@@ -105,7 +122,8 @@ function BattleScene.create()
     setCamera()
     scheduler:scheduleScriptFunc(gameController, 0, false)
 
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP,BattleScene.sendDropBlood)
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, sendDropBlood)
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE,specialPerspective)
 
     return scene
 end

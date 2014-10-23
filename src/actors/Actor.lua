@@ -342,6 +342,7 @@ function Actor:AI()
     end
 end
 function Actor:baseUpdate(dt)
+    self._myPos = getPosTable(self)
     self._aliveTime = self._aliveTime+dt
     if self._AIEnabled then
         self._AITimer = self._AITimer+dt
@@ -350,7 +351,6 @@ function Actor:baseUpdate(dt)
             self:AI()
         end
     end
-    self._myPos = getPosTable(self)
 end
 function Actor:knockingUpdate(dt)
     if self._aliveTime - self._timeKnocked > self._recoverTime then
@@ -386,6 +386,7 @@ function Actor:attackUpdate(dt)
             local function createCol()
                 self:specialAttack()
             end
+            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE, self._myPos)            
             local attackAction = cc.Sequence:create(self._action.specialattack1:clone(),cc.CallFunc:create(createCol),self._action.specialattack2:clone(),cc.CallFunc:create(playIdle))
             self._sprite3d:stopAction(self._curAnimation3d)
             self._sprite3d:runAction(attackAction)
