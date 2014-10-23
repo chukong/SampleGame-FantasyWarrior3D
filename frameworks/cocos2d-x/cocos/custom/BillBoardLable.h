@@ -60,7 +60,7 @@ public:
     void setMode(Mode mode);
 
     /** Get the billboard rotation mode. */
-    BillBoard::Mode getMode() const;
+    BillBoardLable::Mode getMode() const;
 CC_CONSTRUCTOR_ACCESS:
     BillBoardLable(FontAtlas *atlas = nullptr, TextHAlignment hAlignment = TextHAlignment::LEFT,
         TextVAlignment vAlignment = TextVAlignment::TOP,bool useDistanceField = false,bool useA8Shader = false);

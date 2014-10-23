@@ -9,8 +9,9 @@ EnumRaceType =
     "BASE",
     "HERO",  --only this
     "WARRIOR",
+    "KNIGHT",
     "ARCHER",
-    "SORCERESS",
+    "MAGE",
     "MONSTER", --and this
     "BOSS", 
     "DRAGON",
@@ -19,18 +20,6 @@ EnumRaceType = CreateEnumTable(EnumRaceType)
 
 EnumStateType =
 {
-    "STAND", --command to tell the actor to go to standing state
-    "STANDING", --standing state, idle
-    "WALK", --walking state
-    "ATTACK",
-    "NORMALATTACK",
-    "SPECIALATTACK",
-    "NORMALATTACKING",
-    "SPECIALATTACKING",
-    "DEFEND",
-    "KNOCKED",
-    "NULL", -- means dead already.
-    
     "IDLE",
     "WALKING",
     "ATTACKING",
@@ -92,7 +81,7 @@ function Actor:ctor()
     self._speed = 500 --500units a second maximum
     self._turnSpeed = DEGREES_TO_RADIANS(225) --180 degrees a second
     self._acceleration = 750 --accelerates to 500 in a second
-    self._decceleration = 750*1.5 --stopping should be slightly faster than starting
+    self._decceleration = 750*1.7 --stopping should be slightly faster than starting
     self._goRight = true
     self._AIFrequency = 1.0 --how often AI executes in seconds
     self._attackFrequency = 4.0 --an attack move every few seconds
@@ -133,54 +122,6 @@ function Actor:initShadow()
 	self:addChild(self._circle)
 end
 
-
---======Play animation with blending in between, but seems buggy
-function Actor:_blendAnimationTo(anim, loop)
---black magic function ;)
-    if loop then
-        self._newAnimation = cc.RepeatForever:create(anim)
-    else
-        self._newAnimation = anim
-    end
-    self._newAnimation3d = anim
-    self._sprite3d:runAction(self._newAnimation)
-
-    local function _blending(dt)
-        self._elapseBlendTime = self._elapseBlendTime+dt
-        local t = self._elapseBlendTime / self._blendTime
-        self._curAnimation3d:setWeight(1.0-t)
-        self._newAnimation3d:setWeight(t)
-        
-    end
-    local schID = cc.Director:getInstance():getScheduler():scheduleScriptFunc(_blending,0, false)
-    local function stopBlend()
-        cc.Director:getInstance():getScheduler():unscheduleScriptEntry(schID)
-        self._sprite3d:stopAction(self._curAnimation)
-        self._curAnimation = self._newAnimation
-        self._newAnimation = nil
-        self._curAnimation3d = self._newAnimation3d
-        self._newAnimation3d = nil
-    end
-    self:runAction(cc.Sequence:create(cc.DelayTime:create(self._blendTime), cc.CallFunc:create(stopBlend)))
-end
-function Actor:playAnimationWithBlend(name, loop)
-    local anim = self._action[name]:clone()
-    if self._curAnimation ~= nil  then
-        if self._curAnimation ~= anim then
-            --if we are playing the same animation, then do nothing
-           self:_blendAnimationTo(anim,loop)
-        end
-    else
-        if loop then
-            self._curAnimation = cc.RepeatForever:create(anim)
-        else
-            self._curAnimation = anim
-        end
-        self._curAnimation3d = anim
-        self._sprite3d:runAction(self._curAnimation)
-    end
-end
---=============end buggy blending code
 function Actor:playAnimation(name, loop)
     if self._curAnimation ~= name then --using name to check which animation is playing
         self._sprite3d:stopAllActions()
@@ -242,11 +183,7 @@ end
 function Actor:hurt(collider)
     if self._isalive == true then        
         local damage = collider.damage
-        if math.random() >= 0.5 then
-           damage = damage + damage * 0.15
-        else
-           damage = damage - damage * 0.15
-        end
+        damage = damage + damage * math.random(-1,1)*0.15
         
         damage = damage - self._defense
         damage = math.floor(damage)
@@ -313,6 +250,8 @@ end
 function Actor:dyingMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.DYING)
     self:playAnimation("dead")
+    uiLayer:heroDead(self)    
+    
     if knockAmount then
         local p = getPosTable(self)
         local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))

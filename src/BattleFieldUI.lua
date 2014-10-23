@@ -8,25 +8,29 @@ function BattlefieldUI.create()
 	return layer
 end
 
+function BattlefieldUI:setGreyShader(sprite)
+
+end
+
 function BattlefieldUI:ctor()
     self:avatarInit()
     self:bloodbarInit()
     self:touchButtonInit()
-    ccexp.AudioEngine:stop(AUDIO_ID.MAINMENUBGM)
     
     AUDIO_ID.BATTLEFIELDBGM = ccexp.AudioEngine:play2d(BGM_RES.BATTLEFIELDBGM, true,0.6)
 end
 
 function BattlefieldUI:avatarInit()
+
     self.WarriorPng = cc.Sprite:create("battlefieldUI/UI-1136-640_03.png")
     self.WarriorPng:setPosition3D(cc.V3(860/1136*G.winSize.width,50/640*G.winSize.height,2))
     self.WarriorPng:setScale(0.5)
-    self:addChild(self.WarriorPng,2)    
+    self:addChild(self.WarriorPng,2)   
+     
     self.WarriorPngFrame = cc.Sprite:create("battlefieldUI/UI-2.png")
     self.WarriorPngFrame:setScale(0.5)
     self.WarriorPngFrame:setPosition3D(cc.V3(self.WarriorPng:getPositionX()+1,self.WarriorPng:getPositionY()-4,1))
     self:addChild(self.WarriorPngFrame,1)
-    
        
     self.ArcherPng = cc.Sprite:create("battlefieldUI/UI-1136-640_11.png")
     self.ArcherPng:setPosition3D(cc.V3(930/1136*G.winSize.width,50/640*G.winSize.height,2))
@@ -171,6 +175,20 @@ function BattlefieldUI:bloodDrop(blood)
     if blood._name=="Mage" then
         self.MageBlood:runAction(progressTo)
         self.MageBloodClone:runAction(progressToClone)
+    end
+end
+
+function BattlefieldUI:heroDead(hero)
+
+    if hero._name =="Knight" then
+        cc.GreyShader:setGreyShader(self.WarriorPng)
+        cc.GreyShader:setGreyShader(self.WarriorPngFrame)       
+    elseif hero._name =="Mage" then
+        cc.GreyShader:setGreyShader(self.MagePng)
+        cc.GreyShader:setGreyShader(self.MagePngFrame)
+    elseif hero._name=="Archer" then
+        cc.GreyShader:setGreyShader(self.ArcherPng)
+        cc.GreyShader:setGreyShader(self.ArcherPngFrame)
     end
 end
 

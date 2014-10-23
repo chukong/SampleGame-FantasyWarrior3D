@@ -7,6 +7,7 @@ G =
 {
     winSize = cc.Director:getInstance():getWinSize(),
     bloodPercentDropSpeed = 2,
+    activearea = {left = -2800, right = 500, bottom = 100, top = 700}
 }
 cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
 FXZorder = 1999
@@ -16,6 +17,7 @@ FXZorder = 1999
 BGM_RES = 
 {
     MAINMENUBGM = "audios/Royal Flush Party.mp3",
+    MAINMENUSTART= "audios/effects/magical_3.mp3",
     BATTLEFIELDBGM = "audios/The_Last_Encounter_Short_Loop.mp3"
 }
 
@@ -26,7 +28,8 @@ AUDIO_ID =
     BATTLEFIELDBGM,
     CHOOSEROLECHAPTERBGM,
     KNIGHTNORMALATTACK,
-    KNIGHTSPECIALATTACK
+    KNIGHTSPECIALATTACK,
+    ARCHERATTACK
 }
 
 --Monster Slime
@@ -52,11 +55,12 @@ MonsterRatValues =
 MonsterPigletValues = 
     {
         fileName = "model/piglet/piglet.c3b",
-        attack1 = "audios/effects/piglet1.mp3",
-        attack2 = "audios/effects/piglet2.mp3",
-        attack3 = "audios/effects/piglet3.mp3",
-        dead = "audios/effects/pigletDead.mp3"
-    }
+        attack1 = "audios/effects/piglet/piglet1.mp3",
+        attack2 = "audios/effects/piglet/piglet2.mp3",
+        attack3 = "audios/effects/piglet/piglet3.mp3",
+        dead = "audios/effects/piglet/dead.mp3",
+        hurt = "audios/effects/piglet/hurt.mp3"    
+}
     
 --Warroir property
 WarriorProperty =
@@ -66,10 +70,20 @@ WarriorProperty =
     defense = 100,
     speed = 50,
     special_attack_chance = 0.33,
-    normalAttack1 = "audios/effects/swish-1.mp3",
-    normalAttack2 = "audios/effects/swish-2.mp3",
-    normalAttack3 = "audios/effects/swish-3.mp3",
-    normalAttack4 = "audios/effects/swish-4.mp3",
+    shout = "audios/effects/Knight1.mp3",
+    normalAttack1 = "audios/effects/knight/swish-1.mp3",
+    normalAttack2 = "audios/effects/knight/swish-2.mp3",
+    specialAttack1 = "audios/effects/knight/swish-3.mp3",
+    specialAttack2 = "audios/effects/knight/swish-4.mp3",
+    hurt = "audios/effects/gruntsound.mp3"
+}
+
+--Archer property
+Archerproperty =
+{
+    attack1 = "audios/effects/archer/swish-3.mp3",
+    attack2 = "audios/effects/archer/swish-4.mp3",
+    wow = "audios/effects/archer/wow.mp3"
 }
 
 --Mage property
@@ -80,4 +94,5 @@ MageProperty =
     defense = 100,
     speed = 50,
     special_attack_chance = 0.33,
+    normalAttack = "audios/effects/mage/yeaha.mp3"
 }

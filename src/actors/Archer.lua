@@ -13,7 +13,7 @@ function Archer:ctor()
     self._useWeaponId = 0
     self._useArmourId = 0
     self._particle = nil
-    self._racetype = EnumRaceType.HERO
+    self._racetype = EnumRaceType.ARCHER
     self._attackFrequency = 4.7
     self._AIFrequency = 1.3
     self._name = "Archer"
@@ -47,13 +47,23 @@ function Archer.create()
     return ret
 end
 
+local function ArcherlAttackCallback(audioID,filePath)
+    ccexp.AudioEngine:play2d(Archerproperty.attack2, false,1)
+end
+
 function Archer:normalAttack()
     ArcherNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+    AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
+    ccexp.AudioEngine:play2d(Archerproperty.wow, false,1)
+    ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
 end
 
 function Archer:specialAttack()
     --archer will create 3 attack circle on the ground
     --get 3 positions
+    AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
+    ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
+    
     local normalAttack = self._normalAttack
     normalAttack.knock = 10
     normalAttack.angle = 360
@@ -70,9 +80,13 @@ function Archer:specialAttack()
     ArcherNormalAttack.create(pos1, self._curFacing, self._specialAttack)
     local function spike2()
         ArcherNormalAttack.create(pos2, self._curFacing, self._specialAttack)
+        AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
+        ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     end
     local function spike3()
         ArcherNormalAttack.create(pos3, self._curFacing, self._specialAttack)
+        AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
+        ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     end
     delayExecute(self,spike2,0.2)
     delayExecute(self,spike3,0.4)

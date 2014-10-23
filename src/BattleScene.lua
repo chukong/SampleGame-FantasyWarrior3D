@@ -11,6 +11,8 @@ local gameMaster = nil
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
 
+
+
 local function moveCamera(dt)
     --cclog("moveCamera")
     if camera and List.getSize(HeroManager) > 0 then
@@ -39,11 +41,11 @@ local function createBackground()
     spriteBg:setPosition3D(cc.V3(-1000,350,0))
     spriteBg:setRotation3D(cc.V3(90,0,0))
         
-    local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=4500, height=400}, 0.77, 0.3797, 1.2)
+    local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=5000, height=400}, 0.77, 0.3797, 1.2)
     currentLayer:addChild(water)
     water:setPosition3D(cc.V3(-3500,-400,-35))
     water:setAnchorPoint(0,0)
-    water:setGlobalZOrder(-9)
+    water:setGlobalZOrder(0)
     
 end
 
@@ -75,10 +77,10 @@ end
 local function initUILayer()
     uiLayer = require("BattleFieldUI").create()
 
-    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye()/2)
-    uiLayer:setScale(0.5)
+    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye()/3)
+    uiLayer:setScale(0.333)
     uiLayer:ignoreAnchorPointForPosition(false)
-    uiLayer:setLocalZOrder(999)
+    uiLayer:setGlobalZOrder(3000)
 end
 
 local BattleScene = class("BattleScene",function()
@@ -87,7 +89,7 @@ end)
 
 --dropValuePercent is the dropValue/bloodValue*100
 function BattleScene.sendDropBlood(blood)
-    if blood._racetype == EnumRaceType.HERO then    
+    if blood._racetype == EnumRaceType.KNIGHT or blood._racetype == EnumRaceType.ARCHER or blood._racetype == EnumRaceType.MAGE then    
         uiLayer:bloodDrop(blood)
     end
 end
