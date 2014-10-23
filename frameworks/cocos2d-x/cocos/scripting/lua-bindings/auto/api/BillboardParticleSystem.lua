@@ -547,12 +547,13 @@
 -- @return color4f_table#color4f_table ret (return value: color4f_table)
         
 --------------------------------
--- 
--- @function [parent=#BillboardParticleSystem] create 
+-- @overload self, map_table         
+-- @overload self, string         
+-- @function [parent=#BillboardParticleSystem] create
 -- @param self
 -- @param #string filename
--- @return BillboardParticleSystem#BillboardParticleSystem ret (return value: cc.BillboardParticleSystem)
-        
+-- @return BillboardParticleSystem#BillboardParticleSystem ret (retunr value: cc.BillboardParticleSystem)
+
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] BillboardParticleSystem 

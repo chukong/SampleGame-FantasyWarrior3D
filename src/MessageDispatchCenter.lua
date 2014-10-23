@@ -5,6 +5,7 @@ MessageDispatchCenter.MessageType = {
     REDUCE_SCORE = "REDUCE_SCORE",
     KNOCKED = "KNOCKED",
     KNOCKEDAOE = "KNOCKEDAOE",
+    SPECIAL_PERSPECTIVE = "SPECIAL_PERSPECTIVE"
 }
 
 MessageDispatchCenter.MessageQue = {}
