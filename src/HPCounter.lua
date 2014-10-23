@@ -1,16 +1,16 @@
 require("Cocos2d")
 
-local DropBlood = class("DropBlood",function()
+local HPCounter = class("HPCounter",function()
     return cc.Node:create()
 end)
 
-function DropBlood:create()
+function HPCounter:create()
     self._isBlooding = false
     self._num = 0
-    return DropBlood.new()
+    return HPCounter.new()
 end
 
-function DropBlood:showBloodLossNum(dmage)
+function HPCounter:showBloodLossNum(dmage,racetype)
     local time = 1
     local function getRandomXYZ()
         local rand_x = 20*math.sin(math.rad(time*0.5+4356))
@@ -21,22 +21,28 @@ function DropBlood:showBloodLossNum(dmage)
     
     local function getBlood()
         local num = self._num
+        
         local ttfconfig = {outlineSize=7,fontSize=50,fontFilePath="fonts/britanic bold.ttf"}
         local blood = cc.BillBoardLable:createWithTTF(ttfconfig,"-"..num,cc.TEXT_ALIGNMENT_CENTER,400)
         blood:enableOutline(cc.c4b(0,0,0,255))
         blood:setScale(0.1)
         blood:setRotation3D(getRandomXYZ())
 
-        local targetScale = 0.7
-        if num > 200 then 
-            blood:setColor(cc.c3b(255,0,0))
-        elseif num > 100 then
-            blood:setColor(cc.c3b(250,121,65))
-            targetScale = 0.55
+        local targetScale = 0.6
+        if num > 1000 then 
+            blood:setColor(cc.c3b(247,148,29))
+        elseif num > 300 then
+            targetScale = 0.45
+            blood:setColor(cc.c3b(255,247,153))
         else
-            blood:setColor(cc.c3b(250,191,65))
-            targetScale = 0.65
+            targetScale = 0.55
+            blood:setColor(cc.c3b(255,251,240))
         end
+        
+        if racetype ~= EnumRaceType.MONSTER then
+            blood:setColor(cc.c3b(255,0,0)) 
+        end
+        
         local sequence = cc.Sequence:create(cc.EaseElasticOut:create(cc.ScaleTo:create(0.25,targetScale),0.4),
             cc.FadeOut:create(0.25),
             cc.RemoveSelf:create(),
@@ -57,7 +63,6 @@ function DropBlood:showBloodLossNum(dmage)
     if self._isBlooding == false then
         self._isBlooding = true
         self._num = dmage
-        
     else
         self._blood:stopAllActions()
         self._blood:removeFromParent()
@@ -69,4 +74,4 @@ function DropBlood:showBloodLossNum(dmage)
     return getBlood()
 end
 
-return DropBlood
+return HPCounter

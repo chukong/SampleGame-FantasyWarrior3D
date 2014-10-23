@@ -104,8 +104,8 @@ function Actor:ctor()
     self._targetFacing = 0
     self._target = nil
     
-    --dropblood
-    self._dropBlood = require "DropBlood":create()
+    --LoseBlood
+    self._dropBlood = require "HPCounter":create()
     self:addChild(self._dropBlood)
 end
 
@@ -203,7 +203,7 @@ function Actor:hurt(collider)
             self:dyingMode(getPosTable(collider),collider.knock)        
         end
         
-        local blood = self._dropBlood:showBloodLossNum(damage)
+        local blood = self._dropBlood:showBloodLossNum(damage,self._racetype)
         if self._racetype == EnumRaceType.MONSTER then
             blood:setPositionZ(70)
         else
@@ -211,8 +211,8 @@ function Actor:hurt(collider)
         end
         self:addChild(blood)
 
-        local dropBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp}
-        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, dropBlood)
+        local loseBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, loseBlood)
     end
 end
 --======attacking collision check

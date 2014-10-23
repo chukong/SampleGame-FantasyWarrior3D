@@ -222,7 +222,7 @@ function Piglet:hurt(collider)
             self:dyingMode(getPosTable(collider),collider.knock)        
         end
 
-        local blood = self._dropBlood:showBloodLossNum(damage)
+        local blood = self._dropBlood:showBloodLossNum(damage,self._racetype)
         if self._racetype == EnumRaceType.MONSTER then
             blood:setPositionZ(70)
         else
