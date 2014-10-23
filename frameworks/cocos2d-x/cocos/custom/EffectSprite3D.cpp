@@ -284,14 +284,14 @@ static void MatrixPalleteCallBack( GLProgram* glProgram, Uniform* uniform, int p
 void Effect3DOutline::draw(const Mat4 &transform)
 {
     
-    if(_sprite && _childMesh && _glProgramState)
+    if(_sprite && _childMesh && _glProgramState && _childMesh->isVisible())
     {
         Color4F color(_sprite->getDisplayedColor());
         color.a = _sprite->getDisplayedOpacity() / 255.0f;
         _glProgramState->setUniformVec4("u_color", Vec4(color.r, color.g, color.b, color.a));
         glEnable(GL_CULL_FACE);
         glCullFace(GL_FRONT);
-        //glEnable(GL_DEPTH_TEST);
+        glEnable(GL_DEPTH_TEST);
 
         // auto mesh = _childMesh;
         glBindBuffer(GL_ARRAY_BUFFER, _childMesh->getVertexBuffer());

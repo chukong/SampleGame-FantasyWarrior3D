@@ -10,8 +10,8 @@ Knight = class("Knight", function()
 end)
 
 function Knight:ctor()
-    self._useWeaponId = 0
-    self._useArmourId = 0
+    self._useWeaponId = 1
+    self._useArmourId = 1
     self._useHelmetId = 1
     self._particle = nil
     self._attack = 1000  
@@ -209,7 +209,7 @@ function Knight:init3D()
     self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setScale(25)
-    self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
+    self._sprite3d:addEffect(cc.V3(0,0,0),0.02, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)

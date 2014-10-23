@@ -2,6 +2,7 @@ require "Cocos2d"
 require "Helper"
 require "GlobalVariables"
 require "Knight"
+require "Archer"
 
 --declare a class extends scene
 local ActorTestScene = class("ActorTestScene",function()
@@ -23,7 +24,8 @@ function ActorTestScene.create()
     --add layer
 
 
-    local act = Knight:create()
+    local act = Archer:create()
+    act:setScale(2)
     
     act:idleMode()
     act:setAIEnabled(false)
