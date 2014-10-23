@@ -22,6 +22,19 @@ BillboardParticleSystem * BillboardParticleSystem::create(const std::string& fil
     CC_SAFE_DELETE(ret);
     return ret;
 }
+
+BillboardParticleSystem * BillboardParticleSystem::create(ValueMap &dictionary)
+{
+    BillboardParticleSystem *ret = new (std::nothrow) BillboardParticleSystem();
+    if (ret && ret->initWithDictionary(dictionary))
+    {
+        ret->autorelease();
+        return ret;
+    }
+    CC_SAFE_DELETE(ret);
+    return ret;
+}
+
 BillboardParticleSystem::BillboardParticleSystem():
 _isBlendAdditive(false)
 , _isAutoRemoveOnFinish(false)
