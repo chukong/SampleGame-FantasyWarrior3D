@@ -101,7 +101,8 @@ function Mage:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 1.2, -- 0 duration means it will be removed upon calculation
-        speed    = 500
+        speed    = 500,
+        criticalChance = 0        
     }
     self._specialAttack = {
         minRange = self._specialMinRadius,
@@ -110,7 +111,8 @@ function Mage:initAttackInfo()
         knock    = self._specialKnock,
         damage   = self._specialattack,
         mask     = self._racetype,
-        duration = 1.5
+        duration = 1.5,
+        criticalChance = 0.5        
     }
 end
 

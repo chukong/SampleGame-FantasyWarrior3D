@@ -25,8 +25,8 @@ function Piglet:ctor()
     self._attackKnock = 50
     
     self._goRight = false
-    self._specialAttackChance = 0
-    
+    self._name = "Piglet"
+
     self:init3D()
     self:initActions()
 end
@@ -167,7 +167,8 @@ function Piglet:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 0, -- 0 duration means it will be removed upon calculation
-        speed    = 0
+        speed    = 0,
+        criticalChance = 0        
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
@@ -177,7 +178,8 @@ function Piglet:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 0,
-        speed    = 0
+        speed    = 0,
+        criticalChance = 0        
     }
 end
 
@@ -194,46 +196,6 @@ function Piglet:normalAttack()
     end
 end
 
-function Piglet:hurt(collider)
-    if self._isalive == true then        
-        ccexp.AudioEngine:play2d(MonsterPigletValues.hurt, false,0.5)
-        local damage = collider.damage
-        if math.random() >= 0.5 then
-            damage = damage + damage * 0.15
-        else
-            damage = damage - damage * 0.15
-        end
-
-        damage = damage - self._defense
-        damage = math.floor(damage)
-        if damage <= 0 then
-            damage = 1
-        end
-
-        self._hp = self._hp - damage
-
-        if self._hp > 0 then
-            if collider.knock then
-                self:knockMode(getPosTable(collider),collider.knock)
-            end
-        else
-            self._hp = 0
-            self._isalive = false
-            self:dyingMode(getPosTable(collider),collider.knock)        
-        end
-
-        local blood = self._dropBlood:showBloodLossNum(damage)
-        if self._racetype == EnumRaceType.MONSTER then
-            blood:setPositionZ(70)
-        else
-            blood:setPositionZ(150)
-        end
-        self:addChild(blood)
-
-        local dropBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp}
-        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, dropBlood)
-    end
-end
 --function Piglet:attackUpdate(dt)
 --    self._attackTimer = self._attackTimer + dt
 --    if self._attackTimer > self._attackFrequency then
