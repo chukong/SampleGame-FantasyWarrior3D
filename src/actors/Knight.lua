@@ -26,6 +26,7 @@ function Knight:ctor()
     if uiLayer~=nil then
         self._bloodBar = uiLayer.WarriorBlood
         self._bloodBarClone = uiLayer.WarriorBloodClone
+        self._avatar = uiLayer.WarriorPng
     end
 
     self:init3D()
