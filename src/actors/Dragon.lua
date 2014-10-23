@@ -20,7 +20,8 @@ function Dragon:ctor()
     self._attackMaxRadius = 130
     self._radius = 120
     self._attackRange = 130
-
+    self._name = "Dragon"
+    
     self:init3D()
     self:initActions()
 end
@@ -54,7 +55,8 @@ function Dragon:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 1.2, -- 0 duration means it will be removed upon calculation
-        speed    = 900
+        speed    = 900,
+        criticalChance = 0        
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
@@ -64,7 +66,8 @@ function Dragon:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 0,
-        speed    = 0
+        speed    = 0,
+        criticalChance = 0        
     }
 end
 

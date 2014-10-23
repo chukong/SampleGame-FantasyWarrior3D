@@ -14,6 +14,7 @@ function Boss:ctor()
     self._useArmourId = 0
     self._particle = nil
     self._attack = 100
+    self._name = "Boss"
 end
 
 function Boss.create()

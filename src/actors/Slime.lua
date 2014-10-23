@@ -20,7 +20,8 @@ function Slime:ctor()
     self._attackMaxRadius = 130
     self._radius = 120
     self._attackRange = 130
-
+    self._name = "Slime"
+    
     self:init3D()
     self:initActions()
 end
@@ -50,7 +51,8 @@ function Slime:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 0, -- 0 duration means it will be removed upon calculation
-        speed    = 0
+        speed    = 0,
+        criticalChance = 0
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
@@ -60,7 +62,8 @@ function Slime:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 0,
-        speed    = 0
+        speed    = 0,
+        criticalChance = 0
     }
 end
 

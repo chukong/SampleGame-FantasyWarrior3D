@@ -56,7 +56,8 @@ function Actor:ctor()
     self._attackZone = nil
     self._scheduleAttackId = 0
     self._action = {}
-    
+    self._name = "Actor"
+
     --state variables
     self._aliveTime = 0
     self._curSpeed = 0
@@ -85,7 +86,7 @@ function Actor:ctor()
     self._goRight = true
     self._AIFrequency = 1.0 --how often AI executes in seconds
     self._attackFrequency = 4.0 --an attack move every few seconds
-    self._specialAttackChance = 0.33
+    self._specialAttackChance = 0.15
     self._shadowSize = 70
     self._normalAttack = nil
     self._specialAttack = nil
@@ -104,8 +105,8 @@ function Actor:ctor()
     self._targetFacing = 0
     self._target = nil
     
-    --dropblood
-    self._dropBlood = require "DropBlood":create()
+    --LoseBlood
+    self._dropBlood = require "HPCounter":create()
     self:addChild(self._dropBlood)
 end
 
@@ -134,7 +135,6 @@ function Actor:playAnimation(name, loop)
         self._curAnimation = name
     end
 end
-
 
 function Actor:setState(type)
     if self._statetype == type then return end
@@ -180,15 +180,26 @@ function Actor:setAIEnabled(enable)
     self._AIEnabled = enable
 end
 
+function Actor:hurtSoundEffects()
+-- to override
+end
+
 function Actor:hurt(collider)
-    if self._isalive == true then        
+    if self._isalive == true then 
+        --TODO add sound effect
+                    
         local damage = collider.damage
-        damage = damage + damage * math.random(-1,1)*0.15
-        
+        --calculate the real damage
+        damage = damage + damage * math.random(-1,1) * 0.15        
         damage = damage - self._defense
         damage = math.floor(damage)
         if damage <= 0 then
             damage = 1
+        end
+        
+        --critical attact by random
+        if math.random(0,1) > collider.criticalChance then
+            damage = damage + collider.damage*2
         end
 
         self._hp = self._hp - damage
@@ -203,7 +214,7 @@ function Actor:hurt(collider)
             self:dyingMode(getPosTable(collider),collider.knock)        
         end
         
-        local blood = self._dropBlood:showBloodLossNum(damage)
+        local blood = self._dropBlood:showBloodLossNum(damage,self._racetype)
         if self._racetype == EnumRaceType.MONSTER then
             blood:setPositionZ(70)
         else
@@ -211,8 +222,9 @@ function Actor:hurt(collider)
         end
         self:addChild(blood)
 
-        local dropBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone}
-        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, dropBlood)
+        local loseBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, loseBlood)
+        self:hurtSoundEffects()
     end
 end
 --======attacking collision check

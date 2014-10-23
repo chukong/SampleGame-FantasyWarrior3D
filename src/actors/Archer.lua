@@ -3,15 +3,16 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/archer/gongjiashou_an_v005.c3b"
+local file = "model/archer/hunte_ani_C.c3b"
 
 Archer = class("Archer", function()
     return require "Actor".create()
 end)
 
 function Archer:ctor()
-    self._useWeaponId = 0
-    self._useArmourId = 0
+    self._useWeaponId = 1
+    self._useArmourId = 1
+    self._useHelmetId = 1
     self._particle = nil
     self._racetype = EnumRaceType.ARCHER
     self._attackFrequency = 4.7
@@ -35,6 +36,7 @@ function Archer:ctor()
     self._mass = 500
     self:init3D()
     self:initActions()
+    self:setDefaultEqt()
 end
 
 function Archer.create()
@@ -69,9 +71,9 @@ function Archer:specialAttack()
     AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     
-    local normalAttack = self._normalAttack
-    normalAttack.knock = 10
-    normalAttack.angle = 360
+    local attack = self._specialAttack
+    attack.knock = 10
+    attack.angle = 360
     
     local pos1 = getPosTable(self)
     local pos2 = getPosTable(self)
@@ -82,14 +84,14 @@ function Archer:specialAttack()
     pos1 = cc.pRotateByAngle(pos1, self._myPos, self._curFacing)
     pos2 = cc.pRotateByAngle(pos2, self._myPos, self._curFacing)
     pos3 = cc.pRotateByAngle(pos3, self._myPos, self._curFacing)
-    ArcherNormalAttack.create(pos1, self._curFacing, self._specialAttack)
+    ArcherNormalAttack.create(pos1, self._curFacing, attack)
     local function spike2()
-        ArcherNormalAttack.create(pos2, self._curFacing, self._specialAttack)
+        ArcherNormalAttack.create(pos2, self._curFacing, attack)
         AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
         ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     end
     local function spike3()
-        ArcherNormalAttack.create(pos3, self._curFacing, self._specialAttack)
+        ArcherNormalAttack.create(pos3, self._curFacing, attack)
         AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
         ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     end
@@ -116,7 +118,8 @@ function Archer:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 3, -- 0 duration means it will be removed upon calculation
-        speed    = 800
+        speed    = 800,
+        criticalChance = 0        
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
@@ -126,7 +129,8 @@ function Archer:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 3,
-        speed    = 800
+        speed    = 800,
+        criticalChance = 0.5
     }
 end
 
@@ -149,3 +153,115 @@ end
 function Archer:initActions()
     self._action = Archer._action
 end
+
+-- set default equipments
+function Archer:setDefaultEqt()
+    self:updateWeapon()
+    self:updateHelmet()
+    self:updateArmour()
+    self:showOrHideArrow(false, 0)
+end
+
+function Archer:updateWeapon()
+    if self._useWeaponId == 0 then
+        local weapon = self._sprite3d:getMeshByName("gongjianshou_gong01")
+        weapon:setVisible(true)
+        weapon = self._sprite3d:getMeshByName("gongjianshou_gong02")
+        weapon:setVisible(false)
+    else
+        local weapon = self._sprite3d:getMeshByName("gongjianshou_gong02")
+        weapon:setVisible(true)
+        weapon = self._sprite3d:getMeshByName("gongjianshou_gong01")
+        weapon:setVisible(false)
+    end
+end
+
+function Archer:updateHelmet()
+    if self._useHelmetId == 0 then
+        local helmet = self._sprite3d:getMeshByName("gongjianshou_tou01")
+        helmet:setVisible(true)
+        helmet = self._sprite3d:getMeshByName("gonajingshou_tou02")
+        helmet:setVisible(false)
+    else
+        local helmet = self._sprite3d:getMeshByName("gonajingshou_tou02")
+        helmet:setVisible(true)
+        helmet = self._sprite3d:getMeshByName("gongjianshou_tou01")
+        helmet:setVisible(false)
+    end
+end
+
+function Archer:updateArmour()
+    if self._useArmourId == 0 then
+        local armour = self._sprite3d:getMeshByName("gongjianshou_shenti01")
+        armour:setVisible(true)
+        armour = self._sprite3d:getMeshByName("gonjianshou_shenti02")
+        armour:setVisible(false)
+    else
+        local armour = self._sprite3d:getMeshByName("gonjianshou_shenti02")
+        armour:setVisible(true)
+        armour = self._sprite3d:getMeshByName("gongjianshou_shenti01")
+        armour:setVisible(false)
+    end
+end
+
+--swicth weapon
+function Archer:switchWeapon()
+    self._useWeaponId = self._useWeaponId+1
+    if self._useWeaponId > 1 then
+        self._useWeaponId = 0;
+    end
+    self:updateWeapon()
+end
+
+--switch helmet
+function Archer:switchHelmet()
+    self._useHelmetId = self._useHelmetId+1
+    if self._useHelmetId > 1 then
+        self._useHelmetId = 0;
+    end
+    self:updateHelmet()
+end
+
+--switch armour
+function Archer:switchArmour()
+    self._useArmourId = self._useArmourId+1
+    if self._useArmourId > 1 then
+        self._useArmourId = 0;
+    end
+    self:updateArmour()
+end
+
+--show/hide arrow
+--isShow: true:Show false:Hide
+--type: 0:show/hide all 1:show/hide 1 2:show/hide 2
+function Archer:showOrHideArrow(isShow, arrowType)
+    if arrowType == 0 then
+        local arrow = self._sprite3d:getMeshByName("gongjiashou_jian01")
+        arrow:setVisible(isShow)
+        local arrow = self._sprite3d:getMeshByName("gongjianshou_jian02")
+        arrow:setVisible(isShow)
+    elseif arrowType == 1 then
+        local arrow = self._sprite3d:getMeshByName("gongjiashou_jian01")
+        arrow:setVisible(isShow)
+    elseif arrowType == 2 then
+        local arrow = self._sprite3d:getMeshByName("gongjianshou_jian02")
+        arrow:setVisible(isShow)
+    end
+end
+
+-- get weapon id
+function Archer:getWeaponID()
+    return self._useWeaponId
+end
+
+-- get armour id
+function Archer:getArmourID()
+    return self._useArmourId
+end
+
+-- get helmet id
+function Archer:getHelmet()
+    return self._useHelmetId
+end
+
+return Archer

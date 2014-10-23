@@ -18,6 +18,7 @@ local function moveCamera(dt)
 
     local cameraPosition = getPosTable(camera)
     if specialCamera.valid == true then
+        --local position = cc.pRotateByAngle(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), -360/60/2*dt)
         local position = cc.pLerp(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), 5*dt)
         camera:setPosition(position)
         camera:lookAt(cc.V3(position.x, specialCamera.position.y, 0.0), cc.V3(0.0, 0.0, 1.0))
@@ -100,14 +101,18 @@ local function sendDropBlood(heroActor)
 end
 
 local function specialPerspective(position)
+    if specialCamera.valid == true then return end
+    
     specialCamera.valid = true
     specialCamera.position = position
     cc.Director:getInstance():getScheduler():setTimeScale(0.1)
-    local function restoreAnimation()
+
+    local function restoreTimeScale()
         specialCamera.valid = false
         cc.Director:getInstance():getScheduler():setTimeScale(1.0)
     end
-    delayExecute(currentLayer, restoreAnimation, 0.5)        
+    delayExecute(currentLayer, restoreTimeScale, 0.5)      
+      
 end
 
 function BattleScene.create()

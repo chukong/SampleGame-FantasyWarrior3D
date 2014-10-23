@@ -10,15 +10,16 @@ Knight = class("Knight", function()
 end)
 
 function Knight:ctor()
-    self._useWeaponId = 0
-    self._useArmourId = 0
+    self._useWeaponId = 1
+    self._useArmourId = 1
     self._useHelmetId = 1
     self._particle = nil
     self._attack = 1000  
     self._attackFrequency = 2.5
     self._defense = 150       
     self._AIFrequency = 1.1
-    self._name = "Knight"    
+    self._name = "Knight"  
+      
     self._attackKnock = 100
     self._mass = 1000
     self._racetype = EnumRaceType.KNIGHT
@@ -73,53 +74,17 @@ function Knight.create()
     return ret
 end
 
-function Knight:hurt(collider)
-    if self._isalive == true then        
-        ccexp.AudioEngine:play2d(WarriorProperty.hurt, false,1)
-        local damage = collider.damage
-        if math.random() >= 0.5 then
-            damage = damage + damage * 0.15
-        else
-            damage = damage - damage * 0.15
-        end
-
-        damage = damage - self._defense
-        damage = math.floor(damage)
-        if damage <= 0 then
-            damage = 1
-        end
-
-        self._hp = self._hp - damage
-
-        if self._hp > 0 then
-            if collider.knock then
-                self:knockMode(getPosTable(collider),collider.knock)
-            end
-        else
-            self._hp = 0
-            self._isalive = false
-            self:dyingMode(getPosTable(collider),collider.knock)        
-        end
-
-        local blood = self._dropBlood:showBloodLossNum(damage)
-        if self._racetype == EnumRaceType.MONSTER then
-            blood:setPositionZ(70)
-        else
-            blood:setPositionZ(150)
-        end
-        self:addChild(blood)
-
-        local dropBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp ,_bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone}
-        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, dropBlood)
-    end
-end
-
 local function KnightNormalAttackCallback(audioID,filePath)
     ccexp.AudioEngine:play2d(WarriorProperty.normalAttack2, false,1)
 end
 
 local function KninghtSpecialAttackCallback(audioID, filePatch)
     ccexp.AudioEngine:play2d(WarriorProperty.specialAttack2, false,1)  
+end
+
+
+function Knight:hurtSoundEffects()
+    ccexp.AudioEngine:play2d(WarriorProperty.hurt, false,1)
 end
 
 function Knight:normalAttack()
@@ -133,11 +98,11 @@ end
 
 function Knight:specialAttack()
     -- knight will create 2 attacks one by one  
-    local normalAttack = self._normalAttack
-    normalAttack.knock = 0
+    local attack = self._specialAttack
+    attack.knock = 0
     ccexp.AudioEngine:play2d(WarriorProperty.shout, false,1)
-    KnightNormalAttack.create(getPosTable(self), self._curFacing, normalAttack)
-    self._sprite:runAction(self._action.attackEffect:clone())                
+    KnightNormalAttack.create(getPosTable(self), self._curFacing, attack)
+    self._sprite:runAction(self._action.attackEffect:clone())
 
     local pos = getPosTable(self)
     pos.x = pos.x+50
@@ -163,7 +128,8 @@ function Knight:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 0, -- 0 duration means it will be removed upon calculation
-        speed    = 0
+        speed    = 0,
+        criticalChance = 0
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
@@ -173,7 +139,8 @@ function Knight:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 0,
-        speed    = 0
+        speed    = 0,
+        criticalChance = 0.5
     }
 end
 
@@ -213,7 +180,7 @@ function Knight:init3D()
     self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setScale(25)
-    self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
+    self._sprite3d:addEffect(cc.V3(0,0,0),0.02, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
