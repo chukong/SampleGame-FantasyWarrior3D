@@ -225,19 +225,19 @@ end
 
 --add button to start game
 function MainMenuScene:addButton(layer)
+    local isTouchButton = false
     local button_callback = function(sender,eventType)
-
-        if eventType == ccui.TouchEventType.began then
-            ccexp.AudioEngine:play2d(BGM_RES.MAINMENUSTART, false,1)
-        end        
-        if eventType == ccui.TouchEventType.ended then
-            ccexp.AudioEngine:stop(AUDIO_ID.MAINMENUBGM)
-        	cc.Director:getInstance():replaceScene(require("ChooseRoleScene").create())
+        if isTouchButton == false then
+            isTouchButton = true
+            if eventType == ccui.TouchEventType.began then
+                ccexp.AudioEngine:play2d(BGM_RES.MAINMENUSTART, false,1)
+                ccexp.AudioEngine:stop(AUDIO_ID.MAINMENUBGM)
+            	cc.Director:getInstance():replaceScene(require("ChooseRoleScene").create())
+            end
         end
     end
 
     local button = ccui.Button:create("mainmenuscene/start.png")
-    button:setPressedActionEnabled(true)
     button:setPosition(self.size.width*0.5,self.size.height*0.15)
     button:addTouchEventListener(button_callback)
     layer:addChild(button,4)

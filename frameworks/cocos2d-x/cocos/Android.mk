@@ -193,7 +193,8 @@ custom/JumpTo3D.cpp \
 custom/Water.cpp \
 custom/EffectSprite.cpp \
 custom/BillBoardLable.cpp \
-custom/CCSequence3D.cpp
+custom/CCSequence3D.cpp \
+custom/GreyShader.cpp
 
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_PATH) \

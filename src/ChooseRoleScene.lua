@@ -60,10 +60,15 @@ end
 
 function ChooseRoleScene:addButton()
     --button
+    local touch_return = false
+    local touch_next = false
     local function touchEvent_return(sender,eventType)
-        if eventType == ccui.TouchEventType.ended then
---            print("return to main menu")
-            cc.Director:getInstance():replaceScene(require("MainMenuScene"):create())
+        if touch_return == false then
+            touch_return = true
+            if eventType == ccui.TouchEventType.began then
+                ccexp.AudioEngine:play2d(BGM_RES.MAINMENUSTART, false,1)
+                cc.Director:getInstance():replaceScene(require("MainMenuScene"):create())
+            end
         end
     end  
 
@@ -76,10 +81,13 @@ function ChooseRoleScene:addButton()
     self.layer:addChild(return_Button)
 
     local function touchEvent_next(sender,eventType)
-        if eventType == ccui.TouchEventType.ended then
-            print("go to game")
-            local scene = require("BattleScene")
-            cc.Director:getInstance():replaceScene(scene.create())
+        if touch_next == false then
+            touch_next = true
+            if eventType == ccui.TouchEventType.began then
+                ccexp.AudioEngine:play2d(BGM_RES.MAINMENUSTART, false,1)
+                local scene = require("BattleScene")
+                cc.Director:getInstance():replaceScene(scene.create())
+            end
         end
     end  
 
@@ -103,7 +111,7 @@ function ChooseRoleScene:addHeros()
     knight:setScale(1.3)
     self.layer:addChild(knight)
 
-    local archer = Archer.create()
+    local archer = Mage.create()
     archer:setTag(1)
     archer:setRotation3D(rtt[1])
     archer:setPosition3D(pos[1])

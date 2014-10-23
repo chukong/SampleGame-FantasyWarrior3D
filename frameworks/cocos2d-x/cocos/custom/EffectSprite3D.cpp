@@ -108,7 +108,7 @@ void EffectSprite3D::addEffect(const Vec3& outlineColor, float width, ssize_t or
             effect->setTarget(this,mesh);
             effect->setOutlineColor(outlineColor);
             effect->setOutlineWidth(width);
-           
+            
             _effects.push_back(std::make_tuple(order,effect,CustomCommand()));
             std::sort(std::begin(_effects), std::end(_effects), tuple_sort);
         }
@@ -118,7 +118,7 @@ void EffectSprite3D::addEffect(const Vec3& outlineColor, float width, ssize_t or
 void EffectSprite3D::addChildEffect(const Vec3& outlineColor, float width,ssize_t order)
 {
     auto& children = this->getChildren();
-    for(const auto &obj : children) 
+    for(const auto &obj : children)
     {
         Sprite3D * sprite3D = dynamic_cast<Sprite3D *>(obj);
         if(sprite3D && sprite3D->getMesh())
@@ -129,7 +129,7 @@ void EffectSprite3D::addChildEffect(const Vec3& outlineColor, float width,ssize_
             effect->retain();
             effect->setTarget(sprite3D,sprite3D->getMesh());
             _effects.push_back(std::make_tuple(order,effect,CustomCommand()));
-            std::sort(std::begin(_effects), std::end(_effects), tuple_sort); 
+            std::sort(std::begin(_effects), std::end(_effects), tuple_sort);
         }
     }
 }
@@ -194,15 +194,15 @@ Effect3DOutline::Effect3DOutline()
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     _backToForegroundListener = EventListenerCustom::create(EVENT_RENDERER_RECREATED,
-                                                          [this](EventCustom*)
-                                                          {
-                                                              auto glProgram = _glProgramState->getGLProgram();
-                                                              glProgram->reset();
-                                                              glProgram->initWithFilenames(_vertShaderFile, _fragShaderFile);
-                                                              glProgram->link();
-                                                              glProgram->updateUniforms();
-                                                          }
-                                                          );
+                                                            [this](EventCustom*)
+                                                            {
+                                                                auto glProgram = _glProgramState->getGLProgram();
+                                                                glProgram->reset();
+                                                                glProgram->initWithFilenames(_vertShaderFile, _fragShaderFile);
+                                                                glProgram->link();
+                                                                glProgram->updateUniforms();
+                                                            }
+                                                            );
     Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(_backToForegroundListener, -1);
 #endif
 }
@@ -237,7 +237,7 @@ void Effect3DOutline::setOutlineWidth(float width)
 void Effect3DOutline::setTarget(Sprite3D *sprite,Mesh* childMesh)
 {
     CCASSERT(nullptr != sprite && nullptr != childMesh,"Error: Setting a null pointer or a null mesh EffectSprite3D to Effect3D");
-
+    
     if(sprite != _sprite)
     {
         bool isSkinned =false;
@@ -248,32 +248,32 @@ void Effect3DOutline::setTarget(Sprite3D *sprite,Mesh* childMesh)
         GLProgram* glprogram=Effect3DOutline::getOrCreateProgram(isSkinned);
         CCASSERT(nullptr != glprogram ,"Error: Setting a null pointer or a null glprogram EffectSprite3D to Effect3D");
         _glProgramState = GLProgramState::create(glprogram);
-
+        
         _glProgramState->retain();
         _glProgramState->setUniformVec3("OutLineColor", _outlineColor);
         _glProgramState->setUniformFloat("OutlineWidth", _outlineWidth);
-
-
+        
+        
         _sprite   =  sprite;
         _childMesh = childMesh;
         long offset = 0;
         for (auto i = 0; i < childMesh->getMeshVertexAttribCount(); i++)
         {
             auto meshvertexattrib = childMesh->getMeshVertexAttribute(i);
-
+            
             _glProgramState->setVertexAttribPointer(s_attributeNames[meshvertexattrib.vertexAttrib],
-                meshvertexattrib.size,
-                meshvertexattrib.type,
-                GL_FALSE,
-                childMesh->getVertexSizeInBytes(),
-                (void*)offset);
+                                                    meshvertexattrib.size,
+                                                    meshvertexattrib.type,
+                                                    GL_FALSE,
+                                                    childMesh->getVertexSizeInBytes(),
+                                                    (void*)offset);
             offset += meshvertexattrib.attribSizeBytes;
         }
-
+        
         Color4F color(_sprite->getDisplayedColor());
         color.a = _sprite->getDisplayedOpacity() / 255.0f;
         _glProgramState->setUniformVec4("u_color", Vec4(color.r, color.g, color.b, color.a));
-    }  
+    }
 }
 
 static void MatrixPalleteCallBack( GLProgram* glProgram, Uniform* uniform, int paletteSize, const float* palette)
@@ -284,33 +284,32 @@ static void MatrixPalleteCallBack( GLProgram* glProgram, Uniform* uniform, int p
 void Effect3DOutline::draw(const Mat4 &transform)
 {
     
-    if(_sprite && _childMesh && _glProgramState)
+    if(_sprite && _childMesh && _glProgramState && _childMesh->isVisible())
     {
         Color4F color(_sprite->getDisplayedColor());
         color.a = _sprite->getDisplayedOpacity() / 255.0f;
         _glProgramState->setUniformVec4("u_color", Vec4(color.r, color.g, color.b, color.a));
         glEnable(GL_CULL_FACE);
         glCullFace(GL_FRONT);
-        //glEnable(GL_DEPTH_TEST);
-
+        glEnable(GL_DEPTH_TEST);
         // auto mesh = _childMesh;
         glBindBuffer(GL_ARRAY_BUFFER, _childMesh->getVertexBuffer());
-
+        
         auto skin = _childMesh->getSkin();
         if(_sprite && skin)
         {
             auto function = std::bind(MatrixPalleteCallBack, std::placeholders::_1, std::placeholders::_2,
-                skin->getMatrixPaletteSize(), (float*)skin->getMatrixPalette());
+                                      skin->getMatrixPaletteSize(), (float*)skin->getMatrixPalette());
             _glProgramState->setUniformCallback("u_matrixPalette", function);
         }
-
+        
         if(_sprite)
             _glProgramState->apply(transform);
-
+        
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _childMesh->getIndexBuffer());
         glDrawElements(_childMesh->getPrimitiveType(), _childMesh->getIndexCount(), _childMesh->getIndexFormat(), 0);
         CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, _childMesh->getIndexCount());
-
+        
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         //glDisable(GL_DEPTH_TEST);
@@ -321,7 +320,7 @@ void Effect3DOutline::draw(const Mat4 &transform)
 
 void EffectSprite3D::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
 {
-  
+    
     
     if(!_defaultEffect)
     {
@@ -343,5 +342,3 @@ void EffectSprite3D::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &tran
         
     }
 }
-
-

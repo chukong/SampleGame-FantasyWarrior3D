@@ -75,11 +75,11 @@ function GameMaster:AddHeros()
    	mage:idleMode()
    	List.pushlast(HeroManager, mage)
    	
-    local archer = Archer:create()
-    archer:setPosition(-1200, 100)
-    currentLayer:addChild(archer)
-    archer:idleMode()
-    List.pushlast(HeroManager, archer)   	
+--    local archer = Archer:create()
+--    archer:setPosition(-1200, 100)
+--    currentLayer:addChild(archer)
+--    archer:idleMode()
+--    List.pushlast(HeroManager, archer)   	
 
 end
 
