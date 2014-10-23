@@ -23,6 +23,7 @@ function BattlefieldUI:ctor()
     self:bloodbarInit()
     self:touchButtonInit()
     
+    ccexp.AudioEngine:stop(AUDIO_ID.CHOOSEROLESCENEBGM)
     AUDIO_ID.BATTLEFIELDBGM = ccexp.AudioEngine:play2d(BGM_RES.BATTLEFIELDBGM, true,0.6)
 end
 
@@ -31,9 +32,7 @@ function BattlefieldUI:avatarInit()
     self.WarriorPng = cc.Sprite:create("battlefieldUI/UI-1136-640_03.png")
     self.WarriorPng:setPosition3D(cc.V3(860/1136*G.winSize.width,50/640*G.winSize.height,2))
     self.WarriorPng:setScale(0.5)
-    self:addChild(self.WarriorPng,2)  
-
-     
+    self:addChild(self.WarriorPng,2)           
     self.WarriorPngFrame = cc.Sprite:create("battlefieldUI/UI-2.png")
     self.WarriorPngFrame:setScale(0.5)
     self.WarriorPngFrame:setPosition3D(cc.V3(self.WarriorPng:getPositionX()+1,self.WarriorPng:getPositionY()-4,1))

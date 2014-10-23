@@ -1,5 +1,6 @@
 require "Helper"
 require "Manager"
+require "GlobalVariables"
 
 AttackManager = List.new()
 function solveAttacks(dt)
@@ -69,7 +70,19 @@ function BasicCollider:onTimeOut()
     self:removeFromParent()
 end
 
+function BasicCollider:hurtEffect(target)
+    
+    local hurtAction = cc.Animate:create(animationCathe:getAnimation("hurtAnimation"))
+    local hurtEffect = cc.BillBoard:create()
+    hurtEffect:setScale(1.5)
+    hurtEffect:runAction(cc.Sequence:create(hurtAction, cc.RemoveSelf:create()))
+    hurtEffect:setPosition3D(cc.V3(0,0,50))
+    target:addChild(hurtEffect)  
+end
+
 function BasicCollider:onCollide(target)
+    
+    self:hurtEffect(target)
     target:hurt(self)
 end
 
@@ -183,7 +196,7 @@ function MageNormalAttack:onTimeOut()
 end
 
 function MageNormalAttack:onCollide(target)
-    target:hurt(self)
+    self:hurtEffect(target)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
 end
@@ -294,6 +307,7 @@ end
 
 function MageIceSpikes:onCollide(target)
     if self.curDOTTime > self.DOTTimer then
+        self:hurtEffect(target)
         target:hurt(self)
         self.DOTApplied = true
     end
@@ -315,11 +329,9 @@ end)
 function ArcherNormalAttack.create(pos,facing,attackInfo)
     local ret = ArcherNormalAttack.new()
     ret:initData(pos,facing,attackInfo)
-
-    ret.sp = cc.Sprite:create("chooseRole/cr_rotate.png")
-    ret.sp:setPosition3D(cc.V3(0,0,50))
-    ret.sp:setScale(2)
-    ret.sp:setColor({r=255,g=0,b=0})
+    
+    ret.sp = Archer:createArrow()
+    ret.sp:setRotation(RADIANS_TO_DEGREES(-facing)-90)
     ret:addChild(ret.sp)
 
     return ret
@@ -330,6 +342,7 @@ function ArcherNormalAttack:onTimeOut()
 end
 
 function ArcherNormalAttack:onCollide(target)
+    self:hurtEffect(target)
     target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
@@ -363,6 +376,7 @@ function DragonAttack:onTimeOut()
 end
 
 function DragonAttack:onCollide(target)
+    self:hurtEffect(target)
     target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1

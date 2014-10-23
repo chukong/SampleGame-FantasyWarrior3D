@@ -44,7 +44,7 @@ function MainMenuScene:createLayer()
     
     --add button
     self:addButton(mainLayer)
-    
+        
     --when replease scene unschedule schedule
     local function onExit(event)
         if "exit" == event then

@@ -2,12 +2,25 @@
 Monster Actors Values：
 ]]--
 
+---hurtEffect
+cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
+animationCathe = cc.AnimationCache:getInstance()
+local hurtAnimation = cc.Animation:create()
+for i=1,5 do
+    name = "hit"..i..".png"
+    hurtAnimation:addSpriteFrame(cc.SpriteFrameCache:getInstance():getSpriteFrame(name))
+end
+hurtAnimation:setDelayPerUnit(0.1)
+animationCathe:addAnimation(hurtAnimation,"hurtAnimation")
+
+FXZorder = 1999
+
 --G values
 G =
 {
     winSize = cc.Director:getInstance():getWinSize(),
     bloodPercentDropSpeed = 2,
-    activearea = {left = -2800, right = 500, bottom = 100, top = 700}
+    activearea = {left = -2800, right = 500, bottom = 100, top = 700},
 }
 FXZorder = 1999
 
@@ -17,7 +30,8 @@ BGM_RES =
 {
     MAINMENUBGM = "audios/Royal Flush Party.mp3",
     MAINMENUSTART= "audios/effects/magical_3.mp3",
-    BATTLEFIELDBGM = "audios/The_Last_Encounter_Short_Loop.mp3"
+    BATTLEFIELDBGM = "audios/The_Last_Encounter_Short_Loop.mp3",
+    CHOOSEROLESCENEBGM = "audios/Imminent Threat Beat B FULL Loop.mp3"
 }
 
 --play2d id
@@ -74,7 +88,8 @@ WarriorProperty =
     normalAttack2 = "audios/effects/knight/swish-2.mp3",
     specialAttack1 = "audios/effects/knight/swish-3.mp3",
     specialAttack2 = "audios/effects/knight/swish-4.mp3",
-    hurt = "audios/effects/gruntsound.mp3"
+    hurt = "audios/effects/gruntsound.mp3",
+    kickit = "audios/effects/knight/kickit.mp3"
 }
 
 --Archer property
@@ -82,7 +97,8 @@ Archerproperty =
 {
     attack1 = "audios/effects/archer/swish-3.mp3",
     attack2 = "audios/effects/archer/swish-4.mp3",
-    wow = "audios/effects/archer/wow.mp3"
+    wow = "audios/effects/archer/wow.mp3",
+    cheers = "audios/effects/archer/cheers.mp3"
 }
 
 --Mage property
@@ -93,5 +109,6 @@ MageProperty =
     defense = 100,
     speed = 50,
     special_attack_chance = 0.33,
-    normalAttack = "audios/effects/mage/yeaha.mp3"
+    normalAttack = "audios/effects/mage/yeaha.mp3",
+    alright = "audios/effects/mage/alright.mp3"
 }

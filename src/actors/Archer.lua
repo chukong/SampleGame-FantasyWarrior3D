@@ -55,6 +55,16 @@ function Archer.create()
     return ret
 end
 
+function Archer:createArrow()
+    local sprite3d = cc.EffectSprite3D:create("model/archer/arrow1.obj")
+    sprite3d:setTexture("model/archer/hunter01_tex_head.jpg")
+    sprite3d:setScale(2)
+    sprite3d:addEffect(cc.V3(0,0,0),1.0, -1)
+    sprite3d:setPosition3D(cc.V3(0,0,50))
+    sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
+    return sprite3d
+end
+
 local function ArcherlAttackCallback(audioID,filePath)
     ccexp.AudioEngine:play2d(Archerproperty.attack2, false,1)
 end
@@ -62,7 +72,7 @@ end
 function Archer:normalAttack()
     ArcherNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
     AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
-    ccexp.AudioEngine:play2d(Archerproperty.wow, false,1)
+--    ccexp.AudioEngine:play2d(Archerproperty.wow, false,1)
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
 end
 
