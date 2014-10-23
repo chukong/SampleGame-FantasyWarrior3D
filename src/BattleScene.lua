@@ -21,11 +21,11 @@ local function moveCamera(dt)
         --local position = cc.pRotateByAngle(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), -360/60/2*dt)
         local position = cc.pLerp(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), 5*dt)
         camera:setPosition(position)
-        camera:lookAt(cc.V3(position.x, specialCamera.position.y, 0.0), cc.V3(0.0, 0.0, 1.0))
+        camera:lookAt(cc.V3(position.x, specialCamera.position.y, 50.0), cc.V3(0.0, 0.0, 1.0))
     elseif List.getSize(HeroManager) > 0 then
-        local position = cc.pLerp(cameraPosition, cc.p(getFocusPointOfHeros().x + size.width/5, getFocusPointOfHeros().y - size.height*1.3), 2*dt)
+        local position = cc.pLerp(cameraPosition, cc.p(getFocusPointOfHeros().x + size.width/5, getFocusPointOfHeros().y - size.height), 2*dt)
         camera:setPosition(position)
-        camera:lookAt(cc.V3(position.x, size.height/2, 0.0), cc.V3(0.0, 1.0, 0.0))
+        camera:lookAt(cc.V3(position.x, size.height/2, 50.0), cc.V3(0.0, 1.0, 0.0))
     end
 end
 
@@ -58,7 +58,7 @@ end
 
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 10.0, 4000.0)
-    camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height*1.3, size.height/2-30))
+    camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height, size.height/2-100))
     camera:lookAt(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y, 0.0), cc.V3(0.0, 1.0, 0.0))
     currentLayer:addChild(camera)
     camera:setGlobalZOrder(10)
