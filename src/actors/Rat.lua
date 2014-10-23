@@ -10,18 +10,8 @@ Rat = class("Rat", function()
 end)
 
 function Rat:ctor()
-    self._useWeaponId = 0
-    self._useArmourId = 0
-    self._particle = nil
-    self._attack = 150  
-    self._racetype = EnumRaceType.MONSTER
-    self._speed = 300
-    self._attackMinRadius = 0
-    self._attackMaxRadius = 130
-    self._radius = 50
-    self._attackRange = 130
-    self._AIFrequency = 1.9
-    self._attackFrequency = 3.5
+    copyTable(ActorCommonValues, self)
+    copyTable(RatValues,self)
 
     self:init3D()
     self:initActions()
@@ -29,7 +19,6 @@ end
 
 function Rat.create()
     local ret = Rat.new()
-    ret:initAttackInfo()
     ret._AIEnabled = true
 
     --this update function do not do AI
@@ -40,30 +29,6 @@ function Rat.create()
     end
     ret:scheduleUpdateWithPriorityLua(update, 0.5) 
     return ret
-end
-
-function Rat:initAttackInfo()
-    --build the attack Infos
-    self._normalAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius,
-        angle    = DEGREES_TO_RADIANS(self._attackAngle),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 0, -- 0 duration means it will be removed upon calculation
-        speed    = 0
-    }
-    self._specialAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius+50,
-        angle    = DEGREES_TO_RADIANS(150),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 0,
-        speed    = 0
-    }
 end
 
 function Rat:attackUpdate(dt)

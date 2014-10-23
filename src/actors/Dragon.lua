@@ -10,24 +10,15 @@ Dragon = class("Dragon", function()
 end)
 
 function Dragon:ctor()
-    self._useWeaponId = 0
-    self._useArmourId = 0
-    self._particle = nil
-    self._attack = 100  
-    self._racetype = EnumRaceType.MONSTER
-    self._speed = 500
-    self._attackMinRadius = 0
-    self._attackMaxRadius = 130
-    self._radius = 120
-    self._attackRange = 130
-
+    copyTable(ActorCommonValues, self)
+    copyTable(DragonValues,self)
+    
     self:init3D()
     self:initActions()
 end
 
 function Dragon.create()
     local ret = Dragon.new()
-    ret:initAttackInfo()
     ret._AIEnabled = true
 
     --this update function do not do AI
@@ -42,30 +33,6 @@ end
 
 function Dragon:normalAttack()
     DragonAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
-end
-
-function Dragon:initAttackInfo()
-    --build the attack Infos
-    self._normalAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius,
-        angle    = DEGREES_TO_RADIANS(self._attackAngle),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 1.2, -- 0 duration means it will be removed upon calculation
-        speed    = 900
-    }
-    self._specialAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius+50,
-        angle    = DEGREES_TO_RADIANS(150),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 0,
-        speed    = 0
-    }
 end
 
 function Dragon:attackUpdate(dt)

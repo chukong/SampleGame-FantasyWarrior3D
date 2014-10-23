@@ -10,18 +10,12 @@ Knight = class("Knight", function()
 end)
 
 function Knight:ctor()
+    copyTable(ActorCommonValues, self)
+    copyTable(KnightValues,self)
+
+
     self._useWeaponId = 0
     self._useArmourId = 0
-    self._particle = nil
-    self._attack = 1000  
-    self._attackFrequency = 2.5
-    self._defense = 150       
-    self._AIFrequency = 1.1
-    self._name = "Knight"    
-    self._attackKnock = 100
-    self._mass = 1000
-    self._racetype = EnumRaceType.KNIGHT
-
     self:init3D()
     self:initActions()
 end
@@ -63,7 +57,6 @@ function Knight.create()
         ret:movementUpdate(dt)
     end
     ret:scheduleUpdateWithPriorityLua(update, 0) 
-    ret:initAttackInfo()
     return ret
 end
 
@@ -145,30 +138,6 @@ function Knight:specialAttack()
         --self._sprite:runAction(self._action.attackEffect:clone())                
     end
     delayExecute(self,punch,0.4)
-end
-
-function Knight:initAttackInfo()
-    --build the attack Infos
-    self._normalAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius,
-        angle    = DEGREES_TO_RADIANS(self._attackAngle),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 0, -- 0 duration means it will be removed upon calculation
-        speed    = 0
-    }
-    self._specialAttack = {
-        minRange = self._attackMinRadius,
-        maxRange = self._attackMaxRadius+50,
-        angle    = DEGREES_TO_RADIANS(150),
-        knock    = self._attackKnock,
-        damage   = self._attack,
-        mask     = self._racetype,
-        duration = 0,
-        speed    = 0
-    }
 end
 
 function Knight:initAttackEffect()

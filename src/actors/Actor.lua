@@ -3,106 +3,16 @@ require "AttackCommand"
 
 --type
 
-EnumRaceType = 
-{ 
-    "DEBUG",
-    "BASE",
-    "HERO",  --only this
-    "WARRIOR",
-    "KNIGHT",
-    "ARCHER",
-    "MAGE",
-    "MONSTER", --and this
-    "BOSS", 
-    "DRAGON",
-}
-EnumRaceType = CreateEnumTable(EnumRaceType) 
 
-EnumStateType =
-{
-    "IDLE",
-    "WALKING",
-    "ATTACKING",
-    "DEFENDING",
-    "KNOCKING",
-    "DYING",
-    "DEAD"
-}
-
-DEBUG_TYPESTATE = {}
-for key, var in pairs(EnumStateType) do
-    DEBUG_TYPESTATE[key] = var	
-end
-function getDebugStateType(obj)
-    if type(obj) == "number" then
-        cclog(DEBUG_TYPESTATE[obj+1])    
-    else
-        cclog(DEBUG_TYPESTATE[obj._statetype+1])
-    end
-end
-
-EnumStateType = CreateEnumTable(EnumStateType) 
 
 local Actor = class ("Actor", function ()
 	return cc.Node:create()
 end)
 
 function Actor:ctor()
-	self._priority = self._speed
-    self._racetype = EnumRaceType.HERO
-    self._statetype = nil
-    self._sprite3d = nil
-    self._circle = nil
-    self._attackZone = nil
-    self._scheduleAttackId = 0
     self._action = {}
-    
-    --state variables
-    self._aliveTime = 0
-    self._curSpeed = 0
-    self._curAnimation = nil
-    self._curAnimation3d = nil
-    self._curFacing = 0 --angle in radians, 0 is to the right, value is CCW, _curFacing is where t
-    self._newAnimation = nil
-    self._hp = 1000
-    self._isalive = true
-    self._elapseBlendTime = 0
-    self._AITimer = 0
-    self._AIEnabled = false
-    self._attackTimer = 0
-    self._timeKnocked = nil
-    self._cooldown = false
-    
-    --constant variables
-    self._blendTime = 0.4
-    self._maxhp = 1000
-    self._defense = 100
-    self._radius = 50
-    self._speed = 500 --500units a second maximum
-    self._turnSpeed = DEGREES_TO_RADIANS(225) --180 degrees a second
-    self._acceleration = 750 --accelerates to 500 in a second
-    self._decceleration = 750*1.7 --stopping should be slightly faster than starting
-    self._goRight = true
-    self._AIFrequency = 1.0 --how often AI executes in seconds
-    self._attackFrequency = 4.0 --an attack move every few seconds
-    self._specialAttackChance = 0.33
-    self._shadowSize = 70
-    self._normalAttack = nil
-    self._specialAttack = nil
-    self._recoverTime = 0.8
-    self._searchDistance = 5000 --distance which enemy can be found
-    self._attackRange = 100
-    self._mass = 100    --weight of the role, it affects collision
-    --normal attack
-    self._attackMinRadius = 0
-    self._attackMaxRadius = 130
-    self._attack = 100
-    self._attackAngle = 30
-    self._attackKnock = 50
-    
-    --target variables
-    self._targetFacing = 0
-    self._target = nil
+    copyTable(ActorDefaultValues,self)
+    copyTable(ActorCommonValues, self)
     
     --dropblood
     self._dropBlood = require "DropBlood":create()
@@ -302,7 +212,7 @@ function Actor:_inRange()
     if not self._target then
         return false
     elseif self._target._isalive then
-        local attackDistance = self._attackMaxRadius + self._target._radius -1
+        local attackDistance = self._attackRange + self._target._radius -1
         local p1 = self._myPos
         local p2 = getPosTable(self._target)
         return (cc.pGetDistance(p1,p2) < attackDistance)

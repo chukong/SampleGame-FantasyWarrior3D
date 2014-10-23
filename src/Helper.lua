@@ -162,6 +162,11 @@ function List.removeObj(list, obj)
     end    
 end
 
+function copyTable(t1, t2)
+    for key, var in pairs(t1) do
+        t2[key] = var
+    end
+end
 
 function delayExecute(target, func, delay)
     local wait = cc.DelayTime:create(delay)
