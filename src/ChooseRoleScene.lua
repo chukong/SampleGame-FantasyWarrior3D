@@ -39,6 +39,8 @@ function ChooseRoleScene:addBag()
     local bag = cc.Sprite:create("chooseRole/cr_bag.png")
     bag:setTag(10)
     bag:setAnchorPoint(1.0,0)
+    self._bag = bag
+    self:switchTextWhenRotate()
 
     self._weaponItem = cc.Sprite:create("equipment/cr_w_w_1.jpg")
     self._weaponItem:setTag(11)
@@ -119,7 +121,7 @@ function ChooseRoleScene:addHeros()
     archer:setScale(1.3)
     self.layer:addChild(archer)
 
-    local mage = Mage.create()
+    local mage = Archer.create()
     mage:setTag(3)
     mage:setRotation3D(rtt[3])
     mage:setPosition3D(pos[3])
@@ -263,7 +265,7 @@ function ChooseRoleScene:rotate3Heroes(isRight)
     end
 
     --self:switchItemtextureWhenRotate()
-    --self:switchTextWhenRotate()
+    self:switchTextWhenRotate()
 end
 
 function ChooseRoleScene:getWeaponTextureName()
@@ -363,6 +365,49 @@ function ChooseRoleScene:switchItemtextureWhenRotate()
 end
 
 function ChooseRoleScene:switchTextWhenRotate()
-    --
+    --get hero type
+    local hero = self.layer:getChildByTag(sortorder[2])
+    local type = hero:getRaceType()
+    --get bag , bagSize and judge if has child
+    local bag = self._bag
+    local size = bag:getContentSize()
+    local actor = bag:getChildByTag(1)
+    if actor ~= nil then
+        bag:removeChildByTag(1)
+        bag:removeChildByTag(2)
+    end
+    --actor point
+    local point = 0
+    
+    --label
+    local ttfconfig = {outlineSize=0,fontSize=15,fontFilePath="chooseRole/actor_param.ttf"}
+    local text = "LEVEL".."\n".."TT".."\n".."HP".."\n".."DEF".."\n".."AGI".."\n".."CRT".."\n".."S.ATT"
+    local attr = nil
+    
+    --set actor and label
+    if type == EnumRaceType.KNIGHT then --warriors
+        actor = cc.Sprite:create("chooseRole/knight.png")
+        point = cc.p(size.width*0.395,size.height*0.9)
+        attr = "1234567890".."\n".."100".."\n".."100".."\n".."100".."\n".."100".."\n".."100".."\n".."100"
+    elseif type == EnumRaceType.ARCHER then --archer
+        actor = cc.Sprite:create("chooseRole/archer.png")
+        point = cc.p(size.width*0.4,size.height*0.905)
+        attr = "1234567890".."\n".."100".."\n".."200".."\n".."100".."\n".."200".."\n".."100".."\n".."100"
+    elseif type == EnumRaceType.MAGE then --sorceress
+        actor = cc.Sprite:create("chooseRole/mage.png")
+        point = cc.p(size.width*0.38,size.height*0.9)
+        attr = "1234567890".."\n".."300".."\n".."400".."\n".."100".."\n".."300".."\n".."100".."\n".."100"
+    end
+    
+    --add to bag
+    actor:setPosition(point)
+    local text_label = cc.Label:createWithTTF(ttfconfig,text,cc.TEXT_ALIGNMENT_RIGHT,400)
+    text_label:setPosition(cc.p(size.width*0.4,size.height*0.68))
+    local attr_label = cc.Label:createWithTTF(ttfconfig,attr,cc.TEXT_ALIGNMENT_CENTER,400)
+    attr_label:setPosition(cc.p(size.width*0.7,size.height*0.68))
+    bag:addChild(actor,1,1)
+    bag:addChild(text_label,1)
+    bag:addChild(attr_label,1,2)
 end
+
 return ChooseRoleScene
