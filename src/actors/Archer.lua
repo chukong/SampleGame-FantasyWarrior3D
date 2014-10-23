@@ -66,9 +66,9 @@ function Archer:specialAttack()
     AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     
-    local normalAttack = self._normalAttack
-    normalAttack.knock = 10
-    normalAttack.angle = 360
+    local attack = self._specialAttack
+    attack.knock = 10
+    attack.angle = 360
     
     local pos1 = getPosTable(self)
     local pos2 = getPosTable(self)
@@ -79,14 +79,14 @@ function Archer:specialAttack()
     pos1 = cc.pRotateByAngle(pos1, self._myPos, self._curFacing)
     pos2 = cc.pRotateByAngle(pos2, self._myPos, self._curFacing)
     pos3 = cc.pRotateByAngle(pos3, self._myPos, self._curFacing)
-    ArcherNormalAttack.create(pos1, self._curFacing, self._specialAttack)
+    ArcherNormalAttack.create(pos1, self._curFacing, attack)
     local function spike2()
-        ArcherNormalAttack.create(pos2, self._curFacing, self._specialAttack)
+        ArcherNormalAttack.create(pos2, self._curFacing, attack)
         AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
         ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     end
     local function spike3()
-        ArcherNormalAttack.create(pos3, self._curFacing, self._specialAttack)
+        ArcherNormalAttack.create(pos3, self._curFacing, attack)
         AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
         ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     end
@@ -113,7 +113,8 @@ function Archer:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 3, -- 0 duration means it will be removed upon calculation
-        speed    = 800
+        speed    = 800,
+        criticalChance = 0        
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
@@ -123,7 +124,8 @@ function Archer:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 3,
-        speed    = 800
+        speed    = 800,
+        criticalChance = 0.5
     }
 end
 

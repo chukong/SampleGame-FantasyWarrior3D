@@ -22,7 +22,8 @@ function Rat:ctor()
     self._attackRange = 130
     self._AIFrequency = 1.9
     self._attackFrequency = 3.5
-
+    self._name = "Rat"
+    
     self:init3D()
     self:initActions()
 end
@@ -52,7 +53,8 @@ function Rat:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 0, -- 0 duration means it will be removed upon calculation
-        speed    = 0
+        speed    = 0,
+        criticalChance = 0        
     }
     self._specialAttack = {
         minRange = self._attackMinRadius,
@@ -62,7 +64,8 @@ function Rat:initAttackInfo()
         damage   = self._attack,
         mask     = self._racetype,
         duration = 0,
-        speed    = 0
+        speed    = 0,
+        criticalChance = 0        
     }
 end
 

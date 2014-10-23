@@ -61,6 +61,7 @@ function BasicCollider:ctor()
     self.duration = 0
     self.curDuration = 0
     self.speed = 0 --traveling speed}
+    self.criticalChance = 0
 end
 --callback when the collider has being solved by the attack manager, 
 --make sure you delete it from node tree, if say you have an effect attached to the collider node
@@ -86,7 +87,7 @@ function BasicCollider:initData(pos, facing, attackInfo)
     self.damage = attackInfo.damage or self.damage
     self.duration = attackInfo.duration or self.duration
     self.speed = attackInfo.speed or self.speed
-    
+    self.criticalChance = attackInfo.criticalChance
     self:setPosition(pos)
     List.pushlast(AttackManager, self)
     currentLayer:addChild(self, -10)
@@ -339,34 +340,6 @@ function ArcherNormalAttack:onUpdate(dt)
     local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
     self:setPosition(nextPos)
 end
-
-
-ArcherArrowRainFall = class("ArcherArrowRainFall", function()
-    return BasicCollider.new()
-end)
-
-function ArcherArrowRainFall.create(pos, facing, attackInfo)
-    local ret = ArcherArrowRainFall.new()
-    ret:initData(pos,facing,attackInfo)
-    ret.sp = cc.Sprite:create("chooseRole/cr_rotate.png")
-    ret.sp:setColor({r=0,g=0,b=255})
-    ret.sp:setPosition3D(cc.V3(0,0,5))
-    ret.sp:setScale(2)
-    ret:addChild(ret.sp)
-    --ret:setRotation(RADIANS_TO_DEGREES(facing))
-
-    return ret
-end
-
-function ArcherArrowRainFall:onTimeOut()
-    self.sp:runAction(cc.FadeOut:create(1))
-    self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
-end
-
-function ArcherArrowRainFall:onCollide(target)
-    target:hurt(self)
-end
-
 
 DragonAttack = class("DragonAttack", function()
     return BasicCollider.new()

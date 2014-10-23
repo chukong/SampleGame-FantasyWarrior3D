@@ -56,7 +56,8 @@ function Actor:ctor()
     self._attackZone = nil
     self._scheduleAttackId = 0
     self._action = {}
-    
+    self._name = "Actor"
+
     --state variables
     self._aliveTime = 0
     self._curSpeed = 0
@@ -85,7 +86,7 @@ function Actor:ctor()
     self._goRight = true
     self._AIFrequency = 1.0 --how often AI executes in seconds
     self._attackFrequency = 4.0 --an attack move every few seconds
-    self._specialAttackChance = 0.33
+    self._specialAttackChance = 0.15
     self._shadowSize = 70
     self._normalAttack = nil
     self._specialAttack = nil
@@ -135,7 +136,6 @@ function Actor:playAnimation(name, loop)
     end
 end
 
-
 function Actor:setState(type)
     if self._statetype == type then return end
     
@@ -181,14 +181,21 @@ function Actor:setAIEnabled(enable)
 end
 
 function Actor:hurt(collider)
-    if self._isalive == true then        
+    if self._isalive == true then 
+        --TODO add sound effect
+                    
         local damage = collider.damage
-        damage = damage + damage * math.random(-1,1)*0.15
-        
+        --calculate the real damage
+        damage = damage + damage * math.random(-1,1) * 0.15        
         damage = damage - self._defense
         damage = math.floor(damage)
         if damage <= 0 then
             damage = 1
+        end
+        
+        --critical attact by random
+        if math.random(0,1) > collider.criticalChance then
+            damage = damage + collider.damage*2
         end
 
         self._hp = self._hp - damage
