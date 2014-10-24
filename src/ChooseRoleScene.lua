@@ -190,7 +190,7 @@ function ChooseRoleScene:initTouchDispatcher()
         elseif cc.rectContainsPoint(self._helmetItem:getBoundingBox(),touchbeginPt) then --helmet
             isHelmetItemavaliable = true
             self._helmetItem:setScale(0.5)
-            self._armourItem:setOpacity(100)
+            self._helmetItem:setOpacity(100)
         end
         
         return true
