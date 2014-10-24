@@ -196,7 +196,7 @@ function MageNormalAttack:onTimeOut()
 end
 
 function MageNormalAttack:onCollide(target)
-    self:hurtEffect(target)
+    target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
 end

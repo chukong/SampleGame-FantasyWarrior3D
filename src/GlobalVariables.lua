@@ -188,7 +188,7 @@ MageValues = {
     _recoverTime    = 0.8,
     _AIFrequency    = 1.33,
     _attackRange    = 666,
-    _specialAttackChance = 1,
+    _specialAttackChance = 0.3,
 
     _normalAttack   = {
         minRange = 0,

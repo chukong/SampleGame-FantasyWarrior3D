@@ -244,31 +244,31 @@ end
 function Actor:AI()
     if self._isalive then
         local state = self:getStateType()
-        local inRange = self:_inRange()
-        if inRange then
+        local allDead
+        self._target, allDead = self:_findEnemy()
+        --if i can find a target
+        if self._target then
             local p1 = self._myPos
             local p2 = getPosTable(self._target)
             self._targetFacing = cc.pToAngleSelf(cc.pSub(p2, p1))
-        end
-        if not self._target or not self._target._isalive then
-            --if my target is dead, find a new target
-            local allDead
-            self._target, allDead = self:_findEnemy()
-            inRange = self:_inRange()
-            if (not self._target or not self._target._isalive) and state ~= EnumStateType.IDLE then
-                self:idleMode()
+            local isInRange = self:_inRange()
+            -- if im (not attacking, or not walking) and my target is not in range
+            if (not self._cooldown or state ~= EnumStateType.WALKING) and not isInRange then
+                self:walkMode()
                 return
+            --if my target is in range, and im not already attacking
+            elseif isinRange and state ~= EnumStateType.ATTACKING then
+                self:attackMode()
+                return
+--            else 
+--                --Since im attacking, i cant just switch to another mode immediately
+--                --print( self._name, "says : what should i do?", self._statetype)
             end
-        end
-        if not inRange and state ~= EnumStateType.WALKING and not self._cooldown then
-            --If my target is out of range, i should walk
-            self:walkMode()
+        --i did not find a target, and im not attacking or not already idle
+        elseif not self._cooldown or state ~= EnumStateType.IDLE then
+            self:idleMode()
             return
         end
---        if state == EnumStateType.ATTACKING and not inRange and  then
---            self:walkMode()
---            return
---        end
     else
         -- logic when im dead 
     end
