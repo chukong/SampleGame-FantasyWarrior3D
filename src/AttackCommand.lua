@@ -7,7 +7,7 @@ function solveAttacks(dt)
     for val = AttackManager.last, AttackManager.first, -1 do
         local attack = AttackManager[val]
         local apos = getPosTable(attack) 
-        if attack.mask == EnumRaceType.KNIGHT or attack.mask == EnumRaceType.ARCHER or attack.mask == EnumRaceType.MAGE then
+        if attack.mask == EnumRaceType.HERO then
             --if heroes attack, then lets check monsters
             for mkey = MonsterManager.last, MonsterManager.first, -1 do
                 --check distance first

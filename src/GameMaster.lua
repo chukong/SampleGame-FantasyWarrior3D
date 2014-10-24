@@ -85,17 +85,19 @@ end
 
 function GameMaster:addMonsters()
 	self:addDragon()
-	 self:addSlime()
-	 self:addPiglet()
-	 self:addRat()
+	self:addSlime()
+	self:addPiglet()
+	self:addRat()
 end
 
 function GameMaster:addDragon()
-	for var=1, monsterCount.dragon do
-		local dragon = Dragon:create()
-		dragon:retain()
-		List.pushlast(DragonPool,dragon)
-	end 
+    for var=1, monsterCount.dragon do
+        local dragon = Dragon:create()
+        currentLayer:addChild(dragon)
+        dragon:setVisible(false)
+        dragon:setAIEnabled(false)
+        List.pushlast(DragonPool,dragon)
+    end   
 end
 
 function GameMaster:addSlime()
@@ -118,18 +120,36 @@ end
 
 function GameMaster:addRat()
     for var=1, monsterCount.rat do
-    	local rat = Rat:create()
-    	rat:retain()
-    	List.pushlast(RatPool,rat)
-    end   
+        local rat = Rat:create()
+        currentLayer:addChild(rat)
+        rat:setVisible(false)
+        rat:setAIEnabled(false)
+        List.pushlast(RatPool,rat)
+    end  
 end
 
 function GameMaster:showDragon()
     if List.getSize(DragonPool) ~= 0 then
-        local dragon  = List.poplast(DragonPool)
-        dragon:setPosition({x=800,y=0})
-        currentLayer:addChild(dragon)
+        local dragon = List.popfirst(DragonPool)
+        dragon:reset()
+        local appearPos = getFocusPointOfHeros()
+        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+        local randomvar = math.random()
+        cclog("the randomvar is %f",randomvar)
+        if randomvar < 0.4 then appearPos.x = appearPos.x - 1200
+        else appearPos.x = appearPos.x + 1200 end
+        if appearPos.x < G.activearea.left then 
+            appearPos.x = appearPos.x + 2400 
+        end
+        if appearPos.x > G.activearea.right then 
+            appearPos.x = appearPos.x - 2400 
+        end
+        appearPos.y = appearPos.y -30 + randomvar*60
+        dragon:setPosition(appearPos)
+        dragon:setVisible(true)
+        dragon:setAIEnabled(true)
         List.pushlast(MonsterManager, dragon)
+        show_count = show_count + 1
     end
 end
 
@@ -140,10 +160,15 @@ function GameMaster:showPiglet()
         local appearPos = getFocusPointOfHeros()
         math.randomseed(tostring(os.time()):reverse():sub(1, 6))
         local randomvar = math.random()
-        if randomvar < 0.5 then appearPos.x = appearPos.x - 1200
+        cclog("the randomvar is %f",randomvar)
+        if randomvar < 0.4 then appearPos.x = appearPos.x - 1200
         else appearPos.x = appearPos.x + 1200 end
-        if appearPos.x < G.activearea.left then appearPos.x = appearPos.x + 2400 end
-        if appearPos.x > 0 then appearPos.x = appearPos.x - 2400 end
+        if appearPos.x < G.activearea.left then 
+            appearPos.x = appearPos.x + 2400 
+        end
+        if appearPos.x > G.activearea.right then 
+            appearPos.x = appearPos.x - 2400 
+        end
         appearPos.y = appearPos.y -30 + randomvar*60
         piglet:setPosition(appearPos)
         piglet:setVisible(true)
@@ -164,24 +189,39 @@ function GameMaster:showSlime()
 end
 
 function GameMaster:showRat()
-	if List.getSize(RatPool) ~= 0 then
+    if List.getSize(RatPool) ~= 0 then
         local rat = List.popfirst(RatPool)
-        rat:setPosition({x=800,y=100})
-        currentLayer:addChild(rat)
+        rat:reset()
+        local appearPos = getFocusPointOfHeros()
+        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+        local randomvar = math.random()
+        cclog("the randomvar is %f",randomvar)
+        if randomvar < 0.4 then appearPos.x = appearPos.x - 1200
+        else appearPos.x = appearPos.x + 1200 end
+        if appearPos.x < G.activearea.left then 
+            appearPos.x = appearPos.x + 2400 
+        end
+        if appearPos.x > G.activearea.right then 
+            appearPos.x = appearPos.x - 2400 
+        end
+        appearPos.y = appearPos.y -30 + randomvar*60
+        rat:setPosition(appearPos)
+        rat:setVisible(true)
+        rat:setAIEnabled(true)
         List.pushlast(MonsterManager, rat)
-        kill_count = kill_count + 1
+        show_count = show_count + 1
     end
 end
 
 function GameMaster:randomshowMonster()
 	local random_var = math.random()
-	random_var = 0.4
 	if random_var<0.25 then
 		self:showDragon()
 	elseif random_var<0.5 then
 		self:showPiglet()
 	elseif random_var<0.75 then
-		self:showSlime()
+		-- self:showSlime()
+        self:showRat()
 	else
 		self:showRat()
 	end
@@ -189,8 +229,6 @@ end
 
 function GameMaster:showBoss()
     self:showWarning()
---	self:showDialog()
-	--TODO  show boss
 end
 
 function GameMaster:showWarning()

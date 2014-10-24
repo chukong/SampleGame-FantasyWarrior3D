@@ -63,6 +63,15 @@ function Knight.create()
         ret:movementUpdate(dt)
     end
     ret:scheduleUpdateWithPriorityLua(update, 0) 
+    
+    local function specialAttack()
+        if ret._specialAttackChance == 1 then return end
+        ret._specialAttackChance = 1
+        ret._attackTimer = KnightValues._attackFrequency + 0.01
+        ret._attackFrequency = KnightValues._attackFrequency
+        --cclog("Knight.specialAttack")        
+    end
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, specialAttack)    
     return ret
 end
 
@@ -92,6 +101,8 @@ function Knight:normalAttack()
 end
 
 function Knight:specialAttack()
+    self._specialAttackChance = KnightValues._specialAttackChance
+
     -- knight will create 2 attacks one by one  
     local attack = self._specialAttack
     attack.knock = 0

@@ -26,7 +26,6 @@ function Piglet:reset()
     self:_findEnemy(self._raceType)
     self:walkMode()
     self:setPositionZ(0)
-    
 end
 
 function Piglet.create()

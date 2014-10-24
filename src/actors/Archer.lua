@@ -37,7 +37,16 @@ function Archer.create()
         ret:stateMachineUpdate(dt)
         ret:movementUpdate(dt)
     end
-    ret:scheduleUpdateWithPriorityLua(update, 0) 
+    ret:scheduleUpdateWithPriorityLua(update, 0)
+    
+    function specialAttack()
+        if ret._specialAttackChance == 1 then return end
+        ret._specialAttackChance = 1
+        ret._attackTimer = ArcherValues._attackFrequency + 0.01
+        ret._attackFrequency = ArcherValues._attackFrequency
+        --cclog("Archer.specialAttack")
+    end
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, specialAttack)
     return ret
 end
 
@@ -72,6 +81,7 @@ function Archer:normalAttack()
 end
 
 function Archer:specialAttack()
+    self._specialAttackChance = ArcherValues._specialAttackChance
     --archer will create 3 attack circle on the ground
     --get 3 positions
     ccexp.AudioEngine:play2d(Archerproperty.specialAttackShout, false,1)
