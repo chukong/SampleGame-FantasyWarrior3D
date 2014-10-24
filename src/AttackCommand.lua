@@ -201,7 +201,7 @@ function MageNormalAttack:onTimeOut()
 end
 
 function MageNormalAttack:playHitAudio()
-
+    ccexp.AudioEngine:play2d(MageProperty.ice_normalAttackHit, false,1)
 end
 
 function MageNormalAttack:onCollide(target)
