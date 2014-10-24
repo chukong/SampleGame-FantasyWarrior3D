@@ -144,12 +144,12 @@ KnightValues = {
     
     _hp             = 1500,
     _maxhp          = 1500,
-    _defense        = 150,
-    _attackFrequency = 2.5,
-    _recoverTime    = 0.5,
+    _defense        = 180,
+    _attackFrequency = 1,
+    _recoverTime    = 0.1,
     _AIFrequency    = 1.1,
     _attackRange    = 100,
-    _specialAttackChance = 0.33,
+    _specialAttackChance = 0.2,
     
     _normalAttack   = {
         minRange = 0,
@@ -175,7 +175,7 @@ KnightValues = {
     }, 
 }
 MageValues = {
-    _racetype       = EnumRaceType.Mage,
+    _racetype       = EnumRaceType.MAGE,
     _name           = "Mage",
     _radius         = 50,
     _mass           = 800,
@@ -188,7 +188,7 @@ MageValues = {
     _recoverTime    = 0.8,
     _AIFrequency    = 1.33,
     _attackRange    = 666,
-    _specialAttackChance = 0.3,
+    _specialAttackChance = 0.2,
 
     _normalAttack   = {
         minRange = 0,
@@ -223,18 +223,18 @@ ArcherValues = {
     _hp             = 1200,
     _maxhp          = 1200,
     _defense        = 130,
-    _attackFrequency = 4.7,
+    _attackFrequency = 2.5,
     _recoverTime    = 0.4,
     _AIFrequency    = 1.3,
     _attackRange    = 800,
-    _specialAttackChance = 0.33,
+    _specialAttackChance = 0.2,
 
     _normalAttack   = {
         minRange = 0,
         maxRange = 30,
         angle    = DEGREES_TO_RADIANS(360),
         knock    = 100,
-        damage   = 230,
+        damage   = 200,
         mask     = EnumRaceType.ARCHER,
         duration = 2,
         speed    = 900,
@@ -245,7 +245,7 @@ ArcherValues = {
         maxRange = 30,
         angle    = DEGREES_TO_RADIANS(360),
         knock    = 75,
-        damage   = 285,
+        damage   = 200,
         mask     = EnumRaceType.ARCHER,
         duration = 2,
         speed    = 850,
@@ -328,7 +328,7 @@ PigletValues = {
     _defense        = 65,
     _attackFrequency = 4.73,
     _recoverTime    = 0.9,
-    _AIFrequency    = 4.3,
+    _AIFrequency    = 2.3,
     _attackRange    = 120,
 
     _speed          = 350,

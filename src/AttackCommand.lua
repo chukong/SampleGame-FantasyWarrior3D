@@ -6,17 +6,23 @@ AttackManager = List.new()
 function solveAttacks(dt)
     for val = AttackManager.last, AttackManager.first, -1 do
         local attack = AttackManager[val]
+        local apos = getPosTable(attack) 
         if attack.mask == EnumRaceType.KNIGHT or attack.mask == EnumRaceType.ARCHER or attack.mask == EnumRaceType.MAGE then
             --if heroes attack, then lets check monsters
             for mkey = MonsterManager.last, MonsterManager.first, -1 do
                 --check distance first
                 local monster = MonsterManager[mkey]
                 local mpos = getPosTable(monster)
-                local dist = cc.pGetDistance(getPosTable(attack), mpos)
+                local dist = cc.pGetDistance(apos, mpos)
                 if dist < (attack.maxRange + monster._radius) and dist > attack.minRange then
                     --range test passed, now angle test
-                    local angle = cc.pToAngleSelf(cc.pSub(mpos,getPosTable(attack)))
-                    if(attack.facing + attack.angle/2)>angle and angle > (attack.facing- attack.angle/2) then
+                    local angle = radNormalize(cc.pToAngleSelf(cc.pSub(mpos,apos)))
+                    local afacing = radNormalize(attack.facing)
+                    if attack.mask == EnumRaceType.MAGE then
+                        print("attack is ", angle, afacing)
+                    end
+                    
+                    if(afacing + attack.angle/2)>angle and angle > (afacing- attack.angle/2) then
                         attack:onCollide(monster)
                     end
                 end

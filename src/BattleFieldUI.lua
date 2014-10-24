@@ -170,30 +170,30 @@ function BattlefieldUI:bloodDrop(heroActor)
     
     if heroActor._hp > 0 and percent>50 then
 
-        progressTo = cc.ProgressTo:create(0.5,percent)
-        progressToClone = cc.ProgressTo:create(0.8,percent+2)
+        progressTo = cc.ProgressTo:create(0.3,percent)
+        progressToClone = cc.ProgressTo:create(1,percent+2)
         heroActor._bloodBar:runAction(progressTo)
         heroActor._bloodBarClone:runAction(progressToClone)
         
     elseif heroActor._hp>0 and percent <=50 then
         
-        progressTo = cc.ProgressTo:create(0.5,percent)
-        progressToClone = cc.ProgressTo:create(0.8,percent+2) 
+        progressTo = cc.ProgressTo:create(0.3,percent)
+        progressToClone = cc.ProgressTo:create(1,percent+2) 
         tintTo = cc.TintTo:create(0.5,254,225,26)   
         
         heroActor._bloodBar:runAction(cc.Spawn:create(progressTo,tintTo))
         heroActor._bloodBarClone:runAction(progressToClone)
     elseif heroActor._hp>0 and percent <=30 then
 
-        progressTo = cc.ProgressTo:create(0.5,percent)
-        progressToClone = cc.ProgressTo:create(0.8,percent+2) 
+        progressTo = cc.ProgressTo:create(0.3,percent)
+        progressToClone = cc.ProgressTo:create(1,percent+2) 
         
         tintTo = cc.TintTo:create(0.5,254,26,69)   
         heroActor._bloodBar:runAction(cc.Spawn:create(progressTo,tintTo))
         heroActor._bloodBarClone:runAction(progressToClone)
     elseif heroActor._hp  <=0 then
-        progressTo = cc.ProgressTo:create(0.5,0)
-        progressToClone = cc.ProgressTo:create(0.8,2)
+        progressTo = cc.ProgressTo:create(0.3,0)
+        progressToClone = cc.ProgressTo:create(1,2)
         
         heroActor._bloodBar:runAction(progressTo)
         heroActor._bloodBarClone:runAction(progressToClone)

@@ -23,6 +23,7 @@ end
 function Piglet:reset()
     copyTable(ActorCommonValues, self)
     copyTable(PigletValues,self)
+    self:_findEnemy(self._raceType)
     self:walkMode()
     self:setPositionZ(0)
     
@@ -110,23 +111,6 @@ end
 --    end
 --end
 
-function Piglet:_findEnemy()
-    local shortest = self._searchDistance
-    local target = nil
-    local allDead = true
-    for val = HeroManager.first, HeroManager.last do
-        local temp = HeroManager[val]
-        local dis = cc.pGetDistance(self._myPos,getPosTable(temp))
-        if temp._isalive then
-            if dis < shortest then
-                shortest = dis
-                target = temp
-            end
-            allDead = false
-        end
-    end
-    return target, allDead
-end
 
 function Piglet:init3D()
     self:initShadow()

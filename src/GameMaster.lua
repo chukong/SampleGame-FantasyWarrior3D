@@ -12,7 +12,7 @@ require "Archer"
 
 local gloableZOrder = 1
 local monsterCount = {dragon=3,slime=3,piglet=10,rat=3}
-local EXIST_MIN_MONSTER = 8
+local EXIST_MIN_MONSTER = 6
 kill_count = 0
 show_count = 0
 local KILL_MAX_MONSTER = 35
@@ -69,17 +69,17 @@ function GameMaster:AddHeros()
     knight:idleMode()
     List.pushlast(HeroManager, knight)
 
-	local mage = Mage:create()
-   	mage:setPosition(-1200, 200)
-   	currentLayer:addChild(mage)
-   	mage:idleMode()
-   	List.pushlast(HeroManager, mage)
-   	
-    local archer = Archer:create()
-    archer:setPosition(-1200, 100)
-    currentLayer:addChild(archer)
-    archer:idleMode()
-    List.pushlast(HeroManager, archer)   	
+--	local mage = Mage:create()
+--   	mage:setPosition(-1200, 200)
+--   	currentLayer:addChild(mage)
+--   	mage:idleMode()
+--   	List.pushlast(HeroManager, mage)
+--   	
+--    local archer = Archer:create()
+--    archer:setPosition(-1200, 100)
+--    currentLayer:addChild(archer)
+--    archer:idleMode()
+--    List.pushlast(HeroManager, archer)   	
 
 end
 
