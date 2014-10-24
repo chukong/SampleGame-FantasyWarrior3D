@@ -414,19 +414,20 @@ MonsterPigletValues =
     attack2 = "audios/effects/piglet/piglet2.mp3",
     attack3 = "audios/effects/piglet/piglet3.mp3",
     dead = "audios/effects/piglet/dead.mp3",
-    hurt = "audios/effects/piglet/hurt.mp3"
+    hurt = "audios/effects/piglet/hurt.mp3",
 }
     
 --Warroir property
 WarriorProperty =
 {
-    shout = "audios/effects/Knight1.mp3",
     normalAttack1 = "audios/effects/knight/swish-1.mp3",
     normalAttack2 = "audios/effects/knight/swish-2.mp3",
     specialAttack1 = "audios/effects/knight/swish-3.mp3",
     specialAttack2 = "audios/effects/knight/swish-4.mp3",
-    hurt = "audios/effects/gruntsound.mp3",
-    kickit = "audios/effects/knight/kickit.mp3"
+    kickit = "audios/effects/knight/kickit.mp3",
+    normalAttackShout = "audios/effects/knight/normalAttackShout.mp3",
+    specialAttackShout = "audios/effects/knight/specialAttackShout.mp3",
+    wounded = "audios/effects/knight/wounded.mp3"
 }
 
 --Archer property

@@ -29,7 +29,7 @@ function ChooseRoleScene.create()
     local layer = scene:createLayer()
     scene:addChild(layer)
     scene:initTouchDispatcher()
-    ccexp.AudioEngine:stop(AUDIO_ID.MAINMENUBGM)
+    ccexp.AudioEngine:stopAll()
     AUDIO_ID.CHOOSEROLESCENEBGM = ccexp.AudioEngine:play2d(BGM_RES.CHOOSEROLESCENEBGM, true,1)
     return scene
 end
