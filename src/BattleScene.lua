@@ -35,7 +35,7 @@ local function moveCamera(dt)
             position = cc.V3(temp.x, temp.y, position.z)
             camera:setPosition3D(position)
             camera:lookAt(cc.V3(position.x, focusPoint.y, 50.0), cc.V3(0.0, 0.0, 1.0))
-            cclog("\ncalf %f %f %f \ncalf %f %f 50.000000", position.x, position.y, position.z, focusPoint.x, focusPoint.y)            
+            --cclog("\ncalf %f %f %f \ncalf %f %f 50.000000", position.x, position.y, position.z, focusPoint.x, focusPoint.y)            
         end
     end
 end
@@ -142,7 +142,7 @@ function BattleScene:enableTouch()
         local location = touch:getLocation()
         
         local delta = cc.pSub(location, self._prePosition)
-        cclog("calf delta: %f %f", delta.x, delta.y)
+        --cclog("calf delta: %f %f", delta.x, delta.y)
         cameraOffset.position.x = cameraOffset.position.x + delta.x
         cameraOffset.position.y = cameraOffset.position.y + delta.y
         
