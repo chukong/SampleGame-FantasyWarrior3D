@@ -342,7 +342,12 @@ function Actor:attackUpdate(dt)
             local function createCol()
                 self:specialAttack()
             end
-            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE, self._myPos)            
+            if self._racetype == EnumRaceType.HERO then
+                local messageParam = {speed = self._action.specialattack1:getSpeed(), pos = self._myPos}
+                cclog("calf duration:%.2f", messageParam.speed)
+                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE, messageParam)                    	
+            end
+            
             local attackAction = cc.Sequence:create(self._action.specialattack1:clone(),cc.CallFunc:create(createCol),self._action.specialattack2:clone(),cc.CallFunc:create(playIdle))
             self._sprite3d:stopAction(self._curAnimation3d)
             self._sprite3d:runAction(attackAction)
