@@ -9,7 +9,7 @@ local gameMaster = nil
 local specialCamera = {valid = false, position = cc.p(0,0)}
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
-
+local cameraOffset = {valid = false, position = cc.V3(0, 0, 0)}
 
 
 local function moveCamera(dt)
@@ -17,15 +17,26 @@ local function moveCamera(dt)
     if camera == nil then return end
 
     local cameraPosition = getPosTable(camera)
+    local focusPoint = getFocusPointOfHeros()
     if specialCamera.valid == true then
         --local position = cc.pRotateByAngle(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), -360/60/2*dt)
         local position = cc.pLerp(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), 5*dt)
+        
         camera:setPosition(position)
         camera:lookAt(cc.V3(position.x, specialCamera.position.y, 50.0), cc.V3(0.0, 0.0, 1.0))
     elseif List.getSize(HeroManager) > 0 then
-        local position = cc.pLerp(cameraPosition, cc.p(getFocusPointOfHeros().x + size.width/5, getFocusPointOfHeros().y - size.height), 2*dt)
-        camera:setPosition(position)
-        camera:lookAt(cc.V3(position.x, size.height/2, 50.0), cc.V3(0.0, 1.0, 0.0))
+        local position = cc.V3(focusPoint.x, focusPoint.y - size.height, size.height/2-100)
+        if cameraOffset.valid then
+            position = cc.V3Add(position, cameraOffset.position)
+            camera:setPosition3D(position)
+            camera:lookAt(cc.V3(focusPoint.x, focusPoint.y, 50.0), cc.V3(0.0, 0.0, 1.0))
+        else
+            local temp = cc.pLerp(cameraPosition, cc.p(position.x, position.y), 2*dt)
+            position = cc.V3(temp.x, temp.y, position.z)
+            camera:setPosition3D(position)
+            camera:lookAt(cc.V3(position.x, focusPoint.y, 50.0), cc.V3(0.0, 0.0, 1.0))
+            cclog("\ncalf %f %f %f \ncalf %f %f 50.000000", position.x, position.y, position.z, focusPoint.x, focusPoint.y)            
+        end
     end
 end
 
@@ -58,10 +69,15 @@ end
 
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 10.0, 4000.0)
-    camera:setPosition3D(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y-size.height, size.height/2-100))
-    camera:lookAt(cc.V3(getFocusPointOfHeros().x, getFocusPointOfHeros().y, 0.0), cc.V3(0.0, 1.0, 0.0))
-    currentLayer:addChild(camera)
+--    local focusPoint = getFocusPointOfHeros()
+--    local position = cc.V3(focusPoint.x, focusPoint.y-size.height, size.height/2-100)
+--    camera:setPosition3D(position)
+--    camera:lookAt(cc.V3(focusPoint.x, focusPoint.y, 0.0), cc.V3(0.0, 0.0, 1.0))
     camera:setGlobalZOrder(10)
+    currentLayer:addChild(camera)
+
+    cameraOffset.valid = false
+    cameraOffset.position = cc.V3(0, 0, 0)
     
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
@@ -115,10 +131,40 @@ local function specialPerspective(position)
       
 end
 
+function BattleScene:enableTouch()
+    local function onTouchBegin(touch,event)
+        cameraOffset.valid = true
+        self._prePosition = touch:getLocation()
+        return true
+    end
+    
+    local function onTouchMoved(touch,event)
+        local location = touch:getLocation()
+        
+        local delta = cc.pSub(location, self._prePosition)
+        cclog("calf delta: %f %f", delta.x, delta.y)
+        cameraOffset.position.x = cameraOffset.position.x + delta.x
+        cameraOffset.position.y = cameraOffset.position.y + delta.y
+        
+        self._prePosition = location
+    end
+    
+    local function onTouchEnded(touch,event)
+        cameraOffset.valid = false
+    end
+        
+    local touchEventListener = cc.EventListenerTouchOneByOne:create()
+    touchEventListener:registerScriptHandler(onTouchBegin,cc.Handler.EVENT_TOUCH_BEGAN)
+    touchEventListener:registerScriptHandler(onTouchMoved,cc.Handler.EVENT_TOUCH_MOVED)
+    touchEventListener:registerScriptHandler(onTouchEnded,cc.Handler.EVENT_TOUCH_ENDED)
+    currentLayer:getEventDispatcher():addEventListenerWithSceneGraphPriority(touchEventListener, currentLayer)        
+end
+
 function BattleScene.create()
     local scene = BattleScene:new()
     currentLayer = cc.Layer:create()
     scene:addChild(currentLayer)
+    scene:enableTouch()
     
     createBackground()
     initUILayer()
