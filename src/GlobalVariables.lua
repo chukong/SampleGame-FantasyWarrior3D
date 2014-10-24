@@ -175,7 +175,7 @@ KnightValues = {
     }, 
 }
 MageValues = {
-    _racetype       = EnumRaceType.Mage,
+    _racetype       = EnumRaceType.MAGE,
     _name           = "Mage",
     _radius         = 50,
     _mass           = 800,
@@ -447,5 +447,9 @@ MageProperty =
     speed = 50,
     special_attack_chance = 0.33,
     normalAttack = "audios/effects/mage/yeaha.mp3",
-    alright = "audios/effects/mage/alright.mp3"
+    alright = "audios/effects/mage/alright.mp3",
+    ice_normal = "audios/effects/mage/ice_1.mp3",
+    ice_special = "audios/effects/mage/ice_2.mp3",
+    ice_normalAttackHit = "audios/effects/mage/ice_3.mp3",
+    ice_specialAttackHit = "audios/effects/mage/ice_4.mp3"
 }

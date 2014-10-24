@@ -201,7 +201,7 @@ function MageNormalAttack:onTimeOut()
 end
 
 function MageNormalAttack:playHitAudio()
-
+    ccexp.AudioEngine:play2d(MageProperty.ice_normalAttackHit, false,1)
 end
 
 function MageNormalAttack:onCollide(target)
@@ -231,6 +231,10 @@ end
 MageIceSpikes = class("MageIceSpikes", function()
     return BasicCollider.new()
 end)
+
+function MageIceSpikes:playHitAudio()
+    ccexp.AudioEngine:play2d(MageProperty.ice_specialAttackHit, false,1)
+end
 
 function MageIceSpikes.create(pos, facing, attackInfo)
     local ret = MageIceSpikes.new()
