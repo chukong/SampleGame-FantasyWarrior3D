@@ -344,7 +344,7 @@ function Actor:attackUpdate(dt)
             end
             if self._racetype == EnumRaceType.HERO then
                 local messageParam = {speed = self._action.specialattack1:getSpeed(), pos = self._myPos}
-                cclog("calf duration:%.2f", messageParam.speed)
+                --cclog("calf speed:%.2f", messageParam.speed)
                 MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE, messageParam)                    	
             end
             
