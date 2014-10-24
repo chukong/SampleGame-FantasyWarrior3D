@@ -23,18 +23,19 @@ local function moveCamera(dt)
         local position = cc.pLerp(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), 5*dt)
         
         camera:setPosition(position)
-        camera:lookAt(cc.V3(position.x, specialCamera.position.y, 50.0), cc.V3(0.0, 0.0, 1.0))
+        camera:lookAt(cc.V3(position.x, specialCamera.position.y, 50.0), cc.V3(0.0, 1.0, 0.0))
     elseif List.getSize(HeroManager) > 0 then
         local position = cc.V3(focusPoint.x, focusPoint.y - size.height, size.height/2-100)
         if cameraOffset.valid then
-            position = cc.V3Add(position, cameraOffset.position)
-            camera:setPosition3D(position)
-            camera:lookAt(cc.V3(focusPoint.x, focusPoint.y, 50.0), cc.V3(0.0, 0.0, 1.0))
+            --position = cc.V3Add(position, cameraOffset.position)
+            camera:setPosition3D(cc.V3(position.x+100, position.y, position.z))
+            camera:lookAt(cc.V3(position.x, focusPoint.y, 50), cc.V3(0.0, 1.0, 0.0))
+            print(cameraOffset.position.x*0.001, cameraOffset.position.y*0.001)
         else
             local temp = cc.pLerp(cameraPosition, cc.p(position.x, position.y), 2*dt)
             position = cc.V3(temp.x, temp.y, position.z)
             camera:setPosition3D(position)
-            camera:lookAt(cc.V3(position.x, focusPoint.y, 50.0), cc.V3(0.0, 0.0, 1.0))
+            camera:lookAt(cc.V3(position.x, focusPoint.y, 50.0), cc.V3(0.0, 1.0, 0.0))
             --cclog("\ncalf %f %f %f \ncalf %f %f 50.000000", position.x, position.y, position.z, focusPoint.x, focusPoint.y)            
         end
     end
