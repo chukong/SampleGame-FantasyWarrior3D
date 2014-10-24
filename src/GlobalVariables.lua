@@ -149,7 +149,7 @@ KnightValues = {
     _recoverTime    = 0.5,
     _AIFrequency    = 1.1,
     _attackRange    = 100,
-    _specialAttackChance = 0.05,
+    _specialAttackChance = 0,
     
     _normalAttack   = {
         minRange = 0,
@@ -188,7 +188,7 @@ MageValues = {
     _recoverTime    = 0.8,
     _AIFrequency    = 1.33,
     _attackRange    = 666,
-    _specialAttackChance = 0.05,
+    _specialAttackChance = 0,
 
     _normalAttack   = {
         minRange = 0,
@@ -227,7 +227,7 @@ ArcherValues = {
     _recoverTime    = 0.4,
     _AIFrequency    = 1.3,
     _attackRange    = 800,
-    _specialAttackChance = 0.05,
+    _specialAttackChance = 0,
 
     _normalAttack   = {
         minRange = 0,

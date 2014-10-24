@@ -10,7 +10,9 @@ local specialCamera = {valid = false, position = cc.p(0,0)}
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
 local cameraOffset = {valid = false, position = cc.V3(0, 0, 0)}
-
+local rectKnight = cc.rect(832, 10, 60, 64)
+local rectArcher = cc.rect(902, 10, 60, 64)
+local rectMage = cc.rect(974, 10, 60, 64)
 
 local function moveCamera(dt)
     --cclog("moveCamera")
@@ -133,12 +135,13 @@ end
 
 function BattleScene:enableTouch()
     local function onTouchBegin(touch,event)
-        cameraOffset.valid = true
         self._prePosition = touch:getLocation()
+        --cclog("onTouchBegin: %0.2f, %0.2f", self._prePosition.x, self._prePosition.y)        
         return true
     end
     
     local function onTouchMoved(touch,event)
+        cameraOffset.valid = true
         local location = touch:getLocation()
         
         local delta = cc.pSub(location, self._prePosition)
@@ -151,6 +154,19 @@ function BattleScene:enableTouch()
     
     local function onTouchEnded(touch,event)
         cameraOffset.valid = false
+
+        local location = touch:getLocation()
+        
+        if cc.rectContainsPoint(rectKnight, location) then
+            --cclog("rectKnight")
+            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, 1)            
+        elseif cc.rectContainsPoint(rectArcher, location) then
+            --cclog("rectArcher")
+            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, 1)            
+        elseif cc.rectContainsPoint(rectMage, location) then
+            --cclog("rectMage")
+            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, 1)            
+        end        
     end
         
     local touchEventListener = cc.EventListenerTouchOneByOne:create()
@@ -164,8 +180,8 @@ function BattleScene.create()
     local scene = BattleScene:new()
     currentLayer = cc.Layer:create()
     scene:addChild(currentLayer)
-    scene:enableTouch()
-    
+    scene:enableTouch()    
+ 
     createBackground()
     initUILayer()
     gameMaster = require("GameMaster").create()
