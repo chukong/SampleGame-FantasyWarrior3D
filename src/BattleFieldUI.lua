@@ -166,6 +166,8 @@ function BattlefieldUI:bloodDrop(heroActor)
     local progressToClone
     local tintTo
     local percent = heroActor._hp/heroActor._maxhp*100
+    heroActor._bloodBar:stopAllActions()
+    heroActor._bloodBarClone:stopAllActions()
     heroActor._avatar:runAction(BattlefieldUI:shakeAvatar())
     
     if heroActor._hp > 0 and percent>50 then
