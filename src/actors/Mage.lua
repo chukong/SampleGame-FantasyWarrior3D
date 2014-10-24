@@ -50,7 +50,7 @@ end
 
 function Mage:normalAttack()
     ccexp.AudioEngine:play2d(MageProperty.normalAttackShout, false,0.5)
-    ccexp.AudioEngine:play2d(MageProperty.ice_normal, false,1)
+    ccexp.AudioEngine:play2d(MageProperty.ice_normal, false,0.8)
     MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack, self._target)
 end
 
