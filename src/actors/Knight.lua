@@ -74,6 +74,9 @@ local function KninghtSpecialAttackCallback(audioID, filePatch)
     ccexp.AudioEngine:play2d(WarriorProperty.specialAttack2, false,1)  
 end
 
+function Knight:playDyingEffects()
+    ccexp.AudioEngine:play2d(WarriorProperty.dead, false,1)
+end
 
 function Knight:hurtSoundEffects()
     ccexp.AudioEngine:play2d(WarriorProperty.wounded, false,1)

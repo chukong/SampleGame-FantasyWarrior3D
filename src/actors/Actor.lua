@@ -179,9 +179,15 @@ function Actor:knockMode(knockSource, knockAmount)
         self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
     end
 end
+
+function Actor:playDyingEffects()
+   -- override
+end
+
 function Actor:dyingMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.DYING)
     self:playAnimation("dead")
+    self:playDyingEffects()
     uiLayer:heroDead(self)    
     
     if knockAmount then
@@ -318,7 +324,7 @@ function Actor:attackUpdate(dt)
             local function createCol()
                 self:specialAttack()
             end
-            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE, self._myPos)            
+            --MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE, self._myPos)            
             local attackAction = cc.Sequence:create(self._action.specialattack1:clone(),cc.CallFunc:create(createCol),self._action.specialattack2:clone(),cc.CallFunc:create(playIdle))
             self._sprite3d:stopAction(self._curAnimation3d)
             self._sprite3d:runAction(attackAction)

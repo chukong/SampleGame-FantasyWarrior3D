@@ -341,7 +341,7 @@ PigletValues = {
         maxRange = 120,
         angle    = DEGREES_TO_RADIANS(50),
         knock    = 0,
-        damage   = 150,
+        damage   = 800,
         mask     = EnumRaceType.MONSTER,
         duration = 0,
         speed    = 0,
@@ -427,7 +427,8 @@ WarriorProperty =
     kickit = "audios/effects/knight/kickit.mp3",
     normalAttackShout = "audios/effects/knight/normalAttackShout.mp3",
     specialAttackShout = "audios/effects/knight/specialAttackShout.mp3",
-    wounded = "audios/effects/knight/wounded.mp3"
+    wounded = "audios/effects/knight/wounded.mp3",
+    dead = "audios/effects/knight/dead.mp3"
 }
 
 --Archer property
