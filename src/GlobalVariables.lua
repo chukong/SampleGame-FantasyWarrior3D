@@ -149,7 +149,7 @@ KnightValues = {
     _recoverTime    = 0.5,
     _AIFrequency    = 1.1,
     _attackRange    = 100,
-    _specialAttackChance = 0.33,
+    _specialAttackChance = 0.05,
     
     _normalAttack   = {
         minRange = 0,
@@ -188,7 +188,7 @@ MageValues = {
     _recoverTime    = 0.8,
     _AIFrequency    = 1.33,
     _attackRange    = 666,
-    _specialAttackChance = 0.3,
+    _specialAttackChance = 0.05,
 
     _normalAttack   = {
         minRange = 0,
@@ -227,7 +227,7 @@ ArcherValues = {
     _recoverTime    = 0.4,
     _AIFrequency    = 1.3,
     _attackRange    = 800,
-    _specialAttackChance = 0.33,
+    _specialAttackChance = 0.05,
 
     _normalAttack   = {
         minRange = 0,
@@ -427,7 +427,8 @@ WarriorProperty =
     kickit = "audios/effects/knight/kickit.mp3",
     normalAttackShout = "audios/effects/knight/normalAttackShout.mp3",
     specialAttackShout = "audios/effects/knight/specialAttackShout.mp3",
-    wounded = "audios/effects/knight/wounded.mp3"
+    wounded = "audios/effects/knight/wounded.mp3",
+    dead = "audios/effects/knight/dead.mp3"
 }
 
 --Archer property
@@ -435,8 +436,12 @@ Archerproperty =
 {
     attack1 = "audios/effects/archer/swish-3.mp3",
     attack2 = "audios/effects/archer/swish-4.mp3",
-    wow = "audios/effects/archer/wow.mp3",
-    cheers = "audios/effects/archer/cheers.mp3"
+    cheers = "audios/effects/archer/cheers.mp3",
+    wounded = "audios/effects/archer/hurt.mp3",
+    normalAttackShout = "audios/effects/archer/normalAttackShout.mp3",
+    specialAttackShout = "audios/effects/archer/specialAttackShout.mp3",
+    wounded = "audios/effects/archer/hurt.mp3",
+    dead = "audios/effects/archer/dead.mp3"
 }
 
 --Mage property
@@ -447,12 +452,15 @@ MageProperty =
     defense = 100,
     speed = 50,
     special_attack_chance = 0.33,
-    normalAttack = "audios/effects/mage/yeaha.mp3",
     alright = "audios/effects/mage/alright.mp3",
     ice_normal = "audios/effects/mage/ice_1.mp3",
     ice_special = "audios/effects/mage/ice_2.mp3",
     ice_normalAttackHit = "audios/effects/mage/ice_3.mp3",
-    ice_specialAttackHit = "audios/effects/mage/ice_4.mp3"
+    ice_specialAttackHit = "audios/effects/mage/ice_4.mp3",
+    specialAttackShout = "audios/effects/mage/specialAttack.mp3",
+    normalAttackShout = "audios/effects/mage/normalAttack.mp3",
+    wounded = "audios/effects/mage/hurt.mp3",
+    dead = "audios/effects/mage/dead.mp3"
 }
 
 ReSkin = 

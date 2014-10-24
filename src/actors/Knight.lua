@@ -74,13 +74,16 @@ local function KninghtSpecialAttackCallback(audioID, filePatch)
     ccexp.AudioEngine:play2d(WarriorProperty.specialAttack2, false,1)  
 end
 
+function Knight:playDyingEffects()
+    ccexp.AudioEngine:play2d(WarriorProperty.dead, false,1)
+end
 
 function Knight:hurtSoundEffects()
     ccexp.AudioEngine:play2d(WarriorProperty.wounded, false,1)
 end
 
 function Knight:normalAttack()
-    ccexp.AudioEngine:play2d(WarriorProperty.normalAttackShout, false,1)
+    ccexp.AudioEngine:play2d(WarriorProperty.normalAttackShout, false,0.7)
     KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
     self._sprite:runAction(self._action.attackEffect:clone()) 
 
@@ -92,7 +95,7 @@ function Knight:specialAttack()
     -- knight will create 2 attacks one by one  
     local attack = self._specialAttack
     attack.knock = 0
-    ccexp.AudioEngine:play2d(WarriorProperty.specialAttackShout, false,1)
+    ccexp.AudioEngine:play2d(WarriorProperty.specialAttackShout, false,0.7)
     KnightNormalAttack.create(getPosTable(self), self._curFacing, attack)
     self._sprite:runAction(self._action.attackEffect:clone())
 

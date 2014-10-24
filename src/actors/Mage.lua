@@ -39,13 +39,25 @@ function Mage.create()
     ret:scheduleUpdateWithPriorityLua(update, 0) 
     return ret
 end
+
+function Mage:hurtSoundEffects()
+    ccexp.AudioEngine:play2d(MageProperty.wounded, false,1)
+end
+
+function Mage:playDyingEffects()
+    ccexp.AudioEngine:play2d(MageProperty.dead, false,1)
+end
+
 function Mage:normalAttack()
+    ccexp.AudioEngine:play2d(MageProperty.normalAttackShout, false,0.5)
     ccexp.AudioEngine:play2d(MageProperty.ice_normal, false,1)
     MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack, self._target)
 end
+
 function Mage:specialAttack()
     --mage will create 3 ice spikes on the ground
     --get 3 positions
+    ccexp.AudioEngine:play2d(MageProperty.specialAttackShout, false,0.5)
     ccexp.AudioEngine:play2d(MageProperty.ice_special, false,1)
     local pos1 = getPosTable(self)
     local pos2 = getPosTable(self)
