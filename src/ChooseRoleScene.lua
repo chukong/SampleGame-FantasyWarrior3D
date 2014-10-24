@@ -259,22 +259,22 @@ function ChooseRoleScene:initTouchDispatcher()
 end
 
 function ChooseRoleScene:rotate3Heroes(isRight)
-    local rotatetime = 0.3
+    local rotatetime = 0.6
     if isRight then
         local middle = self.layer:getChildByTag(sortorder[2])
         middle:runAction(cc.Sequence:create(
             cc.CallFunc:create(function() isMoving = true end), 
             cc.Spawn:create(
-                cc.MoveTo:create(rotatetime,pos[3])
+                cc.EaseCircleActionInOut:create(cc.MoveTo:create(rotatetime,pos[3]))
             ),
             cc.CallFunc:create(function() 
                 isMoving = false
                 self:playAudioWhenRotate()
             end)))
         local left = self.layer:getChildByTag(sortorder[1])
-        left:runAction(cc.MoveTo:create(rotatetime,pos[2]))
+        left:runAction(cc.EaseCircleActionInOut:create(cc.MoveTo:create(rotatetime,pos[2])))
         local right = self.layer:getChildByTag(sortorder[3])
-        right:runAction(cc.MoveTo:create(rotatetime,pos[1]))
+        right:runAction(cc.EaseCircleActionInOut:create(cc.MoveTo:create(rotatetime,pos[1])))
         local t = sortorder[3]
         sortorder[3]=sortorder[2]
         sortorder[2]=sortorder[1]
@@ -286,16 +286,16 @@ function ChooseRoleScene:rotate3Heroes(isRight)
                 isMoving = true
             end), 
             cc.Spawn:create(
-                cc.MoveTo:create(rotatetime,pos[1])
+                cc.EaseCircleActionInOut:create(cc.MoveTo:create(rotatetime,pos[1]))
             ),
             cc.CallFunc:create(function()
                 isMoving = false 
                 self:playAudioWhenRotate()
             end)))
         local left = self.layer:getChildByTag(sortorder[1])
-        left:runAction(cc.MoveTo:create(rotatetime,pos[3]))
+        left:runAction(cc.EaseCircleActionInOut:create(cc.MoveTo:create(rotatetime,pos[3])))
         local right = self.layer:getChildByTag(sortorder[3])
-        right:runAction(cc.MoveTo:create(rotatetime,pos[2]))
+        right:runAction(cc.EaseCircleActionInOut:create(cc.MoveTo:create(rotatetime,pos[2])))
         local t = sortorder[1]
         sortorder[1]=sortorder[2]
         sortorder[2]=sortorder[3]
@@ -480,11 +480,11 @@ function ChooseRoleScene:switchTextWhenRotate()
     actor:setPosition(point)
     local text_label = cc.Label:createWithTTF(ttfconfig,text,cc.TEXT_ALIGNMENT_RIGHT,400)
     text_label:setPosition(cc.p(size.width*0.4,size.height*0.68))
-    text_label:enableShadow(cc.c4b(92,50,31,255),cc.size(1,2),0)
+    text_label:enableShadow(cc.c4b(92,50,31,255),cc.size(1,-2),0)
     
     local attr_label = cc.Label:createWithTTF(ttfconfig,attr,cc.TEXT_ALIGNMENT_CENTER,400)
     attr_label:setPosition(cc.p(size.width*0.7,size.height*0.68))
-    attr_label:enableShadow(cc.c4b(92,50,31,255),cc.size(1,2),0)
+    attr_label:enableShadow(cc.c4b(92,50,31,255),cc.size(1,-2),0)
     bag:addChild(actor,1,101)
     bag:addChild(text_label,1)
     bag:addChild(attr_label,1,102)

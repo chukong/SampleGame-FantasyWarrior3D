@@ -10,7 +10,7 @@ function HPCounter:create()
     return HPCounter.new()
 end
 
-function HPCounter:showBloodLossNum(dmage,racetype)
+function HPCounter:showBloodLossNum(dmage,racetype,atack)
     local time = 1
     local function getRandomXYZ()
         local rand_x = 20*math.sin(math.rad(time*0.5+4356))
@@ -21,12 +21,14 @@ function HPCounter:showBloodLossNum(dmage,racetype)
     
     local function getBlood()
         local num = self._num
+        local tm = 0.5
         
         local ttfconfig = {outlineSize=7,fontSize=50,fontFilePath="fonts/britanic bold.ttf"}
         local blood = cc.BillBoardLable:createWithTTF(ttfconfig,"-"..num,cc.TEXT_ALIGNMENT_CENTER,400)
         blood:enableOutline(cc.c4b(0,0,0,255))
         blood:setScale(0.1)
-        blood:setRotation3D(getRandomXYZ())
+        --blood:setRotation3D(getRandomXYZ())
+        
 
         local targetScale = 0.6
         if num > 1000 then 
@@ -39,12 +41,11 @@ function HPCounter:showBloodLossNum(dmage,racetype)
             blood:setColor(cc.c3b(189,0,0))
         end
         
-        if racetype ~= EnumRaceType.MONSTER then
+        if racetype._racetype ~= EnumRaceType.MONSTER then
             blood:setColor(cc.c3b(0,180,255))
         end
-        
-        local sequence = cc.Sequence:create(cc.EaseElasticOut:create(cc.ScaleTo:create(0.25,targetScale),0.4),
-            cc.FadeOut:create(0.25),
+        local sequence = cc.Sequence:create(cc.EaseElasticOut:create(cc.ScaleTo:create(tm/2,targetScale),0.4),
+            cc.FadeOut:create(tm/2),
             cc.RemoveSelf:create(),
             cc.CallFunc:create(function()
                 self._isBlooding=false 
@@ -52,12 +53,19 @@ function HPCounter:showBloodLossNum(dmage,racetype)
             end)
         )
         local spawn = cc.Spawn:create(sequence,
-            cc.MoveBy:create(0.5,{x=0,y=0,z=50}),
-            cc.RotateBy:create(0.5,math.random(-40,40)))
-        blood:runAction(spawn)
+            cc.MoveBy:create(tm,{x=0,y=0,z=50}),
+            cc.RotateBy:create(tm,math.random(-40,40)))
+            
         self._blood = blood
+        self._blood:runAction(spawn)
         
-        return blood
+        if atack then
+            local critleAttack = cc.BillBoard:create("battlefieldUI/hpcounter.png")
+            critleAttack:runAction(spawn:clone())
+            racetype:addEffect(critleAttack)
+        end
+        
+        return self._blood
     end
     
     if self._isBlooding == false then
@@ -68,6 +76,8 @@ function HPCounter:showBloodLossNum(dmage,racetype)
         self._blood:removeFromParent()
         self._num = self._num+dmage
     end
+    
+    
     
     return getBlood()
 end
