@@ -16,9 +16,9 @@ end)
 local sortorder = {1,2,3} --hero's tag
 local rtt = {{x=-90,y=-60,z=0},{x=-90,y=-70,z=0},{x=-90,y=-60,z=0}}
 local pos = {{x=160,y=160,z=-180},{x=380,y=120,z=-40},{x=530,y=160,z=-180}} --heroes' pos
-local weapon_item_pos = {x=834,y=274}
-local armour_item_pos = {x=918,y=274}
-local helmet_item_pos = {x=1002,y=274}
+local weapon_item_pos = {x=832,y=280}
+local armour_item_pos = {x=916,y=280}
+local helmet_item_pos = {x=1000,y=280}
 local isMoving = false
 local direction = 0
 local heroSize = cc.rect(155,120,465,420)
