@@ -37,6 +37,15 @@ function Mage.create()
         ret:movementUpdate(dt)
     end
     ret:scheduleUpdateWithPriorityLua(update, 0) 
+    
+    local function specialAttack()
+        if ret._specialAttackChance == 1 then return end
+        ret._specialAttackChance = 1
+        ret._attackTimer = MageValues._attackFrequency + 0.01
+        ret._attackFrequency = MageValues._attackFrequency
+        --cclog("Mage.specialAttack")        
+    end
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, specialAttack)    
     return ret
 end
 
@@ -55,6 +64,8 @@ function Mage:normalAttack()
 end
 
 function Mage:specialAttack()
+    self._specialAttackChance = MageValues._specialAttackChance
+
     --mage will create 3 ice spikes on the ground
     --get 3 positions
     ccexp.AudioEngine:play2d(MageProperty.specialAttackShout, false,0.5)
