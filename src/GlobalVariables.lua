@@ -453,3 +453,10 @@ MageProperty =
     ice_normalAttackHit = "audios/effects/mage/ice_3.mp3",
     ice_specialAttackHit = "audios/effects/mage/ice_4.mp3"
 }
+
+ReSkin = 
+{
+    knight = {weapon = 0, armour = 0, helmet = 0},
+    archer = {weapon = 0, armour = 0, helmet = 0},
+    mage = {weapon = 0, armour = 0, helmet = 0}
+}

@@ -7,6 +7,7 @@ require "Mage"
 
 --tag 3hero:1~3
 --tag bag:10 weapon:11 armour:12 helmet:13
+--tag actorinfo:101 actortext:102
 
 local ChooseRoleScene  = class("ChooseRoleScene",function ()
 	return cc.Scene:create()
@@ -95,6 +96,16 @@ function ChooseRoleScene:addButton()
         if touch_next == false then
             touch_next = true
             if eventType == ccui.TouchEventType.began then
+                ReSkin.knight = {weapon = self.layer:getChildByTag(2):getWeaponID(),
+                                 armour = self.layer:getChildByTag(2):getArmourID(),
+                                 helmet = self.layer:getChildByTag(2):getHelmetID()}
+                ReSkin.arhcer = {weapon = self.layer:getChildByTag(1):getWeaponID(),
+                                 armour = self.layer:getChildByTag(1):getArmourID(),
+                                 helmet = self.layer:getChildByTag(1):getHelmetID()}
+                ReSkin.mage = {weapon = self.layer:getChildByTag(3):getWeaponID(),
+                                 armour = self.layer:getChildByTag(3):getArmourID(),
+                                 helmet = self.layer:getChildByTag(3):getHelmetID()}
+
                 ccexp.AudioEngine:play2d(BGM_RES.MAINMENUSTART, false,1)
                 local scene = require("BattleScene")
                 cc.Director:getInstance():replaceScene(scene.create())
@@ -437,10 +448,10 @@ function ChooseRoleScene:switchTextWhenRotate()
     --get bag , bagSize and judge if has child
     local bag = self._bag
     local size = bag:getContentSize()
-    local actor = bag:getChildByTag(1)
+    local actor = bag:getChildByTag(101)
     if actor ~= nil then
-        bag:removeChildByTag(1)
-        bag:removeChildByTag(2)
+        bag:removeChildByTag(101)
+        bag:removeChildByTag(102)
     end
     --actor point
     local point = 0
@@ -471,9 +482,9 @@ function ChooseRoleScene:switchTextWhenRotate()
     text_label:setPosition(cc.p(size.width*0.4,size.height*0.68))
     local attr_label = cc.Label:createWithTTF(ttfconfig,attr,cc.TEXT_ALIGNMENT_CENTER,400)
     attr_label:setPosition(cc.p(size.width*0.7,size.height*0.68))
-    bag:addChild(actor,1,1)
+    bag:addChild(actor,1,101)
     bag:addChild(text_label,1)
-    bag:addChild(attr_label,1,2)
+    bag:addChild(attr_label,1,102)
 end
 
 function ChooseRoleScene:playAudioWhenRotate()
