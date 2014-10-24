@@ -3,16 +3,16 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/archer/hunte_ani_C.c3b"
+local file = "model/archer/hunte_ani_cc02.c3b"
 
 Archer = class("Archer", function()
     return require "Actor".create()
 end)
 
 function Archer:ctor()
-    self._useWeaponId = 0
-    self._useArmourId = 0
-    self._useHelmetId = 0
+    self._useWeaponId = ReSkin.archer.weapon
+    self._useArmourId = ReSkin.archer.armour
+    self._useHelmetId = ReSkin.archer.helmet
     
     copyTable(ActorCommonValues, self)
     copyTable(ArcherValues,self)
@@ -25,7 +25,6 @@ function Archer:ctor()
     
     self:init3D()
     self:initActions()
-    self:setDefaultEqt()
 end
 
 function Archer.create()
@@ -56,8 +55,17 @@ local function ArcherlAttackCallback(audioID,filePath)
     ccexp.AudioEngine:play2d(Archerproperty.attack2, false,1)
 end
 
+function Archer:playDyingEffects()
+    ccexp.AudioEngine:play2d(Archerproperty.dead, false,1)
+end
+
+function Archer:hurtSoundEffects()
+    ccexp.AudioEngine:play2d(Archerproperty.wounded, false,1)
+end
+
 function Archer:normalAttack()
     ArcherNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+    ccexp.AudioEngine:play2d(Archerproperty.normalAttackShout, false,1)
     AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
 --    ccexp.AudioEngine:play2d(Archerproperty.wow, false,1)
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
@@ -66,6 +74,7 @@ end
 function Archer:specialAttack()
     --archer will create 3 attack circle on the ground
     --get 3 positions
+    ccexp.AudioEngine:play2d(Archerproperty.specialAttackShout, false,1)
     AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     
@@ -105,6 +114,7 @@ function Archer:init3D()
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
+    self:setDefaultEqt()
 end
 
 

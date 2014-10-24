@@ -49,7 +49,6 @@ function Piglet:dyingMode(knockSource, knockAmount)
     
     --Twice play in order to inhance the sounds,
     ccexp.AudioEngine:play2d(MonsterPigletValues.dead, false,1)
-    ccexp.AudioEngine:play2d(MonsterPigletValues.dead, false,1)
     
     if knockAmount then
         local p = getPosTable(self)

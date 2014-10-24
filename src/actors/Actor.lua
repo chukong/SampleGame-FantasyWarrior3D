@@ -119,6 +119,7 @@ function Actor:hurt(collider)
         if self._hp > 0 then
             if collider.knock then
                 self:knockMode(getPosTable(collider),collider.knock)
+                self:hurtSoundEffects()
             end
         else
             self._hp = 0
@@ -136,7 +137,6 @@ function Actor:hurt(collider)
 
         local loseBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
         MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, loseBlood)
-        self:hurtSoundEffects()
     end
 end
 
@@ -182,9 +182,15 @@ function Actor:knockMode(knockSource, knockAmount)
         self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
     end
 end
+
+function Actor:playDyingEffects()
+   -- override
+end
+
 function Actor:dyingMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.DYING)
     self:playAnimation("dead")
+    self:playDyingEffects()
     uiLayer:heroDead(self)    
     
     if knockAmount then

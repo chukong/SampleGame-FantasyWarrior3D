@@ -149,7 +149,7 @@ KnightValues = {
     _recoverTime    = 0.1,
     _AIFrequency    = 1.1,
     _attackRange    = 100,
-    _specialAttackChance = 0.2,
+    _specialAttackChance = 0.05,
     
     _normalAttack   = {
         minRange = 0,
@@ -188,7 +188,7 @@ MageValues = {
     _recoverTime    = 0.8,
     _AIFrequency    = 1.33,
     _attackRange    = 666,
-    _specialAttackChance = 0.2,
+    _specialAttackChance = 0.05,
 
     _normalAttack   = {
         minRange = 0,
@@ -227,7 +227,7 @@ ArcherValues = {
     _recoverTime    = 0.4,
     _AIFrequency    = 1.3,
     _attackRange    = 800,
-    _specialAttackChance = 0.2,
+    _specialAttackChance = 0.05,
 
     _normalAttack   = {
         minRange = 0,
@@ -381,7 +381,11 @@ RatValues = {
     }, 
 }
 
-
+--Some common audios
+CommonAudios =
+{
+    hit = "audios/effects/hit20.mp3"
+}
 
 --Monster Slime
 MonsterSlimeValues =
@@ -410,19 +414,21 @@ MonsterPigletValues =
     attack2 = "audios/effects/piglet/piglet2.mp3",
     attack3 = "audios/effects/piglet/piglet3.mp3",
     dead = "audios/effects/piglet/dead.mp3",
-    hurt = "audios/effects/piglet/hurt.mp3"
+    hurt = "audios/effects/piglet/hurt.mp3",
 }
     
 --Warroir property
 WarriorProperty =
 {
-    shout = "audios/effects/Knight1.mp3",
     normalAttack1 = "audios/effects/knight/swish-1.mp3",
     normalAttack2 = "audios/effects/knight/swish-2.mp3",
     specialAttack1 = "audios/effects/knight/swish-3.mp3",
     specialAttack2 = "audios/effects/knight/swish-4.mp3",
-    hurt = "audios/effects/gruntsound.mp3",
-    kickit = "audios/effects/knight/kickit.mp3"
+    kickit = "audios/effects/knight/kickit.mp3",
+    normalAttackShout = "audios/effects/knight/normalAttackShout.mp3",
+    specialAttackShout = "audios/effects/knight/specialAttackShout.mp3",
+    wounded = "audios/effects/knight/wounded.mp3",
+    dead = "audios/effects/knight/dead.mp3"
 }
 
 --Archer property
@@ -430,8 +436,12 @@ Archerproperty =
 {
     attack1 = "audios/effects/archer/swish-3.mp3",
     attack2 = "audios/effects/archer/swish-4.mp3",
-    wow = "audios/effects/archer/wow.mp3",
-    cheers = "audios/effects/archer/cheers.mp3"
+    cheers = "audios/effects/archer/cheers.mp3",
+    wounded = "audios/effects/archer/hurt.mp3",
+    normalAttackShout = "audios/effects/archer/normalAttackShout.mp3",
+    specialAttackShout = "audios/effects/archer/specialAttackShout.mp3",
+    wounded = "audios/effects/archer/hurt.mp3",
+    dead = "audios/effects/archer/dead.mp3"
 }
 
 --Mage property
@@ -442,6 +452,20 @@ MageProperty =
     defense = 100,
     speed = 50,
     special_attack_chance = 0.33,
-    normalAttack = "audios/effects/mage/yeaha.mp3",
-    alright = "audios/effects/mage/alright.mp3"
+    alright = "audios/effects/mage/alright.mp3",
+    ice_normal = "audios/effects/mage/ice_1.mp3",
+    ice_special = "audios/effects/mage/ice_2.mp3",
+    ice_normalAttackHit = "audios/effects/mage/ice_3.mp3",
+    ice_specialAttackHit = "audios/effects/mage/ice_4.mp3",
+    specialAttackShout = "audios/effects/mage/specialAttack.mp3",
+    normalAttackShout = "audios/effects/mage/normalAttack.mp3",
+    wounded = "audios/effects/mage/hurt.mp3",
+    dead = "audios/effects/mage/dead.mp3"
+}
+
+ReSkin = 
+{
+    knight = {weapon = 0, armour = 0, helmet = 0},
+    archer = {weapon = 0, armour = 0, helmet = 0},
+    mage = {weapon = 0, armour = 0, helmet = 0}
 }

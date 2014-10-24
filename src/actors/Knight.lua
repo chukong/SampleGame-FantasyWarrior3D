@@ -10,9 +10,9 @@ Knight = class("Knight", function()
 end)
 
 function Knight:ctor()
-    self._useWeaponId = 0
-    self._useArmourId = 0
-    self._useHelmetId = 0
+    self._useWeaponId = ReSkin.knight.weapon
+    self._useArmourId = ReSkin.knight.armour
+    self._useHelmetId = ReSkin.knight.helmet
     copyTable(ActorCommonValues, self)
     copyTable(KnightValues,self)
 
@@ -24,7 +24,6 @@ function Knight:ctor()
 
     self:init3D()
     self:initActions()
-    self:setDefaultEqt()
 end
 
 function Knight.create()
@@ -75,13 +74,16 @@ local function KninghtSpecialAttackCallback(audioID, filePatch)
     ccexp.AudioEngine:play2d(WarriorProperty.specialAttack2, false,1)  
 end
 
+function Knight:playDyingEffects()
+    ccexp.AudioEngine:play2d(WarriorProperty.dead, false,1)
+end
 
 function Knight:hurtSoundEffects()
-    ccexp.AudioEngine:play2d(WarriorProperty.hurt, false,1)
+    ccexp.AudioEngine:play2d(WarriorProperty.wounded, false,1)
 end
 
 function Knight:normalAttack()
---    ccexp.AudioEngine:play2d(WarriorProperty.shout, false,1)
+    ccexp.AudioEngine:play2d(WarriorProperty.normalAttackShout, false,0.7)
     KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
     self._sprite:runAction(self._action.attackEffect:clone()) 
 
@@ -93,7 +95,7 @@ function Knight:specialAttack()
     -- knight will create 2 attacks one by one  
     local attack = self._specialAttack
     attack.knock = 0
-    ccexp.AudioEngine:play2d(WarriorProperty.shout, false,1)
+    ccexp.AudioEngine:play2d(WarriorProperty.specialAttackShout, false,0.7)
     KnightNormalAttack.create(getPosTable(self), self._curFacing, attack)
     self._sprite:runAction(self._action.attackEffect:clone())
 
@@ -151,6 +153,7 @@ function Knight:init3D()
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
+    self:setDefaultEqt()
 end
 
 

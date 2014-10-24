@@ -3,16 +3,16 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/mage/mage.c3b"
+local file = "model/mage/fashi_all_ani_cc.c3b"
 
 Mage = class("Mage", function()
     return require "Actor".create()
 end)
 
 function Mage:ctor()
-    self._useWeaponId = 0
-    self._useArmourId = 0
-    self._useHelmetId = 0
+    self._useWeaponId = ReSkin.mage.weapon
+    self._useArmourId = ReSkin.mage.armour
+    self._useHelmetId = ReSkin.mage.helmet
     if uiLayer~=nil then
         self._bloodBar = uiLayer.MageBlood
         self._bloodBarClone = uiLayer.MageBloodClone
@@ -39,13 +39,26 @@ function Mage.create()
     ret:scheduleUpdateWithPriorityLua(update, 0) 
     return ret
 end
+
+function Mage:hurtSoundEffects()
+    ccexp.AudioEngine:play2d(MageProperty.wounded, false,1)
+end
+
+function Mage:playDyingEffects()
+    ccexp.AudioEngine:play2d(MageProperty.dead, false,1)
+end
+
 function Mage:normalAttack()
---    ccexp.AudioEngine:play2d(MageProperty.normalAttack, false,1)
+    ccexp.AudioEngine:play2d(MageProperty.normalAttackShout, false,0.5)
+    ccexp.AudioEngine:play2d(MageProperty.ice_normal, false,1)
     MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack, self._target)
 end
+
 function Mage:specialAttack()
     --mage will create 3 ice spikes on the ground
     --get 3 positions
+    ccexp.AudioEngine:play2d(MageProperty.specialAttackShout, false,0.5)
+    ccexp.AudioEngine:play2d(MageProperty.ice_special, false,1)
     local pos1 = getPosTable(self)
     local pos2 = getPosTable(self)
     local pos3 = getPosTable(self)
@@ -75,8 +88,8 @@ function Mage:init3D()
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
+    self:setDefaultEqt()
 end
-
 
 -- init Mage animations=============================
 do
@@ -106,42 +119,42 @@ end
 
 function Mage:updateWeapon()
     if self._useWeaponId == 0 then
-        local weapon = self._sprite3d:getMeshByName("zhanshi_wuqi01")
+        local weapon = self._sprite3d:getMeshByName("fashi_wuqi01")
         weapon:setVisible(true)
-        weapon = self._sprite3d:getMeshByName("zhanshi_wuqi02")
+        weapon = self._sprite3d:getMeshByName("fashi_wuqi2")
         weapon:setVisible(false)
     else
-        local weapon = self._sprite3d:getMeshByName("zhanshi_wuqi02")
+        local weapon = self._sprite3d:getMeshByName("fashi_wuqi2")
         weapon:setVisible(true)
-        weapon = self._sprite3d:getMeshByName("zhanshi_wuqi01")
+        weapon = self._sprite3d:getMeshByName("fashi_wuqi01")
         weapon:setVisible(false)
     end
 end
 
 function Mage:updateHelmet()
     if self._useHelmetId == 0 then
-        local helmet = self._sprite3d:getMeshByName("zhanshi_tou01")
+        local helmet = self._sprite3d:getMeshByName("fashi_tou01")
         helmet:setVisible(true)
-        helmet = self._sprite3d:getMeshByName("zhanshi_tou02")
+        helmet = self._sprite3d:getMeshByName("fashi_tou2")
         helmet:setVisible(false)
     else
-        local helmet = self._sprite3d:getMeshByName("zhanshi_tou02")
+        local helmet = self._sprite3d:getMeshByName("fashi_tou2")
         helmet:setVisible(true)
-        helmet = self._sprite3d:getMeshByName("zhanshi_tou01")
+        helmet = self._sprite3d:getMeshByName("fashi_tou01")
         helmet:setVisible(false)
     end
 end
 
 function Mage:updateArmour()
     if self._useArmourId == 0 then
-        local armour = self._sprite3d:getMeshByName("zhanshi_shenti01")
+        local armour = self._sprite3d:getMeshByName("fashi_shenti01")
         armour:setVisible(true)
-        armour = self._sprite3d:getMeshByName("zhanshi_shenti02")
+        armour = self._sprite3d:getMeshByName("fashi_shenti2")
         armour:setVisible(false)
     else
-        local armour = self._sprite3d:getMeshByName("zhanshi_shenti02")
+        local armour = self._sprite3d:getMeshByName("fashi_shenti2")
         armour:setVisible(true)
-        armour = self._sprite3d:getMeshByName("zhanshi_shenti01")
+        armour = self._sprite3d:getMeshByName("fashi_shenti01")
         armour:setVisible(false)
     end
 end
@@ -172,7 +185,6 @@ function Mage:switchArmour()
     end
     self:updateArmour()
 end
-
 
 -- get weapon id
 function Mage:getWeaponID()
