@@ -308,19 +308,19 @@ end
 
 function ChooseRoleScene:getWeaponTextureName()
     local hero = self.layer:getChildByTag(sortorder[2])
-    if hero:getRaceType() == EnumRaceType.KNIGHT then --warriors
+    if hero._name == "Knight" then --warriors
         if hero:getWeaponID() == 0 then
             return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_w_1.jpg")
     elseif hero:getWeaponID() ==1 then
         return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_w_0.jpg")
         end
-    elseif hero:getRaceType() == EnumRaceType.ARCHER then --archer
+    elseif hero._name == "Archer" then --archer
         if hero:getWeaponID() == 0 then
             return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_a_w_1.jpg")
         elseif hero:getWeaponID() ==1 then
         return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_a_w_0.jpg")
         end
-    elseif hero:getRaceType() == EnumRaceType.MAGE then --sorceress
+    elseif hero._name == "Mage" then --sorceress
         if hero:getWeaponID() == 0 then
             return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_s_w_1.jpg")
         elseif hero:getWeaponID() ==1 then
@@ -331,19 +331,19 @@ end
 
 function ChooseRoleScene:getArmourTextureName()
     local hero = self.layer:getChildByTag(sortorder[2])
-    if hero:getRaceType() == EnumRaceType.KNIGHT then --warriors
+    if hero._name == "Knight" then --warriors
         if hero:getArmourID() == 0 then
             return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_a_1.jpg")
     elseif hero:getArmourID() ==1 then
         return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_a_0.jpg")
         end
-    elseif hero:getRaceType() == EnumRaceType.ARCHER then --archer
+    elseif hero._name == "Archer" then --archer
         if hero:getArmourID() == 0 then
             return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_a_a_1.jpg")
         elseif hero:getArmourID() ==1 then
         return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_a_a_0.jpg")
         end
-    elseif hero:getRaceType() == EnumRaceType.MAGE then --sorceress
+    elseif hero._name == "Mage" then --sorceress
         if hero:getArmourID() == 0 then
             return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_s_a_1.jpg")
         elseif hero:getArmourID() ==1 then
@@ -354,19 +354,19 @@ end
 
 function ChooseRoleScene:getHelmetTextureName()
     local hero = self.layer:getChildByTag(sortorder[2])
-    if hero:getRaceType() == EnumRaceType.KNIGHT then --warriors
+    if hero._name == "Knight" then --warriors
         if hero:getHelmetID() == 0 then
             return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_h_1.jpg")
     elseif hero:getHelmetID() ==1 then
         return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_h_0.jpg")
         end
-    elseif hero:getRaceType() == EnumRaceType.ARCHER then --archer
+    elseif hero._name == "Archer" then --archer
         if hero:getHelmetID() == 0 then
             return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_a_h_1.jpg")
         elseif hero:getHelmetID() ==1 then
         return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_a_h_0.jpg")
         end
-    elseif hero:getRaceType() == EnumRaceType.MAGE then --sorceress
+    elseif hero._name == "Mage" then --sorceress
         if hero:getHelmetID() == 0 then
             return cc.Director:getInstance():getTextureCache():addImage("equipment/cr_s_h_1.jpg")
         elseif hero:getHelmetID() ==1 then
@@ -383,7 +383,7 @@ function ChooseRoleScene:switchItemtextureWhenRotate()
     local helmetTexture
 	local type = hero:getRaceType();
 	
-    if hero:getRaceType() == EnumRaceType.KNIGHT then --warroir
+    if hero._name == "Knight" then --warroir
 	   if hero:getWeaponID() == 0 then
             weaponTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_w_1.jpg")
    	   else
@@ -401,7 +401,7 @@ function ChooseRoleScene:switchItemtextureWhenRotate()
        end
 	end
 	
-    if hero:getRaceType() == EnumRaceType.ARCHER then --archer
+    if hero._name == "Archer" then --archer
         if hero:getWeaponID() == 0 then
             weaponTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_a_w_1.jpg")
         else
@@ -419,7 +419,7 @@ function ChooseRoleScene:switchItemtextureWhenRotate()
         end
     end
     
-    if hero:getRaceType() == EnumRaceType.MAGE then --sorceress
+    if hero._name == "Mage" then --sorceress
         if hero:getWeaponID() == 0 then
             weaponTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_s_w_1.jpg")
         else
@@ -462,15 +462,15 @@ function ChooseRoleScene:switchTextWhenRotate()
     local attr = nil
     
     --set actor and label
-    if type == EnumRaceType.KNIGHT then --warriors
+    if hero._name == "Knight" then --warriors
         actor = cc.Sprite:create("chooseRole/knight.png")
         point = cc.p(size.width*0.395,size.height*0.9)
         attr = "1".."\n"..KnightValues._normalAttack.damage.."\n"..KnightValues._hp.."\n"..KnightValues._defense.."\n"..(KnightValues._AIFrequency*100).."\n"..KnightValues._specialAttack.damage.."\n"..KnightValues._specialAttack.damage
-    elseif type == EnumRaceType.ARCHER then --archer
+    elseif hero._name == "Archer" then --archer
         actor = cc.Sprite:create("chooseRole/archer.png")
         point = cc.p(size.width*0.4,size.height*0.905)
         attr = "1".."\n"..ArcherValues._normalAttack.damage.."\n"..ArcherValues._hp.."\n"..ArcherValues._defense.."\n"..(ArcherValues._AIFrequency*100).."\n"..ArcherValues._specialAttack.damage.."\n"..ArcherValues._specialAttack.damage
-    elseif type == EnumRaceType.MAGE then --sorceress
+    elseif hero._name == "Mage" then --sorceress
         actor = cc.Sprite:create("chooseRole/mage.png")
         point = cc.p(size.width*0.38,size.height*0.9)
         attr = "1".."\n"..MageValues._normalAttack.damage.."\n"..MageValues._hp.."\n"..MageValues._defense.."\n"..(MageValues._AIFrequency*100).."\n"..MageValues._specialAttack.damage.."\n"..MageValues._specialAttack.damage
@@ -494,11 +494,11 @@ function ChooseRoleScene:playAudioWhenRotate()
 	
     local hero = self.layer:getChildByTag(sortorder[2])
     local type = hero:getRaceType()
-    if type==EnumRaceType.KNIGHT then
+    if hero._name == "Knight" then
         ccexp.AudioEngine:play2d(WarriorProperty.kickit, false,1)
-    elseif type==EnumRaceType.ARCHER then
+    elseif hero._name == "Archer" then
         ccexp.AudioEngine:play2d(Archerproperty.cheers, false,1)
-    elseif type==EnumRaceType.MAGE then
+    elseif hero._name == "Mage" then
         ccexp.AudioEngine:play2d(MageProperty.alright, false,1)
     end
 end

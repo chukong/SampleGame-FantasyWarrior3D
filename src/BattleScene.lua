@@ -111,7 +111,7 @@ local BattleScene = class("BattleScene",function()
 end)
 
 local function sendDropBlood(heroActor)
-    if heroActor._racetype == EnumRaceType.KNIGHT or heroActor._racetype == EnumRaceType.ARCHER or heroActor._racetype == EnumRaceType.MAGE then    
+    if heroActor._racetype == EnumRaceType.HERO then    
         uiLayer:bloodDrop(heroActor)
     end
 end
