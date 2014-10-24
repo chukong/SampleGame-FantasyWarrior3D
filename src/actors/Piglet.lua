@@ -25,7 +25,6 @@ function Piglet:reset()
     copyTable(PigletValues,self)
     self:walkMode()
     self:setPositionZ(0)
-    
 end
 
 function Piglet.create()
