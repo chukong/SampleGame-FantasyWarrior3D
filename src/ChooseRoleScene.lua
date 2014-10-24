@@ -130,7 +130,7 @@ function ChooseRoleScene:addHeros()
     archer:setScale(1.3)
     self.layer:addChild(archer)
 
-    local mage = Archer.create()
+    local mage = Mage.create()
     mage:setTag(3)
     mage:setRotation3D(rtt[3])
     mage:setPosition3D(pos[3])

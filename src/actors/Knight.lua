@@ -24,7 +24,6 @@ function Knight:ctor()
 
     self:init3D()
     self:initActions()
-    self:setDefaultEqt()
 end
 
 function Knight.create()
@@ -151,6 +150,7 @@ function Knight:init3D()
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
+    self:setDefaultEqt()
 end
 
 

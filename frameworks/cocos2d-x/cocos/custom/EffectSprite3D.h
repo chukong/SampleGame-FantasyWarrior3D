@@ -99,6 +99,7 @@ public:
     void setEffect3D(Effect3D* effect);
     void addEffect(const Vec3& outlineColor, float width, ssize_t order);
     int  getMeshNum()const {return _meshes.size();}
+    virtual Vector<Mesh*>& getMesh() { return _meshes; }
     virtual void draw(Renderer *renderer, const Mat4 &transform, uint32_t flags) override;
 protected:
     EffectSprite3D();
