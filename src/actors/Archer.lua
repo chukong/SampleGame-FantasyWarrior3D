@@ -55,8 +55,17 @@ local function ArcherlAttackCallback(audioID,filePath)
     ccexp.AudioEngine:play2d(Archerproperty.attack2, false,1)
 end
 
+function Archer:playDyingEffects()
+    ccexp.AudioEngine:play2d(Archerproperty.dead, false,1)
+end
+
+function Archer:hurtSoundEffects()
+    ccexp.AudioEngine:play2d(Archerproperty.wounded, false,1)
+end
+
 function Archer:normalAttack()
     ArcherNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+    ccexp.AudioEngine:play2d(Archerproperty.normalAttackShout, false,1)
     AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
 --    ccexp.AudioEngine:play2d(Archerproperty.wow, false,1)
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
@@ -65,6 +74,7 @@ end
 function Archer:specialAttack()
     --archer will create 3 attack circle on the ground
     --get 3 positions
+    ccexp.AudioEngine:play2d(Archerproperty.specialAttackShout, false,1)
     AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     

@@ -341,7 +341,7 @@ PigletValues = {
         maxRange = 120,
         angle    = DEGREES_TO_RADIANS(50),
         knock    = 0,
-        damage   = 800,
+        damage   = 150,
         mask     = EnumRaceType.MONSTER,
         duration = 0,
         speed    = 0,
@@ -436,8 +436,12 @@ Archerproperty =
 {
     attack1 = "audios/effects/archer/swish-3.mp3",
     attack2 = "audios/effects/archer/swish-4.mp3",
-    wow = "audios/effects/archer/wow.mp3",
-    cheers = "audios/effects/archer/cheers.mp3"
+    cheers = "audios/effects/archer/cheers.mp3",
+    wounded = "audios/effects/archer/hurt.mp3",
+    normalAttackShout = "audios/effects/archer/normalAttackShout.mp3",
+    specialAttackShout = "audios/effects/archer/specialAttackShout.mp3",
+    wounded = "audios/effects/archer/hurt.mp3",
+    dead = "audios/effects/archer/dead.mp3"
 }
 
 --Mage property
