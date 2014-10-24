@@ -232,6 +232,10 @@ MageIceSpikes = class("MageIceSpikes", function()
     return BasicCollider.new()
 end)
 
+function MageIceSpikes:playHitAudio()
+    ccexp.AudioEngine:play2d(MageProperty.ice_specialAttackHit, false,1)
+end
+
 function MageIceSpikes.create(pos, facing, attackInfo)
     local ret = MageIceSpikes.new()
     ret:initData(pos,facing,attackInfo)
