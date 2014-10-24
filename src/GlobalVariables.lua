@@ -175,7 +175,7 @@ KnightValues = {
     }, 
 }
 MageValues = {
-    _racetype       = EnumRaceType.Mage,
+    _racetype       = EnumRaceType.MAGE,
     _name           = "Mage",
     _radius         = 50,
     _mass           = 800,

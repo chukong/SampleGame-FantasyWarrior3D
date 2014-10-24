@@ -369,6 +369,7 @@ function ChooseRoleScene:switchItemtextureWhenRotate()
 	local xxx = sortorder[2]
 	local weaponTexture
 	local armourTexture
+    local helmetTexture
 	local type = hero:getRaceType();
 	
     if hero:getRaceType() == EnumRaceType.KNIGHT then --warroir
@@ -381,6 +382,11 @@ function ChooseRoleScene:switchItemtextureWhenRotate()
         armourTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_a_1.jpg")
        else
         armourTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_a_0.jpg")
+       end
+       if hero:getHelmetID() == 0 then
+        helmetTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_h_1.jpg")
+       else
+        helmetTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_w_h_0.jpg")
        end
 	end
 	
@@ -395,6 +401,11 @@ function ChooseRoleScene:switchItemtextureWhenRotate()
         else
         armourTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_a_a_0.jpg")
         end
+        if hero:getHelmetID() == 0 then
+        helmetTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_a_h_1.jpg")
+        else
+        helmetTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_a_h_0.jpg")
+        end
     end
     
     if hero:getRaceType() == EnumRaceType.MAGE then --sorceress
@@ -408,9 +419,15 @@ function ChooseRoleScene:switchItemtextureWhenRotate()
         else
         armourTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_s_a_0.jpg")
         end
+        if hero:getHelmetID() == 0 then
+        helmetTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_s_h_1.jpg")
+        else
+        helmetTexture = cc.Director:getInstance():getTextureCache():addImage("equipment/cr_s_h_0.jpg")
+        end
     end
 	self._weaponItem:setTexture(weaponTexture)
 	self._armourItem:setTexture(armourTexture)
+    self._helmetItem:setTexture(helmetTexture)
 end
 
 function ChooseRoleScene:switchTextWhenRotate()
