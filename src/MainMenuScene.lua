@@ -14,6 +14,7 @@ function MainMenuScene:ctor()
     self.size = cc.Director:getInstance():getVisibleSize()
     self._isBloodLabelShowing = false
     math.randomseed(os.time())
+    ccexp.AudioEngine:stopAll()
     AUDIO_ID.MAINMENUBGM = ccexp.AudioEngine:play2d(BGM_RES.MAINMENUBGM, true,1)
 end
 
