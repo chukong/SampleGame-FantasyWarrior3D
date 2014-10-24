@@ -10,9 +10,9 @@ Knight = class("Knight", function()
 end)
 
 function Knight:ctor()
-    self._useWeaponId = 0
-    self._useArmourId = 0
-    self._useHelmetId = 0
+    self._useWeaponId = ReSkin.knight.weapon
+    self._useArmourId = ReSkin.knight.armour
+    self._useHelmetId = ReSkin.knight.helmet
     copyTable(ActorCommonValues, self)
     copyTable(KnightValues,self)
 

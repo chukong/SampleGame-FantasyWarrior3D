@@ -10,9 +10,9 @@ Archer = class("Archer", function()
 end)
 
 function Archer:ctor()
-    self._useWeaponId = 0
-    self._useArmourId = 0
-    self._useHelmetId = 0
+    self._useWeaponId = ReSkin.archer.weapon
+    self._useArmourId = ReSkin.archer.armour
+    self._useHelmetId = ReSkin.archer.helmet
     
     copyTable(ActorCommonValues, self)
     copyTable(ArcherValues,self)

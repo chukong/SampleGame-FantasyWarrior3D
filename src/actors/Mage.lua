@@ -10,9 +10,9 @@ Mage = class("Mage", function()
 end)
 
 function Mage:ctor()
-    self._useWeaponId = 1
-    self._useArmourId = 1
-    self._useHelmetId = 1
+    self._useWeaponId = ReSkin.mage.weapon
+    self._useArmourId = ReSkin.mage.armour
+    self._useHelmetId = ReSkin.mage.helmet
     if uiLayer~=nil then
         self._bloodBar = uiLayer.MageBlood
         self._bloodBarClone = uiLayer.MageBloodClone
