@@ -259,22 +259,22 @@ function ChooseRoleScene:initTouchDispatcher()
 end
 
 function ChooseRoleScene:rotate3Heroes(isRight)
-    local rotatetime = 0.3
+    local rotatetime = 0.6
     if isRight then
         local middle = self.layer:getChildByTag(sortorder[2])
         middle:runAction(cc.Sequence:create(
             cc.CallFunc:create(function() isMoving = true end), 
             cc.Spawn:create(
-                cc.MoveTo:create(rotatetime,pos[3])
+                cc.EaseCircleActionInOut:create(cc.MoveTo:create(rotatetime,pos[3]))
             ),
             cc.CallFunc:create(function() 
                 isMoving = false
                 self:playAudioWhenRotate()
             end)))
         local left = self.layer:getChildByTag(sortorder[1])
-        left:runAction(cc.MoveTo:create(rotatetime,pos[2]))
+        left:runAction(cc.EaseCircleActionInOut:create(cc.MoveTo:create(rotatetime,pos[2])))
         local right = self.layer:getChildByTag(sortorder[3])
-        right:runAction(cc.MoveTo:create(rotatetime,pos[1]))
+        right:runAction(cc.EaseCircleActionInOut:create(cc.MoveTo:create(rotatetime,pos[1])))
         local t = sortorder[3]
         sortorder[3]=sortorder[2]
         sortorder[2]=sortorder[1]
@@ -286,16 +286,16 @@ function ChooseRoleScene:rotate3Heroes(isRight)
                 isMoving = true
             end), 
             cc.Spawn:create(
-                cc.MoveTo:create(rotatetime,pos[1])
+                cc.EaseCircleActionInOut:create(cc.MoveTo:create(rotatetime,pos[1]))
             ),
             cc.CallFunc:create(function()
                 isMoving = false 
                 self:playAudioWhenRotate()
             end)))
         local left = self.layer:getChildByTag(sortorder[1])
-        left:runAction(cc.MoveTo:create(rotatetime,pos[3]))
+        left:runAction(cc.EaseCircleActionInOut:create(cc.MoveTo:create(rotatetime,pos[3])))
         local right = self.layer:getChildByTag(sortorder[3])
-        right:runAction(cc.MoveTo:create(rotatetime,pos[2]))
+        right:runAction(cc.EaseCircleActionInOut:create(cc.MoveTo:create(rotatetime,pos[2])))
         local t = sortorder[1]
         sortorder[1]=sortorder[2]
         sortorder[2]=sortorder[3]
