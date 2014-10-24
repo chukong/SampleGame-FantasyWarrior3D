@@ -4,6 +4,7 @@ require "Helper"
 require "Knight"
 require "Slime"
 require "Archer"
+require "Mage"
 
 --declare a class extends scene
 local ActorTestScene = class("ActorTestScene",function()
@@ -25,9 +26,10 @@ function ActorTestScene.create()
     --add layer
 
 
-    local act = Slime:create()
+    local act = Mage:create()
     
     act:setAIEnabled(false)
+    act:setScale(2)
     
     scene.lay:addChild(act)
     scene:enableTouch()
@@ -43,21 +45,21 @@ function ActorTestScene.create()
     local bsc = 17
 
 
-    act._sprite3d:runAction(cc.RepeatForever:create(
-        cc.Spawn:create(
-            cc.Sequence:create(
-                cc.DelayTime:create(dur/8),
-                cc.JumpBy3D:create(dur*7/8, cc.V3(0,0,0),30,1)
-            ),
-            cc.Sequence:create(
-                cc.EaseSineOut:create(cc.ScaleTo:create(dur/8, bsc*1.4, bsc*1.4, bsc*0.75)),
-                cc.EaseSineOut:create(cc.ScaleTo:create(dur/8, bsc*0.85, bsc*0.85, bsc*1.3)),
-                cc.EaseSineOut:create(cc.ScaleTo:create(dur/8, bsc*1.2, bsc*1.2, bsc*0.9)),
-                cc.EaseSineOut:create(cc.ScaleTo:create(dur/8, bsc*0.95, bsc*0.95, bsc*1.1)),
-                cc.EaseSineOut:create(cc.ScaleTo:create(dur*4/8, bsc, bsc, bsc))
-            )
-        )
-    ))
+--    act._sprite3d:runAction(cc.RepeatForever:create(
+--        cc.Spawn:create(
+--            cc.Sequence:create(
+--                cc.DelayTime:create(dur/8),
+--                cc.JumpBy3D:create(dur*7/8, cc.V3(0,0,0),30,1)
+--            ),
+--            cc.Sequence:create(
+--                cc.EaseSineOut:create(cc.ScaleTo:create(dur/8, bsc*1.4, bsc*1.4, bsc*0.75)),
+--                cc.EaseSineOut:create(cc.ScaleTo:create(dur/8, bsc*0.85, bsc*0.85, bsc*1.3)),
+--                cc.EaseSineOut:create(cc.ScaleTo:create(dur/8, bsc*1.2, bsc*1.2, bsc*0.9)),
+--                cc.EaseSineOut:create(cc.ScaleTo:create(dur/8, bsc*0.95, bsc*0.95, bsc*1.1)),
+--                cc.EaseSineOut:create(cc.ScaleTo:create(dur*4/8, bsc, bsc, bsc))
+--            )
+--        )
+--    ))
     
   
    

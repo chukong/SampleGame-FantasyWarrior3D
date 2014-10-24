@@ -19,7 +19,7 @@ function solveAttacks(dt)
                     local angle = radNormalize(cc.pToAngleSelf(cc.pSub(mpos,apos)))
                     local afacing = radNormalize(attack.facing)
                     if attack.mask == EnumRaceType.MAGE then
-                        print("attack is ", angle, afacing)
+                        --print("attack is ", angle, afacing)
                     end
                     
                     if(afacing + attack.angle/2)>angle and angle > (afacing- attack.angle/2) then

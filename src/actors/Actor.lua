@@ -1,6 +1,5 @@
 require "Helper"
 require "AttackCommand"
-
 --type
 
 
@@ -15,8 +14,25 @@ function Actor:ctor()
     copyTable(ActorCommonValues, self)
     
     --dropblood
-    self._dropBlood = require "HPCounter":create()
-    self:addChild(self._dropBlood)
+    self._hpCounter = require "HPCounter":create()
+    self:addChild(self._hpCounter)
+    self._effectNode = cc.Node:create()
+    self._monsterHeight = 70
+    self._heroHeight = 150
+    if uiLayer~=nil then
+        currentLayer:addChild(self._effectNode)
+    end
+end
+
+function Actor:addEffect(effect)
+local yOffset = 100
+    if self._racetype ~= EnumRaceType.MONSTER then
+        effect:setPosition3D({x=self:getPositionX(),y=self:getPositionY()+yOffset,z=self:getPositionZ()+self._heroHeight})
+    else
+        effect:setPosition3D({x=self:getPositionX(),y=self:getPositionY()+yOffset,z=self:getPositionZ()+self._monsterHeight})
+    end
+    --effect:setGlobalZOrder(-FXZorder)
+    currentLayer:addChild(effect)
 end
 
 function Actor.create()
@@ -127,12 +143,14 @@ function Actor:hurt(collider)
             self:dyingMode(getPosTable(collider),collider.knock)        
         end
         
-        local blood = self._dropBlood:showBloodLossNum(damage,self._racetype, critical)
+        --three param judge if crit
+        local blood = self._hpCounter:showBloodLossNum(damage,self,true)
         if self._racetype == EnumRaceType.MONSTER then
-            blood:setPositionZ(70)
+            blood:setPositionZ(self._monsterHeight)
         else
-            blood:setPositionZ(150)
+            blood:setPositionZ(self._heroHeight)
         end
+        blood:setGlobalZOrder(100)
         self:addChild(blood)
 
         local loseBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
@@ -384,8 +402,9 @@ function Actor:movementUpdate(dt)
         --left
             self._curFacing = self._curFacing + turnby
         end
-        if self._name == "Knight" then
-        print(RADIANS_TO_DEGREES(angleDt), "angleDt", RADIANS_TO_DEGREES(turnby))end
+--        if self._name == "Knight" then
+--        --print(RADIANS_TO_DEGREES(angleDt), "angleDt", RADIANS_TO_DEGREES(turnby))
+--        end
         
 --        self._curFacing = self._curFacing + turnby
 --        if self._name == "Knight" then
