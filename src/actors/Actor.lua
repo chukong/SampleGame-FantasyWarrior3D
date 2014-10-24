@@ -179,9 +179,15 @@ function Actor:knockMode(knockSource, knockAmount)
         self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
     end
 end
+
+function Actor:playDyingEffects()
+   -- override
+end
+
 function Actor:dyingMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.DYING)
     self:playAnimation("dead")
+    self:playDyingEffects()
     uiLayer:heroDead(self)    
     
     if knockAmount then

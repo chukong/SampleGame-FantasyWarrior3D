@@ -341,7 +341,7 @@ PigletValues = {
         maxRange = 120,
         angle    = DEGREES_TO_RADIANS(50),
         knock    = 0,
-        damage   = 150,
+        damage   = 800,
         mask     = EnumRaceType.MONSTER,
         duration = 0,
         speed    = 0,
@@ -427,7 +427,8 @@ WarriorProperty =
     kickit = "audios/effects/knight/kickit.mp3",
     normalAttackShout = "audios/effects/knight/normalAttackShout.mp3",
     specialAttackShout = "audios/effects/knight/specialAttackShout.mp3",
-    wounded = "audios/effects/knight/wounded.mp3"
+    wounded = "audios/effects/knight/wounded.mp3",
+    dead = "audios/effects/knight/dead.mp3"
 }
 
 --Archer property
@@ -447,12 +448,15 @@ MageProperty =
     defense = 100,
     speed = 50,
     special_attack_chance = 0.33,
-    normalAttack = "audios/effects/mage/yeaha.mp3",
     alright = "audios/effects/mage/alright.mp3",
     ice_normal = "audios/effects/mage/ice_1.mp3",
     ice_special = "audios/effects/mage/ice_2.mp3",
     ice_normalAttackHit = "audios/effects/mage/ice_3.mp3",
-    ice_specialAttackHit = "audios/effects/mage/ice_4.mp3"
+    ice_specialAttackHit = "audios/effects/mage/ice_4.mp3",
+    specialAttackShout = "audios/effects/mage/specialAttack.mp3",
+    normalAttackShout = "audios/effects/mage/normalAttack.mp3",
+    wounded = "audios/effects/mage/hurt.mp3",
+    dead = "audios/effects/mage/dead.mp3"
 }
 
 ReSkin = 
