@@ -381,7 +381,11 @@ RatValues = {
     }, 
 }
 
-
+--Some common audios
+CommonAudios =
+{
+    hit = "audios/effects/hit20.mp3"
+}
 
 --Monster Slime
 MonsterSlimeValues =

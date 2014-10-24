@@ -70,6 +70,10 @@ function BasicCollider:onTimeOut()
     self:removeFromParent()
 end
 
+function BasicCollider:playHitAudio()
+    ccexp.AudioEngine:play2d(CommonAudios.hit, false,1)
+end
+
 function BasicCollider:hurtEffect(target)
     
     local hurtAction = cc.Animate:create(animationCathe:getAnimation("hurtAnimation"))
@@ -83,6 +87,7 @@ end
 function BasicCollider:onCollide(target)
     
     self:hurtEffect(target)
+    self:playHitAudio()    
     target:hurt(self)
 end
 
@@ -195,7 +200,14 @@ function MageNormalAttack:onTimeOut()
     ice:runAction(cc.FadeOut:create(1))
 end
 
+function MageNormalAttack:playHitAudio()
+
+end
+
 function MageNormalAttack:onCollide(target)
+
+    self:hurtEffect(target)
+    self:playHitAudio()    
     target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
@@ -305,9 +317,14 @@ function MageIceSpikes:onTimeOut()
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
 end
 
+function MageIceSpikes:playHitAudio()
+
+end
+
 function MageIceSpikes:onCollide(target)
     if self.curDOTTime > self.DOTTimer then
         self:hurtEffect(target)
+        self:playHitAudio()    
         target:hurt(self)
         self.DOTApplied = true
     end
@@ -343,6 +360,7 @@ end
 
 function ArcherNormalAttack:onCollide(target)
     self:hurtEffect(target)
+    self:playHitAudio()    
     target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
@@ -375,8 +393,13 @@ function DragonAttack:onTimeOut()
     self:runAction(cc.RemoveSelf:create())
 end
 
+function DragonAttack:playHitAudio()
+
+end
+
 function DragonAttack:onCollide(target)
     self:hurtEffect(target)
+    self:playHitAudio()    
     target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
