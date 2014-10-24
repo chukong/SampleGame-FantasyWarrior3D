@@ -458,30 +458,33 @@ function ChooseRoleScene:switchTextWhenRotate()
     
     --label
     local ttfconfig = {outlineSize=0,fontSize=15,fontFilePath="chooseRole/actor_param.ttf"}
-    local text = "LEVEL".."\n".."TT".."\n".."HP".."\n".."DEF".."\n".."AGI".."\n".."CRT".."\n".."S.ATT"
+    local text = "LEVEL".."\n".."ATT".."\n".."HP".."\n".."DEF".."\n".."AGI".."\n".."CRT".."\n".."S.ATT"
     local attr = nil
     
     --set actor and label
     if type == EnumRaceType.KNIGHT then --warriors
         actor = cc.Sprite:create("chooseRole/knight.png")
         point = cc.p(size.width*0.395,size.height*0.9)
-        attr = "1234567890".."\n".."100".."\n".."100".."\n".."100".."\n".."100".."\n".."100".."\n".."100"
+        attr = "1".."\n"..KnightValues._normalAttack.damage.."\n"..KnightValues._hp.."\n"..KnightValues._defense.."\n"..(KnightValues._AIFrequency*100).."\n"..KnightValues._specialAttack.damage.."\n"..KnightValues._specialAttack.damage
     elseif type == EnumRaceType.ARCHER then --archer
         actor = cc.Sprite:create("chooseRole/archer.png")
         point = cc.p(size.width*0.4,size.height*0.905)
-        attr = "1234567890".."\n".."100".."\n".."200".."\n".."100".."\n".."200".."\n".."100".."\n".."100"
+        attr = "1".."\n"..ArcherValues._normalAttack.damage.."\n"..ArcherValues._hp.."\n"..ArcherValues._defense.."\n"..(ArcherValues._AIFrequency*100).."\n"..ArcherValues._specialAttack.damage.."\n"..ArcherValues._specialAttack.damage
     elseif type == EnumRaceType.MAGE then --sorceress
         actor = cc.Sprite:create("chooseRole/mage.png")
         point = cc.p(size.width*0.38,size.height*0.9)
-        attr = "1234567890".."\n".."300".."\n".."400".."\n".."100".."\n".."300".."\n".."100".."\n".."100"
+        attr = "1".."\n"..MageValues._normalAttack.damage.."\n"..MageValues._hp.."\n"..MageValues._defense.."\n"..(MageValues._AIFrequency*100).."\n"..MageValues._specialAttack.damage.."\n"..MageValues._specialAttack.damage
     end
     
     --add to bag
     actor:setPosition(point)
     local text_label = cc.Label:createWithTTF(ttfconfig,text,cc.TEXT_ALIGNMENT_RIGHT,400)
     text_label:setPosition(cc.p(size.width*0.4,size.height*0.68))
+    text_label:enableShadow(cc.c4b(92,50,31,255),cc.size(1,2),0)
+    
     local attr_label = cc.Label:createWithTTF(ttfconfig,attr,cc.TEXT_ALIGNMENT_CENTER,400)
     attr_label:setPosition(cc.p(size.width*0.7,size.height*0.68))
+    attr_label:enableShadow(cc.c4b(92,50,31,255),cc.size(1,2),0)
     bag:addChild(actor,1,101)
     bag:addChild(text_label,1)
     bag:addChild(attr_label,1,102)
