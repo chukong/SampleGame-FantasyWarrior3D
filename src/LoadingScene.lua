@@ -25,9 +25,9 @@ function LoadingScene:init()
     
     local this = self
     --loading texture
-    for i = 1,100 do
-        cc.TextureCache:getInstance():addImageAsync("background.jpg",function ()this:loadingImage_callback()end)
-    end
+--    for i = 1,100 do
+--        cc.TextureCache:getInstance():addImageAsync("background.jpg",function ()this:loadingImage_callback()end)
+--    end
     
     --label
     local val = 100
