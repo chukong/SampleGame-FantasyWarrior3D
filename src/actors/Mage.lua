@@ -139,11 +139,9 @@ function Mage:updateArmour()
         armour:setVisible(true)
         armour = self._sprite3d:getMeshByName("fashi_shenti2")
         armour:setVisible(false)
-        self:buggyShow(false)
     else
         local armour = self._sprite3d:getMeshByName("fashi_shenti2")
         armour:setVisible(true)
-        self:buggyShow(true)
         armour = self._sprite3d:getMeshByName("fashi_shenti01")
         armour:setVisible(false)
     end
@@ -174,11 +172,6 @@ function Mage:switchArmour()
         self._useArmourId = 0;
     end
     self:updateArmour()
-end
-
-function Mage:buggyShow(isShow)
-    local children = self._sprite3d:getMesh()
-    children[7]:setVisible(isShow)
 end
 
 -- get weapon id

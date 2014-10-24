@@ -30,17 +30,17 @@ function HPCounter:showBloodLossNum(dmage,racetype)
 
         local targetScale = 0.6
         if num > 1000 then 
-            blood:setColor(cc.c3b(247,148,29))
+            blood:setColor(cc.c3b(254,58,19))
         elseif num > 300 then
             targetScale = 0.45
             blood:setColor(cc.c3b(255,247,153))
         else
             targetScale = 0.55
-            blood:setColor(cc.c3b(255,251,240))
+            blood:setColor(cc.c3b(189,0,0))
         end
         
         if racetype ~= EnumRaceType.MONSTER then
-            blood:setColor(cc.c3b(255,0,0)) 
+            blood:setColor(cc.c3b(0,180,255))
         end
         
         local sequence = cc.Sequence:create(cc.EaseElasticOut:create(cc.ScaleTo:create(0.25,targetScale),0.4),
@@ -66,10 +66,8 @@ function HPCounter:showBloodLossNum(dmage,racetype)
     else
         self._blood:stopAllActions()
         self._blood:removeFromParent()
-        
         self._num = self._num+dmage
     end
-    
     
     return getBlood()
 end
