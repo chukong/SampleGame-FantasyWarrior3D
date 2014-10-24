@@ -23,7 +23,7 @@ function BattlefieldUI:ctor()
     self:bloodbarInit()
     self:touchButtonInit()
     
-    ccexp.AudioEngine:stop(AUDIO_ID.CHOOSEROLESCENEBGM)
+    ccexp.AudioEngine:stopAll()
     AUDIO_ID.BATTLEFIELDBGM = ccexp.AudioEngine:play2d(BGM_RES.BATTLEFIELDBGM, true,0.6)
 end
 

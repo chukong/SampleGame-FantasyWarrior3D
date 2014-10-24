@@ -3,16 +3,16 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/archer/hunte_ani_C.c3b"
+local file = "model/archer/hunte_ani_cc02.c3b"
 
 Archer = class("Archer", function()
     return require "Actor".create()
 end)
 
 function Archer:ctor()
-    self._useWeaponId = 0
-    self._useArmourId = 0
-    self._useHelmetId = 0
+    self._useWeaponId = ReSkin.archer.weapon
+    self._useArmourId = ReSkin.archer.armour
+    self._useHelmetId = ReSkin.archer.helmet
     
     copyTable(ActorCommonValues, self)
     copyTable(ArcherValues,self)
@@ -25,7 +25,6 @@ function Archer:ctor()
     
     self:init3D()
     self:initActions()
-    self:setDefaultEqt()
 end
 
 function Archer.create()
@@ -105,6 +104,7 @@ function Archer:init3D()
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
+    self:setDefaultEqt()
 end
 
 
