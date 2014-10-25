@@ -102,10 +102,12 @@ end
 
 function GameMaster:addSlime()
     for var=1, monsterCount.slime do
-    	local slime = Slime:create()
-    	slime:retain()
-    	List.pushlast(SlimePool,slime)
-    end   
+        local slime = Slime:create()
+        currentLayer:addChild(slime)
+        slime:setVisible(false)
+        slime:setAIEnabled(false)
+        List.pushlast(SlimePool,slime)
+    end 
 end
 
 function GameMaster:addPiglet()
@@ -179,12 +181,27 @@ function GameMaster:showPiglet()
 end
 
 function GameMaster:showSlime()
-	if List.getSize(SlimePool) ~= 0 then
+    if List.getSize(SlimePool) ~= 0 then
         local slime = List.popfirst(SlimePool)
-        slime:setPosition({x=800,y=100})
-        currentLayer:addChild(slime)
+        slime:reset()
+        local appearPos = getFocusPointOfHeros()
+        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+        local randomvar = math.random()
+        cclog("the randomvar is %f",randomvar)
+        if randomvar < 0.4 then appearPos.x = appearPos.x - 1200
+        else appearPos.x = appearPos.x + 1200 end
+        if appearPos.x < G.activearea.left then 
+            appearPos.x = appearPos.x + 2400 
+        end
+        if appearPos.x > G.activearea.right then 
+            appearPos.x = appearPos.x - 2400 
+        end
+        appearPos.y = appearPos.y -30 + randomvar*60
+        slime:setPosition(appearPos)
+        slime:setVisible(true)
+        slime:setAIEnabled(true)
         List.pushlast(MonsterManager, slime)
-        kill_count = kill_count + 1
+        show_count = show_count + 1
     end
 end
 
