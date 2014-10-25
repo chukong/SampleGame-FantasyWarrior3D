@@ -35,13 +35,16 @@ local function main()
 
     local widthRate = frameSize.width/winSize.width
     local heightRate = frameSize.height/winSize.height
+    resolutionRate = nil
 
     if widthRate > heightRate then
         pEGLView:setDesignResolutionSize(winSize.width,
             winSize.height*heightRate/widthRate, 1)
+            resolutionRate = heightRate/widthRate
     else
         pEGLView:setDesignResolutionSize(winSize.width*widthRate/heightRate, winSize.height,
             1)
+            resolutionRate = widthRate/heightRate
     end
     
     cc.Director:getInstance():setDisplayStats(true)

@@ -119,19 +119,19 @@ local function sendDropBlood(heroActor)
     end
 end
 
-local function specialPerspective(position)
+local function specialPerspective(param)
     if specialCamera.valid == true then return end
     
+    specialCamera.position = param.pos
     specialCamera.valid = true
-    specialCamera.position = position
-    cc.Director:getInstance():getScheduler():setTimeScale(0.1)
-
+    
     local function restoreTimeScale()
         specialCamera.valid = false
         cc.Director:getInstance():getScheduler():setTimeScale(1.0)
-    end
-    delayExecute(currentLayer, restoreTimeScale, 0.5)      
-      
+    end    
+    delayExecute(currentLayer, restoreTimeScale, param.speed)
+
+    cc.Director:getInstance():getScheduler():setTimeScale(param.speed)
 end
 
 function BattleScene:enableTouch()

@@ -88,11 +88,11 @@ function Knight:playDyingEffects()
 end
 
 function Knight:hurtSoundEffects()
-    ccexp.AudioEngine:play2d(WarriorProperty.wounded, false,1)
+    ccexp.AudioEngine:play2d(WarriorProperty.wounded, false,0.7)
 end
 
 function Knight:normalAttack()
-    ccexp.AudioEngine:play2d(WarriorProperty.normalAttackShout, false,0.7)
+    ccexp.AudioEngine:play2d(WarriorProperty.normalAttackShout, false,0.6)
     KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
     self._sprite:runAction(self._action.attackEffect:clone()) 
 
@@ -160,7 +160,7 @@ function Knight:init3D()
     self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setScale(25)
-    self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
+    self._sprite3d:addEffect(cc.V3(0,0,0),CelLine, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)

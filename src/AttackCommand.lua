@@ -102,16 +102,9 @@ function BasicCollider:onUpdate()
 end
 
 function BasicCollider:initData(pos, facing, attackInfo)
-    self.minRange = attackInfo.minRange or self.minRange
-    self.maxRange = attackInfo.maxRange or self.maxRange
-    self.angle = attackInfo.angle or self.angle
-    self.knock = attackInfo.knock or self.knock
-    self.mask = attackInfo.mask or self.mask
+    copyTable(attackInfo, self)
+    
     self.facing = facing or self.facing
-    self.damage = attackInfo.damage or self.damage
-    self.duration = attackInfo.duration or self.duration
-    self.speed = attackInfo.speed or self.speed
-    self.criticalChance = attackInfo.criticalChance
     self:setPosition(pos)
     List.pushlast(AttackManager, self)
     currentLayer:addChild(self, -10)
@@ -239,7 +232,7 @@ MageIceSpikes = class("MageIceSpikes", function()
 end)
 
 function MageIceSpikes:playHitAudio()
-    ccexp.AudioEngine:play2d(MageProperty.ice_specialAttackHit, false,1)
+    ccexp.AudioEngine:play2d(MageProperty.ice_specialAttackHit, false,0.7)
 end
 
 function MageIceSpikes.create(pos, facing, attackInfo)

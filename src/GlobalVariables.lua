@@ -15,6 +15,7 @@ hurtAnimation:setDelayPerUnit(0.1)
 animationCathe:addAnimation(hurtAnimation,"hurtAnimation")
 
 FXZorder = 1999
+CelLine = 0.009
 
 --G values
 G =
@@ -23,7 +24,6 @@ G =
     bloodPercentDropSpeed = 2,
     activearea = {left = -2800, right = 500, bottom = 100, top = 700},
 }
-FXZorder = 1999
 
 
 --Audios
@@ -235,7 +235,7 @@ ArcherValues = {
         maxRange = 30,
         angle    = DEGREES_TO_RADIANS(360),
         knock    = 100,
-        damage   = 200,
+        damage   = 220,
         mask     = EnumRaceType.HERO,
         duration = 2,
         speed    = 900,
@@ -246,7 +246,7 @@ ArcherValues = {
         maxRange = 75,
         angle    = DEGREES_TO_RADIANS(360),
         knock    = 100,
-        damage   = 150,
+        damage   = 220,
         mask     = EnumRaceType.HERO,
         duration = 2,
         speed    = 850,
