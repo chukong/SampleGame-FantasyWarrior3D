@@ -82,6 +82,7 @@ end
 
 function LoadingScene:CachedTextureRes()
     cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
+    cc.SpriteFrameCache:getInstance():addSpriteFrames("chooseRole/chooserole.plist")
 end
 
 return LoadingScene
