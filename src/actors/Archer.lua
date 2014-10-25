@@ -81,16 +81,13 @@ function Archer:normalAttack()
 end
 
 function Archer:specialAttack()
-    self._specialAttackChance = ArcherValues._specialAttackChance
-    --archer will create 3 attack circle on the ground
-    --get 3 positions
+    self._specialAttackChance = 0
     ccexp.AudioEngine:play2d(Archerproperty.specialAttackShout, false,1)
     AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     
     local attack = self._specialAttack
-    attack.knock = 10
-    attack.angle = 360
+    attack.knock = 80
     
     local pos1 = getPosTable(self)
     local pos2 = getPosTable(self)

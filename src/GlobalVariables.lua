@@ -189,7 +189,7 @@ MageValues = {
     _attackFrequency = 2.67,
     _recoverTime    = 0.8,
     _AIFrequency    = 1.33,
-    _attackRange    = 666,
+    _attackRange    = 400,
     _specialAttackChance = 0,
 
     _normalAttack   = {
@@ -212,7 +212,10 @@ MageValues = {
         mask     = EnumRaceType.HERO,
         duration = 4.5,
         speed    = 0,
-        criticalChance = 0.05
+        criticalChance = 0.05,
+        DOTTimer = 0.75, --it will be able to hurt every 0.5 seconds
+        curDOTTime = 0.75,
+        DOTApplied = false
     }, 
 }
 ArcherValues = {
@@ -228,7 +231,7 @@ ArcherValues = {
     _attackFrequency = 2.5,
     _recoverTime    = 0.4,
     _AIFrequency    = 1.3,
-    _attackRange    = 800,
+    _attackRange    = 650,
     _specialAttackChance = 0,
     _turnSpeed      = DEGREES_TO_RADIANS(360), --actor turning speed in radians/seconds
 
@@ -239,7 +242,7 @@ ArcherValues = {
         knock    = 100,
         damage   = 200,
         mask     = EnumRaceType.HERO,
-        duration = 2,
+        duration = 1.3,
         speed    = 900,
         criticalChance = 0.33
     }, 
@@ -250,9 +253,12 @@ ArcherValues = {
         knock    = 100,
         damage   = 200,
         mask     = EnumRaceType.HERO,
-        duration = 2,
+        duration = 1.5,
         speed    = 850,
-        criticalChance = 0.33
+        criticalChance = 0.33,
+        DOTTimer = 0.3,
+        curDOTTime = 0.3,
+        DOTApplied = false
     }, 
 }
 DragonValues = {

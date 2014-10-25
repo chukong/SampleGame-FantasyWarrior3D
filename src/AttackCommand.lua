@@ -244,9 +244,7 @@ function MageIceSpikes.create(pos, facing, attackInfo)
     ret.sp:setPosition3D(cc.V3(0,0,1))
     ret.sp:setScale(ret.maxRange/12)
     ret:addChild(ret.sp)
-    ret.DOTTimer = 0.5 --it will be able to hurt every 0.5 seconds
-    ret.curDOTTime = 0.5
-    ret.DOTApplied = false
+
     ---========
     --create 3 spikes
     local x = cc.Node:create()
@@ -364,7 +362,7 @@ end
 function ArcherNormalAttack:onCollide(target)
     self:hurtEffect(target)
     self:playHitAudio()    
-    target:hurt(self)
+    target:hurt(self, true)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
 end
@@ -385,9 +383,6 @@ function ArcherSpecialAttack.create(pos,facing,attackInfo)
     ret.sp = Archer:createArrow()
     ret.sp:setRotation(RADIANS_TO_DEGREES(-facing)-90)
     ret:addChild(ret.sp)
-    ret.DOTTimer = 0.2 --it will be able to hurt every 0.5 seconds
-    ret.curDOTTime = 0.2
-    ret.DOTApplied = false
     
     return ret
 end
@@ -400,7 +395,7 @@ function ArcherSpecialAttack:onCollide(target)
     if self.curDOTTime >= self.DOTTimer then
         self:hurtEffect(target)
         self:playHitAudio()    
-        target:hurt(self)
+        target:hurt(self, true)
         self.DOTApplied = true
     end
 end
