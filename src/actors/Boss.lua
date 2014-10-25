@@ -7,7 +7,7 @@ end)
 
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
-local filename = "model/boss/yaonv_Ani_all_v014.c3b"
+local filename = "model/boss/boss.c3b"
 
 function Boss:ctor()
     self._useWeaponId = 0

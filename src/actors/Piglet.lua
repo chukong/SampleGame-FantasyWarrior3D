@@ -3,7 +3,7 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/piglet/zhu_ani_v05.c3b"
+local file = "model/piglet/piglet.c3b"
 
 Piglet = class("Piglet", function()
     return require "Actor".create()

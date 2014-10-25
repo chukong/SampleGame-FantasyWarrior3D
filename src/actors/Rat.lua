@@ -3,7 +3,7 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/rat/laoshu_ani_v03.c3b"
+local file = "model/rat/rat.c3b"
 
 Rat = class("Rat", function()
     return require "Actor".create()
@@ -109,11 +109,6 @@ function Rat:init3D()
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
-
-    local mesh = self._sprite3d:getMesh()
-    for k,v in pairs(mesh) do
-        print(v:getName())
-    end
 end
 
 -- init Rat animations=============================
