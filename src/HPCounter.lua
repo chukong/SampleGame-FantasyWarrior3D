@@ -62,7 +62,7 @@ function HPCounter:showBloodLossNum(dmage,racetype,atack)
         end
         
         if atack then
-            local critleAttack = cc.Sprite:create("battlefieldUI/hpcounter.png")
+            local critleAttack = cc.Sprite:createWithSpriteFrameName("hpcounter.png")
             tm = 1
             critleAttack:runAction(getAction())
             critleAttack:setRotation3D({x=90,y=0,z=0})
