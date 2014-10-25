@@ -3,7 +3,7 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/mage/fashi_all_ani_cc.c3b"
+local file = "model/mage/mage.c3b"
 
 Mage = class("Mage", function()
     return require "Actor".create()

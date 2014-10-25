@@ -29,10 +29,10 @@ function ActorTestScene.create()
     --add layer
 
 
-    local act = Boss:create()
+    local act = Slime:create()
     
 --    act:setAIEnabled(false)
-    act:setScale(1)
+    act:setScale(2)
     
     scene.lay:addChild(act)
     scene:enableTouch()
