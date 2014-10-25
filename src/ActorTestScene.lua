@@ -32,7 +32,7 @@ function ActorTestScene.create()
     local act = Boss:create()
     
 --    act:setAIEnabled(false)
-    act:setScale(1)
+    act:setScale(2)
     
     scene.lay:addChild(act)
     scene:enableTouch()
