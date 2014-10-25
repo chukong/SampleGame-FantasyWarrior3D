@@ -5,6 +5,8 @@ Monster Actors Values：
 
 ---hurtEffect
 cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
+cc.SpriteFrameCache:getInstance():addSpriteFrames("battlefieldUI/battleFieldUI.plist")
+
 animationCathe = cc.AnimationCache:getInstance()
 local hurtAnimation = cc.Animation:create()
 for i=1,5 do
