@@ -3,7 +3,7 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/slime/slime_ani.c3b"
+local file = "model/slime/baozi_ani.c3b"
 
 Slime = class("Slime", function()
     return require "Actor".create()

@@ -29,7 +29,7 @@ function ActorTestScene.create()
     --add layer
 
 
-    local act = Boss:create()
+    local act = Slime:create()
     
 --    act:setAIEnabled(false)
     act:setScale(2)
