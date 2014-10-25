@@ -173,7 +173,7 @@ function BattlefieldUI:bloodDrop(heroActor)
     if heroActor._hp > 0 and percent>50 then
 
         progressTo = cc.ProgressTo:create(0.5,percent)
-        progressToClone = cc.ProgressTo:create(0.8,percen)
+        progressToClone = cc.ProgressTo:create(0.8,percent)
         heroActor._bloodBar:runAction(progressTo)
         heroActor._bloodBarClone:runAction(progressToClone)
         
