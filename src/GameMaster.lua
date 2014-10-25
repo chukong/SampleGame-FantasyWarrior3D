@@ -12,7 +12,7 @@ require "Archer"
 
 local gloableZOrder = 1
 local monsterCount = {dragon=3,slime=3,piglet=10,rat=3}
-local EXIST_MIN_MONSTER = 8
+local EXIST_MIN_MONSTER = 6
 kill_count = 0
 show_count = 0
 local KILL_MAX_MONSTER = 35

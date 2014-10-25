@@ -32,43 +32,6 @@ function Slime.create()
     return ret
 end
 
-function Slime:attackUpdate(dt)
-    self._attackTimer = self._attackTimer + dt
-    if self._attackTimer > self._attackFrequency then
-        self._attackTimer = self._attackTimer - self._attackFrequency
-        local function playIdle()
-            self:playAnimation("idle", true)
-            self._cooldown = false
-        end
-        --time for an attack, which attack should i do?
-        local function createCol()
-            self:normalAttack()
-        end
-        local attackAction = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(createCol),self._action.attack2:clone(),cc.CallFunc:create(playIdle))
-        self._sprite3d:stopAction(self._curAnimation3d)
-        self._sprite3d:runAction(attackAction)
-        self._curAnimation = attackAction
-        self._cooldown = true
-    end
-end
-function Slime:_findEnemy()
-    local shortest = self._searchDistance
-    local target = nil
-    local allDead = true
-    for val = HeroManager.first, HeroManager.last do
-        local temp = HeroManager[val]
-        local dis = cc.pGetDistance(self._myPos,getPosTable(temp))
-        if temp._isalive then
-            if dis < shortest then
-                shortest = dis
-                target = temp
-            end
-            allDead = false
-        end
-    end
-    return target, allDead
-end
-
 function Slime:play3DAnim()
     self._sprite3d:runAction(cc.RepeatForever:create(createAnimation(file,0,22,0.7)))
     
@@ -90,7 +53,7 @@ function Slime:init3D()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setTexture("model/slime/baozi.jpg")
     self._sprite3d:setScale(17)
-    self._sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
+    self._sprite3d:addEffect(cc.V3(0,0,0),CelLine, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)

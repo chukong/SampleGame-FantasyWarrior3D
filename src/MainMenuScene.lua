@@ -154,8 +154,8 @@ function MainMenuScene:addPointLight(layer)
     --add lightsprite
     self:getLightSprite()
     self._lightSprite:addChild(self._pointLight)
-    self._pointLight:setPositionZ(-1)
     self:addChild(self._lightSprite,10)
+    self._lightSprite:setPositionZ(-100)
 
     -- effectNormalMap
     local effectNormalMapped = cc.EffectNormalMapped:create("mainmenuscene/logo_normal.png");

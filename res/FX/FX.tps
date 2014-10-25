@@ -111,7 +111,7 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>../../../Documents/FX.plist</filename>
+        <filename>FX.plist</filename>
         <key>multiPack</key>
         <false/>
         <key>mainExtension</key>
@@ -148,9 +148,6 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>hi2.png</filename>
-            <filename>hi3.png</filename>
-            <filename>hi4.png</filename>
             <filename>hit1.png</filename>
             <filename>hit5.png</filename>
             <filename>icebolt.png</filename>
@@ -162,6 +159,20 @@
             <filename>specialLight.png</filename>
             <filename>specialAttack.jpg</filename>
             <filename>iceSpike2.png</filename>
+            <filename>hit2.png</filename>
+            <filename>hit3.png</filename>
+            <filename>hit4.png</filename>
+            <filename>fireball1.png</filename>
+            <filename>fireball2.png</filename>
+            <filename>fireball3.png</filename>
+            <filename>fireball4.png</filename>
+            <filename>fireball5.png</filename>
+            <filename>nova1.png</filename>
+            <filename>nova2.png</filename>
+            <filename>thunderball.png</filename>
+            <filename>static1.png</filename>
+            <filename>static2.png</filename>
+            <filename>static3.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

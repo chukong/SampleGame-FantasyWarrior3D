@@ -30,6 +30,17 @@ function printTab(tab)
   end
 end
 
+--radiansNormalizer
+function radNormalize(rad)
+    local pi2 = 2*math.pi
+    rad = rad % pi2
+    rad = (rad + pi2)%pi2
+    if rad > math.pi then
+        rad = rad - math.pi
+    end
+    return rad
+end
+
 -- getpostable
 function getPosTable(obj)
 	local posX,posY = obj:getPosition()

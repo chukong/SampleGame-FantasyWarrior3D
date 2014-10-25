@@ -6,17 +6,23 @@ AttackManager = List.new()
 function solveAttacks(dt)
     for val = AttackManager.last, AttackManager.first, -1 do
         local attack = AttackManager[val]
+        local apos = getPosTable(attack) 
         if attack.mask == EnumRaceType.HERO then
             --if heroes attack, then lets check monsters
             for mkey = MonsterManager.last, MonsterManager.first, -1 do
                 --check distance first
                 local monster = MonsterManager[mkey]
                 local mpos = getPosTable(monster)
-                local dist = cc.pGetDistance(getPosTable(attack), mpos)
+                local dist = cc.pGetDistance(apos, mpos)
                 if dist < (attack.maxRange + monster._radius) and dist > attack.minRange then
                     --range test passed, now angle test
-                    local angle = cc.pToAngleSelf(cc.pSub(mpos,getPosTable(attack)))
-                    if(attack.facing + attack.angle/2)>angle and angle > (attack.facing- attack.angle/2) then
+                    local angle = radNormalize(cc.pToAngleSelf(cc.pSub(mpos,apos)))
+                    local afacing = radNormalize(attack.facing)
+                    if attack.mask == EnumRaceType.MAGE then
+                        --print("attack is ", angle, afacing)
+                    end
+                    
+                    if(afacing + attack.angle/2)>angle and angle > (afacing- attack.angle/2) then
                         attack:onCollide(monster)
                     end
                 end
@@ -96,16 +102,9 @@ function BasicCollider:onUpdate()
 end
 
 function BasicCollider:initData(pos, facing, attackInfo)
-    self.minRange = attackInfo.minRange or self.minRange
-    self.maxRange = attackInfo.maxRange or self.maxRange
-    self.angle = attackInfo.angle or self.angle
-    self.knock = attackInfo.knock or self.knock
-    self.mask = attackInfo.mask or self.mask
+    copyTable(attackInfo, self)
+    
     self.facing = facing or self.facing
-    self.damage = attackInfo.damage or self.damage
-    self.duration = attackInfo.duration or self.duration
-    self.speed = attackInfo.speed or self.speed
-    self.criticalChance = attackInfo.criticalChance
     self:setPosition(pos)
     List.pushlast(AttackManager, self)
     currentLayer:addChild(self, -10)
@@ -149,13 +148,13 @@ function MageNormalAttack.create(pos,facing,attackInfo, target)
     ret:initData(pos,facing,attackInfo)
     ret._target = target
     
-    ret.sp = cc.BillBoard:create("FX/FX.png", cc.rect(208,290,45,44), 0)
+    ret.sp = cc.BillBoard:create("FX/FX.png", cc.SpriteFrameCache:getInstance():getSpriteFrame("icebolt.png"):getRect(), 0)
     --ret.sp:setCamera(camera)
     ret.sp:setPosition3D(cc.V3(0,0,50))
     ret.sp:setScale(2)
     ret:addChild(ret.sp)
     
-    local smoke = cc.ParticleSystemQuad:create("FX/iceTrail.plist")
+    local smoke = cc.ParticleSystemQuad:create(ParticleManager:getInstance():getPlistData("iceTrail"))
     local magicf = cc.SpriteFrameCache:getInstance():getSpriteFrame("puff.png")
     smoke:setTextureWithRect(magicf:getTexture(), magicf:getRect())
     smoke:setScale(2)
@@ -164,7 +163,7 @@ function MageNormalAttack.create(pos,facing,attackInfo, target)
     smoke:setGlobalZOrder(-ret:getPositionY()*2+FXZorder)
     smoke:setPositionZ(50)
     
-    local pixi = cc.ParticleSystemQuad:create("FX/pixi.plist")
+    local pixi = cc.ParticleSystemQuad:create(ParticleManager:getInstance():getPlistData("pixi"))
     local pixif = cc.SpriteFrameCache:getInstance():getSpriteFrame("particle.png")
     pixi:setTextureWithRect(pixif:getTexture(), pixif:getRect())
     pixi:setScale(2)
@@ -184,7 +183,7 @@ function MageNormalAttack:onTimeOut()
     self.sp:removeFromParent()
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
     
-    local magic = cc.ParticleSystemQuad:create("FX/magic.plist")
+    local magic = cc.ParticleSystemQuad:create(ParticleManager:getInstance():getPlistData("magic"))
     local magicf = cc.SpriteFrameCache:getInstance():getSpriteFrame("particle.png")
     magic:setTextureWithRect(magicf:getTexture(), magicf:getRect())
     magic:setScale(1.5)
@@ -193,7 +192,7 @@ function MageNormalAttack:onTimeOut()
     magic:setGlobalZOrder(-self:getPositionY()*2+FXZorder)
     magic:setPositionZ(0)
     
-    local ice = cc.BillBoard:create("FX/FX.png", cc.rect(75,327,35,25),0)
+    local ice = cc.BillBoard:create("FX/FX.png", cc.SpriteFrameCache:getInstance():getSpriteFrame("iceSpike1.png"):getRect(),0)
     ice:setScale(4)
     self:addChild(ice)
     ice:setPositionZ(50)
@@ -375,6 +374,48 @@ function ArcherNormalAttack:onUpdate(dt)
     local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
     self:setPosition(nextPos)
 end
+ArcherSpecialAttack = class("ArcherSpecialAttack", function()
+    return BasicCollider.new()
+end)
+
+function ArcherSpecialAttack.create(pos,facing,attackInfo)
+    local ret = ArcherSpecialAttack.new()
+    ret:initData(pos,facing,attackInfo)
+
+    ret.sp = Archer:createArrow()
+    ret.sp:setRotation(RADIANS_TO_DEGREES(-facing)-90)
+    ret:addChild(ret.sp)
+    ret.DOTTimer = 0.2 --it will be able to hurt every 0.5 seconds
+    ret.curDOTTime = 0.2
+    ret.DOTApplied = false
+    
+    return ret
+end
+
+function ArcherSpecialAttack:onTimeOut()
+    self:runAction(cc.RemoveSelf:create())
+end
+
+function ArcherSpecialAttack:onCollide(target)
+    if self.curDOTTime >= self.DOTTimer then
+        self:hurtEffect(target)
+        self:playHitAudio()    
+        target:hurt(self)
+        self.DOTApplied = true
+    end
+end
+
+function ArcherSpecialAttack:onUpdate(dt)
+    local selfPos = getPosTable(self)
+    local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
+    self:setPosition(nextPos)
+    self.curDOTTime = self.curDOTTime + dt
+    if self.DOTApplied then
+        self.DOTApplied = false
+        self.curDOTTime = 0
+    end
+end
+
 
 DragonAttack = class("DragonAttack", function()
     return BasicCollider.new()

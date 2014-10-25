@@ -114,33 +114,40 @@ function Actor:hurt(collider)
                     
         local damage = collider.damage
         --calculate the real damage
+        local critical = false
+        local knock = collider.knock
+        if math.random() < collider.criticalChance then
+            damage = damage*1.5
+            critical = true
+            knock = knock*2
+        end
         damage = damage + damage * math.random(-1,1) * 0.15        
         damage = damage - self._defense
         damage = math.floor(damage)
+
         if damage <= 0 then
             damage = 1
         end
         
-        --critical attact by random
-        if math.random(0,1) > collider.criticalChance then
-            damage = damage + collider.damage*2
-        end
+
 
         self._hp = self._hp - damage
         
         if self._hp > 0 then
-            if collider.knock then
-                self:knockMode(getPosTable(collider),collider.knock)
+            if collider.knock and damage ~= 1 then
+                self:knockMode(getPosTable(collider),knock)
+                self:hurtSoundEffects()
+            else
                 self:hurtSoundEffects()
             end
         else
             self._hp = 0
             self._isalive = false
-            self:dyingMode(getPosTable(collider),collider.knock)        
+            self:dyingMode(getPosTable(collider),knock)        
         end
         
         --three param judge if crit
-        local blood = self._hpCounter:showBloodLossNum(damage,self,false)
+        local blood = self._hpCounter:showBloodLossNum(damage,self,critical)
         self:addEffect(blood)
 
         local loseBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
@@ -199,15 +206,27 @@ function Actor:dyingMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.DYING)
     self:playAnimation("dead")
     self:playDyingEffects()
-    uiLayer:heroDead(self)    
+    if self._racetype == EnumRaceType.HERO then
+        uiLayer:heroDead(self)
+        List.removeObj(HeroManager,self) 
+        self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create()))
+    else
+        List.removeObj(MonsterManager,self) 
+        local function recycle()
+            self:setVisible(false)
+            kill_count = kill_count + 1
+            List.pushlast(getPoolByName(self._name),self)
+        end
+        self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(recycle)))
+    end
     
     if knockAmount then
-        local p = getPosTable(self)
+        local p = self._myPos
         local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
         local newPos = cc.pRotateByAngle(cc.pAdd({x=knockAmount,y=0}, p),p,angle)
         self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
     end
-    self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create()))
+    self._AIEnabled = false
 end
 --=======Base Update Functions
 function Actor:stateMachineUpdate(dt)
@@ -230,13 +249,19 @@ function Actor:stateMachineUpdate(dt)
         
     end
 end
-function Actor:_findEnemy()
+function Actor:_findEnemy(HeroOrMonster)
     local shortest = self._searchDistance
     local target = nil
     local allDead = true
-    for val = MonsterManager.first, MonsterManager.last do
-        local temp = MonsterManager[val]
-        local dis = cc.pGetDistance(self._myPos,getPosTable(temp))
+    local manager = nil
+    if HeroOrMonster == EnumRaceType.MONSTER then
+        manager = HeroManager
+    else
+        manager = MonsterManager
+    end
+    for val = manager.first, manager.last do
+        local temp = manager[val]
+        local dis = cc.pGetDistance(self._myPos,temp._myPos)
         if temp._isalive then
             if dis < shortest then
                 shortest = dis
@@ -253,7 +278,7 @@ function Actor:_inRange()
     elseif self._target._isalive then
         local attackDistance = self._attackRange + self._target._radius -1
         local p1 = self._myPos
-        local p2 = getPosTable(self._target)
+        local p2 = self._target._myPos
         return (cc.pGetDistance(p1,p2) < attackDistance)
     end
 end
@@ -262,12 +287,12 @@ function Actor:AI()
     if self._isalive then
         local state = self:getStateType()
         local allDead
-        self._target, allDead = self:_findEnemy()
+        self._target, allDead = self:_findEnemy(self._racetype)
         --if i can find a target
         if self._target then
             local p1 = self._myPos
-            local p2 = getPosTable(self._target)
-            self._targetFacing = cc.pToAngleSelf(cc.pSub(p2, p1))
+            local p2 = self._target._myPos
+            self._targetFacing =  cc.pToAngleSelf(cc.pSub(p2, p1))
             local isInRange = self:_inRange()
             -- if im (not attacking, or not walking) and my target is not in range
             if (not self._cooldown or state ~= EnumStateType.WALKING) and not isInRange then
@@ -354,7 +379,7 @@ function Actor:walkUpdate(dt)
     if self._target and self._target._isalive then
         local attackDistance = self._attackRange + self._target._radius -1
         local p1 = self._myPos
-        local p2 = getPosTable(self._target)
+        local p2 = self._target._myPos
         self._targetFacing = cc.pToAngleSelf(cc.pSub(p2, p1))
         --print(RADIANS_TO_DEGREES(self._targetFacing))
         if cc.pGetDistance(p1,p2) < attackDistance then
@@ -363,7 +388,7 @@ function Actor:walkUpdate(dt)
         end
     else
         --our hero doesn't have a target, lets move
-        self._target = self:_findEnemy()
+        --self._target = self:_findEnemy(self._raceType)
         local curx,cury = self:getPosition()
         if self._goRight then
             self._targetFacing = 0
@@ -376,22 +401,44 @@ function Actor:movementUpdate(dt)
     --Facing
     if self._curFacing ~= self._targetFacing then
         local angleDt = self._curFacing - self._targetFacing
-        if angleDt >= math.pi then angleDt = angleDt-2*math.pi
-        elseif angleDt <=-math.pi then angleDt = angleDt+2*math.pi end
+--            if angleDt >= math.pi then angleDt = angleDt-2*math.pi
+--            elseif angleDt <=-math.pi then angleDt = angleDt+2*math.pi end
+        angleDt = angleDt % (math.pi*2)
+        local turnleft = (angleDt - math.pi)<0
         local turnby = self._turnSpeed*dt
-        if self._curFacing > self._targetFacing then
-            if turnby > angleDt then 
-                self._curFacing = self._targetFacing
-            else
-                self._curFacing = self._curFacing - turnby
-            end
-        elseif self._curFacing < self._targetFacing then
-            if turnby < angleDt then
-                self._curFacing = self._targetFacing
-            else
-                self._curFacing = self._curFacing + turnby
-            end
+        
+        --right
+        if turnby > angleDt then
+            self._curFacing = self._targetFacing
+        elseif turnleft then
+            self._curFacing = self._curFacing - turnby
+        else
+        --left
+            self._curFacing = self._curFacing + turnby
         end
+--        if self._name == "Knight" then
+--        --print(RADIANS_TO_DEGREES(angleDt), "angleDt", RADIANS_TO_DEGREES(turnby))
+--        end
+        
+--        self._curFacing = self._curFacing + turnby
+--        if self._name == "Knight" then
+--        print(RADIANS_TO_DEGREES(angleDt), "angleDt")end
+--        if turnby > (math.pi*2) then
+--            turnby = turnby - (math.pi*2)
+--        end
+--        if self._curFacing > self._targetFacing then
+----            if turnby > angleDt then 
+----                self._curFacing = self._targetFacing
+----            else
+--                self._curFacing = self._curFacing - turnby
+--            --end
+--        elseif self._curFacing < self._targetFacing then
+----            if turnby < angleDt then
+----                self._curFacing = self._targetFacing
+----            else
+--                self._curFacing = self._curFacing + turnby
+--            --end
+--        end
         self:setRotation(-RADIANS_TO_DEGREES(self._curFacing))
     end
     --position update
@@ -404,7 +451,7 @@ function Actor:movementUpdate(dt)
     end
     if self._curSpeed > 0 then
         local p1 = self._myPos
-        local targetPosition = cc.pRotateByAngle(cc.pAdd({x=self._curSpeed*dt,y=0},p1),p1,self._targetFacing)
+        local targetPosition = cc.pRotateByAngle(cc.pAdd({x=self._curSpeed*dt,y=0},p1),p1,self._curFacing)
         self:setPosition(targetPosition)
     end
 end
