@@ -115,9 +115,11 @@ function Actor:hurt(collider)
         local damage = collider.damage
         --calculate the real damage
         local critical = false
+        local knock = collider.knock
         if math.random() < collider.criticalChance then
             damage = damage*1.5
             critical = true
+            knock = knock*2
         end
         damage = damage + damage * math.random(-1,1) * 0.15        
         damage = damage - self._defense
@@ -133,7 +135,7 @@ function Actor:hurt(collider)
         
         if self._hp > 0 then
             if collider.knock and damage ~= 1 then
-                self:knockMode(getPosTable(collider),collider.knock)
+                self:knockMode(getPosTable(collider),knock)
                 self:hurtSoundEffects()
             else
                 self:hurtSoundEffects()
@@ -141,7 +143,7 @@ function Actor:hurt(collider)
         else
             self._hp = 0
             self._isalive = false
-            self:dyingMode(getPosTable(collider),collider.knock)        
+            self:dyingMode(getPosTable(collider),knock)        
         end
         
         --three param judge if crit
@@ -204,15 +206,27 @@ function Actor:dyingMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.DYING)
     self:playAnimation("dead")
     self:playDyingEffects()
-    uiLayer:heroDead(self)    
+    if self._racetype == EnumRaceType.HERO then
+        uiLayer:heroDead(self)
+        List.removeObj(HeroManager,self) 
+        self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create()))
+    else
+        List.removeObj(MonsterManager,self) 
+        local function recycle()
+            self:setVisible(false)
+            kill_count = kill_count + 1
+            List.pushlast(getPoolByName(self._name),self)
+        end
+        self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(recycle)))
+    end
     
     if knockAmount then
-        local p = getPosTable(self)
+        local p = self._myPos
         local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
         local newPos = cc.pRotateByAngle(cc.pAdd({x=knockAmount,y=0}, p),p,angle)
         self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
     end
-    self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create()))
+    self._AIEnabled = false
 end
 --=======Base Update Functions
 function Actor:stateMachineUpdate(dt)

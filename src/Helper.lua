@@ -41,7 +41,6 @@ function radNormalize(rad)
     return rad
 end
 
-
 -- getpostable
 function getPosTable(obj)
 	local posX,posY = obj:getPosition()

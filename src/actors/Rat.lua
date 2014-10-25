@@ -38,31 +38,6 @@ function Rat.create()
     return ret
 end
 
-function Rat:dyingMode(knockSource, knockAmount)
-    self:setStateType(EnumStateType.DYING)
-    self:playAnimation("dead")
-    
-    --Twice play in order to inhance the sounds,
-    --todo:zijian.
-    -- ccexp.AudioEngine:play2d(MonsterPigletValues.dead, false,1)
-    
-    if knockAmount then
-        local p = getPosTable(self)
-        local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
-        local newPos = cc.pRotateByAngle(cc.pAdd({x=knockAmount,y=0}, p),p,angle)
-        self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
-    end
-    self._AIEnabled = false
-    List.removeObj(MonsterManager,self) 
-    local function recycle()
-        self:setVisible(false)
-        kill_count = kill_count + 1
-        --self:reset()
-        List.pushlast(RatPool,self)
-    end
-    self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(recycle)))
-end
-
 function Rat:init3D()
     self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)

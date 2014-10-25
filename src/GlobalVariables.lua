@@ -160,7 +160,7 @@ KnightValues = {
         mask     = EnumRaceType.HERO,
         duration = 0,
         speed    = 0,
-        criticalChance = 0.3
+        criticalChance = 0.15
     }, 
     _specialAttack   = {
         minRange = 0,
@@ -171,7 +171,7 @@ KnightValues = {
         mask     = EnumRaceType.HERO,
         duration = 0,
         speed    = 0,
-        criticalChance = 0.3
+        criticalChance = 0.15
     }, 
 }
 MageValues = {
@@ -199,7 +199,7 @@ MageValues = {
         mask     = EnumRaceType.HERO,
         duration = 2,
         speed    = 400,
-        criticalChance = 0.15
+        criticalChance = 0.05
     }, 
     _specialAttack   = {
         minRange = 0,
@@ -210,7 +210,7 @@ MageValues = {
         mask     = EnumRaceType.HERO,
         duration = 4.5,
         speed    = 0,
-        criticalChance = 0.15
+        criticalChance = 0.05
     }, 
 }
 ArcherValues = {
@@ -235,22 +235,22 @@ ArcherValues = {
         maxRange = 30,
         angle    = DEGREES_TO_RADIANS(360),
         knock    = 100,
-        damage   = 220,
+        damage   = 200,
         mask     = EnumRaceType.HERO,
         duration = 2,
         speed    = 900,
-        criticalChance = 0.13
+        criticalChance = 0.33
     }, 
     _specialAttack   = {
         minRange = 0,
         maxRange = 75,
         angle    = DEGREES_TO_RADIANS(360),
         knock    = 100,
-        damage   = 220,
+        damage   = 200,
         mask     = EnumRaceType.HERO,
         duration = 2,
         speed    = 850,
-        criticalChance = 0.13
+        criticalChance = 0.33
     }, 
 }
 DragonValues = {

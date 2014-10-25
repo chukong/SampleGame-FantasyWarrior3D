@@ -9,6 +9,24 @@ PigletPool = List.new()
 RatPool = List.new()
 BossPool = List.new()
 
+--getPoolByName
+function getPoolByName(name)
+    if name == "piglet" then
+        return PigletPool
+    elseif name == "Slime" then
+        return SlimePool
+    elseif name == "Rat" then
+        return RatPool
+    elseif name == "Dragon" then
+        return DragonPool
+    elseif name == "Boss" then
+        return BossPool
+    else
+        return HeroPool
+    end
+end
+
+
 HeroManager = List.new()
 MonsterManager = List.new()
 BossManager = List.new()
