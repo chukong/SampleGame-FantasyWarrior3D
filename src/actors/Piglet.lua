@@ -66,7 +66,7 @@ function Piglet:dyingMode(knockSource, knockAmount)
 end
 
 function Piglet:hurtSoundEffects()
-    ccexp.AudioEngine:play2d(MonsterPigletValues.hurt, false,0.5)
+    ccexp.AudioEngine:play2d(MonsterPigletValues.hurt, false,0.8)
 end
 
 function Piglet:normalAttackSoundEffects()
@@ -79,34 +79,6 @@ function Piglet:normalAttackSoundEffects()
         ccexp.AudioEngine:play2d(MonsterPigletValues.attack3, false,1)              
     end
 end
-
---function Piglet:attackUpdate(dt)
---    self._attackTimer = self._attackTimer + dt
---    if self._attackTimer > self._attackFrequency then
---        self._attackTimer = self._attackTimer - self._attackFrequency
---        local function playIdle()
---            self:playAnimation("idle", true)
---            self._cooldown = false
---        end
---        --time for an attack, which attack should i do?
---            local function createCol()
---                self:normalAttack()
---                local randomEffect =  math.random()                   
---                if randomEffect<=0.3 and randomEffect>=0 then
---                    ccexp.AudioEngine:play2d(MonsterPigletValues.attack1, false,1)
---                elseif randomEffect<=0.6 and randomEffect>0.3 then
---                    ccexp.AudioEngine:play2d(MonsterPigletValues.attack2, false,1)  
---                elseif randomEffect>0.6 and randomEffect<=1 then
---                    ccexp.AudioEngine:play2d(MonsterPigletValues.attack3, false,1)              
---                end
---            end
---            local attackAction = cc.Sequence:create(self._action.attack1:clone(),cc.CallFunc:create(createCol),self._action.attack2:clone(),cc.CallFunc:create(playIdle))
---            self._sprite3d:stopAction(self._curAnimation3d)
---            self._sprite3d:runAction(attackAction)
---            self._curAnimation = attackAction
---            self._cooldown = true
---    end
---end
 
 function Piglet:_findEnemy()
     local shortest = self._searchDistance

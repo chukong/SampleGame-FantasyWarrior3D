@@ -233,7 +233,7 @@ MageIceSpikes = class("MageIceSpikes", function()
 end)
 
 function MageIceSpikes:playHitAudio()
-    ccexp.AudioEngine:play2d(MageProperty.ice_specialAttackHit, false,1)
+    ccexp.AudioEngine:play2d(MageProperty.ice_specialAttackHit, false,0.7)
 end
 
 function MageIceSpikes.create(pos, facing, attackInfo)
