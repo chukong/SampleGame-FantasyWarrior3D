@@ -111,7 +111,7 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>../../../Documents/FX.plist</filename>
+        <filename>FX.plist</filename>
         <key>multiPack</key>
         <false/>
         <key>mainExtension</key>
