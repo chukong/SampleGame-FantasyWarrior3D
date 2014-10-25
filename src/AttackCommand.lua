@@ -381,6 +381,48 @@ function ArcherNormalAttack:onUpdate(dt)
     local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
     self:setPosition(nextPos)
 end
+ArcherSpecialAttack = class("ArcherSpecialAttack", function()
+    return BasicCollider.new()
+end)
+
+function ArcherSpecialAttack.create(pos,facing,attackInfo)
+    local ret = ArcherSpecialAttack.new()
+    ret:initData(pos,facing,attackInfo)
+
+    ret.sp = Archer:createArrow()
+    ret.sp:setRotation(RADIANS_TO_DEGREES(-facing)-90)
+    ret:addChild(ret.sp)
+    ret.DOTTimer = 0.2 --it will be able to hurt every 0.5 seconds
+    ret.curDOTTime = 0.2
+    ret.DOTApplied = false
+    
+    return ret
+end
+
+function ArcherSpecialAttack:onTimeOut()
+    self:runAction(cc.RemoveSelf:create())
+end
+
+function ArcherSpecialAttack:onCollide(target)
+    if self.curDOTTime >= self.DOTTimer then
+        self:hurtEffect(target)
+        self:playHitAudio()    
+        target:hurt(self)
+        self.DOTApplied = true
+    end
+end
+
+function ArcherSpecialAttack:onUpdate(dt)
+    local selfPos = getPosTable(self)
+    local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
+    self:setPosition(nextPos)
+    self.curDOTTime = self.curDOTTime + dt
+    if self.DOTApplied then
+        self.DOTApplied = false
+        self.curDOTTime = 0
+    end
+end
+
 
 DragonAttack = class("DragonAttack", function()
     return BasicCollider.new()

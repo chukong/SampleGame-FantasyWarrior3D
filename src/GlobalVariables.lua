@@ -197,9 +197,9 @@ MageValues = {
         knock    = 10,
         damage   = 280,
         mask     = EnumRaceType.HERO,
-        duration = 1.5,
+        duration = 2,
         speed    = 400,
-        criticalChance = 0.3
+        criticalChance = 0.15
     }, 
     _specialAttack   = {
         minRange = 0,
@@ -208,9 +208,9 @@ MageValues = {
         knock    = 75,
         damage   = 250,
         mask     = EnumRaceType.HERO,
-        duration = 1.5,
+        duration = 4.5,
         speed    = 0,
-        criticalChance = 0.3
+        criticalChance = 0.15
     }, 
 }
 ArcherValues = {
@@ -228,6 +228,7 @@ ArcherValues = {
     _AIFrequency    = 1.3,
     _attackRange    = 800,
     _specialAttackChance = 0,
+    _turnSpeed      = DEGREES_TO_RADIANS(360), --actor turning speed in radians/seconds
 
     _normalAttack   = {
         minRange = 0,
@@ -238,18 +239,18 @@ ArcherValues = {
         mask     = EnumRaceType.HERO,
         duration = 2,
         speed    = 900,
-        criticalChance = 0.3
+        criticalChance = 0.13
     }, 
     _specialAttack   = {
         minRange = 0,
-        maxRange = 30,
+        maxRange = 75,
         angle    = DEGREES_TO_RADIANS(360),
-        knock    = 75,
-        damage   = 200,
+        knock    = 100,
+        damage   = 150,
         mask     = EnumRaceType.HERO,
         duration = 2,
         speed    = 850,
-        criticalChance = 0.3
+        criticalChance = 0.13
     }, 
 }
 DragonValues = {
@@ -262,10 +263,10 @@ DragonValues = {
     _hp             = 600,
     _maxhp          = 600,
     _defense        = 130,
-    _attackFrequency = 4.8,
+    _attackFrequency = 5.2,
     _recoverTime    = 0.8,
     _AIFrequency    = 1.337,
-    _attackRange    = 650,
+    _attackRange    = 350,
     
     _speed          = 300,
     _turnSpeed      = DEGREES_TO_RADIANS(180),
@@ -276,12 +277,12 @@ DragonValues = {
         minRange = 0,
         maxRange = 50,
         angle    = DEGREES_TO_RADIANS(360),
-        knock    = 100,
-        damage   = 250,
+        knock    = 50,
+        damage   = 200,
         mask     = EnumRaceType.MONSTER,
-        duration = 3,
+        duration = 1,
         speed    = 350,
-        criticalChance = 0.3
+        criticalChance = 0.15
     }, 
 }
 SlimeValues = {
@@ -313,7 +314,7 @@ SlimeValues = {
         mask     = EnumRaceType.MONSTER,
         duration = 0,
         speed    = 0,
-        criticalChance = 0.3
+        criticalChance = 0.13
     }, 
 }
 PigletValues = {
@@ -345,7 +346,7 @@ PigletValues = {
         mask     = EnumRaceType.MONSTER,
         duration = 0,
         speed    = 0,
-        criticalChance = 0.3
+        criticalChance = 0.15
     }, 
 }
 RatValues = {
@@ -377,7 +378,7 @@ RatValues = {
         mask     = EnumRaceType.MONSTER,
         duration = 0,
         speed    = 0,
-        criticalChance = 0.3
+        criticalChance = 0.15
     }, 
 }
 

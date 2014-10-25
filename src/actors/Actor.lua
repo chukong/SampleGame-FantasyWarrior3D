@@ -144,7 +144,7 @@ function Actor:hurt(collider)
         end
         
         --three param judge if crit
-        local blood = self._hpCounter:showBloodLossNum(damage,self,true)
+        local blood = self._hpCounter:showBloodLossNum(damage,self,critical)
         if self._racetype == EnumRaceType.MONSTER then
             blood:setPositionZ(self._monsterHeight)
         else
