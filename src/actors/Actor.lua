@@ -132,6 +132,10 @@ function Actor:hurt(collider, dirKnockMode)
 
 
         self._hp = self._hp - damage
+        self._angry = self._angry + damage
+        if self._angry > self._angryMax then
+            self._angry = self._angryMax
+        end
         
         if self._hp > 0 then
             if collider.knock and damage ~= 1 then
@@ -150,8 +154,11 @@ function Actor:hurt(collider, dirKnockMode)
         local blood = self._hpCounter:showBloodLossNum(damage,self,critical)
         self:addEffect(blood)
 
-        local loseBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
-        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, loseBlood)
+        local bloodMinus = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_MINUS, bloodMinus)
+
+        local anaryChange = {_name = self._name, _racetype = self._racetype, _angry = self._angry, _angryMax = self._angryMax}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)        
     end
 end
 
