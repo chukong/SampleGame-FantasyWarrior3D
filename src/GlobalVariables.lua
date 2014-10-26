@@ -5,16 +5,28 @@ Monster Actors Values：
 
 ---hurtEffect
 cc.SpriteFrameCache:getInstance():addSpriteFrames("FX/FX.plist")
+RECTS = {
+    iceBolt = cc.SpriteFrameCache:getInstance():getSpriteFrame("icebolt.png"):getRect(),
+    iceSpike =cc.SpriteFrameCache:getInstance():getSpriteFrame("iceSpike1.png"):getRect(),
+    fireBall = cc.SpriteFrameCache:getInstance():getSpriteFrame("fireball1.png"):getRect(),
+}
 cc.SpriteFrameCache:getInstance():addSpriteFrames("battlefieldUI/battleFieldUI.plist")
 
-animationCathe = cc.AnimationCache:getInstance()
+animationCache = cc.AnimationCache:getInstance()
 local hurtAnimation = cc.Animation:create()
 for i=1,5 do
     name = "hit"..i..".png"
     hurtAnimation:addSpriteFrame(cc.SpriteFrameCache:getInstance():getSpriteFrame(name))
 end
 hurtAnimation:setDelayPerUnit(0.1)
-animationCathe:addAnimation(hurtAnimation,"hurtAnimation")
+animationCache:addAnimation(hurtAnimation,"hurtAnimation")
+local fireBallAnim = cc.Animation:create()
+for i=2,5 do
+    name = "fireball"..i..".png"
+    fireBallAnim:addSpriteFrame(cc.SpriteFrameCache:getInstance():getSpriteFrame(name))
+end
+fireBallAnim:setDelayPerUnit(0.1)
+animationCache:addAnimation(fireBallAnim,"fireBallAnim")
 
 FXZorder = 1999
 CelLine = 0.009
@@ -283,7 +295,7 @@ DragonValues = {
 
     _normalAttack   = {
         minRange = 0,
-        maxRange = 50,
+        maxRange = 40,
         angle    = DEGREES_TO_RADIANS(360),
         knock    = 50,
         damage   = 200,
