@@ -309,13 +309,16 @@ function Actor:AI()
                 self:walkMode()
                 return
             --if my target is in range, and im not already attacking
-            elseif isinRange and state ~= EnumStateType.ATTACKING then
+            elseif isInRange and state ~= EnumStateType.ATTACKING then
                 self:attackMode()
                 return
 --            else 
 --                --Since im attacking, i cant just switch to another mode immediately
 --                --print( self._name, "says : what should i do?", self._statetype)
             end
+        elseif self._statetype ~= EnumStateType.WALKING and self._goRight == true then
+            self:walkMode()
+            return
         --i did not find a target, and im not attacking or not already idle
         elseif not self._cooldown or state ~= EnumStateType.IDLE then
             self:idleMode()
