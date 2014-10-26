@@ -4,7 +4,7 @@ require "AttackCommand"
 
 
 
-local Actor = class ("Actor", function ()
+Actor = class ("Actor", function ()
 	return cc.Node:create()
 end)
 
@@ -220,6 +220,9 @@ function Actor:dyingMode(knockSource, knockAmount)
         uiLayer:heroDead(self)
         List.removeObj(HeroManager,self) 
         self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create()))
+        self._angry = 0
+        local anaryChange = {_name = self._name, _racetype = self._racetype, _angry = self._angry, _angryMax = self._angryMax}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
     else
         List.removeObj(MonsterManager,self) 
         local function recycle()
