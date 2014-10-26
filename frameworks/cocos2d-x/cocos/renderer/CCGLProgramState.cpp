@@ -427,7 +427,7 @@ void GLProgramState::setVertexAttribCallback(const std::string &name, const std:
     }
     else
     {
-		CCLOG("cocos2d: warning: Attribute not found: %s", name.c_str());
+		//CCLOG("cocos2d: warning: Attribute not found: %s", name.c_str());
 	}
 }
 
@@ -440,7 +440,7 @@ void GLProgramState::setVertexAttribPointer(const std::string &name, GLint size,
     }
     else
     {
-		CCLOG("cocos2d: warning: Attribute not found: %s", name.c_str());
+		//CCLOG("cocos2d: warning: Attribute not found: %s", name.c_str());
     }
 }
 

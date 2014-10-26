@@ -108,7 +108,7 @@ function Actor:hurtSoundEffects()
 -- to override
 end
 
-function Actor:hurt(collider)
+function Actor:hurt(collider, dirKnockMode)
     if self._isalive == true then 
         --TODO add sound effect
                     
@@ -135,7 +135,7 @@ function Actor:hurt(collider)
         
         if self._hp > 0 then
             if collider.knock and damage ~= 1 then
-                self:knockMode(getPosTable(collider),knock)
+                self:knockMode(collider, dirKnockMode)
                 self:hurtSoundEffects()
             else
                 self:hurtSoundEffects()
@@ -186,16 +186,19 @@ function Actor:attackMode() --switch into walk mode
     self:playAnimation("idle", true)
     self._attackTimer = self._attackFrequency*3/4
 end
-function Actor:knockMode(knockSource, knockAmount)
+function Actor:knockMode(collider, dirKnockMode)
     self:setStateType(EnumStateType.KNOCKING)
     self:playAnimation("knocked")
     self._timeKnocked = self._aliveTime
-    if knockAmount then
-        local p = getPosTable(self)
-        local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
-        local newPos = cc.pRotateByAngle(cc.pAdd({x=knockAmount,y=0}, p),p,angle)
-        self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
+    local p = self._myPos
+    local angle 
+    if dirKnockMode then
+        angle = collider.facing
+    else
+        angle = cc.pToAngleSelf(cc.pSub(p, getPosTable(collider)))
     end
+    local newPos = cc.pRotateByAngle(cc.pAdd({x=collider.knock,y=0}, p),p,angle)
+    self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
 end
 
 function Actor:playDyingEffects()

@@ -82,7 +82,7 @@ end
 
 function BasicCollider:hurtEffect(target)
     
-    local hurtAction = cc.Animate:create(animationCathe:getAnimation("hurtAnimation"))
+    local hurtAction = cc.Animate:create(animationCache:getAnimation("hurtAnimation"))
     local hurtEffect = cc.BillBoard:create()
     hurtEffect:setScale(1.5)
     hurtEffect:runAction(cc.Sequence:create(hurtAction, cc.RemoveSelf:create()))
@@ -148,7 +148,7 @@ function MageNormalAttack.create(pos,facing,attackInfo, target)
     ret:initData(pos,facing,attackInfo)
     ret._target = target
     
-    ret.sp = cc.BillBoard:create("FX/FX.png", cc.SpriteFrameCache:getInstance():getSpriteFrame("icebolt.png"):getRect(), 0)
+    ret.sp = cc.BillBoard:create("FX/FX.png", RECTS.iceBolt, 0)
     --ret.sp:setCamera(camera)
     ret.sp:setPosition3D(cc.V3(0,0,50))
     ret.sp:setScale(2)
@@ -180,7 +180,6 @@ end
 function MageNormalAttack:onTimeOut()
     self.part1:stopSystem()
     self.part2:stopSystem()
-    self.sp:removeFromParent()
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
     
     local magic = cc.ParticleSystemQuad:create(ParticleManager:getInstance():getPlistData("magic"))
@@ -192,11 +191,10 @@ function MageNormalAttack:onTimeOut()
     magic:setGlobalZOrder(-self:getPositionY()*2+FXZorder)
     magic:setPositionZ(0)
     
-    local ice = cc.BillBoard:create("FX/FX.png", cc.SpriteFrameCache:getInstance():getSpriteFrame("iceSpike1.png"):getRect(),0)
-    ice:setScale(4)
-    self:addChild(ice)
-    ice:setPositionZ(50)
-    ice:runAction(cc.FadeOut:create(1))
+    self.sp:setTextureRect(RECTS.iceSpike)
+    self.sp:runAction(cc.FadeOut:create(1))
+    self.sp:setScale(4)
+
 end
 
 function MageNormalAttack:playHitAudio()
@@ -244,9 +242,7 @@ function MageIceSpikes.create(pos, facing, attackInfo)
     ret.sp:setPosition3D(cc.V3(0,0,1))
     ret.sp:setScale(ret.maxRange/12)
     ret:addChild(ret.sp)
-    ret.DOTTimer = 0.5 --it will be able to hurt every 0.5 seconds
-    ret.curDOTTime = 0.5
-    ret.DOTApplied = false
+
     ---========
     --create 3 spikes
     local x = cc.Node:create()
@@ -364,7 +360,7 @@ end
 function ArcherNormalAttack:onCollide(target)
     self:hurtEffect(target)
     self:playHitAudio()    
-    target:hurt(self)
+    target:hurt(self, true)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
 end
@@ -385,9 +381,6 @@ function ArcherSpecialAttack.create(pos,facing,attackInfo)
     ret.sp = Archer:createArrow()
     ret.sp:setRotation(RADIANS_TO_DEGREES(-facing)-90)
     ret:addChild(ret.sp)
-    ret.DOTTimer = 0.2 --it will be able to hurt every 0.5 seconds
-    ret.curDOTTime = 0.2
-    ret.DOTApplied = false
     
     return ret
 end
@@ -400,7 +393,7 @@ function ArcherSpecialAttack:onCollide(target)
     if self.curDOTTime >= self.DOTTimer then
         self:hurtEffect(target)
         self:playHitAudio()    
-        target:hurt(self)
+        target:hurt(self, true)
         self.DOTApplied = true
     end
 end
@@ -425,17 +418,30 @@ function DragonAttack.create(pos,facing,attackInfo)
     local ret = DragonAttack.new()
     ret:initData(pos,facing,attackInfo)
 
-    ret.sp = cc.Sprite:create("btn_circle_normal.png")
-    ret.sp:setPosition3D(cc.V3(0,0,50))
-    ret.sp:setScale(2)
-    ret.sp:setColor({r=255,g=0,b=0})
+    ret.sp = cc.BillBoard:create("FX/FX.png", RECTS.fireBall)
+    ret.sp:setPosition3D(cc.V3(0,0,48))
+    ret.sp:setScale(1.7)
     ret:addChild(ret.sp)
 
     return ret
 end
 
 function DragonAttack:onTimeOut()
-    self:runAction(cc.RemoveSelf:create())
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),cc.RemoveSelf:create()))
+
+    local magic = cc.ParticleSystemQuad:create(ParticleManager:getInstance():getPlistData("magic"))
+    local magicf = cc.SpriteFrameCache:getInstance():getSpriteFrame("particle.png")
+    magic:setTextureWithRect(magicf:getTexture(), magicf:getRect())
+    magic:setScale(1.5)
+    magic:setRotation3D({x=90, y=0, z=0})
+    self:addChild(magic)
+    magic:setGlobalZOrder(-self:getPositionY()*2+FXZorder)
+    magic:setPositionZ(0)
+    magic:setEndColor({r=1,g=0.5,b=0})
+
+    local fireballAction = cc.Animate:create(animationCache:getAnimation("fireBallAnim"))
+    self.sp:runAction(fireballAction)
+    self.sp:setScale(2)
 end
 
 function DragonAttack:playHitAudio()
