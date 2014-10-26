@@ -418,7 +418,9 @@ MonsterSlimeValues =
 --Monster Dragon
 MonsterDragonValues = 
 {
-    fileName = "model/dragon/dragon.c3b"
+    fileName = "model/dragon/dragon.c3b",
+    attack = "audios/effects/dragon/Fire.mp3",
+    fireHit = "audios/effects/dragon/fireHit.mp3"
 }
 
 --Monster Rat

@@ -77,7 +77,7 @@ function BasicCollider:onTimeOut()
 end
 
 function BasicCollider:playHitAudio()
-    ccexp.AudioEngine:play2d(CommonAudios.hit, false,1)
+    ccexp.AudioEngine:play2d(CommonAudios.hit, false,0.7)
 end
 
 function BasicCollider:hurtEffect(target)
@@ -445,7 +445,7 @@ function DragonAttack:onTimeOut()
 end
 
 function DragonAttack:playHitAudio()
-
+    ccexp.AudioEngine:play2d(MonsterDragonValues.fireHit, false,1)    
 end
 
 function DragonAttack:onCollide(target)
