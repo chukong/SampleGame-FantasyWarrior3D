@@ -65,7 +65,10 @@ end
 
 function Mage:specialAttack()
     self._specialAttackChance = MageValues._specialAttackChance
-
+    self._angry = ActorCommonValues._angry
+    local anaryChange = {_name = self._name, _racetype = self._racetype, _angry = self._angry, _angryMax = self._angryMax}
+    MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)      
+    
     --mage will create 3 ice spikes on the ground
     --get 3 positions
     ccexp.AudioEngine:play2d(MageProperty.specialAttackShout, false,0.5)

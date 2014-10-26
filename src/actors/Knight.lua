@@ -17,9 +17,9 @@ function Knight:ctor()
     copyTable(KnightValues,self)
 
     if uiLayer~=nil then
-        self._bloodBar = uiLayer.WarriorBlood
-        self._bloodBarClone = uiLayer.WarriorBloodClone
-        self._avatar = uiLayer.WarriorPng
+        self._bloodBar = uiLayer.KnightBlood
+        self._bloodBarClone = uiLayer.KnightBloodClone
+        self._avatar = uiLayer.KnightPng
     end
 
     self:init3D()
@@ -68,7 +68,6 @@ function Knight.create()
         if ret._specialAttackChance == 1 then return end
         ret._specialAttackChance = 1
         ret._attackTimer = KnightValues._attackFrequency + 0.01
-        ret._attackFrequency = KnightValues._attackFrequency
         --cclog("Knight.specialAttack")        
     end
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, specialAttack)    
@@ -102,7 +101,10 @@ end
 
 function Knight:specialAttack()
     self._specialAttackChance = KnightValues._specialAttackChance
-
+    self._angry = ActorCommonValues._angry
+    local anaryChange = {_name = self._name, _racetype = self._racetype, _angry = self._angry, _angryMax = self._angryMax}
+    MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)      
+        
     -- knight will create 2 attacks one by one  
     local attack = self._specialAttack
     attack.knock = 0

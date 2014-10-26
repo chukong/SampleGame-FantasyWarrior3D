@@ -135,7 +135,7 @@ function GameMaster:showDragon()
         local appearPos = getFocusPointOfHeros()
         math.randomseed(tostring(os.time()):reverse():sub(1, 6))
         local randomvar = math.random()
-        cclog("the randomvar is %f",randomvar)
+        --cclog("the randomvar is %f",randomvar)
         if randomvar < 0.4 then appearPos.x = appearPos.x - 1200
         else appearPos.x = appearPos.x + 1200 end
         if appearPos.x < G.activearea.left then 
@@ -160,7 +160,7 @@ function GameMaster:showPiglet()
         local appearPos = getFocusPointOfHeros()
         math.randomseed(tostring(os.time()):reverse():sub(1, 6))
         local randomvar = math.random()
-        cclog("the randomvar is %f",randomvar)
+        --cclog("the randomvar is %f",randomvar)
         if randomvar < 0.4 then appearPos.x = appearPos.x - 1200
         else appearPos.x = appearPos.x + 1200 end
         if appearPos.x < G.activearea.left then 
@@ -195,7 +195,7 @@ function GameMaster:showRat()
         local appearPos = getFocusPointOfHeros()
         math.randomseed(tostring(os.time()):reverse():sub(1, 6))
         local randomvar = math.random()
-        cclog("the randomvar is %f",randomvar)
+        --cclog("the randomvar is %f",randomvar)
         if randomvar < 0.4 then appearPos.x = appearPos.x - 1200
         else appearPos.x = appearPos.x + 1200 end
         if appearPos.x < G.activearea.left then 

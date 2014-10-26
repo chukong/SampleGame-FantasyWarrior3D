@@ -110,9 +110,15 @@ local BattleScene = class("BattleScene",function()
     return cc.Scene:create()
 end)
 
-local function sendDropBlood(heroActor)
+local function bloodMinus(heroActor)
     if heroActor._racetype == EnumRaceType.HERO then    
         uiLayer:bloodDrop(heroActor)
+    end
+end
+
+local function angryChange(angry)
+    if angry._racetype == EnumRaceType.HERO then
+        uiLayer:angryChange(angry)
     end
 end
 
@@ -172,17 +178,17 @@ end
 function BattleScene:UIcontainsPoint(position)
     local message  = nil
 
-    local rectKnight = uiLayer.WarriorPngFrame:getBoundingBox()
+    local rectKnight = uiLayer.KnightPngFrame:getBoundingBox()
     local rectArcher = uiLayer.ArcherPngFrame:getBoundingBox()
     local rectMage = uiLayer.MagePngFrame:getBoundingBox()
     
-    if cc.rectContainsPoint(rectKnight, position) then
+    if cc.rectContainsPoint(rectKnight, position) and uiLayer.KnightAngry:getPercentage() == 100 then
         --cclog("rectKnight")
         message = MessageDispatchCenter.MessageType.SPECIAL_KNIGHT        
-    elseif cc.rectContainsPoint(rectArcher, position) then
+    elseif cc.rectContainsPoint(rectArcher, position) and uiLayer.ArcherAngry:getPercentage() == 100  then
         --cclog("rectArcher")
         message = MessageDispatchCenter.MessageType.SPECIAL_ARCHER   
-    elseif cc.rectContainsPoint(rectMage, position) then
+    elseif cc.rectContainsPoint(rectMage, position)  and uiLayer.MageAngry:getPercentage() == 100 then
         --cclog("rectMage")
         message = MessageDispatchCenter.MessageType.SPECIAL_MAGE         
     end   
@@ -202,7 +208,8 @@ function BattleScene.create()
     setCamera()
     scheduler:scheduleScriptFunc(gameController, 0, false)
 
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, sendDropBlood)
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_MINUS, bloodMinus)
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, angryChange)
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE,specialPerspective)
 
     return scene

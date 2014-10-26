@@ -108,6 +108,9 @@ ActorCommonValues =
     _targetFacing   = 0, --direction the actor Wants to turn to
     
     _target         = nil, --the enemy actor 
+    
+    _angry          = 0,
+    _angryMax       = 300,
 }
 ActorDefaultValues =
 {
@@ -164,7 +167,7 @@ KnightValues = {
     _AIFrequency    = 1.1,
     _attackRange    = 100,
     _specialAttackChance = 0,
-    
+
     _normalAttack   = {
         minRange = 0,
         maxRange = 130,
