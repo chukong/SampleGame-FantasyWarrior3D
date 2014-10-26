@@ -92,7 +92,7 @@ end
 
 function Knight:normalAttack()
     ccexp.AudioEngine:play2d(WarriorProperty.normalAttackShout, false,0.6)
-    KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+    KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack, self)
     self._sprite:runAction(self._action.attackEffect:clone()) 
 
     AUDIO_ID.KNIGHTNORMALATTACK = ccexp.AudioEngine:play2d(WarriorProperty.normalAttack1, false,1)
@@ -102,14 +102,14 @@ end
 function Knight:specialAttack()
     self._specialAttackChance = KnightValues._specialAttackChance
     self._angry = ActorCommonValues._angry
-    local anaryChange = {_name = self._name, _racetype = self._racetype, _angry = self._angry, _angryMax = self._angryMax}
+    local anaryChange = {_name = self._name, _angry = self._angry, _angryMax = self._angryMax}
     MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)      
         
     -- knight will create 2 attacks one by one  
     local attack = self._specialAttack
     attack.knock = 0
     ccexp.AudioEngine:play2d(WarriorProperty.specialAttackShout, false,0.7)
-    KnightNormalAttack.create(getPosTable(self), self._curFacing, attack)
+    KnightNormalAttack.create(getPosTable(self), self._curFacing, attack, self)
     self._sprite:runAction(self._action.attackEffect:clone())
 
     local pos = getPosTable(self)
@@ -120,7 +120,7 @@ function Knight:specialAttack()
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.KNIGHTSPECIALATTACK,KninghtSpecialAttackCallback)
     
     local function punch()
-        KnightNormalAttack.create(pos, self._curFacing, self._specialAttack)
+        KnightNormalAttack.create(pos, self._curFacing, self._specialAttack, self)
         self._sprite:runAction(self._action.attackEffect:clone())                
     end
     delayExecute(self,punch,0.2)

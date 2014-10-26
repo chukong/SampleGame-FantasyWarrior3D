@@ -114,7 +114,7 @@ ActorCommonValues =
     _myPos = cc.p(0, 0),
     
     _angry          = 0,
-    _angryMax       = 300,
+    _angryMax       = 500,
 }
 ActorDefaultValues =
 {

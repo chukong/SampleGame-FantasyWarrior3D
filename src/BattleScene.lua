@@ -111,15 +111,11 @@ local BattleScene = class("BattleScene",function()
 end)
 
 local function bloodMinus(heroActor)
-    if heroActor._racetype == EnumRaceType.HERO then    
         uiLayer:bloodDrop(heroActor)
-    end
 end
 
 local function angryChange(angry)
-    if angry._racetype == EnumRaceType.HERO then
         uiLayer:angryChange(angry)
-    end
 end
 
 local function specialPerspective(param)

@@ -118,9 +118,10 @@ KnightNormalAttack = class("KnightNormalAttack", function()
     return BasicCollider.new()
 end)
 
-function KnightNormalAttack.create(pos, facing, attackInfo)
+function KnightNormalAttack.create(pos, facing, attackInfo, knight)
     local ret = KnightNormalAttack.new()
     ret:initData(pos,facing,attackInfo)
+    ret.owner = knight
 --    ret.sp = cc.Sprite:create("btn_circle_normal.png")
 --    ret.sp:setPosition3D(cc.V3(100,0,50))
 --    ret.sp:setScale(5)
@@ -135,15 +136,20 @@ function KnightNormalAttack:onTimeOut()
     --self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
     self:removeFromParent()
 end
+function KnightNormalAttack:onCollide(target)
+    self:hurtEffect(target)
+    self:playHitAudio()    
+end
 
 MageNormalAttack = class("MageNormalAttack", function()
     return BasicCollider.new()
 end)
 
-function MageNormalAttack.create(pos,facing,attackInfo, target)
+function MageNormalAttack.create(pos,facing,attackInfo, target, owner)
     local ret = MageNormalAttack.new()
     ret:initData(pos,facing,attackInfo)
     ret._target = target
+    ret.owner = owner
     
     ret.sp = cc.BillBoard:create("FX/FX.png", RECTS.iceBolt, 0)
     --ret.sp:setCamera(camera)
@@ -202,7 +208,9 @@ function MageNormalAttack:onCollide(target)
 
     self:hurtEffect(target)
     self:playHitAudio()    
-    target:hurt(self)
+    self.owner._angry = self.owner._angry + target:hurt(self)*0.3
+    local anaryChange = {_name = "Mage", _angry = self.owner._angry, _angryMax = self.owner._angryMax}
+    MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
 end
@@ -230,7 +238,7 @@ function MageIceSpikes:playHitAudio()
     ccexp.AudioEngine:play2d(MageProperty.ice_specialAttackHit, false,0.7)
 end
 
-function MageIceSpikes.create(pos, facing, attackInfo)
+function MageIceSpikes.create(pos, facing, attackInfo, owner)
     local ret = MageIceSpikes.new()
     ret:initData(pos,facing,attackInfo)
     ret.sp = cc.Sprite:createWithSpriteFrameName("shadow.png")
@@ -239,6 +247,7 @@ function MageIceSpikes.create(pos, facing, attackInfo)
     ret.sp:setPosition3D(cc.V3(0,0,1))
     ret.sp:setScale(ret.maxRange/12)
     ret:addChild(ret.sp)
+    ret.owner = owner
 
     ---========
     --create 3 spikes
@@ -321,7 +330,9 @@ function MageIceSpikes:onCollide(target)
     if self.curDOTTime > self.DOTTimer then
         self:hurtEffect(target)
         self:playHitAudio()    
-        target:hurt(self)
+        self.owner._angry = self.owner._angry + target:hurt(self)*0.1
+        local anaryChange = {_name = "Mage", _angry = self.owner._angry, _angryMax = self.owner._angryMax}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
         self.DOTApplied = true
     end
 end
@@ -339,9 +350,10 @@ ArcherNormalAttack = class("ArcherNormalAttack", function()
     return BasicCollider.new()
 end)
 
-function ArcherNormalAttack.create(pos,facing,attackInfo)
+function ArcherNormalAttack.create(pos,facing,attackInfo, owner)
     local ret = ArcherNormalAttack.new()
     ret:initData(pos,facing,attackInfo)
+    ret.owner = owner
     
     ret.sp = Archer:createArrow()
     ret.sp:setRotation(RADIANS_TO_DEGREES(-facing)-90)
@@ -357,7 +369,9 @@ end
 function ArcherNormalAttack:onCollide(target)
     self:hurtEffect(target)
     self:playHitAudio()    
-    target:hurt(self, true)
+    self.owner._angry = self.owner._angry + target:hurt(self, true)*0.3
+    local anaryChange = {_name = "Archer", _angry = self.owner._angry, _angryMax = self.owner._angryMax}
+    MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
 end
@@ -371,10 +385,10 @@ ArcherSpecialAttack = class("ArcherSpecialAttack", function()
     return BasicCollider.new()
 end)
 
-function ArcherSpecialAttack.create(pos,facing,attackInfo)
+function ArcherSpecialAttack.create(pos,facing,attackInfo, owner)
     local ret = ArcherSpecialAttack.new()
     ret:initData(pos,facing,attackInfo)
-
+    ret.owner = owner
     ret.sp = Archer:createArrow()
     ret.sp:setRotation(RADIANS_TO_DEGREES(-facing)-90)
     ret:addChild(ret.sp)
@@ -390,7 +404,9 @@ function ArcherSpecialAttack:onCollide(target)
     if self.curDOTTime >= self.DOTTimer then
         self:hurtEffect(target)
         self:playHitAudio()    
-        target:hurt(self, true)
+        self.owner._angry = self.owner._angry + target:hurt(self, true)*0.3
+        local anaryChange = {_name = "Archer", _angry = self.owner._angry, _angryMax = self.owner._angryMax}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
         self.DOTApplied = true
     end
 end
