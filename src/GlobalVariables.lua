@@ -418,13 +418,18 @@ MonsterSlimeValues =
 --Monster Dragon
 MonsterDragonValues = 
 {
-    fileName = "model/dragon/dragon.c3b"
+    fileName = "model/dragon/dragon.c3b",
+    attack = "audios/effects/dragon/Fire.mp3",
+    fireHit = "audios/effects/dragon/fireHit.mp3"
 }
 
 --Monster Rat
 MonsterRatValues = 
     {
-        fileName = "model/rat/rat.c3b"
+        fileName = "model/rat/rat.c3b",
+        attack = "audios/effects/rat/attack.mp3",
+        dead ="aduios/effects/rat/dead.mp3",
+        wounded="audios/effects/rat/ratHurt.mp3"
     }
 
 --Monster Piglet
