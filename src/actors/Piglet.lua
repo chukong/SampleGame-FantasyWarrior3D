@@ -42,8 +42,12 @@ function Piglet.create()
     return ret
 end
 
+function Piglet:playDyingEffects()
+    ccexp.AudioEngine:play2d(MonsterPigletValues.dead, false,1)
+end
+
 function Piglet:hurtSoundEffects()
-    ccexp.AudioEngine:play2d(MonsterPigletValues.hurt, false,0.8)
+    ccexp.AudioEngine:play2d(MonsterPigletValues.hurt, false,1)
 end
 
 function Piglet:normalAttackSoundEffects()
