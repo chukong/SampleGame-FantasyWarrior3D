@@ -234,7 +234,7 @@ function BattlefieldUI:timeInit()
     local ttfconfig = {outlineSize=1,fontSize=25,fontFilePath="fonts/arial.ttf"}
     local tm_label = cc.Label:createWithTTF(ttfconfig,tm)
     tm_label:setAnchorPoint(0,0)
-    tm_label:setPosition3D(cc.V3(G.winSize.width*0.02,G.winSize.height*0.9,2))
+    tm_label:setPosition3D(cc.V3(G.winSize.width*0.02,G.winSize.height*0.915,2))
     tm_label:enableOutline(cc.c4b(0,0,0,255))
     self._tmlabel = tm_label
     self:addChild(tm_label,5)

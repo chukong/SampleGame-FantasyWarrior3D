@@ -31,6 +31,8 @@ animationCache:addAnimation(fireBallAnim,"fireBallAnim")
 FXZorder = 1999
 CelLine = 0.009
 
+BossTaunt = "How dare you??"
+
 --G values
 G =
 {
