@@ -38,6 +38,18 @@ function Rat.create()
     return ret
 end
 
+function Rat:normalAttackSoundEffects()
+    ccexp.AudioEngine:play2d(MonsterRatValues.attack, false,1)
+end
+
+function Rat:hurtSoundEffects()
+    ccexp.AudioEngine:play2d(MonsterRatValues.wounded, false,1)
+end
+
+function Rat:playDyingEffects()
+    ccexp.AudioEngine:play2d(MonsterRatValues.dead, false,1)
+end
+
 function Rat:init3D()
     self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
