@@ -142,14 +142,17 @@ function BattleScene:enableTouch()
     end
     
     local function onTouchMoved(touch,event)
-        cameraOffset.valid = true
         local location = touch:getLocation()
-        
-        local delta = cc.pSub(location, self._prePosition)
-        --cclog("calf delta: %f %f", delta.x, delta.y)
-        cameraOffset.position.x = cameraOffset.position.x + delta.x
-        cameraOffset.position.y = cameraOffset.position.y + delta.y
-        
+
+        local message = self:containsPoint(location)
+        if message == nil then
+            cameraOffset.valid = true
+            local delta = cc.pSub(location, self._prePosition)
+            cameraOffset.position.x = cameraOffset.position.x + delta.x
+            cameraOffset.position.y = cameraOffset.position.y + delta.y
+            --cclog("calf delta: %f %f", delta.x, delta.y)
+        end
+                                   
         self._prePosition = location
     end
     
@@ -157,24 +160,34 @@ function BattleScene:enableTouch()
         cameraOffset.valid = false
 
         local location = touch:getLocation()
-        
-        if cc.rectContainsPoint(rectKnight, location) then
-            --cclog("rectKnight")
-            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, 1)            
-        elseif cc.rectContainsPoint(rectArcher, location) then
-            --cclog("rectArcher")
-            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, 1)            
-        elseif cc.rectContainsPoint(rectMage, location) then
-            --cclog("rectMage")
-            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, 1)            
-        end        
+        local message = self:containsPoint(location)
+        if message ~= nil then
+            MessageDispatchCenter:dispatchMessage(message, 1)            
+        end
     end
-        
+
     local touchEventListener = cc.EventListenerTouchOneByOne:create()
     touchEventListener:registerScriptHandler(onTouchBegin,cc.Handler.EVENT_TOUCH_BEGAN)
     touchEventListener:registerScriptHandler(onTouchMoved,cc.Handler.EVENT_TOUCH_MOVED)
     touchEventListener:registerScriptHandler(onTouchEnded,cc.Handler.EVENT_TOUCH_ENDED)
     currentLayer:getEventDispatcher():addEventListenerWithSceneGraphPriority(touchEventListener, currentLayer)        
+end
+
+function BattleScene:containsPoint(position)
+    local message = nil
+    
+    if cc.rectContainsPoint(rectKnight, position) then
+        --cclog("rectKnight")
+        message = MessageDispatchCenter.MessageType.SPECIAL_KNIGHT        
+    elseif cc.rectContainsPoint(rectArcher, position) then
+        --cclog("rectArcher")
+        message = MessageDispatchCenter.MessageType.SPECIAL_ARCHER   
+    elseif cc.rectContainsPoint(rectMage, position) then
+        --cclog("rectMage")
+        message = MessageDispatchCenter.MessageType.SPECIAL_MAGE         
+    end   
+        
+    return message 
 end
 
 function BattleScene.create()
