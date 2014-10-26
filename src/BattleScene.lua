@@ -10,9 +10,6 @@ local specialCamera = {valid = false, position = cc.p(0,0)}
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
 local cameraOffset = {valid = false, position = cc.V3(0, 0, 0)}
-local rectKnight = cc.rect(832, 10, 60, 64)
-local rectArcher = cc.rect(902, 10, 60, 64)
-local rectMage = cc.rect(974, 10, 60, 64)
 
 local function moveCamera(dt)
     --cclog("moveCamera")
@@ -32,7 +29,7 @@ local function moveCamera(dt)
             --position = cc.V3Add(position, cameraOffset.position)
             camera:setPosition3D(cc.V3(position.x+100, position.y, position.z))
             camera:lookAt(cc.V3(position.x, focusPoint.y, 50), cc.V3(0.0, 1.0, 0.0))
-            print(cameraOffset.position.x*0.001, cameraOffset.position.y*0.001)
+            --print(cameraOffset.position.x*0.001, cameraOffset.position.y*0.001)
         else
             local temp = cc.pLerp(cameraPosition, cc.p(position.x, position.y), 2*dt)
             position = cc.V3(temp.x, temp.y, position.z)
@@ -144,8 +141,7 @@ function BattleScene:enableTouch()
     local function onTouchMoved(touch,event)
         local location = touch:getLocation()
 
-        local message = self:containsPoint(location)
-        if message == nil then
+        if self:UIcontainsPoint(location) == nil then
             cameraOffset.valid = true
             local delta = cc.pSub(location, self._prePosition)
             cameraOffset.position.x = cameraOffset.position.x + delta.x
@@ -160,7 +156,7 @@ function BattleScene:enableTouch()
         cameraOffset.valid = false
 
         local location = touch:getLocation()
-        local message = self:containsPoint(location)
+        local message = self:UIcontainsPoint(location)
         if message ~= nil then
             MessageDispatchCenter:dispatchMessage(message, 1)            
         end
@@ -173,8 +169,12 @@ function BattleScene:enableTouch()
     currentLayer:getEventDispatcher():addEventListenerWithSceneGraphPriority(touchEventListener, currentLayer)        
 end
 
-function BattleScene:containsPoint(position)
-    local message = nil
+function BattleScene:UIcontainsPoint(position)
+    local message  = nil
+
+    local rectKnight = uiLayer.WarriorPngFrame:getBoundingBox()
+    local rectArcher = uiLayer.ArcherPngFrame:getBoundingBox()
+    local rectMage = uiLayer.MagePngFrame:getBoundingBox()
     
     if cc.rectContainsPoint(rectKnight, position) then
         --cclog("rectKnight")
