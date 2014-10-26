@@ -63,7 +63,12 @@ function Dragon:dyingMode(knockSource, knockAmount)
     self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(recycle)))
 end
 
+function Dragon:normalAttackSoundEffects()
+    ccexp.AudioEngine:play2d(MonsterDragonValues.attack, false,1)
+end
+
 function Dragon:normalAttack()
+    self:normalAttackSoundEffects()
     DragonAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
 end
 
