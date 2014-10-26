@@ -132,6 +132,10 @@ function Actor:hurt(collider, dirKnockMode)
 
 
         self._hp = self._hp - damage
+        self._angry = self._angry + damage
+        if self._angry > self._angryMax then
+            self._angry = self._angryMax
+        end
         
         if self._hp > 0 then
             if collider.knock and damage ~= 1 then
@@ -150,8 +154,11 @@ function Actor:hurt(collider, dirKnockMode)
         local blood = self._hpCounter:showBloodLossNum(damage,self,critical)
         self:addEffect(blood)
 
-        local loseBlood = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
-        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_DROP, loseBlood)
+        local bloodMinus = {_name = self._name, _racetype = self._racetype, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_MINUS, bloodMinus)
+
+        local anaryChange = {_name = self._name, _racetype = self._racetype, _angry = self._angry, _angryMax = self._angryMax}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)        
     end
 end
 
@@ -213,6 +220,9 @@ function Actor:dyingMode(knockSource, knockAmount)
         uiLayer:heroDead(self)
         List.removeObj(HeroManager,self) 
         self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create()))
+        self._angry = 0
+        local anaryChange = {_name = self._name, _racetype = self._racetype, _angry = self._angry, _angryMax = self._angryMax}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
     else
         List.removeObj(MonsterManager,self) 
         local function recycle()
@@ -302,13 +312,16 @@ function Actor:AI()
                 self:walkMode()
                 return
             --if my target is in range, and im not already attacking
-            elseif isinRange and state ~= EnumStateType.ATTACKING then
+            elseif isInRange and state ~= EnumStateType.ATTACKING then
                 self:attackMode()
                 return
 --            else 
 --                --Since im attacking, i cant just switch to another mode immediately
 --                --print( self._name, "says : what should i do?", self._statetype)
             end
+        elseif self._statetype ~= EnumStateType.WALKING and self._goRight == true then
+            self:walkMode()
+            return
         --i did not find a target, and im not attacking or not already idle
         elseif not self._cooldown or state ~= EnumStateType.IDLE then
             self:idleMode()

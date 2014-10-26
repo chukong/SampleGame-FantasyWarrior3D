@@ -43,7 +43,6 @@ function Archer.create()
         if ret._specialAttackChance == 1 then return end
         ret._specialAttackChance = 1
         ret._attackTimer = ArcherValues._attackFrequency + 0.01
-        ret._attackFrequency = ArcherValues._attackFrequency
         --cclog("Archer.specialAttack")
     end
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, specialAttack)
@@ -81,7 +80,11 @@ function Archer:normalAttack()
 end
 
 function Archer:specialAttack()
-    self._specialAttackChance = 0
+    self._specialAttackChance = ArcherValues._specialAttackChance
+    self._angry = ActorCommonValues._angry
+    local anaryChange = {_name = self._name, _racetype = self._racetype, _angry = self._angry, _angryMax = self._angryMax}
+    MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)      
+    
     ccexp.AudioEngine:play2d(Archerproperty.specialAttackShout, false,1)
     AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)

@@ -31,6 +31,8 @@ animationCache:addAnimation(fireBallAnim,"fireBallAnim")
 FXZorder = 1999
 CelLine = 0.009
 
+BossTaunt = "How dare you??"
+
 --G values
 G =
 {
@@ -108,6 +110,11 @@ ActorCommonValues =
     _targetFacing   = 0, --direction the actor Wants to turn to
     
     _target         = nil, --the enemy actor 
+
+    _myPos = cc.p(0, 0),
+    
+    _angry          = 0,
+    _angryMax       = 300,
 }
 ActorDefaultValues =
 {
@@ -164,7 +171,7 @@ KnightValues = {
     _AIFrequency    = 1.1,
     _attackRange    = 100,
     _specialAttackChance = 0,
-    
+
     _normalAttack   = {
         minRange = 0,
         maxRange = 130,
@@ -382,6 +389,7 @@ RatValues = {
     _attackFrequency = 3.7,
     _recoverTime    = 0.4,
     _AIFrequency    = 5.3,
+    _AITimer        = 5.0,
     _attackRange    = 110,
 
     _speed          = 300,
