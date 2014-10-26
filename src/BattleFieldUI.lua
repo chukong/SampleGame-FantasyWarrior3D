@@ -186,6 +186,7 @@ function BattlefieldUI:angrybarInit()
     self.MageAngryClone:setPosition3D(cc.V3(self.MagePng:getPositionX()-1, self.MagePng:getPositionY() - offset,3))
     self.MageAngryClone:setScale(0.5)
     self:addChild(self.MageAngryClone,3)
+end
 
 local function particleRelease()
 --    local particle = cc.ParticleSystemQuad:create(ParticleManager:getInstance():getPlistData("avartaRing"))
