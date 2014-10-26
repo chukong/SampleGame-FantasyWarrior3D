@@ -302,7 +302,7 @@ function Actor:AI()
                 self:walkMode()
                 return
             --if my target is in range, and im not already attacking
-            elseif isinRange and state ~= EnumStateType.ATTACKING then
+            elseif isInRange and state ~= EnumStateType.ATTACKING then
                 self:attackMode()
                 return
 --            else 
