@@ -445,7 +445,7 @@ function DragonAttack:onTimeOut()
 end
 
 function DragonAttack:playHitAudio()
-    ccexp.AudioEngine:play2d(MonsterDragonValues.fireHit, false,1)    
+    ccexp.AudioEngine:play2d(MonsterDragonValues.fireHit, false,0.6)    
 end
 
 function DragonAttack:onCollide(target)
