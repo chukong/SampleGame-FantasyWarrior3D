@@ -19,6 +19,8 @@ local particleRes = {
 local spriteFrameRes = {
     "FX/FX.plist",
     "chooseRole/chooserole.plist",
+    "battlefieldUI/battleFieldUI.plist",
+    "battlefieldUI/victory.plist"
 }
 
 function LoadingScene:ctor()
@@ -66,8 +68,8 @@ function LoadingScene:init()
         loadingbar:setPercent((self._totalResource-self._num)/self._totalResource*100)
         --loading text action
         local loadingAction = cc.JumpBy:create(dt,cc.p(0,0),50,1)
-        self._loading[self._totalResource-self._num%table.getn(self._loading)]:runAction(loadingAction)
-        
+        local loadingIndex = (self._totalResource-self._num)%(table.getn(self._loading)+1)
+        self._loading[loadingIndex>1 and loadingIndex or 1]:runAction(loadingAction)
         --slime action
         self._slime:runAction(cc.MoveTo:create(dt,cc.p(self._slimeOriginX+loadingbarSize*loadingbar:getPercent()/100,self._slimeOriginY)))
         
