@@ -49,6 +49,7 @@ function GameMaster:init()
     for i=1,7 do
         self:randomshowMonster(true)
     end
+    stage = 1
 end
 
 function GameMaster:update(dt)
@@ -60,15 +61,7 @@ function GameMaster:update(dt)
 end
 
 function GameMaster:logicUpdate()    
-    if stage == 0 then
-        if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
-            math.randomseed(tostring(os.time()):reverse():sub(1, 6))
-            for i=1,4 do
-                self:randomshowMonster(true)
-            end
-            stage = 1
-        end
-    elseif  stage == 1 then
+    if stage == 1 then
         if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
             math.randomseed(tostring(os.time()):reverse():sub(1, 6))
             for i=1,4 do
@@ -76,7 +69,15 @@ function GameMaster:logicUpdate()
             end
             stage = 2
         end
-    elseif stage == 2 then
+    elseif  stage == 2 then
+        if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
+            math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+            for i=1,4 do
+                self:randomshowMonster(true)
+            end
+            stage = 3
+        end
+    elseif stage == 3 then
         if List.getSize(MonsterManager) == 0 then
             for i = HeroManager.first, HeroManager.last do
                 local hero = HeroManager[i]
@@ -84,9 +85,9 @@ function GameMaster:logicUpdate()
                     hero._goRight = true
                 end
             end
-            stage = 3
+            stage = 4
         end
-    elseif stage == 3 then
+    elseif stage == 4 then
         if getFocusPointOfHeros().x > battleSiteX[2] then
             math.randomseed(tostring(os.time()):reverse():sub(1, 6))
             for i=1,3 do
@@ -95,25 +96,25 @@ function GameMaster:logicUpdate()
             for i=1,4 do
                 self:randomshowMonster(false)
             end
-            stage = 4
-        end
-    elseif stage == 4 then
-        if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
-            math.randomseed(tostring(os.time()):reverse():sub(1, 6))
-            for i=1,4 do
-                self:randomshowMonster(true)
-            end
             stage = 5
         end
     elseif stage == 5 then
         if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
             math.randomseed(tostring(os.time()):reverse():sub(1, 6))
             for i=1,4 do
-                self:randomshowMonster(false)
+                self:randomshowMonster(true)
             end
             stage = 6
         end
     elseif stage == 6 then
+        if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
+            math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+            for i=1,4 do
+                self:randomshowMonster(false)
+            end
+            stage = 7
+        end
+    elseif stage == 7 then
         if List.getSize(MonsterManager) == 0 then
             for i = HeroManager.first, HeroManager.last do
                 local hero = HeroManager[i]
@@ -121,12 +122,12 @@ function GameMaster:logicUpdate()
                     hero._goRight = true
                 end
             end
-            stage = 7
+            stage = 8
         end
-    elseif stage == 7 then
+    elseif stage == 8 then
         if getFocusPointOfHeros().x > battleSiteX[3] then
             self:showWarning()
-            stage = 8
+            stage = 9
         end
     end
 end
@@ -204,15 +205,21 @@ function GameMaster:showDragon(isFront)
         local dragon = List.popfirst(DragonPool)
         dragon:reset()
         local appearPos = getFocusPointOfHeros()
-        if isFront then
-            appearPos.x = appearPos.x + frontDistanceWithHeroX
+        local randomvarX = math.random()*0.2+1
+        if stage == 0 then
+            appearPos.x = appearPos.x + frontDistanceWithHeroX*randomvarX
             dragon:setFacing(180)
         else
-            appearPos.x = appearPos.x - backwardDistanceWithHeroX
-            dragon:setFacing(0)
+            if isFront then
+                appearPos.x = appearPos.x + frontDistanceWithHeroX*1.5*randomvarX
+                dragon:setFacing(180)
+            else
+                appearPos.x = appearPos.x - backwardDistanceWithHeroX*1.5*randomvarX
+                dragon:setFacing(0)
+            end
         end
-        local randomvar = 2*math.random()-1
-        appearPos.y = appearPos.y + randomvar*distanceWithHeroY
+        local randomvarY = 2*math.random()-1
+        appearPos.y = appearPos.y + randomvarY*distanceWithHeroY
         dragon:setPosition(appearPos)
         dragon._myPos = appearPos
         dragon:setVisible(true)
@@ -228,15 +235,21 @@ function GameMaster:showPiglet(isFront)
         local piglet = List.popfirst(PigletPool)
         piglet:reset()
         local appearPos = getFocusPointOfHeros()
-        if isFront then
-            appearPos.x = appearPos.x + frontDistanceWithHeroX
+        local randomvarX = math.random()*0.2+1
+        if stage == 0 then
+            appearPos.x = appearPos.x + frontDistanceWithHeroX*randomvarX
             piglet:setFacing(180)
         else
-            appearPos.x = appearPos.x - backwardDistanceWithHeroX
-            piglet:setFacing(0)
+            if isFront then
+                appearPos.x = appearPos.x + frontDistanceWithHeroX*1.5*randomvarX
+                piglet:setFacing(180)
+            else
+                appearPos.x = appearPos.x - backwardDistanceWithHeroX*1.5*randomvarX
+                piglet:setFacing(0)
+            end
         end
-        local randomvar = 2*math.random()-1
-        appearPos.y = appearPos.y + randomvar*distanceWithHeroY
+        local randomvarY = 2*math.random()-1
+        appearPos.y = appearPos.y + randomvarY*distanceWithHeroY
         piglet:setPosition(appearPos)
         piglet._myPos = appearPos
         piglet:setVisible(true)
@@ -287,8 +300,6 @@ function GameMaster:showRat(isFront)
         local function enableAI()
             rat:setAIEnabled(true)
         end
-        local offsetX = 200
-        local offsetY = 200 
         if stage == 0 then
             rat:runAction(cc.Sequence:create(cc.JumpBy3D:create(0.5,cc.V3(-200,-200,0),150,1),cc.CallFunc:create(enableAI)))
             rat:setFacing(45)
@@ -303,6 +314,7 @@ end
 
 function GameMaster:randomshowMonster(isFront)
 	local random_var = math.random()
+    random_var = 0.02
 	if random_var<0.15 then
 		self:showDragon(isFront)
 	elseif random_var<0.3 then
@@ -411,12 +423,17 @@ function GameMaster:showDialog()
             for var = HeroManager.first, HeroManager.last do
                 HeroManager[var]:setAIEnabled(true)
             end
+            self:showBoss()
         end
         dialog:runAction(cc.Sequence:create(cc.ScaleTo:create(0.5,0.1),cc.CallFunc:create(removeDialog)))
     	cc.Director:getInstance():getScheduler():unscheduleScriptEntry(scheduleid)
     end
     
     scheduleid = cc.Director:getInstance():getScheduler():scheduleScriptFunc(exitDialog,3,false)
+end
+
+function GameMaster:showVictoryUI()
+    uiLayer:showVictoryUI()
 end
 
 return GameMaster
