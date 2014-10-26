@@ -233,8 +233,8 @@ end
 
 function GameMaster:showWarning()
 	local warning = cc.Layer:create()
-	local warning_logo = cc.Sprite:create("battlefieldUI/caution.png")
-	warning_logo:setPosition(cc.p(100,200))
+	local warning_logo = cc.Sprite:createWithSpriteFrameName("caution.png")
+    warning_logo:setPosition(G.winSize.width*0.5,G.winSize.height*0.5)
 	warning_logo:setPositionZ(1)
 	local function showdialog()
 	   warning:removeFromParent()
@@ -244,54 +244,66 @@ function GameMaster:showWarning()
 	warning:addChild(warning_logo)
 	
 	warning:setScale(0.5)
-    warning:setPosition({x=250,y=80})
     warning:setPositionZ(-cc.Director:getInstance():getZEye()/2)
     warning:ignoreAnchorPointForPosition(false)
     warning:setLocalZOrder(999)
     camera:addChild(warning,2)
-
 end
 
 function GameMaster:showDialog()
+    local colorLayer = cc.LayerColor:create(cc.c4b(10,10,10,150))
+    colorLayer:ignoreAnchorPointForPosition(false)
+    colorLayer:setPositionZ(-cc.Director:getInstance():getZEye()/4)
+    colorLayer:setGlobalZOrder(0)
+    camera:addChild(colorLayer)
+    
+    --create dialog
     local dialog = cc.Layer:create()
+    dialog:setPositionX(-G.winSize.width*0.025)
+
+    --add outframe
     local outframe = cc.Sprite:createWithSpriteFrameName("outframe.png")
-    outframe:setPositionZ(1)
+    outframe:setPosition(G.winSize.width*0.55,G.winSize.height*0.27)
+    outframe:setScale(0.6*resolutionRate)
     dialog:addChild(outframe)
-    local inframe = cc.Sprite:createWithSpriteFrameName("battlefieldUI/inframe.png")
-    inframe:setPositionX(180)
-    inframe:setPositionZ(2)
+    --add inframe
+    local inframe = cc.Sprite:createWithSpriteFrameName("inframe.png")
+    inframe:setPosition(G.winSize.width*0.67,G.winSize.height*0.27)
+    inframe:setScale(0.5*resolutionRate)
     dialog:addChild(inframe)
+    --add boss icon
     local bossicon = cc.Sprite:createWithSpriteFrameName("bossicon.png")
-    bossicon:setPosition(cc.p(-300,145))
+    bossicon:setPosition(G.winSize.width*0.42,G.winSize.height*0.46)
+    bossicon:setScale(0.75*resolutionRate)
     bossicon:setFlippedX(true)
-    bossicon:setPositionZ(3)
     dialog:addChild(bossicon)
+    --add boss logo
     local bosslogo = cc.Sprite:createWithSpriteFrameName("bosslogo.png")
-    bosslogo:setPosition(cc.p(-300,-20))
-    bosslogo:setPositionZ(4)
+    bosslogo:setPosition(G.winSize.width*0.417,G.winSize.height*0.265)
+    bosslogo:setScale(0.74*resolutionRate)
     dialog:addChild(bosslogo)
-    local text = cc.Label:createWithSystemFont("引擎技术哪家强？","arial",40)
-    text:setPosition(cc.p(200,0))
-    text:setPositionZ(5)
+    --add text
+    local text = cc.Label:createWithSystemFont(BossTaunt,"arial",24)
+    text:setPosition(G.winSize.width*0.68,G.winSize.height*0.27)
     dialog:addChild(text)
-    dialog:setAnchorPoint(cc.p(0.5,0.5))
-    dialog:setPosition({x=300,y=50})
+    --set dialog
     dialog:setScale(0.1)
-    dialog:setPositionZ(-cc.Director:getInstance():getZEye()/2)
     dialog:ignoreAnchorPointForPosition(false)
-    dialog:setLocalZOrder(999)
-    camera:addChild(dialog,2)
+    dialog:setPositionZ(-cc.Director:getInstance():getZEye()/3)
+    dialog:setGlobalZOrder(0)
+    camera:addChild(dialog)
     local function pausegame()
         for var = HeroManager.first, HeroManager.last do
             HeroManager[var]:idleMode()
             HeroManager[var]:setAIEnabled(false)
         end
     end
-    dialog:runAction(cc.Sequence:create(cc.ScaleTo:create(0.5,0.5),cc.CallFunc:create(pausegame)))
+    dialog:runAction(cc.Sequence:create(cc.ScaleTo:create(0.5 ,0.5),cc.CallFunc:create(pausegame)))
     uiLayer:setVisible(false)
     local function exitDialog( )
         local function removeDialog()
             dialog:removeFromParent()
+            colorLayer:removeFromParent()
             uiLayer:setVisible(true)
             for var = HeroManager.first, HeroManager.last do
                 HeroManager[var]:setAIEnabled(true)
