@@ -23,6 +23,8 @@ function BattlefieldUI:ctor()
     self:bloodbarInit()
     self:angrybarInit()
     self:touchButtonInit()
+    self:timeInit()
+--    self:showVictory()
     
     ccexp.AudioEngine:stopAll()
     AUDIO_ID.BATTLEFIELDBGM = ccexp.AudioEngine:play2d(BGM_RES.BATTLEFIELDBGM, true,0.6)
@@ -121,7 +123,6 @@ function BattlefieldUI:bloodbarInit()
     self:addChild(self.MageBloodClone,3)
 end
 
-
 function BattlefieldUI:angrybarInit()
     local offset = 32+10
     local yellow = cc.c3b(255,255,0)
@@ -185,6 +186,12 @@ function BattlefieldUI:angrybarInit()
     self.MageAngryClone:setPosition3D(cc.V3(self.MagePng:getPositionX()-1, self.MagePng:getPositionY() - offset,3))
     self.MageAngryClone:setScale(0.5)
     self:addChild(self.MageAngryClone,3)
+
+local function particleRelease()
+--    local particle = cc.ParticleSystemQuad:create(ParticleManager:getInstance():getPlistData("avartaRing"))
+--    particle:setPosition3D(uiLayer.ArcherPng:getPosition3D())
+--    particle:setGlobalZOrder(3001)
+--    uiLayer:addChild(particle)
 end
 
 function BattlefieldUI:touchButtonInit()
@@ -220,6 +227,9 @@ function BattlefieldUI:touchButtonInit()
     self._coinAmount:setScaleX(0.8)
     self._coinAmount:setScaleY(0.7)
     self:addChild(self._coinAmount,2)
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, particleRelease)
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, particleRelease)
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, particleRelease)
 end
 
 local scheduleID = nil
@@ -300,6 +310,58 @@ function BattlefieldUI:angryChange(angry)
     end
     
     bar:runAction(progressTo)
+end
+
+function BattlefieldUI:timeInit()
+    self._tm = os.time()
+    local tm = "00"..":".."00"..":".."00"
+    local ttfconfig = {outlineSize=1,fontSize=25,fontFilePath="fonts/arial.ttf"}
+    local tm_label = cc.Label:createWithTTF(ttfconfig,tm)
+    tm_label:setAnchorPoint(0,0)
+    tm_label:setPosition3D(cc.V3(G.winSize.width*0.02,G.winSize.height*0.9,2))
+    tm_label:enableOutline(cc.c4b(0,0,0,255))
+    self._tmlabel = tm_label
+    self:addChild(tm_label,5)
+    --time update
+    local function tmUpdate()
+        local dev = os.time()-self._tm
+        local min = math.floor(dev/60)
+        local sec = dev%60
+        if min<10 then
+            min = "0"..min..":"
+        end
+        if sec<10 then
+            sec = "0"..sec
+        end
+        self._tmlabel:setString("00:"..min..sec)
+    end
+    self._tmSchedule = cc.Director:getInstance():getScheduler():scheduleScriptFunc(tmUpdate,0,false)
+end
+
+function BattlefieldUI:showVictory()
+    --color layer
+    local layer = cc.LayerColor:create(cc.c4b(10,10,10,150))
+    layer:ignoreAnchorPointForPosition(false)
+    layer:setPosition3D(cc.V3(G.winSize.width*0.5,G.winSize.height*0.5,3))
+    --add victory
+    local victory = cc.Sprite:createWithSpriteFrameName("victory.png")
+    victory:setPosition3D(cc.V3(G.winSize.width*0.5,G.winSize.height*0.5,3))
+    victory:setScale(0.1)
+    layer:addChild(victory,1)
+    --add box
+    local box = cc.Sprite:createWithSpriteFrameName("box.png")
+    box:setPosition3D(cc.V3(G.winSize.width*0.9,G.winSize.height*0.3,3))
+    layer:addChild(box,1)
+    --add coin
+    local coin = cc.Sprite:createWithSpriteFrameName("coin.png")
+    coin:setPosition3D(cc.V3(G.winSize.width*0.8,G.winSize.height*0.5,3))
+    layer:addChild(coin,1)
+    
+    --box runaction
+    local action = cc.EaseElasticOut:create(cc.ScaleTo:create(1.5,1))
+    victory:runAction(action)
+    
+    self:addChild(layer)
 end
 
 return BattlefieldUI
