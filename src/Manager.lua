@@ -11,7 +11,7 @@ BossPool = List.new()
 
 --getPoolByName
 function getPoolByName(name)
-    if name == "piglet" then
+    if name == "Piglet" then
         return PigletPool
     elseif name == "Slime" then
         return SlimePool

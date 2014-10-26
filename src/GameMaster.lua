@@ -11,13 +11,19 @@ require "Dragon"
 require "Archer"
 
 local gloableZOrder = 1
-local monsterCount = {dragon=3,slime=3,piglet=10,rat=3}
-local EXIST_MIN_MONSTER = 6
+local monsterCount = {dragon=7,slime=7,piglet=7,rat=7}
+local EXIST_MIN_MONSTER = 4
 kill_count = 0
 show_count = 0
-local KILL_MAX_MONSTER = 35
+local KILL_MAX_MONSTER = 30
 local showboss = false
 local scheduleid
+local stage = 0
+local battleSiteX = {-2800,-1800,-500}
+local frontDistanceWithHeroX = 600
+local backwardDistanceWithHeroX = 800
+local distanceWithHeroX = 30
+local distanceWithHeroY = 30
 
 local GameMaster = class("GameMaster")
 
@@ -38,6 +44,11 @@ end
 function GameMaster:init()
 	self:AddHeros()
 	self:addMonsters()
+    stage = 0
+    math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+    for i=1,7 do
+        self:randomshowMonster(true)
+    end
 end
 
 function GameMaster:update(dt)
@@ -48,39 +59,97 @@ function GameMaster:update(dt)
 	end
 end
 
-function GameMaster:logicUpdate()
-    if show_count < KILL_MAX_MONSTER then
-        local max_const_count = monsterCount.piglet + monsterCount.dragon + monsterCount.rat + monsterCount.slime
-        local last_count = List.getSize(DragonPool) + List.getSize(SlimePool) + List.getSize(SlimePool) + List.getSize(PigletPool)
-        if max_const_count - last_count < EXIST_MIN_MONSTER then
-            self:randomshowMonster()
+function GameMaster:logicUpdate()    
+    if stage == 0 then
+        if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
+            math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+            for i=1,4 do
+                self:randomshowMonster(true)
+            end
+            stage = 1
         end
-    elseif kill_count == KILL_MAX_MONSTER and showboss == false then
-        showboss = true
-        self:showBoss()
+    elseif  stage == 1 then
+        if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
+            math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+            for i=1,4 do
+                self:randomshowMonster(true)
+            end
+            stage = 2
+        end
+    elseif stage == 2 then
+        if List.getSize(MonsterManager) == 0 then
+            for i = HeroManager.first, HeroManager.last do
+                local hero = HeroManager[i]
+                if hero ~= nil then
+                    hero._goRight = true
+                end
+            end
+            stage = 3
+        end
+    elseif stage == 3 then
+        if getFocusPointOfHeros().x > battleSiteX[2] then
+            math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+            for i=1,3 do
+                self:randomshowMonster(true)
+            end
+            for i=1,4 do
+                self:randomshowMonster(false)
+            end
+            stage = 4
+        end
+    elseif stage == 4 then
+        if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
+            math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+            for i=1,4 do
+                self:randomshowMonster(true)
+            end
+            stage = 5
+        end
+    elseif stage == 5 then
+        if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
+            math.randomseed(tostring(os.time()):reverse():sub(1, 6))
+            for i=1,4 do
+                self:randomshowMonster(false)
+            end
+            stage = 6
+        end
+    elseif stage == 6 then
+        if List.getSize(MonsterManager) == 0 then
+            for i = HeroManager.first, HeroManager.last do
+                local hero = HeroManager[i]
+                if hero ~= nil then
+                    hero._goRight = true
+                end
+            end
+            stage = 7
+        end
+    elseif stage == 7 then
+        if getFocusPointOfHeros().x > battleSiteX[3] then
+            self:showWarning()
+            stage = 8
+        end
     end
 end
 
 function GameMaster:AddHeros()
 
 	local knight = Knight:create()
-   	knight:setPosition(-1100, 250)
+   	knight:setPosition(battleSiteX[1], 10)
     currentLayer:addChild(knight)
     knight:idleMode()
     List.pushlast(HeroManager, knight)
 
 	local mage = Mage:create()
-   	mage:setPosition(-1200, 200)
+   	mage:setPosition(battleSiteX[1], 100)
    	currentLayer:addChild(mage)
    	mage:idleMode()
    	List.pushlast(HeroManager, mage)
    	
     local archer = Archer:create()
-    archer:setPosition(-1200, 100)
+    archer:setPosition(battleSiteX[1], -80)
     currentLayer:addChild(archer)
     archer:idleMode()
-    List.pushlast(HeroManager, archer)   	
-
+    List.pushlast(HeroManager, archer)
 end
 
 function GameMaster:addMonsters()
@@ -102,10 +171,12 @@ end
 
 function GameMaster:addSlime()
     for var=1, monsterCount.slime do
-    	local slime = Slime:create()
-    	slime:retain()
-    	List.pushlast(SlimePool,slime)
-    end   
+        local slime = Slime:create()
+        currentLayer:addChild(slime)
+        slime:setVisible(false)
+        slime:setAIEnabled(false)
+        List.pushlast(SlimePool,slime)
+    end 
 end
 
 function GameMaster:addPiglet()
@@ -128,113 +199,145 @@ function GameMaster:addRat()
     end  
 end
 
-function GameMaster:showDragon()
+function GameMaster:showDragon(isFront)
     if List.getSize(DragonPool) ~= 0 then
         local dragon = List.popfirst(DragonPool)
         dragon:reset()
         local appearPos = getFocusPointOfHeros()
-        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
-        local randomvar = math.random()
-        --cclog("the randomvar is %f",randomvar)
-        if randomvar < 0.4 then appearPos.x = appearPos.x - 1200
-        else appearPos.x = appearPos.x + 1200 end
-        if appearPos.x < G.activearea.left then 
-            appearPos.x = appearPos.x + 2400 
+        if isFront then
+            appearPos.x = appearPos.x + frontDistanceWithHeroX
+            dragon:setFacing(180)
+        else
+            appearPos.x = appearPos.x - backwardDistanceWithHeroX
+            dragon:setFacing(0)
         end
-        if appearPos.x > G.activearea.right then 
-            appearPos.x = appearPos.x - 2400 
-        end
-        appearPos.y = appearPos.y -30 + randomvar*60
+        local randomvar = 2*math.random()-1
+        appearPos.y = appearPos.y + randomvar*distanceWithHeroY
         dragon:setPosition(appearPos)
+        dragon._myPos = appearPos
         dragon:setVisible(true)
+        dragon._goRight = false
         dragon:setAIEnabled(true)
         List.pushlast(MonsterManager, dragon)
         show_count = show_count + 1
     end
 end
 
-function GameMaster:showPiglet()
+function GameMaster:showPiglet(isFront)
     if List.getSize(PigletPool) ~= 0 then
         local piglet = List.popfirst(PigletPool)
         piglet:reset()
         local appearPos = getFocusPointOfHeros()
-        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
-        local randomvar = math.random()
-        --cclog("the randomvar is %f",randomvar)
-        if randomvar < 0.4 then appearPos.x = appearPos.x - 1200
-        else appearPos.x = appearPos.x + 1200 end
-        if appearPos.x < G.activearea.left then 
-            appearPos.x = appearPos.x + 2400 
+        if isFront then
+            appearPos.x = appearPos.x + frontDistanceWithHeroX
+            piglet:setFacing(180)
+        else
+            appearPos.x = appearPos.x - backwardDistanceWithHeroX
+            piglet:setFacing(0)
         end
-        if appearPos.x > G.activearea.right then 
-            appearPos.x = appearPos.x - 2400 
-        end
-        appearPos.y = appearPos.y -30 + randomvar*60
+        local randomvar = 2*math.random()-1
+        appearPos.y = appearPos.y + randomvar*distanceWithHeroY
         piglet:setPosition(appearPos)
+        piglet._myPos = appearPos
         piglet:setVisible(true)
+        piglet._goRight = false
         piglet:setAIEnabled(true)
         List.pushlast(MonsterManager, piglet)
         show_count = show_count + 1
     end
 end
 
-function GameMaster:showSlime()
-	if List.getSize(SlimePool) ~= 0 then
+function GameMaster:showSlime(isFront)
+    if List.getSize(SlimePool) ~= 0 then
         local slime = List.popfirst(SlimePool)
-        slime:setPosition({x=800,y=100})
-        currentLayer:addChild(slime)
+        slime:reset()
+        
+        local appearPos = getFocusPointOfHeros()
+        if isFront then
+            appearPos.x = appearPos.x + frontDistanceWithHeroX
+        else
+            appearPos.x = appearPos.x - backwardDistanceWithHeroX
+        end
+        local randomvar = 2*math.random()-1
+        appearPos.y = appearPos.y + randomvar*distanceWithHeroY
+        slime:setPosition(appearPos)
+        slime:setVisible(true)
+        slime:setAIEnabled(true)
         List.pushlast(MonsterManager, slime)
-        kill_count = kill_count + 1
+        show_count = show_count + 1
     end
 end
 
-function GameMaster:showRat()
+function GameMaster:showRat(isFront)
     if List.getSize(RatPool) ~= 0 then
         local rat = List.popfirst(RatPool)
         rat:reset()
         local appearPos = getFocusPointOfHeros()
-        math.randomseed(tostring(os.time()):reverse():sub(1, 6))
-        local randomvar = math.random()
-        --cclog("the randomvar is %f",randomvar)
-        if randomvar < 0.4 then appearPos.x = appearPos.x - 1200
-        else appearPos.x = appearPos.x + 1200 end
-        if appearPos.x < G.activearea.left then 
-            appearPos.x = appearPos.x + 2400 
+        local randomvar = 2*math.random()-1
+        if isFront then
+            appearPos.x = appearPos.x + frontDistanceWithHeroX+randomvar*distanceWithHeroX
+        else
+            appearPos.x = appearPos.x - backwardDistanceWithHeroX+randomvar*distanceWithHeroX
         end
-        if appearPos.x > G.activearea.right then 
-            appearPos.x = appearPos.x - 2400 
-        end
-        appearPos.y = appearPos.y -30 + randomvar*60
+        appearPos.y = appearPos.y + 1000
         rat:setPosition(appearPos)
+        rat._myPos = appearPos
         rat:setVisible(true)
-        rat:setAIEnabled(true)
+        rat._goRight = false
+        local function enableAI()
+            rat:setAIEnabled(true)
+        end
+        local offsetX = 200
+        local offsetY = 200 
+        if stage == 0 then
+            rat:runAction(cc.Sequence:create(cc.JumpBy3D:create(0.5,cc.V3(-200,-200,0),150,1),cc.CallFunc:create(enableAI)))
+            rat:setFacing(45)
+        else
+            rat:runAction(cc.Sequence:create(cc.JumpBy3D:create(0.5,cc.V3(0,-200,0),150,1),cc.CallFunc:create(enableAI)))
+            rat:setFacing(90)
+        end
         List.pushlast(MonsterManager, rat)
         show_count = show_count + 1
     end
 end
 
-function GameMaster:randomshowMonster()
+function GameMaster:randomshowMonster(isFront)
 	local random_var = math.random()
-	if random_var<0.25 then
-		self:showDragon()
-	elseif random_var<0.5 then
-		self:showPiglet()
-	elseif random_var<0.75 then
-		-- self:showSlime()
-        self:showRat()
+	if random_var<0.15 then
+		self:showDragon(isFront)
+	elseif random_var<0.3 then
+        self:showRat(isFront)
+	elseif random_var<0.6 then
+        self:showPiglet(isFront)
 	else
-		self:showRat()
+        --self:showSlime(isFront)
+        self:showDragon(isFront)
 	end
 end
 
 function GameMaster:showBoss()
-    self:showWarning()
+    --boss should appear int pos(300,200)
+    --now assume Boss is a piglet.
+    if List.getSize(PigletPool) ~= 0 then
+        local piglet = List.popfirst(PigletPool)
+        piglet:reset()
+        piglet:setScale(3)
+        piglet:setFacing(180)
+        local appearPos = cc.p(300,200)
+        piglet:setPosition(appearPos)
+        piglet._myPos = appearPos
+        piglet:setVisible(true)
+        piglet._goRight = false
+        piglet:setAIEnabled(true)
+        List.pushlast(MonsterManager, piglet)
+        show_count = show_count + 1
+    end
 end
 
 function GameMaster:showWarning()
 	local warning = cc.Layer:create()
-	local warning_logo = cc.Sprite:create("battlefieldUI/caution.png")
-	warning_logo:setPosition(cc.p(100,200))
+	local warning_logo = cc.Sprite:createWithSpriteFrameName("caution.png")
+    warning_logo:setPosition(G.winSize.width*0.5,G.winSize.height*0.5)
 	warning_logo:setPositionZ(1)
 	local function showdialog()
 	   warning:removeFromParent()
@@ -244,54 +347,66 @@ function GameMaster:showWarning()
 	warning:addChild(warning_logo)
 	
 	warning:setScale(0.5)
-    warning:setPosition({x=250,y=80})
     warning:setPositionZ(-cc.Director:getInstance():getZEye()/2)
     warning:ignoreAnchorPointForPosition(false)
     warning:setLocalZOrder(999)
     camera:addChild(warning,2)
-
 end
 
 function GameMaster:showDialog()
+    local colorLayer = cc.LayerColor:create(cc.c4b(10,10,10,150))
+    colorLayer:ignoreAnchorPointForPosition(false)
+    colorLayer:setPositionZ(-cc.Director:getInstance():getZEye()/4)
+    colorLayer:setGlobalZOrder(0)
+    camera:addChild(colorLayer)
+    
+    --create dialog
     local dialog = cc.Layer:create()
+    dialog:setPositionX(-G.winSize.width*0.025)
+
+    --add outframe
     local outframe = cc.Sprite:createWithSpriteFrameName("outframe.png")
-    outframe:setPositionZ(1)
+    outframe:setPosition(G.winSize.width*0.55,G.winSize.height*0.27)
+    outframe:setScale(0.6*resolutionRate)
     dialog:addChild(outframe)
-    local inframe = cc.Sprite:createWithSpriteFrameName("battlefieldUI/inframe.png")
-    inframe:setPositionX(180)
-    inframe:setPositionZ(2)
+    --add inframe
+    local inframe = cc.Sprite:createWithSpriteFrameName("inframe.png")
+    inframe:setPosition(G.winSize.width*0.67,G.winSize.height*0.27)
+    inframe:setScale(0.5*resolutionRate)
     dialog:addChild(inframe)
+    --add boss icon
     local bossicon = cc.Sprite:createWithSpriteFrameName("bossicon.png")
-    bossicon:setPosition(cc.p(-300,145))
+    bossicon:setPosition(G.winSize.width*0.42,G.winSize.height*0.46)
+    bossicon:setScale(0.75*resolutionRate)
     bossicon:setFlippedX(true)
-    bossicon:setPositionZ(3)
     dialog:addChild(bossicon)
+    --add boss logo
     local bosslogo = cc.Sprite:createWithSpriteFrameName("bosslogo.png")
-    bosslogo:setPosition(cc.p(-300,-20))
-    bosslogo:setPositionZ(4)
+    bosslogo:setPosition(G.winSize.width*0.417,G.winSize.height*0.265)
+    bosslogo:setScale(0.74*resolutionRate)
     dialog:addChild(bosslogo)
-    local text = cc.Label:createWithSystemFont("引擎技术哪家强？","arial",40)
-    text:setPosition(cc.p(200,0))
-    text:setPositionZ(5)
+    --add text
+    local text = cc.Label:createWithSystemFont(BossTaunt,"arial",24)
+    text:setPosition(G.winSize.width*0.68,G.winSize.height*0.27)
     dialog:addChild(text)
-    dialog:setAnchorPoint(cc.p(0.5,0.5))
-    dialog:setPosition({x=300,y=50})
+    --set dialog
     dialog:setScale(0.1)
-    dialog:setPositionZ(-cc.Director:getInstance():getZEye()/2)
     dialog:ignoreAnchorPointForPosition(false)
-    dialog:setLocalZOrder(999)
-    camera:addChild(dialog,2)
+    dialog:setPositionZ(-cc.Director:getInstance():getZEye()/3)
+    dialog:setGlobalZOrder(0)
+    camera:addChild(dialog)
     local function pausegame()
         for var = HeroManager.first, HeroManager.last do
             HeroManager[var]:idleMode()
             HeroManager[var]:setAIEnabled(false)
         end
     end
-    dialog:runAction(cc.Sequence:create(cc.ScaleTo:create(0.5,0.5),cc.CallFunc:create(pausegame)))
+    dialog:runAction(cc.Sequence:create(cc.ScaleTo:create(0.5 ,0.5),cc.CallFunc:create(pausegame)))
     uiLayer:setVisible(false)
     local function exitDialog( )
         local function removeDialog()
             dialog:removeFromParent()
+            colorLayer:removeFromParent()
             uiLayer:setVisible(true)
             for var = HeroManager.first, HeroManager.last do
                 HeroManager[var]:setAIEnabled(true)
