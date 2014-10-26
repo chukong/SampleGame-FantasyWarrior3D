@@ -123,9 +123,10 @@ function BattlefieldUI:bloodbarInit()
 end
 
 local function particleRelease()
-    local particle = cc.ParticleSystemQuad:create("particle/Press.plist")
-    particle:setPosition3D(uiLayer.ArcherPng:getPosition3D())
-    uiLayer:addChild(particle)
+--    local particle = cc.ParticleSystemQuad:create(ParticleManager:getInstance():getPlistData("avartaRing"))
+--    particle:setPosition3D(uiLayer.ArcherPng:getPosition3D())
+--    particle:setGlobalZOrder(3001)
+--    uiLayer:addChild(particle)
 end
 
 function BattlefieldUI:touchButtonInit()
