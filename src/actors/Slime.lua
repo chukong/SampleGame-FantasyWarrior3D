@@ -12,7 +12,7 @@ end)
 function Slime:ctor()
     copyTable(ActorCommonValues, self)
     copyTable(SlimeValues,self)
-
+    self._angryFace = false
     self:init3D()
     self:initActions()
 end
@@ -31,7 +31,6 @@ function Slime.create()
     ret:play3DAnim()
     return ret
 end
-
 function Slime:play3DAnim()
     self._sprite3d:runAction(cc.RepeatForever:create(createAnimation(file,0,22,0.7)))
     
@@ -44,16 +43,9 @@ function Slime:playAnimation(name, loop)
         else
             self._curAnimation3d = self._action[name]:clone()
         end
-        self._curAnimation3d:retain()
-        local that = self
-        local sp = self._sprite3d
-        local action = self._curAnimation3d
-        
-        local function callback()
-            sp:runAction(action)
-        end
-        self._sprite3d:runAction(cc.MoveTo:create(0.2, cc.V3(0,0,0)))
-        delayExecute(self,callback,0.25)
+        self._sprite3d:setPosition3D(cc.V3(0,0,0))
+        self._sprite3d:setRotation3D(cc.V3(90,0,-90))
+        self._sprite3d:runAction(self._curAnimation3d)
         self._curAnimation = name
     end
 end
@@ -68,13 +60,32 @@ function Slime:init3D()
     self._sprite3d:setRotation(-90)
 end
 --
---function Slime:walkMode() --switch into walk mode
---    self:setStateType(EnumStateType.WALKING)
---    local function callback()
---        self:playAnimation("walk", true)
---    end
---    self._sprite3d:runAction(cc.Sequence:create(cc.MoveTo:create(0.2,cc.V3(0,0,0)), cc.CallFunc:create(callback)))
---end
+function Slime:walkMode()
+    self:angryFace(false)
+    Actor.walkMode(self)
+end
+function Slime:attackMode()
+    self:angryFace(true)
+    Actor.attackMode(self)
+end
+function Slime:idleMode()
+    self:angryFace(false)
+    Actor.idleMode(self)
+end
+function Slime:knockMode(collider, dirKnockMode)
+    self:angryFace(false)
+    Actor.knockMode(self,collider,dirKnockMode)
+end
+function Slime:angryFace(trueFalse)
+    if self._angryFace ~= trueFalse then
+        self._angryFace = trueFalse
+        if trueFalse then
+            self:setTexture("model/slime/baozi2.jpg")
+        else
+            self:setTexture("model/slime/baozi.jpg")
+        end
+    end   
+end
 
 -- init Slime animations=============================
 do
@@ -99,10 +110,38 @@ do
         cc.ScaleTo:create(dur/2, bsc,bsc,bsc)
     )
     idle:retain()
+    local attack1 = cc.Spawn:create(
+            cc.MoveBy:create(dur/2, cc.V3(0,0,20)),
+            cc.RotateBy:create(dur/2, cc.V3(70,0,0)),
+            cc.EaseBounceOut:create(cc.MoveTo:create(dur/2, cc.p(40, 0)))
+        )
+    local attack2 = cc.Spawn:create(
+            cc.MoveBy:create(dur, cc.V3(0,0,-20)),
+                cc.RotateBy:create(dur*3/4, cc.V3(-70,0,0)),
+                cc.EaseBackOut:create(cc.MoveTo:create(dur, cc.p(0,0)))
+        )
+    attack1:retain()
+    attack2:retain()
+    local die =         cc.Spawn:create(
+        cc.Sequence:create(
+            cc.JumpBy3D:create(dur/2, cc.V3(0,0,0), 30, 1),
+            cc.ScaleBy:create(dur, 2, 2, 0.1)
+        ),
+        cc.RotateBy:create(dur, cc.V3(-90,0,0))
+    )
+    die:retain()
+    local knock = cc.Sequence:create(
+        cc.EaseBackInOut:create(cc.RotateBy:create(dur/3, cc.V3(-60,0,0))),
+        cc.RotateBy:create(dur/2, cc.V3(60,0,0))
+    )
+    knock:retain()
     Slime._action = {
         idle = idle,
-        walk = walk
-        
+        walk = walk,
+        attack1 = attack1,
+        attack2 = attack2,
+        dead = die,
+        knocked = knock
     }
 end
 -- end init Slime animations========================
