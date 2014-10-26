@@ -121,3 +121,5 @@ cmake_install.cmake
 /WarriorQuest/runtime/mac/WarriorQuest Mac.app/Contents/Resources/src/
 
 /WarriorQuest/runtime/mac/WarriorQuest.app/Contents/MacOS/WarriorQuest Mac
+
+/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/build/
