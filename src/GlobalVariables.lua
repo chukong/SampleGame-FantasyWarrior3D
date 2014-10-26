@@ -96,6 +96,8 @@ ActorCommonValues =
     _targetFacing   = 0, --direction the actor Wants to turn to
     
     _target         = nil, --the enemy actor 
+
+    _myPos = cc.p(0, 0)
 }
 ActorDefaultValues =
 {

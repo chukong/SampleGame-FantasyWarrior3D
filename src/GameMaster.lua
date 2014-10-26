@@ -11,13 +11,14 @@ require "Dragon"
 require "Archer"
 
 local gloableZOrder = 1
-local monsterCount = {dragon=3,slime=3,piglet=10,rat=3}
-local EXIST_MIN_MONSTER = 6
+local monsterCount = {dragon=7,slime=7,piglet=7,rat=7}
+local EXIST_MIN_MONSTER = 4
 kill_count = 0
 show_count = 0
-local KILL_MAX_MONSTER = 35
+local KILL_MAX_MONSTER = 30
 local showboss = false
 local scheduleid
+local stage = 0
 
 local GameMaster = class("GameMaster")
 
@@ -38,6 +39,10 @@ end
 function GameMaster:init()
 	self:AddHeros()
 	self:addMonsters()
+    stage = 0
+    for i=1,7 do
+        self:randomshowMonster()
+    end
 end
 
 function GameMaster:update(dt)
@@ -49,15 +54,67 @@ function GameMaster:update(dt)
 end
 
 function GameMaster:logicUpdate()
-    if show_count < KILL_MAX_MONSTER then
-        local max_const_count = monsterCount.piglet + monsterCount.dragon + monsterCount.rat + monsterCount.slime
-        local last_count = List.getSize(DragonPool) + List.getSize(SlimePool) + List.getSize(SlimePool) + List.getSize(PigletPool)
-        if max_const_count - last_count < EXIST_MIN_MONSTER then
-            self:randomshowMonster()
+    print("stage is %d", stage)
+    if stage == 0 then
+        if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
+            for i=1,4 do
+                self:randomshowMonster()
+            end
+            stage = 1
         end
-    elseif kill_count == KILL_MAX_MONSTER and showboss == false then
-        showboss = true
-        self:showBoss()
+    elseif  stage == 1 then
+        if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
+            for i=1,4 do
+                self:randomshowMonster()
+            end
+            stage = 2
+        end
+    elseif stage == 2 then
+        if List.getSize(MonsterManager) == 0 then
+            for i = HeroManager.first, HeroManager.last do
+                local hero = HeroManager[i]
+                if hero ~= nil then
+                    hero._goRight = true
+                end
+            end
+            stage = 3
+        end
+    elseif stage == 3 then
+        if getFocusPointOfHeros().x > 0 then
+            for i=1,7 do -- 3 and 4
+                self:randomshowMonster()
+            end
+            stage = 4
+        end
+    elseif stage == 4 then
+        if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
+            for i=1,4 do
+                self:randomshowMonster()
+            end
+            stage = 5
+        end
+    elseif stage == 5 then
+        if List.getSize(MonsterManager) < EXIST_MIN_MONSTER then
+            for i=1,4 do
+                self:randomshowMonster()
+            end
+            stage = 6
+        end
+    elseif stage == 6 then
+        if List.getSize(MonsterManager) == 0 then
+            for i = HeroManager.first, HeroManager.last do
+                local hero = HeroManager[i]
+                if hero ~= nil then
+                    hero._goRight = true
+                end
+            end
+            stage = 7
+        end
+    elseif stage == 7 then
+        if getFocusPointOfHeros().x > 300 then
+            self:showWarning()
+            stage = 8
+        end
     end
 end
 
@@ -250,7 +307,7 @@ end
 
 function GameMaster:showWarning()
 	local warning = cc.Layer:create()
-	local warning_logo = cc.Sprite:create("battlefieldUI/caution.png")
+    local warning_logo = cc.Sprite:createWithSpriteFrameName("caution.png")
 	warning_logo:setPosition(cc.p(100,200))
 	warning_logo:setPositionZ(1)
 	local function showdialog()
@@ -274,7 +331,7 @@ function GameMaster:showDialog()
     local outframe = cc.Sprite:createWithSpriteFrameName("outframe.png")
     outframe:setPositionZ(1)
     dialog:addChild(outframe)
-    local inframe = cc.Sprite:createWithSpriteFrameName("battlefieldUI/inframe.png")
+    local inframe = cc.Sprite:createWithSpriteFrameName("inframe.png")
     inframe:setPositionX(180)
     inframe:setPositionZ(2)
     dialog:addChild(inframe)
