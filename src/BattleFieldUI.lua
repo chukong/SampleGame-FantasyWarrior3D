@@ -122,6 +122,13 @@ function BattlefieldUI:bloodbarInit()
     self:addChild(self.MageBloodClone,3)
 end
 
+local function particleRelease()
+--    local particle = cc.ParticleSystemQuad:create(ParticleManager:getInstance():getPlistData("avartaRing"))
+--    particle:setPosition3D(uiLayer.ArcherPng:getPosition3D())
+--    particle:setGlobalZOrder(3001)
+--    uiLayer:addChild(particle)
+end
+
 function BattlefieldUI:touchButtonInit()
     self._defenceBtn = cc.Sprite:createWithSpriteFrameName("UI-1136-640_26.png")
     self._defenceBtn:setPosition3D(cc.V3(1089/1136*G.winSize.width,49/640*G.winSize.height,3))
@@ -155,6 +162,9 @@ function BattlefieldUI:touchButtonInit()
     self._coinAmount:setScaleX(0.8)
     self._coinAmount:setScaleY(0.7)
     self:addChild(self._coinAmount,2)
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, particleRelease)
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, particleRelease)
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, particleRelease)
 end
 
 local scheduleID = nil

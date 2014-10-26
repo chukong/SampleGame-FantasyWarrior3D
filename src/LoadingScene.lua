@@ -15,6 +15,7 @@ local particleRes = {
     {"FX/pixi.plist","pixi"},
     {"FX/puffRing.plist","puffRing"},
     {"FX/puffRing2.plist","puffRing2"},
+    {"particle/Press.plist","avartaRing"}
 }
 local spriteFrameRes = {
     "FX/FX.plist",
