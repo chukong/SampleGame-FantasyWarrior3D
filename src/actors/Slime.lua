@@ -44,7 +44,16 @@ function Slime:playAnimation(name, loop)
         else
             self._curAnimation3d = self._action[name]:clone()
         end
-        self._sprite3d:runAction(self._curAnimation3d)
+        self._curAnimation3d:retain()
+        local that = self
+        local sp = self._sprite3d
+        local action = self._curAnimation3d
+        
+        local function callback()
+            sp:runAction(action)
+        end
+        self._sprite3d:runAction(cc.MoveTo:create(0.2, cc.V3(0,0,0)))
+        delayExecute(self,callback,0.25)
         self._curAnimation = name
     end
 end
@@ -58,6 +67,14 @@ function Slime:init3D()
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     self._sprite3d:setRotation(-90)
 end
+--
+--function Slime:walkMode() --switch into walk mode
+--    self:setStateType(EnumStateType.WALKING)
+--    local function callback()
+--        self:playAnimation("walk", true)
+--    end
+--    self._sprite3d:runAction(cc.Sequence:create(cc.MoveTo:create(0.2,cc.V3(0,0,0)), cc.CallFunc:create(callback)))
+--end
 
 -- init Slime animations=============================
 do
@@ -78,8 +95,8 @@ do
         )
     walk:retain()
     local idle = cc.Sequence:create(
-        cc.ScaleTo:create(dur/3, bsc*1.1, bsc*1.1, bsc*0.8),
-        cc.ScaleTo:create(dur/3, bsc,bsc,bsc)
+        cc.ScaleTo:create(dur/2, bsc*1.1, bsc*1.1, bsc*0.8),
+        cc.ScaleTo:create(dur/2, bsc,bsc,bsc)
     )
     idle:retain()
     Slime._action = {

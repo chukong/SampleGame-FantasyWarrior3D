@@ -12,15 +12,12 @@ function solveAttacks(dt)
             for mkey = MonsterManager.last, MonsterManager.first, -1 do
                 --check distance first
                 local monster = MonsterManager[mkey]
-                local mpos = getPosTable(monster)
+                local mpos = monster._myPos
                 local dist = cc.pGetDistance(apos, mpos)
                 if dist < (attack.maxRange + monster._radius) and dist > attack.minRange then
                     --range test passed, now angle test
                     local angle = radNormalize(cc.pToAngleSelf(cc.pSub(mpos,apos)))
                     local afacing = radNormalize(attack.facing)
-                    if attack.mask == EnumRaceType.MAGE then
-                        --print("attack is ", angle, afacing)
-                    end
                     
                     if(afacing + attack.angle/2)>angle and angle > (afacing- attack.angle/2) then
                         attack:onCollide(monster)
@@ -32,7 +29,7 @@ function solveAttacks(dt)
             for hkey = HeroManager.last, HeroManager.first, -1 do
                 --check distance first
                 local hero = HeroManager[hkey]
-                local hpos = getPosTable(hero)
+                local hpos = hero._myPos
                 local dist = cc.pGetDistance(getPosTable(attack), hpos)
                 if dist < (attack.maxRange + hero._radius) and dist > attack.minRange then
                     --range test passed, now angle test
@@ -214,7 +211,7 @@ function MageNormalAttack:onUpdate(dt)
     local nextPos
     if self._target and self._target._isalive then
         local selfPos = getPosTable(self)
-        local tpos = getPosTable(self._target)
+        local tpos = self._target._myPos
         local angle = cc.pToAngleSelf(cc.pSub(tpos,selfPos))
         nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,angle)
     else
