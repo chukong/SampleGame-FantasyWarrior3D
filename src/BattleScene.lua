@@ -149,8 +149,6 @@ function BattleScene:enableTouch()
     end
     
     local function onTouchEnded(touch,event)
-        cameraOffset.valid = false
-
         local location = touch:getLocation()
         local message = self:UIcontainsPoint(location)
         if message ~= nil then
@@ -191,6 +189,8 @@ function BattleScene.create()
     currentLayer = cc.Layer:create()
     currentLayer:setCascadeColorEnabled(true)
     scene:addChild(currentLayer)
+
+    cc.Texture2D:setDefaultAlphaPixelFormat(cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
 
     scene:enableTouch()    
     createBackground()

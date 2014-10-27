@@ -30,7 +30,7 @@ end
 --crate a main layer
 function MainMenuScene:createLayer()
     local mainLayer = cc.Layer:create()
-    
+    cc.Texture2D:setDefaultAlphaPixelFormat(cc.TEXTURE2_D_PIXEL_FORMAT_AUTO)
     --add bg
     self:addBg(mainLayer)
     

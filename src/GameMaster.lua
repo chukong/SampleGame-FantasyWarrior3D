@@ -355,8 +355,10 @@ function GameMaster:showBoss()
 end
 
 function GameMaster:showWarning()
+    cc.Texture2D:setDefaultAlphaPixelFormat(cc.TEXTURE2_D_PIXEL_FORMAT_AUTO)
 	local warning = cc.Layer:create()
 	local warning_logo = cc.Sprite:createWithSpriteFrameName("caution.png")
+    cc.Texture2D:setDefaultAlphaPixelFormat(cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
     warning_logo:setPosition(G.winSize.width*0.5,G.winSize.height*0.5)
 	warning_logo:setPositionZ(1)
 	local function showdialog()
