@@ -360,6 +360,7 @@ function GameMaster:showWarning()
 	local function showdialog()
 	   warning:removeFromParent()
 	   self:showDialog()
+        ccexp.AudioEngine:play2d("audios/effects/boss/boss.mp3", false,1)
 	end
 	warning_logo:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),cc.EaseSineOut:create(cc.Blink:create(1.5,3)),cc.CallFunc:create(showdialog)))
 	warning:addChild(warning_logo)

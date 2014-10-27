@@ -99,6 +99,11 @@ function ChooseRoleScene:addButton()
                 --stop schedule
                 cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._schedule_rotate)
                 --replace scene
+                package.loaded["BattleScene"]=nil
+                package.loaded["Manager"]=nil
+                package.loaded["Helper"]=nil
+                package.loaded["MessageDispatchCenter"]=nil
+                package.loaded["BattleFieldUI"]=nil
                 local scene = require("BattleScene")
                 cc.Director:getInstance():replaceScene(scene.create())
             end
