@@ -1,7 +1,6 @@
 require "Manager"
 require "Knight"
 require "Mage"
-require "Monster"
 require "Actor"
 require "GlobalVariables"
 require "Piglet"

@@ -207,7 +207,7 @@ function MageNormalAttack:onCollide(target)
     self:hurtEffect(target)
     self:playHitAudio()    
     self.owner._angry = self.owner._angry + target:hurt(self)*0.3
-    local anaryChange = {_name = "Mage", _angry = self.owner._angry, _angryMax = self.owner._angryMax}
+    local anaryChange = {_name = MageValues._name, _angry = self.owner._angry, _angryMax = self.owner._angryMax}
     MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
@@ -329,7 +329,7 @@ function MageIceSpikes:onCollide(target)
         self:hurtEffect(target)
         self:playHitAudio()    
         self.owner._angry = self.owner._angry + target:hurt(self)*0.1
-        local anaryChange = {_name = "Mage", _angry = self.owner._angry, _angryMax = self.owner._angryMax}
+        local anaryChange = {_name = MageValues._name, _angry = self.owner._angry, _angryMax = self.owner._angryMax}
         MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
         self.DOTApplied = true
     end
@@ -368,7 +368,7 @@ function ArcherNormalAttack:onCollide(target)
     self:hurtEffect(target)
     self:playHitAudio()    
     self.owner._angry = self.owner._angry + target:hurt(self, true)*0.3
-    local anaryChange = {_name = "Archer", _angry = self.owner._angry, _angryMax = self.owner._angryMax}
+    local anaryChange = {_name = ArcherValues._name, _angry = self.owner._angry, _angryMax = self.owner._angryMax}
     MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
@@ -403,7 +403,7 @@ function ArcherSpecialAttack:onCollide(target)
         self:hurtEffect(target)
         self:playHitAudio()    
         self.owner._angry = self.owner._angry + target:hurt(self, true)*0.3
-        local anaryChange = {_name = "Archer", _angry = self.owner._angry, _angryMax = self.owner._angryMax}
+        local anaryChange = {_name = ArcherValues._name, _angry = self.owner._angry, _angryMax = self.owner._angryMax}
         MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
         self.DOTApplied = true
     end
