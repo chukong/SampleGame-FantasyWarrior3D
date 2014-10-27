@@ -3,16 +3,6 @@ require "Actor"
 
 local BattlefieldUI = class("battlefieldUI",function() return cc.Layer:create() end)
 
-local function shakeWhenHurt()
-    
-    local shaky1 = cc.RotateBy:create(0.05,3,3)
-    local shaky2 = cc.RotateBy:create(0.1,-6,-6)
-    local shaky3 = cc.RotateBy:create(0.05,3,0)
-    local shaky = cc.RepeatForever:create(cc.Sequence:create(shaky1,shaky2,shaky3))
-    
-    return shaky
-end
-
 function BattlefieldUI.create()
     local layer = BattlefieldUI.new()
 	return layer
@@ -24,7 +14,7 @@ function BattlefieldUI:ctor()
     self:angrybarInit()
     self:touchButtonInit()
     self:timeInit()
---    self:showVictory()
+--    self:showVictoryUI()
     
     ccexp.AudioEngine:stopAll()
     AUDIO_ID.BATTLEFIELDBGM = ccexp.AudioEngine:play2d(BGM_RES.BATTLEFIELDBGM, true,0.6)
@@ -32,44 +22,50 @@ end
 
 function BattlefieldUI:avatarInit()
 
+    local offset = 8
+    local scale =0.7
+    self.MagePng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_18.png")
+    self.MagePng:setPosition3D(cc.V3(1070/1136*G.winSize.width,70/640*G.winSize.height,2))
+    self.MagePng:setScale(scale)    
+    self:addChild(self.MagePng,2)
+    self.MagePngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
+    self.MagePngFrame:setScale(scale)
+    self.MagePngFrame:setPosition3D(cc.V3(self.MagePng:getPositionX()+1,self.MagePng:getPositionY()-offset,1))
+    self:addChild(self.MagePngFrame,1)
+    
     self.KnightPng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_03.png")
-    self.KnightPng:setPosition3D(cc.V3(860/1136*G.winSize.width,50/640*G.winSize.height,2))
-    self.KnightPng:setScale(0.5)
+    self.KnightPng:setPosition3D(cc.V3(-self.MagePng:getContentSize().width*2 + self.MagePng:getPositionX()+40,70/640*G.winSize.height,2))
+    self.KnightPng:setScale(scale)
     self:addChild(self.KnightPng,2)           
     self.KnightPngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
-    self.KnightPngFrame:setScale(0.5)
-    self.KnightPngFrame:setPosition3D(cc.V3(self.KnightPng:getPositionX()+1,self.KnightPng:getPositionY()-4,1))
+    self.KnightPngFrame:setScale(scale)
+    self.KnightPngFrame:setPosition3D(cc.V3(self.KnightPng:getPositionX()+1,self.KnightPng:getPositionY()-offset,1))
     self:addChild(self.KnightPngFrame,1)
      
     self.ArcherPng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_11.png")
-    self.ArcherPng:setPosition3D(cc.V3(930/1136*G.winSize.width,50/640*G.winSize.height,2))
-    self.ArcherPng:setScale(0.5)
+    self.ArcherPng:setPosition3D(cc.V3(-self.MagePng:getContentSize().width + self.MagePng:getPositionX()+20,70/640*G.winSize.height,2))
+    self.ArcherPng:setScale(scale)
     self:addChild(self.ArcherPng,2)
     self.ArcherPngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
-    self.ArcherPngFrame:setScale(0.5)
-    self.ArcherPngFrame:setPosition3D(cc.V3(self.ArcherPng:getPositionX()+1,self.ArcherPng:getPositionY()-4,1))
+    self.ArcherPngFrame:setScale(scale)
+    self.ArcherPngFrame:setPosition3D(cc.V3(self.ArcherPng:getPositionX()+1,self.ArcherPng:getPositionY()-offset,1))
     self:addChild(self.ArcherPngFrame,1)
     
-    self.MagePng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_18.png")
-    self.MagePng:setPosition3D(cc.V3(1000/1136*G.winSize.width,50/640*G.winSize.height,2))
-    self.MagePng:setScale(0.5)    
-    self:addChild(self.MagePng,2)
-    self.MagePngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
-    self.MagePngFrame:setScale(0.5)
-    self.MagePngFrame:setPosition3D(cc.V3(self.MagePng:getPositionX()+1,self.MagePng:getPositionY()-4,1))
-    self:addChild(self.MagePngFrame,1)
+
 end
 
 function BattlefieldUI:bloodbarInit()
 
+    local offset = 45
+    local scale = 0.7
     self.KnightBlood = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
     self.KnightBlood:setColor(cc.c3b(149,254,26))
     self.KnightBlood:setType(cc.PROGRESS_TIMER_TYPE_BAR)
     self.KnightBlood:setBarChangeRate(cc.vertex2F(1,0))
     self.KnightBlood:setMidpoint(cc.vertex2F(0,0))
     self.KnightBlood:setPercentage(100)
-    self.KnightBlood:setPosition3D(cc.V3(self.KnightPng:getPositionX()-1, self.KnightPng:getPositionY()-32,4))
-    self.KnightBlood:setScale(0.5)
+    self.KnightBlood:setPosition3D(cc.V3(self.KnightPng:getPositionX()-1, self.KnightPng:getPositionY()-offset,4))
+    self.KnightBlood:setScale(scale)
     self:addChild(self.KnightBlood,4)
         
     self.KnightBloodClone = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
@@ -78,8 +74,8 @@ function BattlefieldUI:bloodbarInit()
     self.KnightBloodClone:setBarChangeRate(cc.vertex2F(1,0))
     self.KnightBloodClone:setMidpoint(cc.vertex2F(0,0))
     self.KnightBloodClone:setPercentage(100)
-    self.KnightBloodClone:setPosition3D(cc.V3(self.KnightPng:getPositionX()-1, self.KnightPng:getPositionY()-32,3))
-    self.KnightBloodClone:setScale(0.5)
+    self.KnightBloodClone:setPosition3D(cc.V3(self.KnightPng:getPositionX()-1, self.KnightPng:getPositionY()-offset,3))
+    self.KnightBloodClone:setScale(scale)
     self:addChild(self.KnightBloodClone,3)
         
     self.ArcherBlood = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
@@ -88,8 +84,8 @@ function BattlefieldUI:bloodbarInit()
     self.ArcherBlood:setMidpoint(cc.vertex2F(0,0))
     self.ArcherBlood:setBarChangeRate(cc.vertex2F(1,0))
     self.ArcherBlood:setPercentage(100)
-    self.ArcherBlood:setPosition3D(cc.V3(self.ArcherPng:getPositionX()-1, self.ArcherPng:getPositionY()-32,4))
-    self.ArcherBlood:setScale(0.5)
+    self.ArcherBlood:setPosition3D(cc.V3(self.ArcherPng:getPositionX()-1, self.ArcherPng:getPositionY()-offset,4))
+    self.ArcherBlood:setScale(scale)
     self:addChild(self.ArcherBlood,4)
 
     self.ArcherBloodClone = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
@@ -98,8 +94,8 @@ function BattlefieldUI:bloodbarInit()
     self.ArcherBloodClone:setBarChangeRate(cc.vertex2F(1,0))
     self.ArcherBloodClone:setMidpoint(cc.vertex2F(0,0))
     self.ArcherBloodClone:setPercentage(100)
-    self.ArcherBloodClone:setPosition3D(cc.V3(self.ArcherPng:getPositionX()-1, self.ArcherPng:getPositionY()-32,3))
-    self.ArcherBloodClone:setScale(0.5)
+    self.ArcherBloodClone:setPosition3D(cc.V3(self.ArcherPng:getPositionX()-1, self.ArcherPng:getPositionY()-offset,3))
+    self.ArcherBloodClone:setScale(scale)
     self:addChild(self.ArcherBloodClone,3)
  
     self.MageBlood = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
@@ -108,8 +104,8 @@ function BattlefieldUI:bloodbarInit()
     self.MageBlood:setMidpoint(cc.vertex2F(0,0))
     self.MageBlood:setBarChangeRate(cc.vertex2F(1,0))
     self.MageBlood:setPercentage(100)
-    self.MageBlood:setPosition3D(cc.V3(self.MagePng:getPositionX()-1, self.MagePng:getPositionY()-32,4))
-    self.MageBlood:setScale(0.5)
+    self.MageBlood:setPosition3D(cc.V3(self.MagePng:getPositionX()-1, self.MagePng:getPositionY()-offset,4))
+    self.MageBlood:setScale(scale)
     self:addChild(self.MageBlood,4)
     
     self.MageBloodClone = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
@@ -118,15 +114,19 @@ function BattlefieldUI:bloodbarInit()
     self.MageBloodClone:setBarChangeRate(cc.vertex2F(1,0))
     self.MageBloodClone:setMidpoint(cc.vertex2F(0,0))
     self.MageBloodClone:setPercentage(100)
-    self.MageBloodClone:setPosition3D(cc.V3(self.MagePng:getPositionX()-1, self.MagePng:getPositionY()-32,3))
-    self.MageBloodClone:setScale(0.5)
+    self.MageBloodClone:setPosition3D(cc.V3(self.MagePng:getPositionX()-1, self.MagePng:getPositionY()-offset,3))
+    self.MageBloodClone:setScale(scale)
     self:addChild(self.MageBloodClone,3)
 end
 
 function BattlefieldUI:angrybarInit()
-    local offset = 32+10
+
+    local offset = 53
+    local fullAngerStarOffset=70
     local yellow = cc.c3b(255,255,0)
-    local grey = cc.c3b(166,166,166)
+    local grey = cc.c3b(113,103,76)
+    local action = cc.RepeatForever:create(cc.RotateBy:create(1,cc.V3(0,0,360)))
+
     self.KnightAngry = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
     self.KnightAngry:setColor(yellow)
     self.KnightAngry:setType(cc.PROGRESS_TIMER_TYPE_BAR)
@@ -134,7 +134,7 @@ function BattlefieldUI:angrybarInit()
     self.KnightAngry:setMidpoint(cc.vertex2F(0,0))
     self.KnightAngry:setPercentage(0)
     self.KnightAngry:setPosition3D(cc.V3(self.KnightPng:getPositionX()-1, self.KnightPng:getPositionY() - offset,4))
-    self.KnightAngry:setScale(0.5)
+    self.KnightAngry:setScale(0.7)
     self:addChild(self.KnightAngry,4)
 
     self.KnightAngryClone = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
@@ -144,8 +144,16 @@ function BattlefieldUI:angrybarInit()
     self.KnightAngryClone:setMidpoint(cc.vertex2F(0,0))
     self.KnightAngryClone:setPercentage(100)
     self.KnightAngryClone:setPosition3D(cc.V3(self.KnightPng:getPositionX()-1, self.KnightPng:getPositionY() - offset,3))
-    self.KnightAngryClone:setScale(0.5)
+    self.KnightAngryClone:setScaleX(0.7)
+    self.KnightAngryClone:setScaleY(0.75)
     self:addChild(self.KnightAngryClone,3)
+    
+    self.KnightAngryFullSignal = cc.Sprite:createWithSpriteFrameName("specialLight.png")
+    self.KnightAngryFullSignal:setPosition3D(cc.V3(self.KnightPng:getPositionX(), self.KnightPng:getPositionY() + fullAngerStarOffset,4))
+    self.KnightAngryFullSignal:runAction(action)
+    self.KnightAngryFullSignal:setScale(1)
+    self:addChild(self.KnightAngryFullSignal,4)
+    self.KnightAngryFullSignal:setVisible(false)
 
     self.ArcherAngry = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
     self.ArcherAngry:setColor(yellow)
@@ -154,7 +162,7 @@ function BattlefieldUI:angrybarInit()
     self.ArcherAngry:setBarChangeRate(cc.vertex2F(1,0))
     self.ArcherAngry:setPercentage(0)
     self.ArcherAngry:setPosition3D(cc.V3(self.ArcherPng:getPositionX()-1, self.ArcherPng:getPositionY() - offset,4))
-    self.ArcherAngry:setScale(0.5)
+    self.ArcherAngry:setScale(0.7)
     self:addChild(self.ArcherAngry,4)
 
     self.ArcherAngryClone = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
@@ -164,8 +172,16 @@ function BattlefieldUI:angrybarInit()
     self.ArcherAngryClone:setMidpoint(cc.vertex2F(0,0))
     self.ArcherAngryClone:setPercentage(100)
     self.ArcherAngryClone:setPosition3D(cc.V3(self.ArcherPng:getPositionX()-1, self.ArcherPng:getPositionY() - offset,3))
-    self.ArcherAngryClone:setScale(0.5)
+    self.ArcherAngryClone:setScaleX(0.7)
+    self.ArcherAngryClone:setScaleY(0.75)
     self:addChild(self.ArcherAngryClone,3)
+
+    self.ArcherAngryFullSignal = cc.Sprite:createWithSpriteFrameName("specialLight.png")
+    self.ArcherAngryFullSignal:setPosition3D(cc.V3(self.ArcherPng:getPositionX(), self.ArcherPng:getPositionY() + fullAngerStarOffset,4))
+    self:addChild(self.ArcherAngryFullSignal,4)
+    self.ArcherAngryFullSignal:runAction(action:clone())
+    self.ArcherAngryFullSignal:setScale(1)
+    self.ArcherAngryFullSignal:setVisible(false)
 
     self.MageAngry = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
     self.MageAngry:setColor(yellow)
@@ -174,7 +190,7 @@ function BattlefieldUI:angrybarInit()
     self.MageAngry:setBarChangeRate(cc.vertex2F(1,0))
     self.MageAngry:setPercentage(0)
     self.MageAngry:setPosition3D(cc.V3(self.MagePng:getPositionX()-1, self.MagePng:getPositionY() - offset,4))
-    self.MageAngry:setScale(0.5)
+    self.MageAngry:setScale(0.7)
     self:addChild(self.MageAngry,4)
 
     self.MageAngryClone = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
@@ -184,59 +200,60 @@ function BattlefieldUI:angrybarInit()
     self.MageAngryClone:setMidpoint(cc.vertex2F(0,0))
     self.MageAngryClone:setPercentage(100)
     self.MageAngryClone:setPosition3D(cc.V3(self.MagePng:getPositionX()-1, self.MagePng:getPositionY() - offset,3))
-    self.MageAngryClone:setScale(0.5)
+    self.MageAngryClone:setScaleX(0.7)
+    self.MageAngryClone:setScaleY(0.75)
     self:addChild(self.MageAngryClone,3)
-end
-
-local function particleRelease()
---    local particle = cc.ParticleSystemQuad:create(ParticleManager:getInstance():getPlistData("avartaRing"))
---    particle:setPosition3D(uiLayer.ArcherPng:getPosition3D())
---    particle:setGlobalZOrder(3001)
---    uiLayer:addChild(particle)
+    
+    self.MageAngryFullSignal = cc.Sprite:createWithSpriteFrameName("specialLight.png")
+    self.MageAngryFullSignal:setPosition3D(cc.V3(self.MagePng:getPositionX(), self.MagePng:getPositionY() + fullAngerStarOffset,4))
+    self:addChild(self.MageAngryFullSignal,4)
+    self.MageAngryFullSignal:runAction(action:clone())
+    self.MageAngryFullSignal:setScale(1)
+    self.MageAngryFullSignal:setVisible(false)
 end
 
 function BattlefieldUI:touchButtonInit()
-    self._defenceBtn = cc.Sprite:createWithSpriteFrameName("UI-1136-640_26.png")
-    self._defenceBtn:setPosition3D(cc.V3(1089/1136*G.winSize.width,49/640*G.winSize.height,3))
-    self._defenceBtn:setScale(0.65)
-    self:addChild(self._defenceBtn,3)
 
     self._setBtn =cc.Sprite:createWithSpriteFrameName("UI-1136-640_06.png")
-    self._setBtn:setPosition3D(cc.V3(1093/1136*G.winSize.width,601/640*G.winSize.height,3))
+    self._setBtn:setPosition3D(cc.V3(1093/1136*G.winSize.width,591/640*G.winSize.height,3))
     self._setBtn:setScale(0.8)
     self:addChild(self._setBtn,3)
     
     self._chest = cc.Sprite:createWithSpriteFrameName("chest.png")
-    self._chest:setPosition3D(cc.V3(861/1136*G.winSize.width,605/640*G.winSize.height,3))
-    self._chest:setScale(0.7)
+    self._chest:setPosition3D(cc.V3(861/1136*G.winSize.width,595/640*G.winSize.height,3))
+    self._chest:setScale(0.8)
     self:addChild(self._chest,3)
     
     self._coin = cc.Sprite:createWithSpriteFrameName("coins.png")
-    self._coin:setPosition3D(cc.V3(1028.49/1136*G.winSize.width,603/640*G.winSize.height,3))
-    self._coin:setScaleX(0.7)
-    self._coin:setScaleY(0.68)
+    self._coin:setPosition3D(cc.V3(1028.49/1136*G.winSize.width,593/640*G.winSize.height,3))
+    self._coin:setScaleX(0.8)
+    self._coin:setScaleY(0.8)
     self:addChild(self._coin,3)
     
     self._chestAmount = cc.Sprite:createWithSpriteFrameName("UI-1.png")
-    self._chestAmount:setPosition3D(cc.V3(790/1136*G.winSize.width,600/640*G.winSize.height,2))
+    self._chestAmount:setPosition3D(cc.V3(785/1136*G.winSize.width,590/640*G.winSize.height,2))
     self._chestAmount:setScaleX(0.8)
     self._chestAmount:setScaleY(0.7)
     self:addChild(self._chestAmount,2)
     
     self._coinAmount = cc.Sprite:createWithSpriteFrameName("UI-1.png")
-    self._coinAmount:setPosition3D(cc.V3(962/1136*G.winSize.width,600/640*G.winSize.height,2))
+    self._coinAmount:setPosition3D(cc.V3(957/1136*G.winSize.width,590/640*G.winSize.height,2))
     self._coinAmount:setScaleX(0.8)
     self._coinAmount:setScaleY(0.7)
     self:addChild(self._coinAmount,2)
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, particleRelease)
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, particleRelease)
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, particleRelease)
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, particleRelease)
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, particleRelease)
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, particleRelease)
 end
 
 local scheduleID = nil
 
 function BattlefieldUI:shakeAvatar()
-    return cc.Repeat:create(cc.Spawn:create(cc.Sequence:create(cc.ScaleTo:create(0.075,0.55), cc.ScaleTo:create(0.075,0.5)), cc.Sequence:create(cc.MoveBy:create(0.05,{x=6.5,y=0}),cc.MoveBy:create(0.05,{x=-13,y=0}),cc.MoveBy:create(0.05,{x=6.5,y=0}))),2)
+    return cc.Repeat:create(cc.Spawn:create(cc.Sequence:create(cc.ScaleTo:create(0.075,0.75),
+                                            cc.ScaleTo:create(0.075,0.7)),
+                                            cc.Sequence:create(cc.MoveBy:create(0.05,{x=6.5,y=0}),
+                                            cc.MoveBy:create(0.05,{x=-13,y=0}),
+                                            cc.MoveBy:create(0.05,{x=6.5,y=0}))),2)
 end
 
 function BattlefieldUI:bloodDrop(heroActor)
@@ -304,10 +321,25 @@ function BattlefieldUI:angryChange(angry)
     local bar
     if angry._name == KnightValues._name then
         bar = self.KnightAngry
+        if percent>=100 then
+            self.KnightAngryFullSignal:setVisible(true)
+        elseif percent == 0 then
+            self.KnightAngryFullSignal:setVisible(false)                
+        end
     elseif angry._name == ArcherValues._name then
         bar = self.ArcherAngry
+        if percent>=100 then
+            self.ArcherAngryFullSignal:setVisible(true)
+        elseif percent == 0 then
+            self.ArcherAngryFullSignal:setVisible(false)                
+        end
     elseif angry._name == MageValues._name then
         bar = self.MageAngry
+        if percent>=100 then
+            self.MageAngryFullSignal:setVisible(true)
+        elseif percent == 0 then
+            self.MageAngryFullSignal:setVisible(false)                
+        end
     end
     
     bar:runAction(progressTo)
@@ -362,6 +394,22 @@ function BattlefieldUI:showVictoryUI()
     --victory runaction
     local action = cc.EaseElasticOut:create(cc.ScaleTo:create(1.5,1))
     victory:runAction(action)
+    
+    --touch event
+    local function onTouchBegan(touch, event)
+        return true
+    end
+    local function onTouchEnded(touch,event)
+        --stop schedule
+        cc.Director:getScheduler():unscheduleScriptEntry(self._tmSchedule)
+        --replace scene
+        cc.Director:getInstance():replaceScene(require("ChooseRoleScene"):create())
+    end
+    local listener = cc.EventListenerTouchOneByOne:create()
+    listener:registerScriptHandler(onTouchBegan,cc.Handler.EVENT_TOUCH_BEGAN )
+    listener:registerScriptHandler(onTouchEnded,cc.Handler.EVENT_TOUCH_ENDED )
+    local eventDispatcher = layer:getEventDispatcher()
+    eventDispatcher:addEventListenerWithSceneGraphPriority(listener,layer)
     
     self:addChild(layer)
 end

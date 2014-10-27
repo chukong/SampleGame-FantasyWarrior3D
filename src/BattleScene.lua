@@ -9,7 +9,7 @@ local gameMaster = nil
 local specialCamera = {valid = false, position = cc.p(0,0)}
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
-local cameraOffset =  cc.V3(0, 0, 0)
+local cameraOffset =  cc.V3(150, 0, 0)
 local cameraOffsetMin = {x=-300, y=-400}
 local cameraOffsetMax = {x=300, y=400}
 
@@ -21,7 +21,7 @@ local function moveCamera(dt)
     local focusPoint = getFocusPointOfHeros()
     if specialCamera.valid == true then
         --local position = cc.pRotateByAngle(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), -360/60/2*dt)
-        local position = cc.pLerp(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), 5*dt)
+        local position = cc.pLerp(cameraPosition, cc.p(specialCamera.position.x, (cameraOffset.y + focusPoint.y-size.height*3/4)*0.5), 5*dt)
         
         camera:setPosition(position)
         camera:lookAt(cc.V3(position.x, specialCamera.position.y, 50.0), cc.V3(0.0, 1.0, 0.0))
@@ -40,8 +40,8 @@ local function updateParticlePos()
     --cclog("updateParticlePos")
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
-        if sprite._particle ~= nil then        
-            sprite._particle:setPosition(getPosTable(sprite))
+        if sprite._effectNode ~= nil then        
+            sprite._effectNode:setPosition(getPosTable(sprite))
         end
     end
 end
@@ -76,8 +76,8 @@ local function setCamera()
     
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
-        if sprite._particle then
-            sprite._particle:setCamera(camera)
+        if sprite._puff then
+            sprite._puff:setCamera(camera)
         end
     end      
     
@@ -88,15 +88,14 @@ local function gameController(dt)
     collisionDetect(dt)
     solveAttacks(dt)
     moveCamera(dt)
-    updateParticlePos()
     gameMaster:update(dt)
 end
 
 local function initUILayer()
     uiLayer = require("BattleFieldUI").create()
 
-    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye()/3)
-    uiLayer:setScale(0.333)
+    uiLayer:setPositionZ(-cc.Director:getInstance():getZEye()/4)
+    uiLayer:setScale(0.25)
     uiLayer:ignoreAnchorPointForPosition(false)
     uiLayer:setGlobalZOrder(3000)
 end
@@ -124,8 +123,9 @@ local function specialPerspective(param)
         specialCamera.valid = false
         currentLayer:setColor(cc.c3b(255, 255, 255))--default white        
         cc.Director:getInstance():getScheduler():setTimeScale(1.0)
+        param.target:setCascadeColorEnabled(true)--restore to the default state  
     end    
-    delayExecute(currentLayer, restoreTimeScale, param.speed)
+    delayExecute(currentLayer, restoreTimeScale, param.dur)
 
     cc.Director:getInstance():getScheduler():setTimeScale(param.speed)
 end
@@ -142,15 +142,13 @@ function BattleScene:enableTouch()
 
         if self:UIcontainsPoint(location) == nil then
             local delta = touch:getDelta()
-            cameraOffset = cc.pGetClampPoint(cc.pAdd(cameraOffset, delta),cameraOffsetMin,cameraOffsetMax)
+            cameraOffset = cc.pGetClampPoint(cc.pSub(cameraOffset, delta),cameraOffsetMin,cameraOffsetMax)
         end
                                    
         self._prePosition = location
     end
     
     local function onTouchEnded(touch,event)
-        cameraOffset.valid = false
-
         local location = touch:getLocation()
         local message = self:UIcontainsPoint(location)
         if message ~= nil then
@@ -191,6 +189,8 @@ function BattleScene.create()
     currentLayer = cc.Layer:create()
     currentLayer:setCascadeColorEnabled(true)
     scene:addChild(currentLayer)
+
+    cc.Texture2D:setDefaultAlphaPixelFormat(cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)
 
     scene:enableTouch()    
     createBackground()

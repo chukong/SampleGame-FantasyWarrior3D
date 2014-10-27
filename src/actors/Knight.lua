@@ -67,8 +67,6 @@ function Knight.create()
     local function specialAttack()
         if ret._specialAttackChance == 1 then return end
         ret._specialAttackChance = 1
-        ret._attackTimer = KnightValues._attackFrequency + 0.01
-        --cclog("Knight.specialAttack")        
     end
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, specialAttack)    
     return ret
@@ -160,6 +158,7 @@ end
 
 function Knight:init3D()
     self:initShadow()
+    self:initPuff()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setScale(25)
     self._sprite3d:addEffect(cc.V3(0,0,0),CelLine, -1)
