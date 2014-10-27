@@ -5,7 +5,9 @@ require "AttackCommand"
 
 
 Actor = class ("Actor", function ()
-	return cc.Node:create()
+    local node = cc.Node:create()
+    node:setCascadeColorEnabled(true)
+	return node
 end)
 
 function Actor:ctor()
@@ -210,6 +212,7 @@ function Actor:knockMode(collider, dirKnockMode)
     end
     local newPos = cc.pRotateByAngle(cc.pAdd({x=collider.knock,y=0}, p),p,angle)
     self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
+    self:setCascadeColorEnabled(true)--if special attack is interrupted then change the value to true      
 end
 
 function Actor:playDyingEffects()
@@ -374,7 +377,9 @@ function Actor:attackUpdate(dt)
             self._curAnimation = attackAction
             self._cooldown = true
         else
+            self:setCascadeColorEnabled(false)--special attack does not change color affected by its parent node    
             local function createCol()
+                self:setCascadeColorEnabled(true)--restore to the default state            
                 self:specialAttack()
             end
             if self._racetype == EnumRaceType.HERO then

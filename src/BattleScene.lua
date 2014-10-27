@@ -118,9 +118,11 @@ local function specialPerspective(param)
     
     specialCamera.position = param.pos
     specialCamera.valid = true
-    
+    currentLayer:setColor(cc.c3b(125, 125, 125))--deep grey
+
     local function restoreTimeScale()
         specialCamera.valid = false
+        currentLayer:setColor(cc.c3b(255, 255, 255))--default white        
         cc.Director:getInstance():getScheduler():setTimeScale(1.0)
     end    
     delayExecute(currentLayer, restoreTimeScale, param.speed)
@@ -187,9 +189,10 @@ end
 function BattleScene.create()
     local scene = BattleScene:new()
     currentLayer = cc.Layer:create()
+    currentLayer:setCascadeColorEnabled(true)
     scene:addChild(currentLayer)
+
     scene:enableTouch()    
- 
     createBackground()
     initUILayer()
     gameMaster = require("GameMaster").create()
