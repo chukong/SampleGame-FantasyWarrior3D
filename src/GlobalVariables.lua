@@ -9,6 +9,7 @@ RECTS = {
     iceBolt = cc.SpriteFrameCache:getInstance():getSpriteFrame("icebolt.png"):getRect(),
     iceSpike =cc.SpriteFrameCache:getInstance():getSpriteFrame("iceSpike1.png"):getRect(),
     fireBall = cc.SpriteFrameCache:getInstance():getSpriteFrame("fireball1.png"):getRect(),
+    thunderBall = cc.SpriteFrameCache:getInstance():getSpriteFrame("thunderball.png"):getRect(),
 }
 cc.SpriteFrameCache:getInstance():addSpriteFrames("battlefieldUI/battleFieldUI.plist")
 
@@ -171,11 +172,12 @@ KnightValues = {
     _AIFrequency    = 1.1,
     _attackRange    = 100,
     _specialAttackChance = 0,
+    _specialSlowTime = 1, 
 
     _normalAttack   = {
         minRange = 0,
         maxRange = 130,
-        angle    = DEGREES_TO_RADIANS(30),
+        angle    = DEGREES_TO_RADIANS(90),
         knock    = 60,
         damage   = 250,
         mask     = EnumRaceType.HERO,
@@ -210,6 +212,7 @@ MageValues = {
     _AIFrequency    = 1.33,
     _attackRange    = 400,
     _specialAttackChance = 0,
+    _specialSlowTime = 0.67,
 
     _normalAttack   = {
         minRange = 0,
@@ -253,6 +256,7 @@ ArcherValues = {
     _attackRange    = 650,
     _specialAttackChance = 0,
     _turnSpeed      = DEGREES_TO_RADIANS(360), --actor turning speed in radians/seconds
+    _specialSlowTime = 0.5, 
 
     _normalAttack   = {
         minRange = 0,
@@ -315,9 +319,9 @@ DragonValues = {
 SlimeValues = {
     _racetype       = EnumRaceType.MONSTER,
     _name           = "Slime",
-    _radius         = 25,
+    _radius         = 35,
     _mass           = 20,
-    _shadowSize     = 20,
+    _shadowSize     = 45,
 
     _hp             = 300,
     _maxhp          = 300,
