@@ -100,6 +100,7 @@ function collisionDetect(dt)
         if sprite._isalive == true then
             collision(sprite)
             isOutOfBound(sprite)
+            sprite._effectNode:setPosition(sprite._myPos)
         else
             List.remove(HeroManager, val)
         end
@@ -109,7 +110,7 @@ function collisionDetect(dt)
         local sprite = MonsterManager[val]
         if sprite._isalive == true then
             collision(sprite)
-            isOutOfBound(sprite)            
+            isOutOfBound(sprite)          
         else
             List.remove(MonsterManager, val)
         end

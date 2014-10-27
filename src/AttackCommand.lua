@@ -138,10 +138,6 @@ function KnightNormalAttack:onTimeOut()
     --self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
     self:removeFromParent()
 end
-function KnightNormalAttack:onCollide(target)
-    self:hurtEffect(target)
-    self:playHitAudio()    
-end
 
 MageNormalAttack = class("MageNormalAttack", function()
     return BasicCollider.new()
@@ -433,8 +429,12 @@ function Nova.create(pos, facing)
     ret:initData(pos, facing, BossValues.nova)
     
     ret.sp = cc.Sprite:createWithSpriteFrameName("nova1.png")
+    ret.sp:setGlobalZOrder(-ret:getPositionY()+FXZorder)
     ret:addChild(ret.sp)
     ret.sp:setPosition(cc.V3(0,0,1))
+    ret.sp:setScale(0)
+    ret.sp:runAction(cc.EaseCircleActionOut:create(cc.ScaleTo:create(0.3, 3)))
+    ret.sp:runAction(cc.FadeOut:create(0.7))
     return ret
 end
 function Nova:onCollide(target)
@@ -442,6 +442,7 @@ function Nova:onCollide(target)
         self:hurtEffect(target)
         self:playHitAudio()    
         self.DOTApplied = true
+        target:hurt(self)
     end
 end
 
@@ -455,7 +456,6 @@ function Nova:onUpdate(dt)
 end
 
 function Nova:onTimeOut()
-    self.sp:runAction(cc.FadeOut:create(1))
     self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
 end
 DragonAttack = class("DragonAttack", function()
@@ -553,9 +553,6 @@ function BossNormal:playHitAudio()
 end
 
 function BossNormal:onCollide(target)
-    self:hurtEffect(target)
-    self:playHitAudio()    
-    target:hurt(self)
     --set cur duration to its max duration, so it will be removed when checking time out
     self.curDuration = self.duration+1
 end

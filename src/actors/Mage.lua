@@ -96,6 +96,7 @@ end
 
 function Mage:init3D()
     self:initShadow()
+    self:initPuff()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setScale(1.9)
     self._sprite3d:addEffect(cc.V3(0,0,0),CelLine, -1)

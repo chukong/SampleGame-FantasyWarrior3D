@@ -69,8 +69,8 @@ end
 
 function Dragon:normalAttack()
     self:normalAttackSoundEffects()
---    DragonAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
-    BossNormal.create(getPosTable(self), self._curFacing, self._normalAttack)
+    DragonAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+--    BossNormal.create(getPosTable(self), self._curFacing, self._normalAttack)
 end
 
 function Dragon:init3D()
