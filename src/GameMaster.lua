@@ -376,6 +376,7 @@ function GameMaster:showWarning()
 end
 
 function GameMaster:showDialog()
+    cc.Texture2D:setDefaultAlphaPixelFormat(cc.TEXTURE2_D_PIXEL_FORMAT_AUTO)
     local colorLayer = cc.LayerColor:create(cc.c4b(10,10,10,150))
     colorLayer:ignoreAnchorPointForPosition(false)
     colorLayer:setPositionZ(-cc.Director:getInstance():getZEye()/4)
@@ -440,6 +441,8 @@ function GameMaster:showDialog()
     end
     
     scheduleid = cc.Director:getInstance():getScheduler():scheduleScriptFunc(exitDialog,3,false)
+
+    cc.Texture2D:setDefaultAlphaPixelFormat(cc.TEXTURE2_D_PIXEL_FORMAT_RG_B565)    
 end
 
 function GameMaster:showVictoryUI()
