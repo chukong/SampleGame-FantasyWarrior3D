@@ -302,13 +302,16 @@ function BattlefieldUI:heroDead(hero)
 
     if hero._name =="Knight" then
         cc.GreyShader:setGreyShader(self.KnightPng)
-        cc.GreyShader:setGreyShader(self.KnightPngFrame)       
+        cc.GreyShader:setGreyShader(self.KnightPngFrame)    
+        self.KnightAngryFullSignal:setVisible(false)   
     elseif hero._name =="Mage" then
         cc.GreyShader:setGreyShader(self.MagePng)
         cc.GreyShader:setGreyShader(self.MagePngFrame)
+        self.MageAngryFullSignal:setVisible(false)
     elseif hero._name=="Archer" then
         cc.GreyShader:setGreyShader(self.ArcherPng)
         cc.GreyShader:setGreyShader(self.ArcherPngFrame)
+        self.ArcherAngryFullSignal:setVisible(false)        
     end
 end
 
