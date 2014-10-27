@@ -409,6 +409,53 @@ RatValues = {
         criticalChance = 0.15
     }, 
 }
+BossValues = {
+    _racetype       = EnumRaceType.MONSTER,
+    _name           = "Boss",
+    _radius         = 50,
+    _mass           = 100,
+    _shadowSize     = 65,
+
+    _hp             = 400,
+    _maxhp          = 450,
+    _defense        = 170,
+    _attackFrequency = 3.7,
+    _recoverTime    = 0.4,
+    _AIFrequency    = 5.3,
+    _AITimer        = 5.0,
+    _attackRange    = 110,
+
+    _speed          = 300,
+    _turnSpeed      = DEGREES_TO_RADIANS(225),
+    _acceleration   = 450,
+    _decceleration  = 750*1.7,
+
+    _normalAttack   = {
+        minRange = 0,
+        maxRange = 110,
+        angle    = DEGREES_TO_RADIANS(100),
+        knock    = 50,
+        damage   = 200,
+        mask     = EnumRaceType.MONSTER,
+        duration = 0,
+        speed    = 0,
+        criticalChance = 0.15
+    }, 
+    nova   = {
+        minRange = 0,
+        maxRange = 250,
+        angle    = DEGREES_TO_RADIANS(360),
+        knock    = 120,
+        damage   = 250,
+        mask     = EnumRaceType.MONSTER,
+        duration = 0.5,
+        speed    = 0,
+        criticalChance = 0.15,
+        DOTTimer = 0.3,
+        curDOTTime = 0.3,
+        DOTApplied = false
+    }, 
+}
 
 --Some common audios
 CommonAudios =

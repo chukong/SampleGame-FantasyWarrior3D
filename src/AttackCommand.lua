@@ -138,10 +138,6 @@ function KnightNormalAttack:onTimeOut()
     --self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
     self:removeFromParent()
 end
-function KnightNormalAttack:onCollide(target)
-    self:hurtEffect(target)
-    self:playHitAudio()    
-end
 
 MageNormalAttack = class("MageNormalAttack", function()
     return BasicCollider.new()
@@ -424,7 +420,44 @@ function ArcherSpecialAttack:onUpdate(dt)
     end
 end
 
+Nova = class("nova", function()
+    return BasicCollider.new()
+end)
 
+function Nova.create(pos, facing)
+    local ret = Nova.new()
+    ret:initData(pos, facing, BossValues.nova)
+    
+    ret.sp = cc.Sprite:createWithSpriteFrameName("nova1.png")
+    ret.sp:setGlobalZOrder(-ret:getPositionY()+FXZorder)
+    ret:addChild(ret.sp)
+    ret.sp:setPosition(cc.V3(0,0,1))
+    ret.sp:setScale(0)
+    ret.sp:runAction(cc.EaseCircleActionOut:create(cc.ScaleTo:create(0.3, 3)))
+    ret.sp:runAction(cc.FadeOut:create(0.7))
+    return ret
+end
+function Nova:onCollide(target)
+    if self.curDOTTime > self.DOTTimer then
+        self:hurtEffect(target)
+        self:playHitAudio()    
+        self.DOTApplied = true
+        target:hurt(self)
+    end
+end
+
+function Nova:onUpdate(dt)
+    -- implement this function if this is a projectile
+    self.curDOTTime = self.curDOTTime + dt
+    if self.DOTApplied then
+        self.DOTApplied = false
+        self.curDOTTime = 0
+    end
+end
+
+function Nova:onTimeOut()
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
+end
 DragonAttack = class("DragonAttack", function()
     return BasicCollider.new()
 end)
@@ -457,6 +490,8 @@ function DragonAttack:onTimeOut()
     local fireballAction = cc.Animate:create(animationCache:getAnimation("fireBallAnim"))
     self.sp:runAction(fireballAction)
     self.sp:setScale(2)
+    
+    
 end
 
 function DragonAttack:playHitAudio()
@@ -472,6 +507,57 @@ function DragonAttack:onCollide(target)
 end
 
 function DragonAttack:onUpdate(dt)
+    local selfPos = getPosTable(self)
+    local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
+    self:setPosition(nextPos)
+end
+
+BossNormal = class("BossNormal", function()
+    return BasicCollider.new()
+end)
+
+function BossNormal.create(pos,facing,attackInfo)
+    local ret = BossNormal.new()
+    ret:initData(pos,facing,attackInfo)
+
+    ret.sp = cc.BillBoard:create("FX/FX.png", RECTS.fireBall)
+    ret.sp:setPosition3D(cc.V3(0,0,48))
+    ret.sp:setScale(1.7)
+    ret:addChild(ret.sp)
+
+    return ret
+end
+
+function BossNormal:onTimeOut()
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),cc.RemoveSelf:create()))
+
+    local magic = cc.ParticleSystemQuad:create(ParticleManager:getInstance():getPlistData("magic"))
+    local magicf = cc.SpriteFrameCache:getInstance():getSpriteFrame("particle.png")
+    magic:setTextureWithRect(magicf:getTexture(), magicf:getRect())
+    magic:setScale(1.5)
+    magic:setRotation3D({x=90, y=0, z=0})
+    self:addChild(magic)
+    magic:setGlobalZOrder(-self:getPositionY()*2+FXZorder)
+    magic:setPositionZ(0)
+    magic:setEndColor({r=1,g=0.5,b=0})
+
+    local fireballAction = cc.Animate:create(animationCache:getAnimation("fireBallAnim"))
+    self.sp:runAction(fireballAction)
+    self.sp:setScale(2)
+    
+    Nova.create(getPosTable(self), self._curFacing)
+end
+
+function BossNormal:playHitAudio()
+    ccexp.AudioEngine:play2d(MonsterDragonValues.fireHit, false,0.6)    
+end
+
+function BossNormal:onCollide(target)
+    --set cur duration to its max duration, so it will be removed when checking time out
+    self.curDuration = self.duration+1
+end
+
+function BossNormal:onUpdate(dt)
     local selfPos = getPosTable(self)
     local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
     self:setPosition(nextPos)

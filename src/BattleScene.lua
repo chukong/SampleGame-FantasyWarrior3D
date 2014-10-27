@@ -40,8 +40,8 @@ local function updateParticlePos()
     --cclog("updateParticlePos")
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
-        if sprite._particle ~= nil then        
-            sprite._particle:setPosition(getPosTable(sprite))
+        if sprite._effectNode ~= nil then        
+            sprite._effectNode:setPosition(getPosTable(sprite))
         end
     end
 end
@@ -76,8 +76,8 @@ local function setCamera()
     
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
-        if sprite._particle then
-            sprite._particle:setCamera(camera)
+        if sprite._puff then
+            sprite._puff:setCamera(camera)
         end
     end      
     
@@ -88,7 +88,6 @@ local function gameController(dt)
     collisionDetect(dt)
     solveAttacks(dt)
     moveCamera(dt)
-    updateParticlePos()
     gameMaster:update(dt)
 end
 
@@ -142,7 +141,7 @@ function BattleScene:enableTouch()
 
         if self:UIcontainsPoint(location) == nil then
             local delta = touch:getDelta()
-            cameraOffset = cc.pGetClampPoint(cc.pAdd(cameraOffset, delta),cameraOffsetMin,cameraOffsetMax)
+            cameraOffset = cc.pGetClampPoint(cc.pSub(cameraOffset, delta),cameraOffsetMin,cameraOffsetMax)
         end
                                    
         self._prePosition = location

@@ -50,10 +50,10 @@ function Archer.create()
 end
 
 function Archer:createArrow()
-    local sprite3d = cc.EffectSprite3D:create("model/archer/arrow1.obj")
+    local sprite3d = cc.Sprite3D:create("model/archer/arrow.obj")
     sprite3d:setTexture("model/archer/hunter01_tex_head.jpg")
     sprite3d:setScale(2)
-    sprite3d:addEffect(cc.V3(0,0,0),1.0, -1)
+    --sprite3d:addEffect(cc.V3(0,0,0),1.0, -1)
     sprite3d:setPosition3D(cc.V3(0,0,50))
     sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     return sprite3d
@@ -118,6 +118,7 @@ end
 
 function Archer:init3D()
     self:initShadow()
+    self:initPuff()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setScale(1.6)
     self._sprite3d:addEffect(cc.V3(0,0,0),CelLine, -1)
