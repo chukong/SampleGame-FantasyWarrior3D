@@ -197,7 +197,7 @@ function BattleScene.create()
     initUILayer()
     gameMaster = require("GameMaster").create()
     setCamera()
-    scheduler:scheduleScriptFunc(gameController, 0, false)
+    gameControllerScheduleID = scheduler:scheduleScriptFunc(gameController, 0, false)
 
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.BLOOD_MINUS, bloodMinus)
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, angryChange)
