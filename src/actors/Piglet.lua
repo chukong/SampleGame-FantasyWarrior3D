@@ -23,7 +23,7 @@ end
 function Piglet:reset()
     copyTable(ActorCommonValues, self)
     copyTable(PigletValues,self)
-    self:_findEnemy(self._raceType)
+    self:_findEnemy(self._racetype)
     self:walkMode()
     self:setPositionZ(0)
 end

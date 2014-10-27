@@ -35,7 +35,7 @@ end
 function Slime:reset()
     copyTable(ActorCommonValues, self)
     copyTable(SlimeValues,self)
-    self:_findEnemy(self._raceType)
+    self:_findEnemy(self._racetype)
     self:walkMode()
     self:setPositionZ(0)
 end

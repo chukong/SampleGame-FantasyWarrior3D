@@ -128,9 +128,9 @@ end
 
 function getFocusPointOfHeros()
     local ptFocus ={x=0, y=0}
-    for var =1, List.getSize(HeroManager) do
-        ptFocus.x=ptFocus.x+HeroManager[var-1]:getPositionX()
-        ptFocus.y=ptFocus.y+HeroManager[var-1]:getPositionY()
+    for var = HeroManager.last, HeroManager.first, -1 do
+        ptFocus.x=ptFocus.x+HeroManager[var]:getPositionX()
+        ptFocus.y=ptFocus.y+HeroManager[var]:getPositionY()
     end
     ptFocus.x = ptFocus.x/List.getSize(HeroManager)
     ptFocus.y = ptFocus.y/List.getSize(HeroManager)

@@ -336,7 +336,7 @@ function BattlefieldUI:timeInit()
         end
         self._tmlabel:setString("00:"..min..sec)
     end
-    self._tmSchedule = cc.Director:getInstance():getScheduler():scheduleScriptFunc(tmUpdate,0,false)
+    --self._tmSchedule = cc.Director:getInstance():getScheduler():scheduleScriptFunc(tmUpdate,0,false)
 end
 
 function BattlefieldUI:showVictoryUI()
