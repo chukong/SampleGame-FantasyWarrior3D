@@ -360,16 +360,20 @@ function BattlefieldUI:timeInit()
     local time = 0
     local function tmUpdate()
         time = time+1
+        if time >= 3600 then
+            time = 0
+        end
+        
         local dev = time
-        local min = math.floor(dev/60)
+        local min = math.floor(dev/60)        
         local sec = dev%60
         if min<10 then
-            min = "0"..min..":"
+            min = "0"..min
         end
         if sec<10 then
             sec = "0"..sec
         end
-        self._tmlabel:setString(""..min..sec)
+        self._tmlabel:setString(min..":"..sec)
     end
 
     self._tmSchedule = cc.Director:getInstance():getScheduler():scheduleScriptFunc(tmUpdate,1,false)
