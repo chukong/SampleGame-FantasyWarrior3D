@@ -346,7 +346,7 @@ function BattlefieldUI:angryChange(angry)
 end
 
 function BattlefieldUI:timeInit()
-    local tm = {"00","00","00"}
+    local tm = {"00","00"}
     tm = table.concat(tm,":")
    
     local ttfconfig = {outlineSize=1,fontSize=25,fontFilePath="fonts/arial.ttf"}
@@ -369,7 +369,7 @@ function BattlefieldUI:timeInit()
         if sec<10 then
             sec = "0"..sec
         end
-        self._tmlabel:setString("00:"..min..sec)
+        self._tmlabel:setString(""..min..sec)
     end
 
     self._tmSchedule = cc.Director:getInstance():getScheduler():scheduleScriptFunc(tmUpdate,1,false)
