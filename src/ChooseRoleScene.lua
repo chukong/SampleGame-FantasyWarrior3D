@@ -96,6 +96,9 @@ function ChooseRoleScene:addButton()
                                  helmet = self.layer:getChildByTag(3):getHelmetID()}
 
                 local playid = ccexp.AudioEngine:play2d(BGM_RES.MAINMENUSTART,false,1)
+                --stop schedule
+                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._schedule_rotate)
+                --replace scene
                 local scene = require("BattleScene")
                 cc.Director:getInstance():replaceScene(scene.create())
             end
@@ -135,6 +138,13 @@ function ChooseRoleScene:addHeros()
     mage:setScale(1.3)
     self.layer:addChild(mage)
     
+    --hero rotate
+    local rotate = 0.5
+    local function hero_rotate()
+        local rotation = self.layer:getChildByTag(sortorder[2]):getRotation3D()
+        self.layer:getChildByTag(sortorder[2]):setRotation3D({x=rotation.x,y=rotation.y+rotate,z=0})
+    end
+    self._schedule_rotate = cc.Director:getInstance():getScheduler():scheduleScriptFunc(hero_rotate,0,false)
 end
 
 function ChooseRoleScene:addBk()
@@ -249,6 +259,13 @@ function ChooseRoleScene:initTouchDispatcher()
 end
 
 function ChooseRoleScene:rotate3Heroes(isRight)
+    --stop hero rotate
+    if isRight then
+        self.layer:getChildByTag(sortorder[2]):runAction(cc.RotateTo:create(0.1,rtt[3]))
+    else
+        self.layer:getChildByTag(sortorder[2]):runAction(cc.RotateTo:create(0.1,rtt[1]))
+    end
+
     local rotatetime = 0.6
     if isRight then
         local middle = self.layer:getChildByTag(sortorder[2])

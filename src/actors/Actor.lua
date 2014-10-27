@@ -40,17 +40,11 @@ function Actor:initPuff()
     local puff = cc.BillboardParticleSystem:create(ParticleManager:getInstance():getPlistData("walkpuff"))
     local puffFrame = cc.SpriteFrameCache:getInstance():getSpriteFrame("walkingPuff.png")
     puff:setTextureWithRect(puffFrame:getTexture(), puffFrame:getRect())
-    puff:setCamera(camera)
-    puff:setEmissionRate(5)
-    puff:setDuration(-1)
-    puff:setScale(1)
-    puff:setStartColor({r=234,g=123,b=245,a=255})
-    puff:setDepthTestEnabled(true)
+    puff:setScale(1.5)
     puff:setGlobalZOrder(-self:getPositionY()+FXZorder)
-    puff:setPositionZ(5)
-    puff:setPositionX(-20)
+    puff:setPositionZ(10)
     self._puff = puff
-    self:addChild(puff)
+    self._effectNode:addChild(puff)
 end
 
 function Actor.create()
@@ -60,8 +54,8 @@ end
 function Actor:initShadow()
     self._circle = cc.Sprite:createWithSpriteFrameName("shadow.png")
     --use Shadow size for aesthetic, use radius to see collision size
-    --self._circle:setScale(self._shadowSize/16)
-    self._circle:setScale(self._radius/8)
+    self._circle:setScale(self._shadowSize/16)
+--    self._circle:setScale(self._radius/8)
 	self._circle:setOpacity(255*0.7)
 	self:addChild(self._circle)
 end
@@ -77,12 +71,6 @@ function Actor:playAnimation(name, loop)
         self._sprite3d:runAction(self._curAnimation3d)
         self._curAnimation = name
     end
-end
-
-function Actor:setState(type)
-    if self._statetype == type then return end
-    
-    self._statetype = type
 end
 
 --getter & setter
@@ -103,17 +91,13 @@ end
 function Actor:setStateType(type)
 	self._statetype = type
     --add puff particle
-	if type == EnumStateType.WALKING then
-        if self._puff == nil then
-            self:initPuff()
-        else
+    if self._puff then
+        if type == EnumStateType.WALKING then
             self._puff:setEmissionRate(5)
-        end
-   else
-        if self._puff ~= nil then
+        else
             self._puff:setEmissionRate(0)
         end
-   end
+    end
 end
 
 function Actor:setTarget(target)
@@ -241,7 +225,7 @@ function Actor:knockMode(collider, dirKnockMode)
     end
     local newPos = cc.pRotateByAngle(cc.pAdd({x=collider.knock,y=0}, p),p,angle)
     self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
-    self:setCascadeColorEnabled(true)--if special attack is interrupted then change the value to true      
+--    self:setCascadeColorEnabled(true)--if special attack is interrupted then change the value to true      
 end
 
 function Actor:playDyingEffects()
@@ -407,15 +391,12 @@ function Actor:attackUpdate(dt)
             self._cooldown = true
         else
             self:setCascadeColorEnabled(false)--special attack does not change color affected by its parent node    
-            local function createCol()
-                self:setCascadeColorEnabled(true)--restore to the default state            
+            local function createCol()        
                 self:specialAttack()
             end
-            if self._racetype == EnumRaceType.HERO then
-                local messageParam = {speed = self._action.specialattack1:getSpeed(), pos = self._myPos}
-                --cclog("calf speed:%.2f", messageParam.speed)
-                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE, messageParam)                    	
-            end
+            local messageParam = {speed = 0.2, pos = self._myPos, dur= self._specialSlowTime , target=self}
+            --cclog("calf speed:%.2f", messageParam.speed)
+            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE, messageParam)                    	
             
             local attackAction = cc.Sequence:create(self._action.specialattack1:clone(),cc.CallFunc:create(createCol),self._action.specialattack2:clone(),cc.CallFunc:create(playIdle))
             self._sprite3d:stopAction(self._curAnimation3d)

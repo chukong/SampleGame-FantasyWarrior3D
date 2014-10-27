@@ -17,13 +17,13 @@
 	<key>emitterType</key>
 	<integer>0</integer>
 	<key>finishColorAlpha</key>
-	<real>0</real>
+	<integer>1</integer>
 	<key>finishColorBlue</key>
-	<real>0</real>
+	<integer>1</integer>
 	<key>finishColorGreen</key>
-	<real>0</real>
+	<integer>1</integer>
 	<key>finishColorRed</key>
-	<real>0</real>
+	<integer>1</integer>
 	<key>finishColorVarianceAlpha</key>
 	<real>0</real>
 	<key>finishColorVarianceBlue</key>
@@ -33,9 +33,9 @@
 	<key>finishColorVarianceRed</key>
 	<real>0</real>
 	<key>finishParticleSize</key>
-	<real>24.41095924377441</real>
+	<integer>0</integer>
 	<key>finishParticleSizeVariance</key>
-	<real>15.73972606658936</real>
+	<integer>0</integer>
 	<key>gravityx</key>
 	<real>0</real>
 	<key>gravityy</key>

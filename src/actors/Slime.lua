@@ -125,7 +125,7 @@ do
             cc.EaseBounceOut:create(cc.MoveTo:create(dur/2, cc.p(40, 0)))
         )
     local attack2 = cc.Spawn:create(
-            cc.MoveBy:create(dur, cc.V3(0,0,-20)),
+            cc.MoveTo:create(dur, cc.V3(0,0,0)),
                 cc.RotateBy:create(dur*3/4, cc.V3(-70,0,0)),
                 cc.EaseBackOut:create(cc.MoveTo:create(dur, cc.p(0,0)))
         )

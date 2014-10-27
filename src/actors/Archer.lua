@@ -42,18 +42,16 @@ function Archer.create()
     function specialAttack()
         if ret._specialAttackChance == 1 then return end
         ret._specialAttackChance = 1
-        ret._attackTimer = ArcherValues._attackFrequency + 0.01
-        --cclog("Archer.specialAttack")
     end
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, specialAttack)
     return ret
 end
 
 function Archer:createArrow()
-    local sprite3d = cc.EffectSprite3D:create("model/archer/arrow1.obj")
+    local sprite3d = cc.Sprite3D:create("model/archer/arrow.obj")
     sprite3d:setTexture("model/archer/hunter01_tex_head.jpg")
     sprite3d:setScale(2)
-    sprite3d:addEffect(cc.V3(0,0,0),1.0, -1)
+    --sprite3d:addEffect(cc.V3(0,0,0),1.0, -1)
     sprite3d:setPosition3D(cc.V3(0,0,50))
     sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
     return sprite3d
@@ -118,6 +116,7 @@ end
 
 function Archer:init3D()
     self:initShadow()
+    self:initPuff()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setScale(1.6)
     self._sprite3d:addEffect(cc.V3(0,0,0),CelLine, -1)

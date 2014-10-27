@@ -9,6 +9,7 @@ RECTS = {
     iceBolt = cc.SpriteFrameCache:getInstance():getSpriteFrame("icebolt.png"):getRect(),
     iceSpike =cc.SpriteFrameCache:getInstance():getSpriteFrame("iceSpike1.png"):getRect(),
     fireBall = cc.SpriteFrameCache:getInstance():getSpriteFrame("fireball1.png"):getRect(),
+    thunderBall = cc.SpriteFrameCache:getInstance():getSpriteFrame("thunderball.png"):getRect(),
 }
 cc.SpriteFrameCache:getInstance():addSpriteFrames("battlefieldUI/battleFieldUI.plist")
 
@@ -171,11 +172,12 @@ KnightValues = {
     _AIFrequency    = 1.1,
     _attackRange    = 100,
     _specialAttackChance = 0,
+    _specialSlowTime = 1, 
 
     _normalAttack   = {
         minRange = 0,
         maxRange = 130,
-        angle    = DEGREES_TO_RADIANS(30),
+        angle    = DEGREES_TO_RADIANS(90),
         knock    = 60,
         damage   = 250,
         mask     = EnumRaceType.HERO,
@@ -210,6 +212,7 @@ MageValues = {
     _AIFrequency    = 1.33,
     _attackRange    = 400,
     _specialAttackChance = 0,
+    _specialSlowTime = 0.67,
 
     _normalAttack   = {
         minRange = 0,
@@ -253,6 +256,7 @@ ArcherValues = {
     _attackRange    = 650,
     _specialAttackChance = 0,
     _turnSpeed      = DEGREES_TO_RADIANS(360), --actor turning speed in radians/seconds
+    _specialSlowTime = 0.5, 
 
     _normalAttack   = {
         minRange = 0,
@@ -315,9 +319,9 @@ DragonValues = {
 SlimeValues = {
     _racetype       = EnumRaceType.MONSTER,
     _name           = "Slime",
-    _radius         = 25,
+    _radius         = 35,
     _mass           = 20,
-    _shadowSize     = 20,
+    _shadowSize     = 45,
 
     _hp             = 300,
     _maxhp          = 300,
@@ -407,6 +411,53 @@ RatValues = {
         duration = 0,
         speed    = 0,
         criticalChance = 0.15
+    }, 
+}
+BossValues = {
+    _racetype       = EnumRaceType.MONSTER,
+    _name           = "Boss",
+    _radius         = 50,
+    _mass           = 100,
+    _shadowSize     = 65,
+
+    _hp             = 400,
+    _maxhp          = 450,
+    _defense        = 170,
+    _attackFrequency = 3.7,
+    _recoverTime    = 0.4,
+    _AIFrequency    = 5.3,
+    _AITimer        = 5.0,
+    _attackRange    = 110,
+
+    _speed          = 300,
+    _turnSpeed      = DEGREES_TO_RADIANS(225),
+    _acceleration   = 450,
+    _decceleration  = 750*1.7,
+
+    _normalAttack   = {
+        minRange = 0,
+        maxRange = 110,
+        angle    = DEGREES_TO_RADIANS(100),
+        knock    = 50,
+        damage   = 200,
+        mask     = EnumRaceType.MONSTER,
+        duration = 0,
+        speed    = 0,
+        criticalChance = 0.15
+    }, 
+    nova   = {
+        minRange = 0,
+        maxRange = 250,
+        angle    = DEGREES_TO_RADIANS(360),
+        knock    = 120,
+        damage   = 250,
+        mask     = EnumRaceType.MONSTER,
+        duration = 0.5,
+        speed    = 0,
+        criticalChance = 0.15,
+        DOTTimer = 0.3,
+        curDOTTime = 0.3,
+        DOTApplied = false
     }, 
 }
 

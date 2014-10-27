@@ -25,30 +25,6 @@ function Mage:ctor()
     self:init3D()
     self:initActions()
 end
-
-function Mage.create()
-    local ret = Mage.new()
-    ret:idleMode()
-    ret._AIEnabled = true
-    --this update function do not do AI
-    function update(dt)
-        ret:baseUpdate(dt)
-        ret:stateMachineUpdate(dt)
-        ret:movementUpdate(dt)
-    end
-    ret:scheduleUpdateWithPriorityLua(update, 0) 
-    
-    local function specialAttack()
-        if ret._specialAttackChance == 1 then return end
-        ret._specialAttackChance = 1
-        ret._attackTimer = MageValues._attackFrequency + 0.01
-        ret._attackFrequency = MageValues._attackFrequency
-        --cclog("Mage.specialAttack")        
-    end
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, specialAttack)    
-    return ret
-end
-
 function Mage:hurtSoundEffects()
     ccexp.AudioEngine:play2d(MageProperty.wounded, false,1)
 end
@@ -96,6 +72,7 @@ end
 
 function Mage:init3D()
     self:initShadow()
+    self:initPuff()
     self._sprite3d = cc.EffectSprite3D:create(file)
     self._sprite3d:setScale(1.9)
     self._sprite3d:addEffect(cc.V3(0,0,0),CelLine, -1)
@@ -213,6 +190,28 @@ end
 -- get helmet id
 function Mage:getHelmetID()
     return self._useHelmetId
+end
+
+function Mage.create()
+    local ret = Mage.new()
+    ret:idleMode()
+    ret._AIEnabled = true
+    --this update function do not do AI
+    function update(dt)
+        ret:baseUpdate(dt)
+        ret:stateMachineUpdate(dt)
+        ret:movementUpdate(dt)
+    end
+    ret:scheduleUpdateWithPriorityLua(update, 0) 
+
+    local function specialAttack()
+        if ret._specialAttackChance == 1 then return end
+        ret._specialAttackChance = 1
+
+        --        ret._attackTimer = ret._attackFrequency   
+    end
+    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, specialAttack)    
+    return ret
 end
 
 return Mage
