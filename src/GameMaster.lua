@@ -376,7 +376,7 @@ function GameMaster:showDialog()
     cc.Texture2D:setDefaultAlphaPixelFormat(cc.TEXTURE2_D_PIXEL_FORMAT_AUTO)
     local colorLayer = cc.LayerColor:create(cc.c4b(10,10,10,150))
     colorLayer:ignoreAnchorPointForPosition(false)
-    colorLayer:setPositionZ(-cc.Director:getInstance():getZEye()/4)
+    colorLayer:setPositionZ(-cc.Director:getInstance():getZEye()/5)
     colorLayer:setGlobalZOrder(0)
     camera:addChild(colorLayer)
     
@@ -406,7 +406,7 @@ function GameMaster:showDialog()
     bosslogo:setScale(0.74*resolutionRate)
     dialog:addChild(bosslogo)
     --add text
-    local text = cc.Label:createWithSystemFont(BossTaunt,"arial",24)
+    local text = cc.Label:createWithTTF(BossTaunt,"fonts/arial.ttf",24)
     text:setPosition(G.winSize.width*0.68,G.winSize.height*0.27)
     dialog:addChild(text)
     --set dialog
