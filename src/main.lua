@@ -18,8 +18,8 @@ end
 local function main()
     collectgarbage("collect")
     -- avoid memory leak
-    collectgarbage("setpause", 100)
-    collectgarbage("setstepmul", 5000)
+    collectgarbage("setpause", 200)
+    collectgarbage("setstepmul", 10000)
     
     cc.FileUtils:getInstance():addSearchPath("src")
     cc.FileUtils:getInstance():addSearchPath("src/actors")

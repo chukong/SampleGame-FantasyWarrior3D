@@ -164,20 +164,20 @@ KnightValues = {
     _mass           = 1000,
     _shadowSize     = 70,
     
-    _hp             = 1500,
-    _maxhp          = 1500,
+    _hp             = 1850,
+    _maxhp          = 1850,
     _defense        = 180,
     _attackFrequency = 2.2,
     _recoverTime    = 0.4,
     _AIFrequency    = 1.1,
-    _attackRange    = 100,
+    _attackRange    = 140,
     _specialAttackChance = 0,
     _specialSlowTime = 1, 
 
     _normalAttack   = {
         minRange = 0,
         maxRange = 130,
-        angle    = DEGREES_TO_RADIANS(90),
+        angle    = DEGREES_TO_RADIANS(70),
         knock    = 60,
         damage   = 250,
         mask     = EnumRaceType.HERO,
@@ -187,14 +187,14 @@ KnightValues = {
     }, 
     _specialAttack   = {
         minRange = 0,
-        maxRange = 180,
-        angle    = DEGREES_TO_RADIANS(150),
-        knock    = 100,
-        damage   = 320,
+        maxRange = 250,
+        angle    = DEGREES_TO_RADIANS(160),
+        knock    = 150,
+        damage   = 350,
         mask     = EnumRaceType.HERO,
         duration = 0,
         speed    = 0,
-        criticalChance = 0.15
+        criticalChance = 0.35
     }, 
 }
 MageValues = {
@@ -204,8 +204,8 @@ MageValues = {
     _mass           = 800,
     _shadowSize     = 70,
 
-    _hp             = 5000,
-    _maxhp          = 5000,
+    _hp             = 1100,
+    _maxhp          = 1100,
     _defense        = 120,
     _attackFrequency = 2.67,
     _recoverTime    = 0.8,
@@ -278,7 +278,7 @@ ArcherValues = {
         mask     = EnumRaceType.HERO,
         duration = 1.5,
         speed    = 850,
-        criticalChance = 0.33,
+        criticalChance = 0.5,
         DOTTimer = 0.3,
         curDOTTime = 0.3,
         DOTApplied = false
@@ -366,8 +366,6 @@ PigletValues = {
 
     _speed          = 350,
     _turnSpeed      = DEGREES_TO_RADIANS(270),
-    _acceleration   = 9999,
-    _decceleration  = 9999,
 
     _normalAttack   = {
         minRange = 0,
@@ -384,34 +382,34 @@ PigletValues = {
 RatValues = {
     _racetype       = EnumRaceType.MONSTER,
     _name           = "Rat",
-    _radius         = 50,
-    _mass           = 100,
-    _shadowSize     = 65,
+    _radius         = 70,
+    _mass           = 990,
+    _shadowSize     = 90,
 
-    _hp             = 2500,
-    _maxhp          = 2500,
+    _hp             = 2800,
+    _maxhp          = 2800,
     _defense        = 200,
     _attackFrequency = 3.0,
     _recoverTime    = 0.4,
     _AIFrequency    = 5.3,
     _AITimer        = 5.0,
-    _attackRange    = 110,
+    _attackRange    = 150,
 
     _speed          = 400,
-    _turnSpeed      = DEGREES_TO_RADIANS(225),
-    _acceleration   = 450,
+    _turnSpeed      = DEGREES_TO_RADIANS(180),
+    _acceleration   = 200,
     _decceleration  = 750*1.7,
 
     _normalAttack   = {
         minRange = 0,
-        maxRange = 110,
+        maxRange = 150,
         angle    = DEGREES_TO_RADIANS(100),
-        knock    = 50,
-        damage   = 400,
+        knock    = 250,
+        damage   = 210,
         mask     = EnumRaceType.MONSTER,
         duration = 0,
         speed    = 0,
-        criticalChance = 0.15
+        criticalChance =1
     }, 
 }
 BossValues = {

@@ -124,18 +124,10 @@ function KnightNormalAttack.create(pos, facing, attackInfo, knight)
     local ret = KnightNormalAttack.new()
     ret:initData(pos,facing,attackInfo)
     ret.owner = knight
---    ret.sp = cc.Sprite:create("btn_circle_normal.png")
---    ret.sp:setPosition3D(cc.V3(100,0,50))
---    ret.sp:setScale(5)
---    ret:addChild(ret.sp)
---    ret:setRotation(RADIANS_TO_DEGREES(facing))
---    ret:setGlobalZOrder(-ret:getPositionY()+FXZorder)
     return ret
 end
 
 function KnightNormalAttack:onTimeOut()
-    --self.sp:runAction(cc.FadeOut:create(1))
-    --self:runAction(cc.Sequence:create(cc.DelayTime:create(1),cc.RemoveSelf:create()))
     self:removeFromParent()
 end
 

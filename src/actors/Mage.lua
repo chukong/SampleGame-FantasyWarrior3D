@@ -213,5 +213,57 @@ function Mage.create()
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, specialAttack)    
     return ret
 end
+function Mage:hurt(collider, dirKnockMode)
+    if self._isalive == true then 
+        --TODO add sound effect
+
+        local damage = collider.damage
+        --calculate the real damage
+        local critical = false
+        local knock = collider.knock
+        if math.random() < collider.criticalChance then
+            damage = damage*1.5
+            critical = true
+            knock = knock*2
+        end
+        damage = damage + damage * math.random(-1,1) * 0.15        
+        damage = damage - self._defense
+        damage = math.floor(damage)
+
+        if damage <= 0 then
+            damage = 1
+        end
+
+        self._hp = self._hp - damage
+
+        if self._hp > 0 then
+            if critical == true then
+                self:knockMode(collider, dirKnockMode)
+                self:hurtSoundEffects()
+            else
+                self:hurtSoundEffects()
+            end
+        else
+            self._hp = 0
+            self._isalive = false
+            self:dyingMode(getPosTable(collider),knock)        
+        end
+
+        --three param judge if crit
+        local blood = self._hpCounter:showBloodLossNum(damage,self,critical)
+        if self._name == "Rat" then
+            blood:setPositionZ(G.winSize.height*0.25)
+        end
+        self:addEffect(blood)
+        local bloodMinus = {_name = self._name, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_MINUS, bloodMinus)
+
+        local anaryChange = {_name = self._name, _angry = self._angry, _angryMax = self._angryMax}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
+        self._angry = self._angry + damage
+        return damage        
+    end
+    return 0
+end
 
 return Mage
