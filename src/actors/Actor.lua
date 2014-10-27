@@ -31,7 +31,7 @@ function Actor:addEffect(effect)
     if self._racetype ~= EnumRaceType.MONSTER then
         effect:setPositionZ(self:getPositionZ()+self._heroHeight)
     else
-        effect:setPositionZ(self:getPositionZ()+self._monsterHeight)
+        effect:setPositionZ(self:getPositionZ()+self._monsterHeight+effect:getPositionZ())
     end
     currentLayer:addChild(effect)
 end
@@ -164,6 +164,9 @@ function Actor:hurt(collider, dirKnockMode)
         
         --three param judge if crit
         local blood = self._hpCounter:showBloodLossNum(damage,self,critical)
+        if self._name == "Rat" then
+            blood:setPositionZ(G.winSize.height*0.25)
+        end
         self:addEffect(blood)
 
 

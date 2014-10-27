@@ -66,6 +66,9 @@ function HPCounter:showBloodLossNum(dmage,racetype,atack)
             tm = 1
             critleAttack:runAction(getAction())
             critleAttack:setRotation3D({x=90,y=0,z=0})
+            if racetype._name == "Rat" then
+                critleAttack:setPositionZ(G.winSize.height*0.25)
+            end
             racetype:addEffect(critleAttack)
             self._cirtleAttack = critleAttack
             pointZ = 80
