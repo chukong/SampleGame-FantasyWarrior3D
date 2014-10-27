@@ -36,6 +36,23 @@ function Actor:addEffect(effect)
     currentLayer:addChild(effect)
 end
 
+function Actor:initPuff()
+    local puff = cc.BillboardParticleSystem:create(ParticleManager:getInstance():getPlistData("walkpuff"))
+    local puffFrame = cc.SpriteFrameCache:getInstance():getSpriteFrame("walkingPuff.png")
+    puff:setTextureWithRect(puffFrame:getTexture(), puffFrame:getRect())
+    puff:setCamera(camera)
+    puff:setEmissionRate(5)
+    puff:setDuration(-1)
+    puff:setScale(1)
+    puff:setStartColor({r=234,g=123,b=245,a=255})
+    puff:setDepthTestEnabled(true)
+    puff:setGlobalZOrder(-self:getPositionY()+FXZorder)
+    puff:setPositionZ(5)
+    puff:setPositionX(-20)
+    self._puff = puff
+    self:addChild(puff)
+end
+
 function Actor.create()
     local base = Actor.new()	
 	return base
@@ -85,6 +102,18 @@ end
 
 function Actor:setStateType(type)
 	self._statetype = type
+    --add puff particle
+	if type == EnumStateType.WALKING then
+        if self._puff == nil then
+            self:initPuff()
+        else
+            self._puff:setEmissionRate(5)
+        end
+   else
+        if self._puff ~= nil then
+            self._puff:setEmissionRate(0)
+        end
+   end
 end
 
 function Actor:setTarget(target)

@@ -67,7 +67,7 @@ function MainMenuScene:addLogo(layer)
     self._logo = logo
     layer:addChild(logo,4)
     
-    local action = cc.EaseElasticOut:create(cc.ScaleTo:create(2,1.2))
+    local action = cc.EaseElasticOut:create(cc.ScaleTo:create(2,1.1))
     
     logo:runAction(action)
     
@@ -147,7 +147,7 @@ end
 --add pointlight
 function MainMenuScene:addPointLight(layer)
     --add pointlight
-    self._pointLight = cc.PointLight:create(cc.vec3(0,0,100),cc.c3b(255,255,255),10000)
+    self._pointLight = cc.PointLight:create(cc.vec3(0,0,-100),cc.c3b(255,255,255),10000)
     self._pointLight:setCameraMask(1)
     self._pointLight:setEnabled(true)
 
@@ -155,7 +155,7 @@ function MainMenuScene:addPointLight(layer)
     self:getLightSprite()
     self._lightSprite:addChild(self._pointLight)
     self:addChild(self._lightSprite,10)
-    self._lightSprite:setPositionZ(-100)
+    self._lightSprite:setPositionZ(100)
 
     -- effectNormalMap
     local effectNormalMapped = cc.EffectNormalMapped:create("mainmenuscene/logo_normal.png");
