@@ -349,7 +349,7 @@ function BattlefieldUI:timeInit()
     local tm = {"00","00","00"}
     tm = table.concat(tm,":")
    
-    local ttfconfig = {outlineSize=1,fontSize=25,fontFilePath="fonts/arial.ttf"}
+    local ttfconfig = {outlineSize=1,fontSize=25,fontFilePath="fonts/britanic bold.ttf"}
     local tm_label = cc.Label:createWithTTF(ttfconfig,tm)
     tm_label:setAnchorPoint(0,0)
     tm_label:setPosition3D(cc.V3(G.winSize.width*0.02,G.winSize.height*0.915,2))
