@@ -3,16 +3,6 @@ require "Actor"
 
 local BattlefieldUI = class("battlefieldUI",function() return cc.Layer:create() end)
 
-local function shakeWhenHurt()
-    
-    local shaky1 = cc.RotateBy:create(0.05,3,3)
-    local shaky2 = cc.RotateBy:create(0.1,-6,-6)
-    local shaky3 = cc.RotateBy:create(0.05,3,0)
-    local shaky = cc.RepeatForever:create(cc.Sequence:create(shaky1,shaky2,shaky3))
-    
-    return shaky
-end
-
 function BattlefieldUI.create()
     local layer = BattlefieldUI.new()
 	return layer
@@ -35,7 +25,7 @@ function BattlefieldUI:avatarInit()
     local offset = 8
     local scale =0.7
     self.KnightPng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_03.png")
-    self.KnightPng:setPosition3D(cc.V3(885/1136*G.winSize.width,70/640*G.winSize.height,2))
+    self.KnightPng:setPosition3D(cc.V3(881/1136*G.winSize.width,70/640*G.winSize.height,2))
     self.KnightPng:setScale(scale)
     self:addChild(self.KnightPng,2)           
     self.KnightPngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
@@ -44,7 +34,7 @@ function BattlefieldUI:avatarInit()
     self:addChild(self.KnightPngFrame,1)
      
     self.ArcherPng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_11.png")
-    self.ArcherPng:setPosition3D(cc.V3(985/1136*G.winSize.width,70/640*G.winSize.height,2))
+    self.ArcherPng:setPosition3D(cc.V3(981/1136*G.winSize.width,70/640*G.winSize.height,2))
     self.ArcherPng:setScale(scale)
     self:addChild(self.ArcherPng,2)
     self.ArcherPngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
@@ -53,7 +43,7 @@ function BattlefieldUI:avatarInit()
     self:addChild(self.ArcherPngFrame,1)
     
     self.MagePng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_18.png")
-    self.MagePng:setPosition3D(cc.V3(1080/1136*G.winSize.width,70/640*G.winSize.height,2))
+    self.MagePng:setPosition3D(cc.V3(1081/1136*G.winSize.width,70/640*G.winSize.height,2))
     self.MagePng:setScale(scale)    
     self:addChild(self.MagePng,2)
     self.MagePngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
@@ -130,8 +120,10 @@ end
 function BattlefieldUI:angrybarInit()
 
     local offset = 53
+    local fullAngerStarOffset=70
     local yellow = cc.c3b(255,255,0)
     local grey = cc.c3b(113,103,76)
+    local action = cc.RepeatForever:create(cc.RotateBy:create(1,cc.V3(0,0,360)))
 
     self.KnightAngry = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
     self.KnightAngry:setColor(yellow)
@@ -153,6 +145,13 @@ function BattlefieldUI:angrybarInit()
     self.KnightAngryClone:setScaleX(0.7)
     self.KnightAngryClone:setScaleY(0.75)
     self:addChild(self.KnightAngryClone,3)
+    
+    self.KnightAngryFullSignal = cc.Sprite:createWithSpriteFrameName("specialLight.png")
+    self.KnightAngryFullSignal:setPosition3D(cc.V3(self.KnightPng:getPositionX(), self.KnightPng:getPositionY() + fullAngerStarOffset,4))
+    self.KnightAngryFullSignal:runAction(action)
+    self.KnightAngryFullSignal:setScale(1)
+    self:addChild(self.KnightAngryFullSignal,4)
+    self.KnightAngryFullSignal:setVisible(false)
 
     self.ArcherAngry = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
     self.ArcherAngry:setColor(yellow)
@@ -175,6 +174,13 @@ function BattlefieldUI:angrybarInit()
     self.ArcherAngryClone:setScaleY(0.75)
     self:addChild(self.ArcherAngryClone,3)
 
+    self.ArcherAngryFullSignal = cc.Sprite:createWithSpriteFrameName("specialLight.png")
+    self.ArcherAngryFullSignal:setPosition3D(cc.V3(self.ArcherPng:getPositionX(), self.ArcherPng:getPositionY() + fullAngerStarOffset,4))
+    self:addChild(self.ArcherAngryFullSignal,4)
+    self.ArcherAngryFullSignal:runAction(action:clone())
+    self.ArcherAngryFullSignal:setScale(1)
+    self.ArcherAngryFullSignal:setVisible(false)
+
     self.MageAngry = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
     self.MageAngry:setColor(yellow)
     self.MageAngry:setType(cc.PROGRESS_TIMER_TYPE_BAR)
@@ -195,6 +201,13 @@ function BattlefieldUI:angrybarInit()
     self.MageAngryClone:setScaleX(0.7)
     self.MageAngryClone:setScaleY(0.75)
     self:addChild(self.MageAngryClone,3)
+    
+    self.MageAngryFullSignal = cc.Sprite:createWithSpriteFrameName("specialLight.png")
+    self.MageAngryFullSignal:setPosition3D(cc.V3(self.MagePng:getPositionX(), self.MagePng:getPositionY() + fullAngerStarOffset,4))
+    self:addChild(self.MageAngryFullSignal,4)
+    self.MageAngryFullSignal:runAction(action:clone())
+    self.MageAngryFullSignal:setScale(1)
+    self.MageAngryFullSignal:setVisible(false)
 end
 
 function BattlefieldUI:touchButtonInit()
@@ -306,10 +319,25 @@ function BattlefieldUI:angryChange(angry)
     local bar
     if angry._name == KnightValues._name then
         bar = self.KnightAngry
+        if percent>=100 then
+            self.KnightAngryFullSignal:setVisible(true)
+        elseif percent == 0 then
+            self.KnightAngryFullSignal:setVisible(false)                
+        end
     elseif angry._name == ArcherValues._name then
         bar = self.ArcherAngry
+        if percent>=100 then
+            self.ArcherAngryFullSignal:setVisible(true)
+        elseif percent == 0 then
+            self.ArcherAngryFullSignal:setVisible(false)                
+        end
     elseif angry._name == MageValues._name then
         bar = self.MageAngry
+        if percent>=100 then
+            self.MageAngryFullSignal:setVisible(true)
+        elseif percent == 0 then
+            self.MageAngryFullSignal:setVisible(false)                
+        end
     end
     
     bar:runAction(progressTo)
