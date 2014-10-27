@@ -377,9 +377,6 @@ end
 
 function BattlefieldUI:showVictoryUI()
     --diable AI
-    for var = HeroManager.first, HeroManager.last do
-        HeroManager[var]:setAIEnabled(true)
-    end
 
     --color layer
     local layer = cc.LayerColor:create(cc.c4b(10,10,10,150))

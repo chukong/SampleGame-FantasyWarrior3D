@@ -53,7 +53,7 @@ end
 function Rat:init3D()
     self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
-    self._sprite3d:setScale(10)
+    self._sprite3d:setScale(20)
     self._sprite3d:addEffect(cc.V3(0,0,0),CelLine, -1)
     self:addChild(self._sprite3d)
     self._sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
@@ -74,4 +74,43 @@ end
 -- end init Rat animations========================
 function Rat:initActions()
     self._action = Rat._action
+end
+
+function Rat:dyingMode(knockSource, knockAmount)
+    self:setStateType(EnumStateType.DYING)
+    self:playAnimation("dead")
+    self:playDyingEffects()
+    if self._racetype == EnumRaceType.HERO then
+        uiLayer:heroDead(self)
+        List.removeObj(HeroManager,self) 
+        self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create()))
+    else
+        List.removeObj(MonsterManager,self) 
+        local function recycle()
+            --self:setVisible(false)
+            --List.pushlast(getPoolByName(self._name),self)
+            self:removeFromParent()
+            if gameMaster ~= nil then
+                gameMaster:showVictoryUI()
+            end
+        end
+        local function disableHeroAI()
+            if List.getSize(HeroManager) ~= 0 then
+                for var = HeroManager.first, HeroManager.last do
+                    HeroManager[var]:setAIEnabled(false)
+                    HeroManager[var]:idleMode()
+                    HeroManager[var]._goRight = false
+                end
+            end
+        end
+        self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.CallFunc:create(disableHeroAI),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(recycle)))
+    end
+    
+    if knockAmount then
+        local p = self._myPos
+        local angle = cc.pToAngleSelf(cc.pSub(p, knockSource))
+        local newPos = cc.pRotateByAngle(cc.pAdd({x=knockAmount,y=0}, p),p,angle)
+        self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
+    end
+    self._AIEnabled = false
 end

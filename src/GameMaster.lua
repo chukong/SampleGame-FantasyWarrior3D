@@ -9,6 +9,7 @@ require "Slime"
 require "Rat"
 require "Dragon"
 require "Archer"
+require "Boss"
 
 local gloableZOrder = 1
 local monsterCount = {dragon=2,slime=7,piglet=3,rat = 0}
@@ -303,19 +304,16 @@ end
 function GameMaster:showBoss()
     --boss should appear int pos(300,200)
     --now assume Boss is a piglet.
-    if List.getSize(PigletPool) ~= 0 then
-        local piglet = List.popfirst(PigletPool)
-        piglet:reset()
-        piglet:setScale(3)
-        piglet:setFacing(180)
-        local appearPos = cc.p(300,200)
-        piglet:setPosition(appearPos)
-        piglet._myPos = appearPos
-        piglet:setVisible(true)
-        piglet._goRight = false
-        piglet:setAIEnabled(true)
-        List.pushlast(MonsterManager, piglet)
-    end
+    local boss = Rat:create()
+    currentLayer:addChild(boss)
+    boss:reset()
+    local appearPos = cc.p(500,200)
+    boss:setPosition(appearPos)
+    boss._myPos = appearPos
+    boss._goRight = false
+    boss:setAIEnabled(true)
+    boss:setFacing(180)
+    List.pushlast(MonsterManager, boss)
 end
 
 function GameMaster:jumpInto(obj, isFront)
