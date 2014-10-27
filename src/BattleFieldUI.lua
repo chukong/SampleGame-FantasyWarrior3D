@@ -381,7 +381,7 @@ function BattlefieldUI:showVictoryUI()
     --color layer
     local layer = cc.LayerColor:create(cc.c4b(10,10,10,150))
     layer:ignoreAnchorPointForPosition(false)
-    layer:setPosition3D(cc.V3(G.winSize.width*0.5,G.winSize.height*0.5,3))
+    layer:setPosition3D(cc.V3(G.winSize.width*0.5,G.winSize.height*0.5,0))
     --add victory
     local victory = cc.Sprite:createWithSpriteFrameName("victory.png")
     victory:setPosition3D(cc.V3(G.winSize.width*0.5,G.winSize.height*0.5,3))
@@ -400,6 +400,8 @@ function BattlefieldUI:showVictoryUI()
         --stop schedule
         cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._tmSchedule)
         cc.Director:getInstance():getScheduler():unscheduleScriptEntry(gameControllerScheduleID)
+        --stop sound
+        ccexp.AudioEngine:stop(AUDIO_ID.BATTLEFIELDBGM)
         --replace scene
         cc.Director:getInstance():replaceScene(require("ChooseRoleScene"):create())
     end
