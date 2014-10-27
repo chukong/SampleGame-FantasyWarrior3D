@@ -14,7 +14,7 @@ function BattlefieldUI:ctor()
     self:angrybarInit()
     self:touchButtonInit()
     self:timeInit()
---    self:showVictory()
+--    self:showVictoryUI()
     
     ccexp.AudioEngine:stopAll()
     AUDIO_ID.BATTLEFIELDBGM = ccexp.AudioEngine:play2d(BGM_RES.BATTLEFIELDBGM, true,0.6)
@@ -239,9 +239,9 @@ function BattlefieldUI:touchButtonInit()
     self._coinAmount:setScaleX(0.8)
     self._coinAmount:setScaleY(0.7)
     self:addChild(self._coinAmount,2)
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, particleRelease)
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, particleRelease)
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, particleRelease)
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, particleRelease)
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, particleRelease)
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, particleRelease)
 end
 
 local scheduleID = nil
@@ -392,6 +392,22 @@ function BattlefieldUI:showVictoryUI()
     --victory runaction
     local action = cc.EaseElasticOut:create(cc.ScaleTo:create(1.5,1))
     victory:runAction(action)
+    
+    --touch event
+    local function onTouchBegan(touch, event)
+        return true
+    end
+    local function onTouchEnded(touch,event)
+        --stop schedule
+        cc.Director:getScheduler():unscheduleScriptEntry(self._tmSchedule)
+        --replace scene
+        cc.Director:getInstance():replaceScene(require("ChooseRoleScene"):create())
+    end
+    local listener = cc.EventListenerTouchOneByOne:create()
+    listener:registerScriptHandler(onTouchBegan,cc.Handler.EVENT_TOUCH_BEGAN )
+    listener:registerScriptHandler(onTouchEnded,cc.Handler.EVENT_TOUCH_ENDED )
+    local eventDispatcher = layer:getEventDispatcher()
+    eventDispatcher:addEventListenerWithSceneGraphPriority(listener,layer)
     
     self:addChild(layer)
 end

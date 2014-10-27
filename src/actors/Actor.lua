@@ -54,8 +54,8 @@ end
 function Actor:initShadow()
     self._circle = cc.Sprite:createWithSpriteFrameName("shadow.png")
     --use Shadow size for aesthetic, use radius to see collision size
-    --self._circle:setScale(self._shadowSize/16)
-    self._circle:setScale(self._radius/8)
+    self._circle:setScale(self._shadowSize/16)
+--    self._circle:setScale(self._radius/8)
 	self._circle:setOpacity(255*0.7)
 	self:addChild(self._circle)
 end
@@ -225,7 +225,7 @@ function Actor:knockMode(collider, dirKnockMode)
     end
     local newPos = cc.pRotateByAngle(cc.pAdd({x=collider.knock,y=0}, p),p,angle)
     self:runAction(cc.EaseCubicActionOut:create(cc.MoveTo:create(self._action.knocked:getDuration()*3,newPos)))
-    self:setCascadeColorEnabled(true)--if special attack is interrupted then change the value to true      
+--    self:setCascadeColorEnabled(true)--if special attack is interrupted then change the value to true      
 end
 
 function Actor:playDyingEffects()
@@ -391,15 +391,12 @@ function Actor:attackUpdate(dt)
             self._cooldown = true
         else
             self:setCascadeColorEnabled(false)--special attack does not change color affected by its parent node    
-            local function createCol()
-                self:setCascadeColorEnabled(true)--restore to the default state            
+            local function createCol()        
                 self:specialAttack()
             end
-            if self._racetype == EnumRaceType.HERO then
-                local messageParam = {speed = self._action.specialattack1:getSpeed(), pos = self._myPos}
-                --cclog("calf speed:%.2f", messageParam.speed)
-                MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE, messageParam)                    	
-            end
+            local messageParam = {speed = 0.2, pos = self._myPos, dur= self._specialSlowTime , target=self}
+            --cclog("calf speed:%.2f", messageParam.speed)
+            MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.SPECIAL_PERSPECTIVE, messageParam)                    	
             
             local attackAction = cc.Sequence:create(self._action.specialattack1:clone(),cc.CallFunc:create(createCol),self._action.specialattack2:clone(),cc.CallFunc:create(playIdle))
             self._sprite3d:stopAction(self._curAnimation3d)

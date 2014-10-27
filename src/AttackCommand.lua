@@ -563,4 +563,55 @@ function BossNormal:onUpdate(dt)
     self:setPosition(nextPos)
 end
 
+BossSuper = class("BossSuper", function()
+    return BasicCollider.new()
+end)
+
+function BossSuper.create(pos,facing,attackInfo)
+    local ret = BossSuper.new()
+    ret:initData(pos,facing,attackInfo)
+
+    ret.sp = cc.BillBoard:create("FX/FX.png", RECTS.fireBall)
+    ret.sp:setPosition3D(cc.V3(0,0,48))
+    ret.sp:setScale(1.7)
+    ret:addChild(ret.sp)
+
+    return ret
+end
+
+function BossSuper:onTimeOut()
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),cc.RemoveSelf:create()))
+
+    local magic = cc.ParticleSystemQuad:create(ParticleManager:getInstance():getPlistData("magic"))
+    local magicf = cc.SpriteFrameCache:getInstance():getSpriteFrame("particle.png")
+    magic:setTextureWithRect(magicf:getTexture(), magicf:getRect())
+    magic:setScale(1.5)
+    magic:setRotation3D({x=90, y=0, z=0})
+    self:addChild(magic)
+    magic:setGlobalZOrder(-self:getPositionY()*2+FXZorder)
+    magic:setPositionZ(0)
+    magic:setEndColor({r=1,g=0.5,b=0})
+
+    local fireballAction = cc.Animate:create(animationCache:getAnimation("fireBallAnim"))
+    self.sp:runAction(fireballAction)
+    self.sp:setScale(2)
+
+    Nova.create(getPosTable(self), self._curFacing)
+end
+
+function BossSuper:playHitAudio()
+    ccexp.AudioEngine:play2d(MonsterDragonValues.fireHit, false,0.6)    
+end
+
+function BossSuper:onCollide(target)
+    --set cur duration to its max duration, so it will be removed when checking time out
+    self.curDuration = self.duration+1
+end
+
+function BossSuper:onUpdate(dt)
+    local selfPos = getPosTable(self)
+    local nextPos = cc.pRotateByAngle(cc.pAdd({x=self.speed*dt, y=0},selfPos),selfPos,self.facing)
+    self:setPosition(nextPos)
+end
+
 return AttackManager
