@@ -47,12 +47,12 @@ local function updateParticlePos()
 end
 
 local function createBackground()
-    local spriteBg = cc.Sprite3D:create("model/scene1.c3b", "model/zhenghe.png")
+    local spriteBg = cc.Sprite3D:create("model/scene/changing.c3b")
 
     currentLayer:addChild(spriteBg)
     spriteBg:setScale(2.65)
     --spriteBg:setGlobalZOrder(-9)
-    spriteBg:setPosition3D(cc.V3(-1000,350,0))
+    spriteBg:setPosition3D(cc.V3(-2300,-1000,0))
     spriteBg:setRotation3D(cc.V3(90,0,0))
         
     local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=5500, height=400}, 0.77, 0.3797, 1.2)
@@ -118,9 +118,11 @@ local function specialPerspective(param)
     
     specialCamera.position = param.pos
     specialCamera.valid = true
-    
+    currentLayer:setColor(cc.c3b(125, 125, 125))--deep grey
+
     local function restoreTimeScale()
         specialCamera.valid = false
+        currentLayer:setColor(cc.c3b(255, 255, 255))--default white        
         cc.Director:getInstance():getScheduler():setTimeScale(1.0)
     end    
     delayExecute(currentLayer, restoreTimeScale, param.speed)
@@ -187,9 +189,10 @@ end
 function BattleScene.create()
     local scene = BattleScene:new()
     currentLayer = cc.Layer:create()
+    currentLayer:setCascadeColorEnabled(true)
     scene:addChild(currentLayer)
+
     scene:enableTouch()    
- 
     createBackground()
     initUILayer()
     gameMaster = require("GameMaster").create()

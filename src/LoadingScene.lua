@@ -14,7 +14,8 @@ local particleRes = {
     {"FX/magic.plist","magic"},
     {"FX/pixi.plist","pixi"},
     {"FX/puffRing.plist","puffRing"},
-    {"FX/puffRing2.plist","puffRing2"}
+    {"FX/puffRing2.plist","puffRing2"},
+    {"FX/walkingPuff.plist","walkpuff"}
 }
 local spriteFrameRes = {
     "FX/FX.plist",
