@@ -37,6 +37,7 @@ function Slime:reset()
     copyTable(SlimeValues,self)
     self:_findEnemy(self._racetype)
     self:walkMode()
+    self:setPositionZ(0)
 end
 
 function Slime:play3DAnim()
@@ -88,9 +89,9 @@ function Slime:angryFace(trueFalse)
     if self._angryFace ~= trueFalse then
         self._angryFace = trueFalse
         if trueFalse then
-            self:setTexture("model/slime/baozi2.jpg")
+            self._sprite3d:setTexture("model/slime/baozi2.jpg")
         else
-            self:setTexture("model/slime/baozi.jpg")
+            self._sprite3d:setTexture("model/slime/baozi.jpg")
         end
     end   
 end

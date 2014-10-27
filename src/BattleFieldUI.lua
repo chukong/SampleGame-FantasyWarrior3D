@@ -339,7 +339,12 @@ function BattlefieldUI:timeInit()
     --self._tmSchedule = cc.Director:getInstance():getScheduler():scheduleScriptFunc(tmUpdate,0,false)
 end
 
-function BattlefieldUI:showVictory()
+function BattlefieldUI:showVictoryUI()
+    --diable AI
+    for var = HeroManager.first, HeroManager.last do
+        HeroManager[var]:setAIEnabled(true)
+    end
+
     --color layer
     local layer = cc.LayerColor:create(cc.c4b(10,10,10,150))
     layer:ignoreAnchorPointForPosition(false)
@@ -364,5 +369,4 @@ function BattlefieldUI:showVictory()
     
     self:addChild(layer)
 end
-
 return BattlefieldUI
