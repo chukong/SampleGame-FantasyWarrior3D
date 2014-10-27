@@ -24,8 +24,17 @@ function BattlefieldUI:avatarInit()
 
     local offset = 8
     local scale =0.7
+    self.MagePng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_18.png")
+    self.MagePng:setPosition3D(cc.V3(1070/1136*G.winSize.width,70/640*G.winSize.height,2))
+    self.MagePng:setScale(scale)    
+    self:addChild(self.MagePng,2)
+    self.MagePngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
+    self.MagePngFrame:setScale(scale)
+    self.MagePngFrame:setPosition3D(cc.V3(self.MagePng:getPositionX()+1,self.MagePng:getPositionY()-offset,1))
+    self:addChild(self.MagePngFrame,1)
+    
     self.KnightPng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_03.png")
-    self.KnightPng:setPosition3D(cc.V3(881/1136*G.winSize.width,70/640*G.winSize.height,2))
+    self.KnightPng:setPosition3D(cc.V3(-self.MagePng:getContentSize().width*2 + self.MagePng:getPositionX()+40,70/640*G.winSize.height,2))
     self.KnightPng:setScale(scale)
     self:addChild(self.KnightPng,2)           
     self.KnightPngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
@@ -34,7 +43,7 @@ function BattlefieldUI:avatarInit()
     self:addChild(self.KnightPngFrame,1)
      
     self.ArcherPng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_11.png")
-    self.ArcherPng:setPosition3D(cc.V3(981/1136*G.winSize.width,70/640*G.winSize.height,2))
+    self.ArcherPng:setPosition3D(cc.V3(-self.MagePng:getContentSize().width + self.MagePng:getPositionX()+20,70/640*G.winSize.height,2))
     self.ArcherPng:setScale(scale)
     self:addChild(self.ArcherPng,2)
     self.ArcherPngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
@@ -42,14 +51,7 @@ function BattlefieldUI:avatarInit()
     self.ArcherPngFrame:setPosition3D(cc.V3(self.ArcherPng:getPositionX()+1,self.ArcherPng:getPositionY()-offset,1))
     self:addChild(self.ArcherPngFrame,1)
     
-    self.MagePng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_18.png")
-    self.MagePng:setPosition3D(cc.V3(1081/1136*G.winSize.width,70/640*G.winSize.height,2))
-    self.MagePng:setScale(scale)    
-    self:addChild(self.MagePng,2)
-    self.MagePngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
-    self.MagePngFrame:setScale(scale)
-    self.MagePngFrame:setPosition3D(cc.V3(self.MagePng:getPositionX()+1,self.MagePng:getPositionY()-offset,1))
-    self:addChild(self.MagePngFrame,1)
+
 end
 
 function BattlefieldUI:bloodbarInit()
