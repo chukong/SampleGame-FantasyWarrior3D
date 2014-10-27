@@ -126,7 +126,7 @@ end
 function BattlefieldUI:angrybarInit()
     local offset = 32+10
     local yellow = cc.c3b(255,255,0)
-    local grey = cc.c3b(255,255,255)
+    local grey = cc.c3b(166,166,166)
     self.KnightAngry = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
     self.KnightAngry:setColor(yellow)
     self.KnightAngry:setType(cc.PROGRESS_TIMER_TYPE_BAR)
@@ -314,8 +314,10 @@ function BattlefieldUI:angryChange(angry)
 end
 
 function BattlefieldUI:timeInit()
-    self._tm = os.time()
-    local tm = "00"..":".."00"..":".."00"
+    self._tm = 0
+    local tm = {"00","00","00"}
+    tm = table.concat(tm,":")
+   
     local ttfconfig = {outlineSize=1,fontSize=25,fontFilePath="fonts/arial.ttf"}
     local tm_label = cc.Label:createWithTTF(ttfconfig,tm)
     tm_label:setAnchorPoint(0,0)
@@ -325,7 +327,8 @@ function BattlefieldUI:timeInit()
     self:addChild(tm_label,5)
     --time update
     local function tmUpdate()
-        local dev = os.time()-self._tm
+        self._tm = self._tm+1
+        local dev = self._tm
         local min = math.floor(dev/60)
         local sec = dev%60
         if min<10 then
@@ -336,7 +339,8 @@ function BattlefieldUI:timeInit()
         end
         self._tmlabel:setString("00:"..min..sec)
     end
-    --self._tmSchedule = cc.Director:getInstance():getScheduler():scheduleScriptFunc(tmUpdate,0,false)
+
+    self._tmSchedule = cc.Director:getInstance():getScheduler():scheduleScriptFunc(tmUpdate,1,false)
 end
 
 function BattlefieldUI:showVictoryUI()
@@ -354,19 +358,12 @@ function BattlefieldUI:showVictoryUI()
     victory:setPosition3D(cc.V3(G.winSize.width*0.5,G.winSize.height*0.5,3))
     victory:setScale(0.1)
     layer:addChild(victory,1)
-    --add box
-    local box = cc.Sprite:createWithSpriteFrameName("box.png")
-    box:setPosition3D(cc.V3(G.winSize.width*0.9,G.winSize.height*0.3,3))
-    layer:addChild(box,1)
-    --add coin
-    local coin = cc.Sprite:createWithSpriteFrameName("coin.png")
-    coin:setPosition3D(cc.V3(G.winSize.width*0.8,G.winSize.height*0.5,3))
-    layer:addChild(coin,1)
     
-    --box runaction
+    --victory runaction
     local action = cc.EaseElasticOut:create(cc.ScaleTo:create(1.5,1))
     victory:runAction(action)
     
     self:addChild(layer)
 end
+
 return BattlefieldUI
