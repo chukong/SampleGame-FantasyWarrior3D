@@ -38,7 +38,7 @@ G =
 {
     winSize = cc.Director:getInstance():getWinSize(),
     bloodPercentDropSpeed = 2,
-    activearea = {left = -2800, right = 500, bottom = 100, top = 700},
+    activearea = {left = -2800, right = 1000, bottom = 100, top = 700},
 }
 
 
