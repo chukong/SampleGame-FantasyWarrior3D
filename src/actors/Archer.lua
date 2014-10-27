@@ -53,9 +53,9 @@ function Archer:createArrow()
     local sprite3d = cc.EffectSprite3D:create("model/archer/arrow1.obj")
     sprite3d:setTexture("model/archer/hunter01_tex_head.jpg")
     sprite3d:setScale(2)
-    sprite3d:addEffect(cc.V3(0,0,0),1.0, -1)
+    sprite3d:addEffect(cc.V3(0,0,0),0.005, -1)
     sprite3d:setPosition3D(cc.V3(0,0,50))
-    sprite3d:setRotation3D({x = 90, y = 0, z = 0})        
+    sprite3d:setRotation3D({x = -90, y = 0, z = 0})        
     return sprite3d
 end
 

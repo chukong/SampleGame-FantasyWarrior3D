@@ -250,7 +250,7 @@ ArcherValues = {
     _attackFrequency = 2.5,
     _recoverTime    = 0.4,
     _AIFrequency    = 1.3,
-    _attackRange    = 650,
+    _attackRange    = 450,
     _specialAttackChance = 0,
     _turnSpeed      = DEGREES_TO_RADIANS(360), --actor turning speed in radians/seconds
 
@@ -325,6 +325,7 @@ SlimeValues = {
     _attackFrequency = 1.5,
     _recoverTime    = 0.7,
     _AIFrequency    = 3.3,
+    _AITimer        = 2.0,
     _attackRange    = 50,
     
     _speed          = 150,
