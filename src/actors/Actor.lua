@@ -228,7 +228,6 @@ function Actor:dyingMode(knockSource, knockAmount)
         List.removeObj(MonsterManager,self) 
         local function recycle()
             self:setVisible(false)
-            kill_count = kill_count + 1
             List.pushlast(getPoolByName(self._name),self)
         end
         self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(recycle)))

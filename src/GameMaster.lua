@@ -13,10 +13,6 @@ require "Archer"
 local gloableZOrder = 1
 local monsterCount = {dragon=7,slime=7,piglet=7,rat=7}
 local EXIST_MIN_MONSTER = 4
-kill_count = 0
-show_count = 0
-local KILL_MAX_MONSTER = 30
-local showboss = false
 local scheduleid
 local stage = 0
 local battleSiteX = {-2800,-1800,-500}
@@ -226,7 +222,6 @@ function GameMaster:showDragon(isFront)
         dragon._goRight = false
         dragon:setAIEnabled(true)
         List.pushlast(MonsterManager, dragon)
-        show_count = show_count + 1
     end
 end
 
@@ -256,7 +251,6 @@ function GameMaster:showPiglet(isFront)
         piglet._goRight = false
         piglet:setAIEnabled(true)
         List.pushlast(MonsterManager, piglet)
-        show_count = show_count + 1
     end
 end
 
@@ -286,7 +280,6 @@ function GameMaster:showSlime(isFront)
         slime._goRight = false
         slime:setAIEnabled(true)
         List.pushlast(MonsterManager, slime)
-        show_count = show_count + 1
     end
 end
 
@@ -317,7 +310,6 @@ function GameMaster:showRat(isFront)
             rat:setFacing(90)
         end
         List.pushlast(MonsterManager, rat)
-        show_count = show_count + 1
     end
 end
 
@@ -350,7 +342,6 @@ function GameMaster:showBoss()
         piglet._goRight = false
         piglet:setAIEnabled(true)
         List.pushlast(MonsterManager, piglet)
-        show_count = show_count + 1
     end
 end
 
