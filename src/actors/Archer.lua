@@ -72,7 +72,7 @@ function Archer:hurtSoundEffects()
 end
 
 function Archer:normalAttack()
-    ArcherNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
+    ArcherNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack, self)
     ccexp.AudioEngine:play2d(Archerproperty.normalAttackShout, false,1)
     AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
 --    ccexp.AudioEngine:play2d(Archerproperty.wow, false,1)
@@ -82,7 +82,7 @@ end
 function Archer:specialAttack()
     self._specialAttackChance = ArcherValues._specialAttackChance
     self._angry = ActorCommonValues._angry
-    local anaryChange = {_name = self._name, _racetype = self._racetype, _angry = self._angry, _angryMax = self._angryMax}
+    local anaryChange = {_name = self._name, _angry = self._angry, _angryMax = self._angryMax}
     MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)      
     
     ccexp.AudioEngine:play2d(Archerproperty.specialAttackShout, false,1)
@@ -101,14 +101,14 @@ function Archer:specialAttack()
     pos1 = cc.pRotateByAngle(pos1, self._myPos, self._curFacing)
     pos2 = cc.pRotateByAngle(pos2, self._myPos, self._curFacing)
     pos3 = cc.pRotateByAngle(pos3, self._myPos, self._curFacing)
-    ArcherSpecialAttack.create(pos1, self._curFacing, attack)
+    ArcherSpecialAttack.create(pos1, self._curFacing, attack, self)
     local function spike2()
-        ArcherSpecialAttack.create(pos2, self._curFacing, attack)
+        ArcherSpecialAttack.create(pos2, self._curFacing, attack,self)
         AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
         ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     end
     local function spike3()
-        ArcherSpecialAttack.create(pos3, self._curFacing, attack)
+        ArcherSpecialAttack.create(pos3, self._curFacing, attack,self)
         AUDIO_ID.ARCHERATTACK = ccexp.AudioEngine:play2d(Archerproperty.attack1, false,1)
         ccexp.AudioEngine:setFinishCallback(AUDIO_ID.ARCHERATTACK,ArcherlAttackCallback)
     end

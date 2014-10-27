@@ -60,13 +60,13 @@ end
 function Mage:normalAttack()
     ccexp.AudioEngine:play2d(MageProperty.normalAttackShout, false,0.4)
     ccexp.AudioEngine:play2d(MageProperty.ice_normal, false,0.8)
-    MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack, self._target)
+    MageNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack, self._target, self)
 end
 
 function Mage:specialAttack()
     self._specialAttackChance = MageValues._specialAttackChance
     self._angry = ActorCommonValues._angry
-    local anaryChange = {_name = self._name, _racetype = self._racetype, _angry = self._angry, _angryMax = self._angryMax}
+    local anaryChange = {_name = self._name, _angry = self._angry, _angryMax = self._angryMax}
     MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)      
     
     --mage will create 3 ice spikes on the ground
@@ -82,12 +82,12 @@ function Mage:specialAttack()
     pos1 = cc.pRotateByAngle(pos1, self._myPos, self._curFacing)
     pos2 = cc.pRotateByAngle(pos2, self._myPos, self._curFacing)
     pos3 = cc.pRotateByAngle(pos3, self._myPos, self._curFacing)
-    MageIceSpikes.create(pos1, self._curFacing, self._specialAttack)
+    MageIceSpikes.create(pos1, self._curFacing, self._specialAttack, self)
     local function spike2()
-        MageIceSpikes.create(pos2, self._curFacing, self._specialAttack)
+        MageIceSpikes.create(pos2, self._curFacing, self._specialAttack, self)
     end
     local function spike3()
-        MageIceSpikes.create(pos3, self._curFacing, self._specialAttack)
+        MageIceSpikes.create(pos3, self._curFacing, self._specialAttack, self)
     end
     delayExecute(self,spike2,0.25)
     delayExecute(self,spike3,0.5)

@@ -31,6 +31,14 @@ function Slime.create()
     ret:play3DAnim()
     return ret
 end
+
+function Slime:reset()
+    copyTable(ActorCommonValues, self)
+    copyTable(SlimeValues,self)
+    self:_findEnemy(self._racetype)
+    self:walkMode()
+end
+
 function Slime:play3DAnim()
     self._sprite3d:runAction(cc.RepeatForever:create(createAnimation(file,0,22,0.7)))
     
