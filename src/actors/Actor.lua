@@ -4,7 +4,7 @@ require "AttackCommand"
 
 
 
-local Actor = class ("Actor", function ()
+Actor = class ("Actor", function ()
 	return cc.Node:create()
 end)
 

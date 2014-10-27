@@ -1,12 +1,7 @@
-# Ignore by Jacky
 runtime/
 publish/
 src/main.lua
-
-# Ignore thumbnails created by windows
 Thumbs.db
-
-# Ignore files build by Visual Studio
 *.obj
 *.exe
 *.pdb
@@ -37,31 +32,21 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 ipch/
 *.opensdf
-
-# Ignore files build by ndk and eclipse
 libs/
 bin/
 obj/
 gen/
 assets/
 local.properties
-
-# Ignore files built by NaCl
 samples/Cpp/HelloCpp/proj.nacl/Resources/
 samples/Cpp/TestCpp/proj.nacl/Resources/
 samples/Cpp/TestCpp/proj.nacl/out/
 samples/Cpp/SimpleGame/proj.nacl/Resources/
 samples/Lua/HelloLua/proj.nacl/Resources/
 samples/Lua/TestLua/proj.nacl/Resources/
-
-# Ignore python compiled files
 *.pyc
-
-# Ignore files build by airplay and marmalade
 build_*_xcode/
 build_*_vc10/
-
-# Ignore files build by xcode
 *.mode*v*
 *.pbxuser
 *.xcbkptlist
@@ -73,53 +58,35 @@ xcschememanagement.plist
 ._.*
 xcuserdata/
 DerivedData/
-
-# Ignore files built by AppCode
 .idea/
-
-# Ignore files built by bada
 .Simulator-Debug/
 .Target-Debug/
 .Target-Release/
-
-# Ignore files built by blackberry
 Simulator/
 Device-Debug/
 Device-Release/
-
-# Ignore vim swaps
 *.swp
 *.swo
-
-# Ignore files created by create_project.py
 projects/
-
-# Ignore config files in javascript bindings generator
 tools/tojs/user.cfg
-# ... userconf.ini generated if running from tools/tojs
 tools/tojs/userconf.ini
 tools/tolua/userconf.ini
-# ... userconf.ini generated if running from tools/jenkins_scripts/mac/android/
 tools/jenkins_scripts/mac/android/userconf.ini
-
-# CTags
 tags
-
-# ignore files, created with make-all-linux-project script
 /lib
 /build/linux-build
-
-# Cmake files
 CMakeCache.txt
 CMakeFiles
 Makefile
 cmake_install.cmake
 /WarriorQuest/runtime/mac/WarriorQuest.app/
-
 /WarriorQuest/runtime/mac/WarriorQuest Mac.app/Contents/Resources/config.json
 /WarriorQuest/runtime/mac/WarriorQuest Mac.app/Contents/Resources/res/
 /WarriorQuest/runtime/mac/WarriorQuest Mac.app/Contents/Resources/src/
-
 /WarriorQuest/runtime/mac/WarriorQuest.app/Contents/MacOS/WarriorQuest Mac
-
-/frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/build/
+.buildpath
+frameworks/cocos2d-x/build/build
+frameworks/runtime-src/proj.android/project.properties
+frameworks/cocos2d-x/cocos/platform/android/java/project.properties
+frameworks/cocos2d-x/cocos/scripting/lua-bindings/proj.ios_mac/build
+frameworks/runtime-src/proj.ios_mac/build
