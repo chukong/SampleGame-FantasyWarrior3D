@@ -9,7 +9,7 @@ require "Slime"
 require "Rat"
 require "Dragon"
 require "Archer"
-require "Boss"
+--require "Boss"
 
 local gloableZOrder = 1
 local monsterCount = {dragon=2,slime=7,piglet=3,rat = 0}
