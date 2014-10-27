@@ -1,7 +1,6 @@
 require "Manager"
 require "Knight"
 require "Mage"
-require "Monster"
 require "Actor"
 require "GlobalVariables"
 require "Piglet"
@@ -407,7 +406,8 @@ function GameMaster:showDialog()
     bosslogo:setScale(0.74*resolutionRate)
     dialog:addChild(bosslogo)
     --add text
-    local text = cc.Label:createWithTTF(BossTaunt,"fonts/arial.ttf",24)
+--    local text = cc.Label:createWithTTF(BossTaunt,"fonts/arial.ttf",24)
+    local text = cc.Label:createWithSystemFont(BossTaunt,"arial",24)
     text:setPosition(G.winSize.width*0.68,G.winSize.height*0.27)
     dialog:addChild(text)
     --set dialog
