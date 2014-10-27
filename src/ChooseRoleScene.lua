@@ -27,6 +27,7 @@ local heroSize = cc.rect(155,120,465,420)
 
 function ChooseRoleScene.create()
     local scene = ChooseRoleScene.new()
+    cc.Texture2D:setDefaultAlphaPixelFormat(cc.TEXTURE2_D_PIXEL_FORMAT_AUTO)    
     local layer = scene:createLayer()
     scene:addChild(layer)
     scene:initTouchDispatcher()
