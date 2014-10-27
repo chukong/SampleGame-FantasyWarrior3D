@@ -154,6 +154,9 @@ function Rat:hurt(collider, dirKnockMode)
 
         --three param judge if crit
         local blood = self._hpCounter:showBloodLossNum(damage,self,critical)
+        if self._name == "Rat" then
+            blood:setPositionZ(G.winSize.height*0.25)
+        end
         self:addEffect(blood)
 
         return damage        
