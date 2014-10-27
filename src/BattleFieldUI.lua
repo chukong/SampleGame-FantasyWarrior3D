@@ -377,9 +377,6 @@ end
 
 function BattlefieldUI:showVictoryUI()
     --diable AI
-    for var = HeroManager.first, HeroManager.last do
-        HeroManager[var]:setAIEnabled(true)
-    end
 
     --color layer
     local layer = cc.LayerColor:create(cc.c4b(10,10,10,150))
@@ -401,7 +398,7 @@ function BattlefieldUI:showVictoryUI()
     end
     local function onTouchEnded(touch,event)
         --stop schedule
-        cc.Director:getScheduler():unscheduleScriptEntry(self._tmSchedule)
+        cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._tmSchedule)
         --replace scene
         cc.Director:getInstance():replaceScene(require("ChooseRoleScene"):create())
     end

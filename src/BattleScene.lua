@@ -5,7 +5,7 @@ require "MessageDispatchCenter"
 
 currentLayer = nil
 uiLayer = nil
-local gameMaster = nil
+gameMaster = nil
 local specialCamera = {valid = false, position = cc.p(0,0)}
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
