@@ -139,7 +139,7 @@ ActorDefaultValues =
     _decceleration  = 750*1.7, --actor movement decceleration, in units/seconds
     
     _AIFrequency    = 1.0, --how often AI executes in seconds
-    _attackFrequency = 4.0, --an attack move every few seconds
+    _attackFrequency = 0.01, --an attack move every few seconds
     _searchDistance = 5000, --distance which enemy can be found
 
     _attackRange    = 100, --distance the actor will stop and commence attack
@@ -150,7 +150,7 @@ ActorDefaultValues =
         maxRange = 130, --collider outer radius
         angle    = DEGREES_TO_RADIANS(30), -- collider angle, 360 for full circle, other wise, a fan shape is created
         knock    = 50, --attack knock back distance
-        damage   = 100, -- attack damage
+        damage   = 800, -- attack damage
         mask     = EnumRaceType.HERO, -- who created this attack collider
         duration = 0, -- 0 duration means it will be removed upon calculation
         speed    = 0, -- speed the collider is traveling
@@ -388,8 +388,8 @@ RatValues = {
     _mass           = 100,
     _shadowSize     = 65,
 
-    _hp             = 1500,
-    _maxhp          = 1500,
+    _hp             = 2500,
+    _maxhp          = 2500,
     _defense        = 200,
     _attackFrequency = 1.0,
     _recoverTime    = 0.4,
