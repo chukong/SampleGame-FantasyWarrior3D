@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>3.4.0</string>
         <key>fileName</key>
-        <string>/Users/kirito/Pictures/battlefield.tps</string>
+        <string>/Users/kirito/Pictures/battlefieldUI.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -131,7 +131,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>battleFieldUI.plist</filename>
+                <filename>battlefieldUI.plist</filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -174,7 +174,7 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../Desktop/github/FantasyWarrior3D/res/battlefieldUI</filename>
+            <filename>battlefieldUI</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
