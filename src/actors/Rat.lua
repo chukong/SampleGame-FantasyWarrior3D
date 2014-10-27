@@ -63,12 +63,12 @@ end
 -- init Rat animations=============================
 do
     Rat._action = {
-        idle = createAnimation(file,0,23,0.7),
-        knocked = createAnimation(file,30,37,0.7),
-        dead = createAnimation(file,41,76,1),
+        idle = createAnimation(file,0,23,1),
+        knocked = createAnimation(file,30,37,0.5),
+        dead = createAnimation(file,41,76,0.2),
         attack1 = createAnimation(file,81,99,0.7),
         attack2 = createAnimation(file,99,117,0.7),
-        walk = createAnimation(file,122,142,0.7)
+        walk = createAnimation(file,122,142,0.4)
     }
 end
 -- end init Rat animations========================

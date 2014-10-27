@@ -91,7 +91,7 @@ end
 function Knight:normalAttack()
     ccexp.AudioEngine:play2d(WarriorProperty.normalAttackShout, false,0.6)
     KnightNormalAttack.create(getPosTable(self), self._curFacing, self._normalAttack, self)
-    self._sprite:runAction(self._action.attackEffect:clone()) 
+    --self._sprite:runAction(self._action.attackEffect:clone()) 
 
     AUDIO_ID.KNIGHTNORMALATTACK = ccexp.AudioEngine:play2d(WarriorProperty.normalAttack1, false,1)
     ccexp.AudioEngine:setFinishCallback(AUDIO_ID.KNIGHTNORMALATTACK,KnightNormalAttackCallback)
@@ -125,33 +125,33 @@ function Knight:specialAttack()
 end
 
 function Knight:initAttackEffect()
-    local speed = 0.1
+    local speed = 0.15
     local startRotate = 145
     local rotate = -60
     local scale = 0.01
     local sprite = cc.Sprite:createWithSpriteFrameName("specialAttack.jpg")
     sprite:setVisible(false)
-    sprite:setBlendFunc(gl.ONE_MINUS_SRC_ALPHA,gl.ONE)
+    sprite:setBlendFunc(gl.ONE,gl.ONE)
     sprite:setScaleX(scale)
     sprite:setRotation(startRotate)
     sprite:setOpacity(0)
-    sprite:setAnchorPoint(cc.p(0.5, -1))    
+    sprite:setAnchorPoint(cc.p(0.5, -0.5))    
     sprite:setPosition3D(cc.V3(10, 0, 50))
     self:addChild(sprite)
 
-    local scaleAction = cc.ScaleTo:create(speed, 1, 1)
+    local scaleAction = cc.ScaleTo:create(speed, 2.5, 2.5)
     local rotateAction = cc.RotateBy:create(speed, rotate)
-    local attack = cc.Spawn:create(scaleAction, rotateAction)
-    local attack = cc.EaseCircleActionOut:create(attack)
-    local fadeAction = cc.FadeIn:create(speed)
+    local fadeAction = cc.FadeIn:create(0)
+    local attack = cc.Spawn:create(scaleAction, rotateAction, fadeAction)
+
     
-    local fadeAction2 = cc.FadeOut:create(0)
-    local scaleAction2 = cc.ScaleTo:create(0, scale, 1)
+    local fadeAction2 = cc.FadeOut:create(0.5)
+    local scaleAction2 = cc.ScaleTo:create(0, scale, 2.5)
     local rotateAction2 = cc.RotateTo:create(0, startRotate)
-    local restore = cc.Spawn:create(fadeAction2, scaleAction2, rotateAction2, cc.Hide:create())
+    local restore = cc.Sequence:create(fadeAction2, scaleAction2, rotateAction2)
 
     self._sprite = sprite
-    self._action.attackEffect = cc.Sequence:create(cc.Show:create(), attack, fadeAction, restore)    
+    self._action.attackEffect = cc.Sequence:create(cc.Show:create(), attack, restore)    
     self._action.attackEffect:retain()
 end
 
@@ -281,5 +281,53 @@ end
 function Knight:getHelmetID()
     return self._useHelmetId
 end
+function Knight:hurt(collider, dirKnockMode)
+    if self._isalive == true then 
+        --TODO add sound effect
 
+        local damage = collider.damage
+        --calculate the real damage
+        local critical = false
+        local knock = collider.knock
+        if math.random() < collider.criticalChance then
+            damage = damage*1.5
+            critical = true
+            knock = knock*2
+        end
+        damage = damage + damage * math.random(-1,1) * 0.15        
+        damage = damage - self._defense
+        damage = math.floor(damage)
+
+        if damage <= 0 then
+            damage = 1
+        end
+
+        self._hp = self._hp - damage
+
+        if self._hp > 0 then
+            if critical == true then
+                self:knockMode(collider, dirKnockMode)
+                self:hurtSoundEffects()
+            else
+                self:hurtSoundEffects()
+            end
+        else
+            self._hp = 0
+            self._isalive = false
+            self:dyingMode(getPosTable(collider),knock)        
+        end
+
+        --three param judge if crit
+        local blood = self._hpCounter:showBloodLossNum(damage,self,critical)
+        self:addEffect(blood)
+        local bloodMinus = {_name = self._name, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_MINUS, bloodMinus)
+
+        local anaryChange = {_name = self._name, _angry = self._angry, _angryMax = self._angryMax}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
+        self._angry = self._angry + damage
+        return damage        
+    end
+    return 0
+end
 return Knight

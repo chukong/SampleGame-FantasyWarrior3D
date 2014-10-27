@@ -168,17 +168,6 @@ function Actor:hurt(collider, dirKnockMode)
             blood:setPositionZ(G.winSize.height*0.25)
         end
         self:addEffect(blood)
-
-
-        if self._racetype == EnumRaceType.HERO then
-        
-        local bloodMinus = {_name = self._name, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
-        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_MINUS, bloodMinus)
-
-        local anaryChange = {_name = self._name, _angry = self._angry, _angryMax = self._angryMax}
-        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)
-            self._angry = self._angry + damage
-        end
         return damage        
     end
     return 0
