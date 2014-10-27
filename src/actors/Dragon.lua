@@ -66,6 +66,14 @@ function Dragon:normalAttackSoundEffects()
     ccexp.AudioEngine:play2d(MonsterDragonValues.attack, false,1)
 end
 
+function Dragon:playDyingEffects()
+    ccexp.AudioEngine:play2d(MonsterDragonValues.dead, false,1)
+end
+
+function Dragon:hurtSoundEffects()
+    ccexp.AudioEngine:play2d(MonsterDragonValues.wounded, false,0.7)
+end
+
 function Dragon:normalAttack()
     self:normalAttackSoundEffects()
     DragonAttack.create(getPosTable(self), self._curFacing, self._normalAttack)

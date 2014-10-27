@@ -388,16 +388,16 @@ RatValues = {
     _mass           = 100,
     _shadowSize     = 65,
 
-    _hp             = 400,
-    _maxhp          = 450,
-    _defense        = 170,
-    _attackFrequency = 3.7,
+    _hp             = 1500,
+    _maxhp          = 1500,
+    _defense        = 200,
+    _attackFrequency = 1.0,
     _recoverTime    = 0.4,
     _AIFrequency    = 5.3,
     _AITimer        = 5.0,
     _attackRange    = 110,
 
-    _speed          = 300,
+    _speed          = 400,
     _turnSpeed      = DEGREES_TO_RADIANS(225),
     _acceleration   = 450,
     _decceleration  = 750*1.7,
@@ -407,7 +407,7 @@ RatValues = {
         maxRange = 110,
         angle    = DEGREES_TO_RADIANS(100),
         knock    = 50,
-        damage   = 200,
+        damage   = 10,
         mask     = EnumRaceType.MONSTER,
         duration = 0,
         speed    = 0,
@@ -480,7 +480,9 @@ MonsterDragonValues =
 {
     fileName = "model/dragon/dragon.c3b",
     attack = "audios/effects/dragon/Fire.mp3",
-    fireHit = "audios/effects/dragon/fireHit.mp3"
+    fireHit = "audios/effects/dragon/fireHit.mp3",
+    wounded="audios/effects/dragon/hurt.mp3",
+    dead="audios/effects/dragon/dead.mp3"
 }
 
 --Monster Rat
