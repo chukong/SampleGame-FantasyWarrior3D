@@ -23,9 +23,9 @@ end
 function BattlefieldUI:avatarInit()
 
     local offset = 8
-    local scale =0.7
+    local scale = 0.7
     self.KnightPng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_03.png")
-    self.KnightPng:setPosition3D(cc.V3(881/1136*G.winSize.width,70/640*G.winSize.height,2))
+    self.KnightPng:setPosition3D(cc.V3(821/1136*G.winSize.width,80/640*G.winSize.height,2))
     self.KnightPng:setScale(scale)
     self:addChild(self.KnightPng,2)           
     self.KnightPngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
@@ -34,7 +34,7 @@ function BattlefieldUI:avatarInit()
     self:addChild(self.KnightPngFrame,1)
      
     self.ArcherPng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_11.png")
-    self.ArcherPng:setPosition3D(cc.V3(981/1136*G.winSize.width,70/640*G.winSize.height,2))
+    self.ArcherPng:setPosition3D(cc.V3(941/1136*G.winSize.width,80/640*G.winSize.height,2))
     self.ArcherPng:setScale(scale)
     self:addChild(self.ArcherPng,2)
     self.ArcherPngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
@@ -43,7 +43,7 @@ function BattlefieldUI:avatarInit()
     self:addChild(self.ArcherPngFrame,1)
     
     self.MagePng = cc.Sprite:createWithSpriteFrameName("UI-1136-640_18.png")
-    self.MagePng:setPosition3D(cc.V3(1081/1136*G.winSize.width,70/640*G.winSize.height,2))
+    self.MagePng:setPosition3D(cc.V3(1061/1136*G.winSize.width,80/640*G.winSize.height,2))
     self.MagePng:setScale(scale)    
     self:addChild(self.MagePng,2)
     self.MagePngFrame = cc.Sprite:createWithSpriteFrameName("UI-2.png")
