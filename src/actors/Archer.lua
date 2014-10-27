@@ -42,8 +42,6 @@ function Archer.create()
     function specialAttack()
         if ret._specialAttackChance == 1 then return end
         ret._specialAttackChance = 1
-        ret._attackTimer = ArcherValues._attackFrequency + 0.01
-        --cclog("Archer.specialAttack")
     end
     MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, specialAttack)
     return ret

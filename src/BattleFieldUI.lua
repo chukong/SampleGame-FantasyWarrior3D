@@ -228,9 +228,9 @@ function BattlefieldUI:touchButtonInit()
     self._coinAmount:setScaleX(0.8)
     self._coinAmount:setScaleY(0.7)
     self:addChild(self._coinAmount,2)
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, particleRelease)
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, particleRelease)
-    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, particleRelease)
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_KNIGHT, particleRelease)
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_ARCHER, particleRelease)
+--    MessageDispatchCenter:registerMessage(MessageDispatchCenter.MessageType.SPECIAL_MAGE, particleRelease)
 end
 
 local scheduleID = nil
