@@ -14,14 +14,12 @@ local particleRes = {
     {"FX/magic.plist","magic"},
     {"FX/pixi.plist","pixi"},
     {"FX/puffRing.plist","puffRing"},
-    {"FX/puffRing2.plist","puffRing2"},
-    {"particle/Press.plist","avartaRing"}
+    {"FX/puffRing2.plist","puffRing2"}
 }
 local spriteFrameRes = {
     "FX/FX.plist",
     "chooseRole/chooserole.plist",
-    "battlefieldUI/battleFieldUI.plist",
-    "battlefieldUI/victory.plist"
+    "battlefieldUI/battleFieldUI.plist"
 }
 
 function LoadingScene:ctor()
