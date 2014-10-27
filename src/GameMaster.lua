@@ -11,19 +11,15 @@ require "Dragon"
 require "Archer"
 
 local gloableZOrder = 1
-local monsterCount = {dragon=7,slime=7,piglet=7,rat=7}
+local monsterCount = {dragon=2,slime=7,piglet=3,rat = 0}
 local EXIST_MIN_MONSTER = 4
-kill_count = 0
-show_count = 0
-local KILL_MAX_MONSTER = 30
-local showboss = false
 local scheduleid
 local stage = 0
-local battleSiteX = {-2800,-1800,-500}
+local battleSiteX = {-2800,-1800,-800}
 local frontDistanceWithHeroX = 600
 local backwardDistanceWithHeroX = 800
-local distanceWithHeroX = 30
-local distanceWithHeroY = 30
+local distanceWithHeroX = 150
+local distanceWithHeroY = 150
 
 local GameMaster = class("GameMaster")
 
@@ -46,7 +42,7 @@ function GameMaster:init()
 	self:addMonsters()
     stage = 0
     math.randomseed(tostring(os.time()):reverse():sub(1, 6))
-    for i=1,7 do
+    for i=1,4 do
         self:randomshowMonster(true)
     end
     stage = 1
@@ -211,10 +207,10 @@ function GameMaster:showDragon(isFront)
             dragon:setFacing(180)
         else
             if isFront then
-                appearPos.x = appearPos.x + frontDistanceWithHeroX*1.5*randomvarX
+                appearPos.x = appearPos.x + frontDistanceWithHeroX*1.8*randomvarX
                 dragon:setFacing(180)
             else
-                appearPos.x = appearPos.x - backwardDistanceWithHeroX*1.5*randomvarX
+                appearPos.x = appearPos.x - backwardDistanceWithHeroX*1.8*randomvarX
                 dragon:setFacing(0)
             end
         end
@@ -226,7 +222,6 @@ function GameMaster:showDragon(isFront)
         dragon._goRight = false
         dragon:setAIEnabled(true)
         List.pushlast(MonsterManager, dragon)
-        show_count = show_count + 1
     end
 end
 
@@ -241,10 +236,10 @@ function GameMaster:showPiglet(isFront)
             piglet:setFacing(180)
         else
             if isFront then
-                appearPos.x = appearPos.x + frontDistanceWithHeroX*1.5*randomvarX
+                appearPos.x = appearPos.x + frontDistanceWithHeroX*1.8*randomvarX
                 piglet:setFacing(180)
             else
-                appearPos.x = appearPos.x - backwardDistanceWithHeroX*1.5*randomvarX
+                appearPos.x = appearPos.x - backwardDistanceWithHeroX*1.8*randomvarX
                 piglet:setFacing(0)
             end
         end
@@ -256,7 +251,6 @@ function GameMaster:showPiglet(isFront)
         piglet._goRight = false
         piglet:setAIEnabled(true)
         List.pushlast(MonsterManager, piglet)
-        show_count = show_count + 1
     end
 end
 
@@ -264,29 +258,9 @@ function GameMaster:showSlime(isFront)
     if List.getSize(SlimePool) ~= 0 then
         local slime = List.popfirst(SlimePool)
         slime:reset()
-        local appearPos = getFocusPointOfHeros()
-        local randomvarX = math.random()*0.2+1
-        if stage == 0 then
-            appearPos.x = appearPos.x + frontDistanceWithHeroX*randomvarX
-            slime:setFacing(180)
-        else
-            if isFront then
-                appearPos.x = appearPos.x + frontDistanceWithHeroX*1.5*randomvarX
-                slime:setFacing(180)
-            else
-                appearPos.x = appearPos.x - backwardDistanceWithHeroX*1.5*randomvarX
-                slime:setFacing(0)
-            end
-        end
-        local randomvarY = 2*math.random()-1
-        appearPos.y = appearPos.y + randomvarY*distanceWithHeroY
-        slime:setPosition(appearPos)
-        slime._myPos = appearPos
-        slime:setVisible(true)
         slime._goRight = false
-        slime:setAIEnabled(true)
+        self:jumpInto(slime, isFront)
         List.pushlast(MonsterManager, slime)
-        show_count = show_count + 1
     end
 end
 
@@ -294,30 +268,9 @@ function GameMaster:showRat(isFront)
     if List.getSize(RatPool) ~= 0 then
         local rat = List.popfirst(RatPool)
         rat:reset()
-        local appearPos = getFocusPointOfHeros()
-        local randomvar = 2*math.random()-1
-        if isFront then
-            appearPos.x = appearPos.x + frontDistanceWithHeroX+randomvar*distanceWithHeroX
-        else
-            appearPos.x = appearPos.x - backwardDistanceWithHeroX+randomvar*distanceWithHeroX
-        end
-        appearPos.y = appearPos.y + 1000
-        rat:setPosition(appearPos)
-        rat._myPos = appearPos
-        rat:setVisible(true)
         rat._goRight = false
-        local function enableAI()
-            rat:setAIEnabled(true)
-        end
-        if stage == 0 then
-            rat:runAction(cc.Sequence:create(cc.JumpBy3D:create(0.5,cc.V3(-200,-200,0),150,1),cc.CallFunc:create(enableAI)))
-            rat:setFacing(45)
-        else
-            rat:runAction(cc.Sequence:create(cc.JumpBy3D:create(0.5,cc.V3(0,-200,0),150,1),cc.CallFunc:create(enableAI)))
-            rat:setFacing(90)
-        end
+        self:jumpInto(rat,isFront)
         List.pushlast(MonsterManager, rat)
-        show_count = show_count + 1
     end
 end
 
@@ -325,11 +278,23 @@ function GameMaster:randomshowMonster(isFront)
 	local random_var = math.random()
     -- random_var = 0.8
 	if random_var<0.15 then
-		self:showDragon(isFront)
+        if List.getSize(DragonPool) ~= 0 then
+		    self:showDragon(isFront)
+        else
+            self:randomshowMonster(isFront)
+        end
 	elseif random_var<0.3 then
-        self:showRat(isFront)
-	elseif random_var<0.6 then
-        self:showPiglet(isFront)
+        if List.getSize(RatPool) ~= 0 then
+            self:showRat(isFront)
+        else
+            self:randomshowMonster(isFront)
+        end
+    elseif random_var<0.6 then
+        if List.getSize(PigletPool) ~= 0 then
+            self:showPiglet(isFront)
+        else
+            self:randomshowMonster(isFront)
+        end
 	else
         self:showSlime(isFront)
 	end
@@ -350,7 +315,40 @@ function GameMaster:showBoss()
         piglet._goRight = false
         piglet:setAIEnabled(true)
         List.pushlast(MonsterManager, piglet)
-        show_count = show_count + 1
+    end
+end
+
+function GameMaster:jumpInto(obj, isFront)
+    local appearPos = getFocusPointOfHeros()
+    local randomvar = 2*math.random()-1
+    if isFront then
+        appearPos.x = appearPos.x + frontDistanceWithHeroX+randomvar*distanceWithHeroX
+    else
+        appearPos.x = appearPos.x - backwardDistanceWithHeroX+randomvar*distanceWithHeroX
+    end
+    appearPos.y = appearPos.y + 1500
+    obj:setPosition(appearPos)
+    obj._myPos = appearPos
+
+    local function enableAI()
+        obj:setAIEnabled(true)
+    end
+
+    local function visibleMonster()
+        obj:setVisible(true)
+    end
+
+    if stage == 0 then
+        obj:runAction(cc.Sequence:create(cc.DelayTime:create(math.random()),cc.CallFunc:create(visibleMonster),cc.JumpBy3D:create(0.5,cc.V3(-200*(math.random()*0.6+0.7),-400*(math.random()*0.4+0.8),0),150,1),cc.CallFunc:create(enableAI)))
+        obj:setFacing(135)
+    else
+        if isFront then
+            obj:runAction(cc.Sequence:create(cc.DelayTime:create(math.random()),cc.CallFunc:create(visibleMonster),cc.JumpBy3D:create(0.5,cc.V3(0,-400*(math.random()*0.4+0.8),0),150,1),cc.CallFunc:create(enableAI)))
+            obj:setFacing(135)
+        else
+            obj:runAction(cc.Sequence:create(cc.DelayTime:create(math.random()),cc.CallFunc:create(visibleMonster),cc.JumpBy3D:create(0.5,cc.V3(200*(math.random()*0.6+0.7),-400*(math.random()*0.4+0.8),0),150,1),cc.CallFunc:create(enableAI)))
+            obj:setFacing(45)
+        end
     end
 end
 
