@@ -9,7 +9,9 @@ local gameMaster = nil
 local specialCamera = {valid = false, position = cc.p(0,0)}
 local size = cc.Director:getInstance():getWinSize()
 local scheduler = cc.Director:getInstance():getScheduler()
-local cameraOffset = {valid = false, position = cc.V3(0, 0, 0)}
+local cameraOffset =  cc.V3(0, 0, 0)
+local cameraOffsetMin = {x=-300, y=-400}
+local cameraOffsetMax = {x=300, y=400}
 
 local function moveCamera(dt)
     --cclog("moveCamera")
@@ -24,19 +26,13 @@ local function moveCamera(dt)
         camera:setPosition(position)
         camera:lookAt(cc.V3(position.x, specialCamera.position.y, 50.0), cc.V3(0.0, 1.0, 0.0))
     elseif List.getSize(HeroManager) > 0 then
-        local position = cc.V3(focusPoint.x, focusPoint.y, size.height/2-100)
-        if cameraOffset.valid then
-            position = cc.V3Add(position, cameraOffset.position)
-            camera:setPosition3D(cc.V3(position.x, position.y, position.z))
-            camera:lookAt(cc.V3(focusPoint.x, focusPoint.y, 50), cc.V3(0.0, 0.0, 1.0))
-            --print(cameraOffset.position.x*0.001, cameraOffset.position.y*0.001)
-        else
-            local temp = cc.pLerp(cameraPosition, cc.p(position.x, position.y-size.height*3/4), 2*dt)
-            position = cc.V3(temp.x, temp.y, position.z)
+        --local position = cc.V3(focusPoint.x, focusPoint.y, size.height/2-100)
+        local temp = cc.pLerp(cameraPosition, cc.p(focusPoint.x+cameraOffset.x, cameraOffset.y + focusPoint.y-size.height*3/4), 2*dt)
+        local position = cc.V3(temp.x, temp.y, size.height/2-100)
             camera:setPosition3D(position)
-            camera:lookAt(cc.V3(position.x, focusPoint.y, 50.0), cc.V3(0.0, 1.0, 0.0))
+            camera:lookAt(cc.V3(position.x, focusPoint.y, 50.0), cc.V3(0.0, 0.0, 1.0))
             --cclog("\ncalf %f %f %f \ncalf %f %f 50.000000", position.x, position.y, position.z, focusPoint.x, focusPoint.y)            
-        end
+--        end
     end
 end
 
@@ -59,9 +55,9 @@ local function createBackground()
     spriteBg:setPosition3D(cc.V3(-1000,350,0))
     spriteBg:setRotation3D(cc.V3(90,0,0))
         
-    local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=5000, height=400}, 0.77, 0.3797, 1.2)
+    local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=5500, height=400}, 0.77, 0.3797, 1.2)
     currentLayer:addChild(water)
-    water:setPosition3D(cc.V3(-3500,-400,-35))
+    water:setPosition3D(cc.V3(-3500,-580,-110))
     water:setAnchorPoint(0,0)
     water:setGlobalZOrder(0)
     
@@ -76,8 +72,7 @@ local function setCamera()
     camera:setGlobalZOrder(10)
     currentLayer:addChild(camera)
 
-    cameraOffset.valid = false
-    cameraOffset.position = cc.V3(0, 0, 0)
+--    cameraOffset = cc.V3(0, 0, 0)
     
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
@@ -144,11 +139,8 @@ function BattleScene:enableTouch()
         local location = touch:getLocation()
 
         if self:UIcontainsPoint(location) == nil then
-            cameraOffset.valid = true
-            local delta = cc.pSub(location, self._prePosition)
-            cameraOffset.position.x = cameraOffset.position.x + delta.x
-            cameraOffset.position.y = cameraOffset.position.y + delta.y
-            --cclog("calf delta: %f %f", delta.x, delta.y)
+            local delta = touch:getDelta()
+            cameraOffset = cc.pGetClampPoint(cc.pAdd(cameraOffset, delta),cameraOffsetMin,cameraOffsetMax)
         end
                                    
         self._prePosition = location
