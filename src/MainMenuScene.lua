@@ -86,7 +86,7 @@ function MainMenuScene:addLogo(layer)
 end
 
 function MainMenuScene:getLightSprite()
-    self._lightSprite = cc.Sprite:create("mainmenuscene/light.png")
+    self._lightSprite = cc.Sprite:createWithSpriteFrameName("light.png")
     self._lightSprite:setBlendFunc(gl.ONE,gl.ONE_MINUS_SRC_ALPHA)
     self._lightSprite:setScale(1.2)
     
@@ -99,7 +99,7 @@ function MainMenuScene:getLightSprite()
     local opacity = 100
     local scale_action = cc.ScaleTo:create(0.07,0.7)
     
-    local swing_l1 = cc.Sprite:create("mainmenuscene/swing_l1.png")
+    local swing_l1 = cc.Sprite:createWithSpriteFrameName("swing_l1.png")
     swing_l1:setScale(sprite_scale)
     swing_l1:setAnchorPoint(cc.p(1,0))
     swing_l1:setPosition(light_size.width/2,light_size.height/2)
@@ -108,7 +108,7 @@ function MainMenuScene:getLightSprite()
     swing_l1:setBlendFunc(gl.ONE , gl.ONE)
     self._lightSprite:addChild(swing_l1,5)
     
-    local swing_l2 = cc.Sprite:create("mainmenuscene/swing_l2.png")
+    local swing_l2 = cc.Sprite:createWithSpriteFrameName("swing_l2.png")
     swing_l2:setAnchorPoint(cc.p(1,1))
     swing_l2:setScale(sprite_scale)
     swing_l2:setPosition(light_size.width/2,light_size.height/2)
@@ -116,7 +116,7 @@ function MainMenuScene:getLightSprite()
     swing_l2:setOpacity(opacity)
     self._lightSprite:addChild(swing_l2,5)
     
-    local swing_r1 = cc.Sprite:create("mainmenuscene/swing_r1.png")
+    local swing_r1 = cc.Sprite:createWithSpriteFrameName("swing_r1.png")
     swing_r1:setAnchorPoint(cc.p(0,0))
     swing_r1:setScale(sprite_scale)
     swing_r1:setPosition(light_size.width/2,light_size.height/2)
@@ -125,7 +125,7 @@ function MainMenuScene:getLightSprite()
     swing_r1:setBlendFunc(gl.ONE , gl.ONE)
     self._lightSprite:addChild(swing_r1,5)
     
-    local swing_r2 = cc.Sprite:create("mainmenuscene/swing_r2.png")
+    local swing_r2 = cc.Sprite:createWithSpriteFrameName("swing_r2.png")
     swing_r2:setAnchorPoint(cc.p(0,1))
     swing_r2:setScale(sprite_scale)
     swing_r2:setPosition(light_size.width/2,light_size.height/2)
@@ -238,7 +238,7 @@ function MainMenuScene:addButton(layer)
         end
     end
 
-    local button = ccui.Button:create("mainmenuscene/start.png")
+    local button = ccui.Button:create("start.png","","",ccui.TextureResType.plistType)
     button:setPosition(self.size.width*0.5,self.size.height*0.15)
     button:addTouchEventListener(button_callback)
     layer:addChild(button,4)
@@ -256,9 +256,9 @@ end
 -- cloud action
 function MainMenuScene:addCloud(layer)
     --cloud
-    local cloud0 = cc.Sprite:create("mainmenuscene/cloud1.png")
-    local cloud1 = cc.Sprite:create("mainmenuscene/cloud1.png")
-    local cloud3 = cc.Sprite:create("mainmenuscene/cloud2.png")
+    local cloud0 = cc.Sprite:createWithSpriteFrameName("cloud1.png")
+    local cloud1 = cc.Sprite:createWithSpriteFrameName("cloud1.png")
+    local cloud3 = cc.Sprite:createWithSpriteFrameName("cloud2.png")
     
     --setScale
     local scale = 2

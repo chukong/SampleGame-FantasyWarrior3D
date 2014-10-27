@@ -346,7 +346,6 @@ function BattlefieldUI:angryChange(angry)
 end
 
 function BattlefieldUI:timeInit()
-    self._tm = 0
     local tm = {"00","00","00"}
     tm = table.concat(tm,":")
    
@@ -358,9 +357,10 @@ function BattlefieldUI:timeInit()
     self._tmlabel = tm_label
     self:addChild(tm_label,5)
     --time update
+    local time = 0
     local function tmUpdate()
-        self._tm = self._tm+1
-        local dev = self._tm
+        time = time+1
+        local dev = time
         local min = math.floor(dev/60)
         local sec = dev%60
         if min<10 then
@@ -401,7 +401,8 @@ function BattlefieldUI:showVictoryUI()
     end
     local function onTouchEnded(touch,event)
         --stop schedule
-        cc.Director:getScheduler():unscheduleScriptEntry(self._tmSchedule)
+        cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._tmSchedule)
+        cc.Director:getInstance():getScheduler():unscheduleScriptEntry(gameControllerScheduleID)
         --replace scene
         cc.Director:getInstance():replaceScene(require("ChooseRoleScene"):create())
     end
