@@ -3,7 +3,7 @@ require "MessageDispatchCenter"
 require "Helper"
 require "AttackCommand"
 
-local file = "model/boss/yaonv_Ani_all_v007.c3b"
+local file ="model/boss/boss.c3b"
 
 Boss = class("Boss", function()
     return require "Actor".create()
@@ -11,7 +11,7 @@ end)
 
 function Boss:ctor()
     copyTable(ActorCommonValues, self)
-    copyTable(RatValues,self)
+    copyTable(BossValues,self)
 
     self:init3D()
     self:initActions()
@@ -19,13 +19,13 @@ end
 
 function Boss:reset()
     copyTable(ActorCommonValues, self)
-    copyTable(RatValues,self)
+    copyTable(BossValues,self)
     self:walkMode()
     self:setPositionZ(0)
 end
 
 function Boss.create()
-    local ret = Rat.new()
+    local ret = Boss.new()
     ret._AIEnabled = true
 
     --this update function do not do AI
@@ -61,5 +61,5 @@ do
 end
 -- end init Rat animations========================
 function Boss:initActions()
-    self._action = Rat._action
+    self._action = Boss._action
 end
