@@ -295,7 +295,7 @@ end
 --bg
 function MainMenuScene:addBg(layer)
     --background
-    local bg_back = cc.Sprite:create("mainmenuscene/bg.png")
+    local bg_back = cc.Sprite:create("mainmenuscene/bg.jpg")
     bg_back:setPosition(self.size.width/2,self.size.height/2)
     layer:addChild(bg_back,1)
 end

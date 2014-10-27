@@ -268,14 +268,14 @@ function BattlefieldUI:bloodDrop(heroActor)
     if heroActor._hp > 0 and percent>50 then
 
         progressTo = cc.ProgressTo:create(0.3,percent)
-        progressToClone = cc.ProgressTo:create(1,percent+2)
+        progressToClone = cc.ProgressTo:create(1,percent)
         heroActor._bloodBar:runAction(progressTo)
         heroActor._bloodBarClone:runAction(progressToClone)
         
     elseif heroActor._hp>0 and percent <=50 then
         
         progressTo = cc.ProgressTo:create(0.3,percent)
-        progressToClone = cc.ProgressTo:create(1,percent+2) 
+        progressToClone = cc.ProgressTo:create(1,percent) 
         tintTo = cc.TintTo:create(0.5,254,225,26)   
         
         heroActor._bloodBar:runAction(cc.Spawn:create(progressTo,tintTo))
@@ -283,7 +283,7 @@ function BattlefieldUI:bloodDrop(heroActor)
     elseif heroActor._hp>0 and percent <=30 then
 
         progressTo = cc.ProgressTo:create(0.3,percent)
-        progressToClone = cc.ProgressTo:create(1,percent+2) 
+        progressToClone = cc.ProgressTo:create(1,percent) 
         
         tintTo = cc.TintTo:create(0.5,254,26,69)   
         heroActor._bloodBar:runAction(cc.Spawn:create(progressTo,tintTo))
@@ -304,14 +304,17 @@ function BattlefieldUI:heroDead(hero)
         cc.GreyShader:setGreyShader(self.KnightPng)
         cc.GreyShader:setGreyShader(self.KnightPngFrame)    
         self.KnightAngryFullSignal:setVisible(false)   
+        self.KnightAngryClone:setVisible(false)
     elseif hero._name =="Mage" then
         cc.GreyShader:setGreyShader(self.MagePng)
         cc.GreyShader:setGreyShader(self.MagePngFrame)
         self.MageAngryFullSignal:setVisible(false)
+        self.MageAngryClone:setVisible(false)
     elseif hero._name=="Archer" then
         cc.GreyShader:setGreyShader(self.ArcherPng)
         cc.GreyShader:setGreyShader(self.ArcherPngFrame)
-        self.ArcherAngryFullSignal:setVisible(false)        
+        self.ArcherAngryFullSignal:setVisible(false)
+        self.ArcherAngryClone:setVisible(false)                
     end
 end
 

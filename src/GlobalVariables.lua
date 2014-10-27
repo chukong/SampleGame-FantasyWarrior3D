@@ -46,7 +46,7 @@ G =
 --Audios
 BGM_RES = 
 {
-    MAINMENUBGM = "audios/Royal Flush Party.mp3",
+    MAINMENUBGM = "audios/01 Beast Hunt.mp3",
     MAINMENUSTART= "audios/effects/magical_3.mp3",
     BATTLEFIELDBGM = "audios/The_Last_Encounter_Short_Loop.mp3",
     CHOOSEROLESCENEBGM = "audios/Imminent Threat Beat B FULL Loop.mp3"
@@ -204,8 +204,8 @@ MageValues = {
     _mass           = 800,
     _shadowSize     = 70,
 
-    _hp             = 1100,
-    _maxhp          = 1100,
+    _hp             = 5000,
+    _maxhp          = 5000,
     _defense        = 120,
     _attackFrequency = 2.67,
     _recoverTime    = 0.8,
@@ -407,7 +407,7 @@ RatValues = {
         maxRange = 110,
         angle    = DEGREES_TO_RADIANS(100),
         knock    = 50,
-        damage   = 10,
+        damage   = 400,
         mask     = EnumRaceType.MONSTER,
         duration = 0,
         speed    = 0,
