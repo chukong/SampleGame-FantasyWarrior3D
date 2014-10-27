@@ -11,7 +11,7 @@ require "Archer"
 --require "Boss"
 
 local gloableZOrder = 1
-local monsterCount = {dragon=2,slime=7,piglet=3,rat = 0}
+local monsterCount = {dragon=1,slime=7,piglet=2,rat = 0} --rat count must be 0.
 local EXIST_MIN_MONSTER = 4
 local scheduleid
 local stage = 0
@@ -301,12 +301,10 @@ function GameMaster:randomshowMonster(isFront)
 end
 
 function GameMaster:showBoss()
-    --boss should appear int pos(300,200)
-    --now assume Boss is a piglet.
     local boss = Rat:create()
     currentLayer:addChild(boss)
     boss:reset()
-    local appearPos = cc.V3(500,200,500)
+    local appearPos = cc.V3(500,200,300)
     boss:setPosition3D(appearPos)
     boss._myPos = {x = appearPos.x,y = appearPos.y}
     boss:setFacing(180)
@@ -314,7 +312,7 @@ function GameMaster:showBoss()
     local function enableAI()
         boss:setAIEnabled(true)
     end
-    boss:runAction(cc.Sequence:create(cc.EaseCircleActionIn:create(cc.MoveBy:create(0.5,cc.V3(0,0,-500))),cc.CallFunc:create(enableAI)))
+    boss:runAction(cc.Sequence:create(cc.EaseBounceOut:create(cc.MoveBy:create(0.5,cc.V3(0,0,-300))),cc.CallFunc:create(enableAI)))
     List.pushlast(MonsterManager, boss)
 end
 
