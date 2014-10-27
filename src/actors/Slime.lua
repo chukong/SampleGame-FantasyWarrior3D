@@ -31,6 +31,15 @@ function Slime.create()
     ret:play3DAnim()
     return ret
 end
+
+function Slime:reset()
+    copyTable(ActorCommonValues, self)
+    copyTable(SlimeValues,self)
+    self:_findEnemy(self._raceType)
+    self:walkMode()
+    self:setPositionZ(0)
+end
+
 function Slime:play3DAnim()
     self._sprite3d:runAction(cc.RepeatForever:create(createAnimation(file,0,22,0.7)))
     
@@ -80,9 +89,9 @@ function Slime:angryFace(trueFalse)
     if self._angryFace ~= trueFalse then
         self._angryFace = trueFalse
         if trueFalse then
-            self:setTexture("model/slime/baozi2.jpg")
+            self._sprite3d:setTexture("model/slime/baozi2.jpg")
         else
-            self:setTexture("model/slime/baozi.jpg")
+            self._sprite3d:setTexture("model/slime/baozi.jpg")
         end
     end   
 end

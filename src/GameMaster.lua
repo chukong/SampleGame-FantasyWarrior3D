@@ -264,17 +264,26 @@ function GameMaster:showSlime(isFront)
     if List.getSize(SlimePool) ~= 0 then
         local slime = List.popfirst(SlimePool)
         slime:reset()
-        
         local appearPos = getFocusPointOfHeros()
-        if isFront then
-            appearPos.x = appearPos.x + frontDistanceWithHeroX
+        local randomvarX = math.random()*0.2+1
+        if stage == 0 then
+            appearPos.x = appearPos.x + frontDistanceWithHeroX*randomvarX
+            slime:setFacing(180)
         else
-            appearPos.x = appearPos.x - backwardDistanceWithHeroX
+            if isFront then
+                appearPos.x = appearPos.x + frontDistanceWithHeroX*1.5*randomvarX
+                slime:setFacing(180)
+            else
+                appearPos.x = appearPos.x - backwardDistanceWithHeroX*1.5*randomvarX
+                slime:setFacing(0)
+            end
         end
-        local randomvar = 2*math.random()-1
-        appearPos.y = appearPos.y + randomvar*distanceWithHeroY
+        local randomvarY = 2*math.random()-1
+        appearPos.y = appearPos.y + randomvarY*distanceWithHeroY
         slime:setPosition(appearPos)
+        slime._myPos = appearPos
         slime:setVisible(true)
+        slime._goRight = false
         slime:setAIEnabled(true)
         List.pushlast(MonsterManager, slime)
         show_count = show_count + 1
@@ -314,7 +323,7 @@ end
 
 function GameMaster:randomshowMonster(isFront)
 	local random_var = math.random()
-    random_var = 0.02
+    -- random_var = 0.8
 	if random_var<0.15 then
 		self:showDragon(isFront)
 	elseif random_var<0.3 then
@@ -322,8 +331,7 @@ function GameMaster:randomshowMonster(isFront)
 	elseif random_var<0.6 then
         self:showPiglet(isFront)
 	else
-        --self:showSlime(isFront)
-        self:showDragon(isFront)
+        self:showSlime(isFront)
 	end
 end
 

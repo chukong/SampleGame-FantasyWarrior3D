@@ -51,12 +51,12 @@ local function updateParticlePos()
 end
 
 local function createBackground()
-    local spriteBg = cc.Sprite3D:create("model/scene1.c3b", "model/zhenghe.png")
+    local spriteBg = cc.Sprite3D:create("model/scene/changing.c3b")
 
     currentLayer:addChild(spriteBg)
     spriteBg:setScale(2.65)
     --spriteBg:setGlobalZOrder(-9)
-    spriteBg:setPosition3D(cc.V3(-1000,350,0))
+    spriteBg:setPosition3D(cc.V3(-2300,-1000,0))
     spriteBg:setRotation3D(cc.V3(90,0,0))
         
     local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=5000, height=400}, 0.77, 0.3797, 1.2)
