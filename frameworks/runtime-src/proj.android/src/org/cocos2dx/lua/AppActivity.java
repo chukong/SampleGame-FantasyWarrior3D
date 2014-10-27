@@ -33,6 +33,7 @@ import java.util.Enumeration;
 import java.util.ArrayList;
 
 import org.cocos2dx.lib.Cocos2dxActivity;
+import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
 
 import android.app.AlertDialog;
 import android.content.Context;
