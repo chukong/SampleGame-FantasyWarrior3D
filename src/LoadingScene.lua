@@ -42,7 +42,7 @@ function LoadingScene:init()
     local layer = cc.Layer:create()
     
     --add bg
-    local bg = cc.Sprite:create("loadingscene/bg.png")
+    local bg = cc.Sprite:create("loadingscene/bg.jpg")
     bg:setPosition(self.size.width/2,self.size.height/2)
     layer:addChild(bg)
     
