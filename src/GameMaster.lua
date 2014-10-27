@@ -307,12 +307,15 @@ function GameMaster:showBoss()
     local boss = Rat:create()
     currentLayer:addChild(boss)
     boss:reset()
-    local appearPos = cc.p(500,200)
-    boss:setPosition(appearPos)
-    boss._myPos = appearPos
-    boss._goRight = false
-    boss:setAIEnabled(true)
+    local appearPos = cc.V3(500,200,500)
+    boss:setPosition3D(appearPos)
+    boss._myPos = {x = appearPos.x,y = appearPos.y}
     boss:setFacing(180)
+    boss._goRight = false
+    local function enableAI()
+        boss:setAIEnabled(true)
+    end
+    boss:runAction(cc.Sequence:create(cc.EaseCircleActionIn:create(cc.MoveBy:create(0.5,cc.V3(0,0,-500))),cc.CallFunc:create(enableAI)))
     List.pushlast(MonsterManager, boss)
 end
 
