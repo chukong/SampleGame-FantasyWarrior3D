@@ -55,7 +55,7 @@ local function createBackground()
     spriteBg:setPosition3D(cc.V3(-2300,-1000,0))
     spriteBg:setRotation3D(cc.V3(90,0,0))
         
-    local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.png", "shader3D/18.jpg", {width=5500, height=400}, 0.77, 0.3797, 1.2)
+    local water = cc.Water:create("shader3D/water.png", "shader3D/wave1.jpg", "shader3D/18.jpg", {width=5500, height=400}, 0.77, 0.3797, 1.2)
     currentLayer:addChild(water)
     water:setPosition3D(cc.V3(-3500,-580,-110))
     water:setAnchorPoint(0,0)
