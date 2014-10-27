@@ -126,7 +126,7 @@ end
 function BattlefieldUI:angrybarInit()
     local offset = 32+10
     local yellow = cc.c3b(255,255,0)
-    local grey = cc.c3b(255,255,255)
+    local grey = cc.c3b(166,166,166)
     self.KnightAngry = cc.ProgressTimer:create(cc.Sprite:createWithSpriteFrameName("UI-1136-640_36_clone.png"))
     self.KnightAngry:setColor(yellow)
     self.KnightAngry:setType(cc.PROGRESS_TIMER_TYPE_BAR)

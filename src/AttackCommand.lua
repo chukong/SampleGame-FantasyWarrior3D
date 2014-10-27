@@ -51,7 +51,9 @@ function solveAttacks(dt)
 end
 
 BasicCollider = class("BasicCollider", function()
-    return cc.Node:create()
+    local node = cc.Node:create()
+    node:setCascadeColorEnabled(true)
+    return node
 end)
 
 function BasicCollider:ctor()
