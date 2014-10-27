@@ -31,7 +31,7 @@ function Actor:addEffect(effect)
     if self._racetype ~= EnumRaceType.MONSTER then
         effect:setPositionZ(self:getPositionZ()+self._heroHeight)
     else
-        effect:setPositionZ(self:getPositionZ()+self._monsterHeight)
+        effect:setPositionZ(self:getPositionZ()+self._monsterHeight+effect:getPositionZ())
     end
     currentLayer:addChild(effect)
 end
@@ -164,6 +164,9 @@ function Actor:hurt(collider, dirKnockMode)
         
         --three param judge if crit
         local blood = self._hpCounter:showBloodLossNum(damage,self,critical)
+        if self._name == "Rat" then
+            blood:setPositionZ(G.winSize.height*0.25)
+        end
         self:addEffect(blood)
 
 
@@ -240,6 +243,10 @@ function Actor:dyingMode(knockSource, knockAmount)
         uiLayer:heroDead(self)
         List.removeObj(HeroManager,self) 
         self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create()))
+        
+        self._angry = 0
+        local anaryChange = {_name = self._name, _angry = self._angry, _angryMax = self._angryMax}
+        MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.ANGRY_CHANGE, anaryChange)          
     else
         List.removeObj(MonsterManager,self) 
         local function recycle()

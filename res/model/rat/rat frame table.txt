@@ -1,9 +1,0 @@
-zhanli   0-23
-
-shouji   30-37
-
-siwang   41-76
-
-gongji   81-117
-
-pao      122-142
