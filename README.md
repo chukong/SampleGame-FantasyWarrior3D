@@ -23,7 +23,7 @@ The projetc contains 3 kinds of runtimes: win32, ios_mac and Android.
 Path: `FantasyWarrior3D/frameworks/runtime-src/proj.ios_mac/FantasyWarrior3D.xcodeproj`. 
 
 ###win32 runtime
-Path: `FantasyWarrior3D/frameworks/runtime-src/proj.win32/FantasyWarrior3D.vcxpro`. The Visual Studio 2012 above is required.
+Path: `FantasyWarrior3D/frameworks/runtime-src/proj.win32/FantasyWarrior3D.sln`. The Visual Studio 2012 above is required.
 
 ###android runtime
 Path: `FantasyWarrior3D/frameworks/runtime-src/proj.android`. 
