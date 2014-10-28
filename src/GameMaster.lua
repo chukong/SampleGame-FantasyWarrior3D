@@ -118,6 +118,30 @@ function GameMaster:logicUpdate()
                     hero._goRight = true
                 end
             end
+            for i = PigletPool.first, PigletPool.last do
+                local monster = PigletPool[i]
+                if monster ~= nil then
+                    monster:removeFromParent()
+                end
+            end
+            for i = SlimePool.first, SlimePool.last do
+                local hero = SlimePool[i]
+                if monster ~= nil then
+                    monster:removeFromParent()
+                end
+            end
+            for i = DragonPool.first, DragonPool.last do
+                local hero = DragonPool[i]
+                if monster ~= nil then
+                    monster:removeFromParent()
+                end
+            end
+            for i = RatPool.first, RatPool.last do
+                local hero = RatPool[i]
+                if monster ~= nil then
+                    monster:removeFromParent()
+                end
+            end
             stage = 8
         end
     elseif stage == 8 then
