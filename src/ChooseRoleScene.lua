@@ -509,9 +509,9 @@ function ChooseRoleScene:playAudioWhenRotate()
     if hero._name == "Knight" then
         ccexp.AudioEngine:play2d(WarriorProperty.kickit, false,1)
     elseif hero._name == "Archer" then
-        ccexp.AudioEngine:play2d(Archerproperty.cheers, false,1)
+        ccexp.AudioEngine:play2d(Archerproperty.iwillfight, false,1)
     elseif hero._name == "Mage" then
-        ccexp.AudioEngine:play2d(MageProperty.alright, false,1)
+        ccexp.AudioEngine:play2d(MageProperty.letstrade, false,1)
     end
 end
 

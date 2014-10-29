@@ -522,7 +522,7 @@ Archerproperty =
 {
     attack1 = "audios/effects/archer/swish-3.mp3",
     attack2 = "audios/effects/archer/swish-4.mp3",
-    cheers = "audios/effects/archer/cheers.mp3",
+    iwillfight = "audios/effects/archer/iwillfight.mp3",
     wounded = "audios/effects/archer/hurt.mp3",
     normalAttackShout = "audios/effects/archer/normalAttackShout.mp3",
     specialAttackShout = "audios/effects/archer/specialAttackShout.mp3",
@@ -538,7 +538,7 @@ MageProperty =
     defense = 100,
     speed = 50,
     special_attack_chance = 0.33,
-    alright = "audios/effects/mage/alright.mp3",
+        letstrade = "audios/effects/mage/letstrade.mp3",
     ice_normal = "audios/effects/mage/ice_1.mp3",
     ice_special = "audios/effects/mage/ice_2.mp3",
     ice_normalAttackHit = "audios/effects/mage/ice_3.mp3",
