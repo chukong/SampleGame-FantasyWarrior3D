@@ -29,7 +29,6 @@ end
 
 HeroManager = List.new()
 MonsterManager = List.new()
-BossManager = List.new()
 
 local function solveCollision(object1, object2)
     local miniDistance = object1._radius + object2._radius
@@ -61,14 +60,7 @@ local function collision(object)
         if sprite._isalive == true and sprite ~= object then
             solveCollision(sprite, object)
         end                  
-    end 
-
-    for val = BossManager.first, BossManager.last do
-        local sprite = BossManager[val]
-        if sprite._isalive == true and sprite ~= object then
-            solveCollision(sprite, object)
-        end
-    end     
+    end      
 end
 
 local function isOutOfBound(object)
@@ -114,17 +106,7 @@ function collisionDetect(dt)
         else
             List.remove(MonsterManager, val)
         end
-    end    
-
-    for val = BossManager.last, MonsterManager.first, -1 do
-        local sprite = BossManager[val]
-        if sprite._isalive == true then
-            collision(sprite)
-            isOutOfBound(sprite)            
-        else
-            List.remove(BossManager, val)
-        end
-    end        
+    end           
 end
 
 function getFocusPointOfHeros()
