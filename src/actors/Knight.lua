@@ -27,34 +27,8 @@ function Knight:ctor()
 end
 
 function Knight.create()
-    local ret = Knight.new()
-    --ret:setRaceType(EnumRaceType.WARRIOR)
-    
-    
-    --=====Testing block
-    ret:idleMode()
-    function test()
---        ret:walkMode()
---        ret._targetFacing = DEGREES_TO_RADIANS(120)
-        ret._AIEnabled = true
-    end
-    function test2()
-        ret:idleMode()
-        ret._targetFacing = 0
-    end
-    function test3()
-        ret:attackMode()
-    end
-    function test4()
-        ret:knockMode({x=-1000,y=00}, 150)
-    end
+    local ret = Knight.new()    
 
-    --delayExecute(ret,test,0.5)
-
---    delayExecute(ret,test2,2.5)
---    delayExecute(ret,test,3.5)
---    delayExecute(ret,test3,4.5)
-    --=====testing block
     ret._AIEnabled = true
     --this update function do not do AI
     function update(dt)

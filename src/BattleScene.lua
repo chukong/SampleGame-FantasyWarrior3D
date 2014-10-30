@@ -20,19 +20,16 @@ local function moveCamera(dt)
     local cameraPosition = getPosTable(camera)
     local focusPoint = getFocusPointOfHeros()
     if specialCamera.valid == true then
-        --local position = cc.pRotateByAngle(cameraPosition, cc.p(specialCamera.position.x, -size.height/2), -360/60/2*dt)
         local position = cc.pLerp(cameraPosition, cc.p(specialCamera.position.x, (cameraOffset.y + focusPoint.y-size.height*3/4)*0.5), 5*dt)
         
         camera:setPosition(position)
         camera:lookAt(cc.V3(position.x, specialCamera.position.y, 50.0), cc.V3(0.0, 1.0, 0.0))
     elseif List.getSize(HeroManager) > 0 then
-        --local position = cc.V3(focusPoint.x, focusPoint.y, size.height/2-100)
         local temp = cc.pLerp(cameraPosition, cc.p(focusPoint.x+cameraOffset.x, cameraOffset.y + focusPoint.y-size.height*3/4), 2*dt)
         local position = cc.V3(temp.x, temp.y, size.height/2-100)
-            camera:setPosition3D(position)
-            camera:lookAt(cc.V3(position.x, focusPoint.y, 50.0), cc.V3(0.0, 0.0, 1.0))
-            --cclog("\ncalf %f %f %f \ncalf %f %f 50.000000", position.x, position.y, position.z, focusPoint.x, focusPoint.y)            
---        end
+        camera:setPosition3D(position)
+        camera:lookAt(cc.V3(position.x, focusPoint.y, 50.0), cc.V3(0.0, 0.0, 1.0))
+        --cclog("\ncalf %f %f %f \ncalf %f %f 50.000000", position.x, position.y, position.z, focusPoint.x, focusPoint.y)            
     end
 end
 
@@ -51,7 +48,6 @@ local function createBackground()
 
     currentLayer:addChild(spriteBg)
     spriteBg:setScale(2.65)
-    --spriteBg:setGlobalZOrder(-9)
     spriteBg:setPosition3D(cc.V3(-2300,-1000,0))
     spriteBg:setRotation3D(cc.V3(90,0,0))
         
@@ -65,15 +61,9 @@ end
 
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 10.0, 4000.0)
---    local focusPoint = getFocusPointOfHeros()
---    local position = cc.V3(focusPoint.x, focusPoint.y-size.height, size.height/2-100)
---    camera:setPosition3D(position)
---    camera:lookAt(cc.V3(focusPoint.x, focusPoint.y, 0.0), cc.V3(0.0, 0.0, 1.0))
     camera:setGlobalZOrder(10)
     currentLayer:addChild(camera)
 
---    cameraOffset = cc.V3(0, 0, 0)
-    
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
         if sprite._puff then
