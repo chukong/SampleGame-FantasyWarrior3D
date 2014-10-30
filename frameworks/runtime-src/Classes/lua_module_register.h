@@ -24,11 +24,11 @@ int lua_module_register(lua_State* L)
     register_spine_module(L);
     register_cocos3d_module(L);
     lua_getglobal(L, "_G");
-    register_all_cocos2dx_custom(L);
-    lua_pop(L, 1);
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC
-    register_audioengine_module(L);
+	register_all_cocos2dx_custom(L);
+#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	register_audioengine_module(L);
 #endif
+    lua_pop(L, 1);
     return 1;
 }
 
