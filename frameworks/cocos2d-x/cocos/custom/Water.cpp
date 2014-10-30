@@ -19,8 +19,10 @@ Water *Water::create(const std::string& tex1,const std::string& tex2,const std::
         auto wave2 = TexCache->addImage(tex2);
         auto wave1 = TexCache->addImage(tex3);
         
-        wave1->setTexParameters(cocos2d::Texture2D::TexParams{GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT});
-        wave2->setTexParameters(cocos2d::Texture2D::TexParams{GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT});
+        cocos2d::Texture2D::TexParams wave1TexParams = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};
+        cocos2d::Texture2D::TexParams wave2TexParams = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};
+        wave1->setTexParameters(wave1TexParams);
+        wave2->setTexParameters(wave2TexParams);
         auto glprogram = cocos2d::GLProgram::createWithFilenames("res/shader3D/water.vsh", "res/shader3D/water.fsh");
         auto glprogramstate = cocos2d::GLProgramState::getOrCreateWithGLProgram(glprogram);
         water->setGLProgramState(glprogramstate);
