@@ -137,7 +137,7 @@ function BattleScene:enableTouch()
     end
     
     local function onTouchMoved(touch,event)
-        if self:UIcontainsPoint(location) == nil then
+        if self:UIcontainsPoint(touch:getLocation()) == nil then
             local delta = touch:getDelta()
             cameraOffset = cc.pGetClampPoint(cc.pSub(cameraOffset, delta),cameraOffsetMin,cameraOffsetMax)
         end
