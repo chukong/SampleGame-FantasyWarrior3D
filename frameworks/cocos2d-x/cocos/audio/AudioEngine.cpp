@@ -57,6 +57,8 @@ AudioEngineImpl* AudioEngine::_audioEngineImpl = nullptr;
 
 void AudioEngine::end()
 {
+	stopAll();
+
     delete _audioEngineImpl;
     _audioEngineImpl = nullptr;
 
