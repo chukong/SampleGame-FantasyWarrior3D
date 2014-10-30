@@ -132,20 +132,15 @@ end
 
 function BattleScene:enableTouch()
     local function onTouchBegin(touch,event)
-        self._prePosition = touch:getLocation()
-        --cclog("onTouchBegin: %0.2f, %0.2f", self._prePosition.x, self._prePosition.y)        
+        --cclog("onTouchBegin: %0.2f, %0.2f", touch:getLocation())        
         return true
     end
     
     local function onTouchMoved(touch,event)
-        local location = touch:getLocation()
-
         if self:UIcontainsPoint(location) == nil then
             local delta = touch:getDelta()
             cameraOffset = cc.pGetClampPoint(cc.pSub(cameraOffset, delta),cameraOffsetMin,cameraOffsetMax)
         end
-                                   
-        self._prePosition = location
     end
     
     local function onTouchEnded(touch,event)
