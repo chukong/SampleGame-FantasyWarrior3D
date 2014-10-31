@@ -75,10 +75,10 @@ local function setCamera()
 end
 
 local function gameController(dt)
+    gameMaster:update(dt)
     collisionDetect(dt)
     solveAttacks(dt)
     moveCamera(dt)
-    gameMaster:update(dt)
 end
 
 local function initUILayer()
