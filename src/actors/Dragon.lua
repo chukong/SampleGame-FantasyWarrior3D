@@ -77,13 +77,11 @@ end
 function Dragon:normalAttack()
     self:normalAttackSoundEffects()
     DragonAttack.create(getPosTable(self), self._curFacing, self._normalAttack)
---    BossNormal.create(getPosTable(self), self._curFacing, self._normalAttack)
 end
 
 function Dragon:init3D()
     self:initShadow()
     self._sprite3d = cc.EffectSprite3D:create(file)
-    -- self._sprite3d:setTexture("model/dragon/xiaohuolong_body.jpg")
     self._sprite3d:setScale(10)
     self._sprite3d:addEffect(cc.V3(0,0,0),CelLine, -1)
     self:addChild(self._sprite3d)

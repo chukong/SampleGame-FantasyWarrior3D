@@ -164,9 +164,6 @@ function Actor:hurt(collider, dirKnockMode)
         
         --three param judge if crit
         local blood = self._hpCounter:showBloodLossNum(damage,self,critical)
-        if self._name == "Rat" then
-            blood:setPositionZ(G.winSize.height*0.25)
-        end
         self:addEffect(blood)
         return damage        
     end
@@ -443,29 +440,7 @@ function Actor:movementUpdate(dt)
         --left
             self._curFacing = self._curFacing + turnby
         end
---        if self._name == "Knight" then
---        --print(RADIANS_TO_DEGREES(angleDt), "angleDt", RADIANS_TO_DEGREES(turnby))
---        end
-        
---        self._curFacing = self._curFacing + turnby
---        if self._name == "Knight" then
---        print(RADIANS_TO_DEGREES(angleDt), "angleDt")end
---        if turnby > (math.pi*2) then
---            turnby = turnby - (math.pi*2)
---        end
---        if self._curFacing > self._targetFacing then
-----            if turnby > angleDt then 
-----                self._curFacing = self._targetFacing
-----            else
---                self._curFacing = self._curFacing - turnby
---            --end
---        elseif self._curFacing < self._targetFacing then
-----            if turnby < angleDt then
-----                self._curFacing = self._targetFacing
-----            else
---                self._curFacing = self._curFacing + turnby
---            --end
---        end
+
         self:setRotation(-RADIANS_TO_DEGREES(self._curFacing))
     end
     --position update

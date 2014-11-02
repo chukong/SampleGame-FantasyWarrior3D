@@ -80,31 +80,25 @@ function Rat:dyingMode(knockSource, knockAmount)
     self:setStateType(EnumStateType.DYING)
     self:playAnimation("dead")
     self:playDyingEffects()
-    if self._racetype == EnumRaceType.HERO then
-        uiLayer:heroDead(self)
-        List.removeObj(HeroManager,self) 
-        self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.RemoveSelf:create()))
-    else
-        List.removeObj(MonsterManager,self) 
-        local function recycle()
-            --self:setVisible(false)
-            --List.pushlast(getPoolByName(self._name),self)
-            self:removeFromParent()
-            if gameMaster ~= nil then
-                gameMaster:showVictoryUI()
-            end
-        end
-        local function disableHeroAI()
-            if List.getSize(HeroManager) ~= 0 then
-                for var = HeroManager.first, HeroManager.last do
-                    HeroManager[var]:setAIEnabled(false)
-                    HeroManager[var]:idleMode()
-                    HeroManager[var]._goRight = false
-                end
-            end
-        end
-        self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.CallFunc:create(disableHeroAI),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(recycle)))
+
+    List.removeObj(MonsterManager,self) 
+    local function recycle()
+       self:removeFromParent()
+       if gameMaster ~= nil then
+           gameMaster:showVictoryUI()
+       end
     end
+    
+    local function disableHeroAI()
+       if List.getSize(HeroManager) ~= 0 then
+            for var = HeroManager.first, HeroManager.last do
+                 HeroManager[var]:setAIEnabled(false)
+                 HeroManager[var]:idleMode()
+                HeroManager[var]._goRight = false
+             end
+        end
+    end
+    self:runAction(cc.Sequence:create(cc.DelayTime:create(3),cc.CallFunc:create(disableHeroAI),cc.MoveBy:create(1.0,cc.V3(0,0,-50)),cc.CallFunc:create(recycle)))
     
     if knockAmount then
         local p = self._myPos
@@ -154,9 +148,7 @@ function Rat:hurt(collider, dirKnockMode)
 
         --three param judge if crit
         local blood = self._hpCounter:showBloodLossNum(damage,self,critical)
-        if self._name == "Rat" then
-            blood:setPositionZ(G.winSize.height*0.25)
-        end
+        blood:setPositionZ(G.winSize.height*0.25)
         self:addEffect(blood)
 
         return damage        
