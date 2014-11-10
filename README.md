@@ -28,6 +28,9 @@ Path: `FantasyWarrior3D/frameworks/runtime-src/proj.win32/FantasyWarrior3D.sln`.
 ###android runtime
 Path: `FantasyWarrior3D/frameworks/runtime-src/proj.android`. 
 
+##Tips
+Some of the classes from the engine have been modified, so you can't run this project by other cocos2d-x engine except the folder of `frameworks\cocos2d-x\`.
+
 ##Credits
 * Game Effects: Wu Hao
 * Game Logic: Fu Sijie
