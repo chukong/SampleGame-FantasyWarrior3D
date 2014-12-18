@@ -172,7 +172,15 @@ bool ParticleSystem::initWithFile(const std::string& plistFile)
     
     // FIXME: compute path from a path, should define a function somewhere to do it
     string listFilePath = plistFile;
+    if (listFilePath.find('/') != string::npos)
+    {
+        listFilePath = listFilePath.substr(0, listFilePath.rfind('/') + 1);
+        ret = this->initWithDictionary(dict, listFilePath.c_str());
+    }
+    else
+    {
         ret = this->initWithDictionary(dict, "");
+    }
     
     return ret;
 }
