@@ -16,6 +16,9 @@
     <Filter Include="Classes\runtime\protobuf-lite">
       <UniqueIdentifier>{28edb895-7c19-408b-abd6-130196087d96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Classes\custom">
+      <UniqueIdentifier>{0a9dbb16-e78f-412f-b737-1f4bc61213d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h">
@@ -109,8 +112,47 @@
     <ClInclude Include="..\Classes\runtime\lua_debugger.h">
       <Filter>Classes\runtime</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\lua_module_register.h">
-      <Filter>Classes</Filter>
+    <ClInclude Include="..\Classes\runtime\ConnectWaitLayer.h">
+      <Filter>Classes\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\runtime\ConsoleCommand.h">
+      <Filter>Classes\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\runtime\FileServer.h">
+      <Filter>Classes\runtime</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\custom\BillBoardLable.h">
+      <Filter>Classes\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\custom\BillboardParticleSystem.h">
+      <Filter>Classes\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\custom\CCSequence3D.h">
+      <Filter>Classes\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\custom\DrawNode3D.h">
+      <Filter>Classes\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\custom\EffectSprite.h">
+      <Filter>Classes\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\custom\EffectSprite3D.h">
+      <Filter>Classes\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\custom\GreyShader.h">
+      <Filter>Classes\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\custom\JumpBy3D.h">
+      <Filter>Classes\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\custom\JumpTo3D.h">
+      <Filter>Classes\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\custom\lua_cocos2dx_custom.hpp">
+      <Filter>Classes\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\custom\Water.h">
+      <Filter>Classes\custom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -191,6 +233,48 @@
     </ClCompile>
     <ClCompile Include="..\Classes\runtime\lua_debugger.c">
       <Filter>Classes\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\runtime\ConnectWaitLayer.cpp">
+      <Filter>Classes\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\runtime\ConsoleCommand.cpp">
+      <Filter>Classes\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\runtime\FileServer.cpp">
+      <Filter>Classes\runtime</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\custom\BillBoardLable.cpp">
+      <Filter>Classes\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\custom\BillboardParticleSystem.cpp">
+      <Filter>Classes\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\custom\CCSequence3D.cpp">
+      <Filter>Classes\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\custom\DrawNode3D.cpp">
+      <Filter>Classes\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\custom\EffectSprite.cpp">
+      <Filter>Classes\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\custom\EffectSprite3D.cpp">
+      <Filter>Classes\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\custom\GreyShader.cpp">
+      <Filter>Classes\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\custom\JumpBy3D.cpp">
+      <Filter>Classes\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\custom\JumpTo3D.cpp">
+      <Filter>Classes\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\custom\lua_cocos2dx_custom.cpp">
+      <Filter>Classes\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\custom\Water.cpp">
+      <Filter>Classes\custom</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

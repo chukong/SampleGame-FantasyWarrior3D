@@ -1,4 +1,3 @@
-require "Cocos2d"
 require "Helper"
 require "GlobalVariables"
 

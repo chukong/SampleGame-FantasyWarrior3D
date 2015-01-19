@@ -108,8 +108,6 @@
 	<real>0</real>
 	<key>textureFileName</key>
 	<string></string>
-	<key>textureImageData</key>
-	<string></string>
 	<key>yCoordFlipped</key>
 	<integer>1</integer>
 </dict>

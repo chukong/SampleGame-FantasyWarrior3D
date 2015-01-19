@@ -28,7 +28,7 @@ end
 
 function Knight.create()
     local ret = Knight.new()    
-
+    ret:idleMode()
     ret._AIEnabled = true
     --this update function do not do AI
     function update(dt)

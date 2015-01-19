@@ -1,5 +1,3 @@
-require("Cocos2d")
-
 local HPCounter = class("HPCounter",function()
     return cc.Node:create()
 end)
@@ -10,7 +8,7 @@ function HPCounter:create()
     return HPCounter.new()
 end
 
-function HPCounter:showBloodLossNum(dmage,racetype,atack)
+function HPCounter:showBloodLossNum(damage,actor,attack)
     local time = 1
     local function getRandomXYZ()
         local rand_x = 20*math.sin(math.rad(time*0.5+4356))
@@ -24,12 +22,11 @@ function HPCounter:showBloodLossNum(dmage,racetype,atack)
         local tm = 0.5
         local pointZ = 50
         
+        local effect = cc.BillBoard:create()
         local ttfconfig = {outlineSize=7,fontSize=50,fontFilePath="fonts/britanic bold.ttf"}
-        local blood = cc.BillBoardLable:createWithTTF(ttfconfig,"-"..num,cc.TEXT_ALIGNMENT_CENTER,400)
+        local blood = cc.Label:createWithTTF(ttfconfig,"-"..num,cc.TEXT_ALIGNMENT_CENTER,400)
         blood:enableOutline(cc.c4b(0,0,0,255))
-        blood:setRotation3D({x=90,y=0,z=0})
         blood:setScale(0.1)
-        blood:setRotation3D(getRandomXYZ())
         
         local targetScale = 0.6
         if num > 1000 then 
@@ -42,7 +39,7 @@ function HPCounter:showBloodLossNum(dmage,racetype,atack)
             blood:setColor(cc.c3b(189,0,0))
         end
         
-        if racetype._racetype ~= EnumRaceType.MONSTER then
+        if actor._racetype ~= EnumRaceType.MONSTER then
             blood:setColor(cc.c3b(0,180,255))
         end
         
@@ -61,33 +58,32 @@ function HPCounter:showBloodLossNum(dmage,racetype,atack)
             return spawn
         end
         
-        if atack then
-            local critleAttack = cc.Sprite:createWithSpriteFrameName("hpcounter.png")
+        if attack then
+            local criticalAttack = cc.Sprite:createWithSpriteFrameName("hpcounter.png")
             tm = 1
-            critleAttack:runAction(getAction())
-            critleAttack:setRotation3D({x=90,y=0,z=0})
-            if racetype._name == "Rat" then
-                critleAttack:setPositionZ(G.winSize.height*0.25)
+            criticalAttack:runAction(getAction())
+            if actor._name == "Rat" then
+                criticalAttack:setPositionZ(G.winSize.height*0.25)
             end
-            racetype:addEffect(critleAttack)
-            self._cirtleAttack = critleAttack
+            effect:addChild(criticalAttack)
             pointZ = 80
             targetScale = targetScale*2
         end
         
         self._blood = blood
         self._blood:runAction(getAction())
+        effect:addChild(blood)
       
-        return self._blood
+        return effect
     end
     
     if self._isBlooding == false then
         self._isBlooding = true
-        self._num = dmage
+        self._num = damage
     else
         self._blood:stopAllActions()
         self._blood:removeFromParent()
-        self._num = self._num+dmage
+        self._num = self._num+damage
     end
     
     return getBlood()
