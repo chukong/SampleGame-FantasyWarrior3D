@@ -18,6 +18,34 @@ BGMs are copyrighted by Matthew Pablo, and licensed under CC-BY 3.0
 
 You may not use any art including 2d and 3d from this project for commercial purpose
 
+##Git user attention
+
+1.Clone the repo from Github
+
+```
+$ git clone https://github.com/chukong/FantasyWarrior3D.git
+```
+
+2.Update the submodule of FantasyWarrior3D
+
+```
+$ git submodule update --init
+```
+3.Update the submodule of Cocos2d-x
+
+```
+$ cd frameworks/cocos2d-x
+$ git submodule update --init
+```
+
+4.After cloning the repo, please execute `download-deps.py` to download and install dependencies
+
+```
+$ cd frameworks/cocos2d-x
+$ python download-deps.py
+```
+
+
 ##Platform support
 This projetc supports 3 platforms: win32, ios_mac and Android.
 
