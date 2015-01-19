@@ -1,5 +1,3 @@
-require "Cocos2d"
-require "Cocos2dConstants"
 require "Actor"
 require "Knight"
 require "Archer"
@@ -152,11 +150,18 @@ function ChooseRoleScene:addHeros()
     self._schedule_rotate = cc.Director:getInstance():getScheduler():scheduleScriptFunc(hero_rotate,0,false)
 end
 
-function ChooseRoleScene:addBk()
-	local bk = cc.Sprite:create("chooseRole/cr_bk.jpg")
-    bk:setAnchorPoint(0.5,0.5)
-    bk:setPosition(self.origin.x + self.visibleSize.width/2, self.origin.y + self.visibleSize.height/2)
-    self.layer:addChild(bk)
+function ChooseRoleScene:addBackground()
+    -- Holder for background
+    local node3d = cc.Sprite3D:create()
+
+	local background = cc.Sprite:create("chooseRole/cr_bk.jpg")
+    background:setAnchorPoint(0.5,0.5)
+    background:setPosition(self.origin.x + self.visibleSize.width/2, self.origin.y + self.visibleSize.height/2)
+    background:setPositionZ(-250)
+    background:setScale(1.5)
+
+    node3d:addChild(background)
+    self.layer:addChild(node3d)
 end
 
 function ChooseRoleScene:createLayer()
@@ -164,8 +169,8 @@ function ChooseRoleScene:createLayer()
     --create layer
     self.layer = cc.Layer:create()
     
-    --create bk
-    self:addBk()
+    --create Background
+    self:addBackground()
            
     --create heros
     self:addHeros() 

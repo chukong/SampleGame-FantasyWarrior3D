@@ -8,6 +8,7 @@
     "entry": "src/main.lua",
     "consolePort": 6010,
     "uploadPort": 6020,
+    "debugPort": 10000,
     "forwardConsolePort": 10089,
     "forwardUploadPort": 10091
   },

@@ -1,24 +1,31 @@
 #include "AppDelegate.h"
 #include "CCLuaEngine.h"
-#include "AudioEngine.h"
+#include "SimpleAudioEngine.h"
 #include "cocos2d.h"
+#include "CodeIDESupport.h"
 #include "Runtime.h"
 #include "ConfigParser.h"
 #include "lua_module_register.h"
 
-using namespace cocos2d::experimental;
+using namespace CocosDenshion;
 
 USING_NS_CC;
 using namespace std;
 
 AppDelegate::AppDelegate()
 {
-
 }
 
 AppDelegate::~AppDelegate()
 {
-    AudioEngine::end();
+    SimpleAudioEngine::end();
+
+#if (COCOS2D_DEBUG > 0 && CC_CODE_IDE_DEBUG_SUPPORT > 0)
+	// NOTE:Please don't remove this call if you want to debug with Cocos Code IDE
+	endRuntime();
+#endif
+
+	ConfigParser::purge();
 }
 
 //if you want a different context,just modify the value of glContextAttrs
@@ -34,18 +41,18 @@ void AppDelegate::initGLContextAttrs()
 
 bool AppDelegate::applicationDidFinishLaunching()
 {
-    // initialize director
-#if (COCOS2D_DEBUG > 0)
+#if (COCOS2D_DEBUG > 0 && CC_CODE_IDE_DEBUG_SUPPORT > 0)
     // NOTE:Please don't remove this call if you want to debug with Cocos Code IDE
     initRuntime();
 #endif
     
+    // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();    
     if(!glview) {
         Size viewSize = ConfigParser::getInstance()->getInitViewSize();
         string title = ConfigParser::getInstance()->getInitViewName();
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_MAC) && (COCOS2D_DEBUG > 0 && CC_CODE_IDE_DEBUG_SUPPORT > 0)
         extern void createSimulator(const char* viewName, float width, float height, bool isLandscape = true, float frameZoomFactor = 1.0f);
         bool isLanscape = ConfigParser::getInstance()->isLanscape();
         createSimulator(title.c_str(),viewSize.width,viewSize.height, isLanscape);
@@ -60,6 +67,9 @@ bool AppDelegate::applicationDidFinishLaunching()
     lua_State* L = engine->getLuaStack()->getLuaState();
     lua_module_register(L);
 
+    // If you want to use Quick-Cocos2d-X, please uncomment below code
+    // register_all_quick_manual(L);
+
     LuaStack* stack = engine->getLuaStack();
     stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
     
@@ -67,7 +77,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     //LuaStack* stack = engine->getLuaStack();
     //register_custom_function(stack->getLuaState());
     
-#if (COCOS2D_DEBUG > 0)
+#if (COCOS2D_DEBUG > 0 && CC_CODE_IDE_DEBUG_SUPPORT > 0)
     // NOTE:Please don't remove this call if you want to debug with Cocos Code IDE
     startRuntime();
 #else
@@ -82,7 +92,7 @@ void AppDelegate::applicationDidEnterBackground()
 {
     Director::getInstance()->stopAnimation();
 
-    AudioEngine::pauseAll();
+    SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }
 
 // this function will be called when the app is active again
@@ -90,6 +100,5 @@ void AppDelegate::applicationWillEnterForeground()
 {
     Director::getInstance()->startAnimation();
 
-    AudioEngine::resumeAll();
-
+    SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
 }

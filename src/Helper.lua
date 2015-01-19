@@ -1,5 +1,3 @@
-require "Cocos2d"
-
 --global var
 camera =nil
 

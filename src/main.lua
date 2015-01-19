@@ -1,5 +1,10 @@
-require "Cocos2d"
-require "extern"
+
+cc.FileUtils:getInstance():addSearchPath("src")
+cc.FileUtils:getInstance():addSearchPath("src/actors")
+cc.FileUtils:getInstance():addSearchPath("res")
+
+-- CC_USE_DEPRECATED_API = true
+require "cocos.init"
 
 -- cclog
 local cclog = function(...)
@@ -18,15 +23,19 @@ end
 local function main()
     collectgarbage("collect")
     -- avoid memory leak
-    collectgarbage("setpause", 200)
-    collectgarbage("setstepmul", 10000)
+    collectgarbage("setpause", 100)
+    collectgarbage("setstepmul", 5000)
+
+    -- initialize director
+    local director = cc.Director:getInstance()
+
+    --turn on display FPS
+    director:setDisplayStats(true)
+
+    --set FPS. the default value is 1.0/60 if you don't call this
+    director:setAnimationInterval(1.0 / 60)
     
-    cc.FileUtils:getInstance():addSearchPath("src")
-    cc.FileUtils:getInstance():addSearchPath("src/actors")
-    cc.FileUtils:getInstance():addSearchPath("res")
-    
-    --show frame
-    cc.Director:getInstance():setDisplayStats(true)
+    director:setClearColor({r=1,g=1,b=1,a=1})
     
     --adaptation
     local pEGLView = cc.Director:getInstance():getOpenGLView()
@@ -46,23 +55,18 @@ local function main()
             1)
             resolutionRate = widthRate/heightRate
     end
-    
-    cc.Director:getInstance():setDisplayStats(true)
 
-    --create scene
---    local scene = require("ActorTestScene")
---    local scene = require("ChooseRoleScene")
---   local scene = require("BattleScene")
+    require "MathV3"
+        
+    --create scene 
     local scene = require("LoadingScene")
---    local scene = require("MainMenuScene")
-    local activateGameScene = scene.create()
-    --activateGameScene:playBgMusic()
-    
+    local gameScene = scene.create()
+    -- gameScene:playBgMusic()
     
     if cc.Director:getInstance():getRunningScene() then
-        cc.Director:getInstance():replaceScene(activateGameScene)
+        cc.Director:getInstance():replaceScene(gameScene)
     else
-        cc.Director:getInstance():runWithScene(activateGameScene)
+        cc.Director:getInstance():runWithScene(gameScene)
     end
 
 end

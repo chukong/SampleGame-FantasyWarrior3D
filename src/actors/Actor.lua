@@ -5,7 +5,7 @@ require "AttackCommand"
 
 
 Actor = class ("Actor", function ()
-    local node = cc.Node:create()
+    local node = cc.Sprite3D:create()
     node:setCascadeColorEnabled(true)
 	return node
 end)

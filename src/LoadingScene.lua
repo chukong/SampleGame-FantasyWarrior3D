@@ -1,5 +1,3 @@
-require "Cocos2d"
-require "Cocos2dConstants"
 require "ParticleManager"
 require "Slime"
 
@@ -41,10 +39,19 @@ end
 function LoadingScene:init()
     local layer = cc.Layer:create()
     
-    --add bg
-    local bg = cc.Sprite:create("loadingscene/bg.jpg")
-    bg:setPosition(self.size.width/2,self.size.height/2)
-    layer:addChild(bg)
+    --add background
+
+    -- Holder for background
+    local node3d = cc.Sprite3D:create()
+
+    local background = cc.Sprite:create("loadingscene/bg.jpg")
+    background:setPosition(self.size.width/2,self.size.height/2)
+    background:setPositionZ(-250)
+    background:setScale(1.5)
+
+    node3d:addChild(background)
+    layer:addChild(node3d)
+
     
     --add loadingbar
     local loadingbar = ccui.LoadingBar:create("loadingscene/sliderProgress.png")
