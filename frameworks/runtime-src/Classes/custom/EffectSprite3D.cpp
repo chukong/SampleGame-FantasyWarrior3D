@@ -26,7 +26,7 @@
 #include "EffectSprite3D.h"
 #include "3d/CCAnimation3D.h"
 #include "3d/CCAnimate3D.h"
-
+#include "2d/CCCamera.h"
 #include <algorithm>
 
 enum
@@ -349,7 +349,11 @@ void Effect3DOutline::draw(const Mat4 &transform)
 
 void EffectSprite3D::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, uint32_t flags)
 {
-    
+    _globalZOrder = Camera::getVisitingCamera()->getDepthInView(transform);
+    _groupCmd.init(_globalZOrder);
+    _groupCmd.set3D(true);
+    renderer->addCommand(&_groupCmd);
+    renderer->pushGroup(_groupCmd.getRenderQueueID());
     
     if(!_defaultEffect)
     {
@@ -373,4 +377,5 @@ void EffectSprite3D::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &tran
         renderer->addCommand(&cc);
         
     }
+    renderer->popGroup();
 }
