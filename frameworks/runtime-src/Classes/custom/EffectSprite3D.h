@@ -115,6 +115,7 @@ protected:
     std::vector<std::tuple<ssize_t,Effect3D*,CustomCommand>> _effects;
     Effect3D* _defaultEffect;
     CustomCommand _command;
+    GroupCommand _groupCmd;
 };
 
 #endif
