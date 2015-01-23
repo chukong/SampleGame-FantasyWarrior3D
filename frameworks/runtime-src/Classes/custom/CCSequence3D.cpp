@@ -104,9 +104,9 @@ bool Sequence3D::initWithActions(const Vector<Animate3D*>& arrayOfActions)
     for (auto& it : arrayOfActions) {
         float d1 = 0.f;
         if (preAction)
-            d1 = preAction->getDuration();
+            d1 = preAction->getDuration()/preAction->getSpeed();
         
-        float d2 = it->getDuration();
+        float d2 = it->getDuration()/it->getSpeed();
         if (d1 < Animate3D::getTransitionTime() || d2 < Animate3D::getTransitionTime())
             dur = d1 > d2 ? d1 : d2;
         else
