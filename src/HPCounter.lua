@@ -27,7 +27,7 @@ function HPCounter:showBloodLossNum(damage,actor,attack)
         local blood = cc.Label:createWithTTF(ttfconfig,"-"..num,cc.TEXT_ALIGNMENT_CENTER,400)
         blood:enableOutline(cc.c4b(0,0,0,255))
         blood:setScale(0.1)
-        blood:setGlobalZOrder(2000)
+        blood:setGlobalZOrder(FXZorder)
         
         local targetScale = 0.6
         if num > 1000 then 
@@ -61,7 +61,7 @@ function HPCounter:showBloodLossNum(damage,actor,attack)
         
         if attack then
             local criticalAttack = cc.Sprite:createWithSpriteFrameName("hpcounter.png")
-            criticalAttack:setGlobalZOrder(1999)
+            criticalAttack:setGlobalZOrder(FXZorder)
             tm = 1
             criticalAttack:runAction(getAction())
             if actor._name == "Rat" then

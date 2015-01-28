@@ -393,6 +393,7 @@ function BattlefieldUI:showVictoryUI()
     local victory = cc.Sprite:createWithSpriteFrameName("victory.png")
     victory:setPosition3D(cc.V3(G.winSize.width*0.5,G.winSize.height*0.5,3))
     victory:setScale(0.1)
+    victory:setGlobalZOrder(UIZorder)
     layer:addChild(victory,1)
     
     --victory runaction
