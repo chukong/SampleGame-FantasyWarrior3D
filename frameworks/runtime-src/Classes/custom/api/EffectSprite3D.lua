@@ -9,6 +9,7 @@
 -- @function [parent=#EffectSprite3D] setEffect3D 
 -- @param self
 -- @param #cc.Effect3D effect
+-- @return EffectSprite3D#EffectSprite3D self (return value: cc.EffectSprite3D)
         
 --------------------------------
 -- 
@@ -16,7 +17,8 @@
 -- @param self
 -- @param #vec3_table outlineColor
 -- @param #float width
--- @param #int order
+-- @param #long order
+-- @return EffectSprite3D#EffectSprite3D self (return value: cc.EffectSprite3D)
         
 --------------------------------
 -- 
@@ -52,5 +54,6 @@
 -- @param #cc.Renderer renderer
 -- @param #mat4_table transform
 -- @param #unsigned int flags
+-- @return EffectSprite3D#EffectSprite3D self (return value: cc.EffectSprite3D)
         
 return nil

@@ -9,12 +9,14 @@
 -- @function [parent=#EffectNormalMapped] setKBump 
 -- @param self
 -- @param #float value
+-- @return EffectNormalMapped#EffectNormalMapped self (return value: cc.EffectNormalMapped)
         
 --------------------------------
 -- 
 -- @function [parent=#EffectNormalMapped] setPointLight 
 -- @param self
 -- @param #point_table pointLight
+-- @return EffectNormalMapped#EffectNormalMapped self (return value: cc.EffectNormalMapped)
         
 --------------------------------
 -- 

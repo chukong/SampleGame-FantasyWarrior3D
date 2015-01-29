@@ -28,6 +28,7 @@
 -- @function [parent=#BillboardParticleSystem] setPosVar 
 -- @param self
 -- @param #vec2_table pos
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -40,6 +41,7 @@
 -- @function [parent=#BillboardParticleSystem] setRotatePerSecondVar 
 -- @param self
 -- @param #float degrees
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -64,24 +66,28 @@
 -- @function [parent=#BillboardParticleSystem] setRotation 
 -- @param self
 -- @param #float newRotation
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setTangentialAccel 
 -- @param self
 -- @param #float t
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setScaleY 
 -- @param self
 -- @param #float newScaleY
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setScaleX 
 -- @param self
 -- @param #float newScaleX
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -94,18 +100,21 @@
 -- @function [parent=#BillboardParticleSystem] setStartRadius 
 -- @param self
 -- @param #float startRadius
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setRotatePerSecond 
 -- @param self
 -- @param #float degrees
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setEndSize 
 -- @param self
 -- @param #float endSize
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -124,6 +133,7 @@
 -- @function [parent=#BillboardParticleSystem] setEndRadius 
 -- @param self
 -- @param #float endRadius
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -142,24 +152,28 @@
 -- @function [parent=#BillboardParticleSystem] setEndColor 
 -- @param self
 -- @param #color4f_table color
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setStartSpin 
 -- @param self
 -- @param #float spin
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setDuration 
 -- @param self
 -- @param #float duration
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setTexture 
 -- @param self
 -- @param #cc.Texture2D texture
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 --  Position variance of the emitter 
@@ -184,11 +198,13 @@
 -- @function [parent=#BillboardParticleSystem] setPositionType 
 -- @param self
 -- @param #int type
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 --  stop emitting particles. Running particles will continue to run until they die
 -- @function [parent=#BillboardParticleSystem] stopSystem 
 -- @param self
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 --  sourcePosition of the emitter 
@@ -201,18 +217,21 @@
 -- @function [parent=#BillboardParticleSystem] setLifeVar 
 -- @param self
 -- @param #float lifeVar
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setTotalParticles 
 -- @param self
 -- @param #int totalParticles
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setEndColorVar 
 -- @param self
 -- @param #color4f_table color
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -232,29 +251,34 @@
 -- @param self
 -- @param #cc.Texture2D texture
 -- @param #rect_table rect
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setStartSpinVar 
 -- @param self
 -- @param #float pinVar
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 --  Kill all living particles.
 -- @function [parent=#BillboardParticleSystem] resetSystem 
 -- @param self
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setAtlasIndex 
 -- @param self
 -- @param #int index
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setTangentialAccelVar 
 -- @param self
 -- @param #float t
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 --  How many seconds the emitter will run. -1 means 'forever' 
@@ -273,24 +297,28 @@
 -- @function [parent=#BillboardParticleSystem] setDepthTestEnabled 
 -- @param self
 -- @param #bool enable
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setRadialAccelVar 
 -- @param self
 -- @param #float t
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setStartSize 
 -- @param self
 -- @param #float startSize
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setSpeed 
 -- @param self
 -- @param #float speed
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -309,12 +337,14 @@
 -- @function [parent=#BillboardParticleSystem] setEmitterMode 
 -- @param self
 -- @param #int mode
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setEndRadiusVar 
 -- @param self
 -- @param #float endRadiusVar
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -327,6 +357,7 @@
 -- @function [parent=#BillboardParticleSystem] setSourcePosition 
 -- @param self
 -- @param #vec2_table pos
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -339,36 +370,42 @@
 -- @function [parent=#BillboardParticleSystem] setBlendAdditive 
 -- @param self
 -- @param #bool value
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setLife 
 -- @param self
 -- @param #float life
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setAngleVar 
 -- @param self
 -- @param #float angleVar
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setRotationIsDir 
 -- @param self
 -- @param #bool t
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setEndSizeVar 
 -- @param self
 -- @param #float sizeVar
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setAngle 
 -- @param self
 -- @param #float angle
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -389,6 +426,7 @@
 -- @function [parent=#BillboardParticleSystem] setEndSpinVar 
 -- @param self
 -- @param #float endSpinVar
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 --  angle variance of each particle 
@@ -401,6 +439,7 @@
 -- @function [parent=#BillboardParticleSystem] setStartColor 
 -- @param self
 -- @param #color4f_table color
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -425,18 +464,21 @@
 -- @function [parent=#BillboardParticleSystem] setSpeedVar 
 -- @param self
 -- @param #float speed
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setGravity 
 -- @param self
 -- @param #vec2_table g
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setEmissionRate 
 -- @param self
 -- @param #float rate
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 --  end color variance of each particle 
@@ -455,6 +497,7 @@
 -- @function [parent=#BillboardParticleSystem] setScale 
 -- @param self
 -- @param #float s
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 --  emission rate of the particles 
@@ -479,18 +522,21 @@
 -- @function [parent=#BillboardParticleSystem] setCamera 
 -- @param self
 -- @param #cc.Camera camera
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setStartSizeVar 
 -- @param self
 -- @param #float sizeVar
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 --  does the alpha value modify color 
 -- @function [parent=#BillboardParticleSystem] setOpacityModifyRGB 
 -- @param self
 -- @param #bool opacityModifyRGB
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -515,24 +561,28 @@
 -- @function [parent=#BillboardParticleSystem] setStartColorVar 
 -- @param self
 -- @param #color4f_table color
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setEndSpin 
 -- @param self
 -- @param #float endSpin
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setRadialAccel 
 -- @param self
 -- @param #float t
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
 -- @function [parent=#BillboardParticleSystem] setStartRadiusVar 
 -- @param self
 -- @param #float startRadiusVar
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 --------------------------------
 -- 
@@ -558,5 +608,6 @@
 -- 
 -- @function [parent=#BillboardParticleSystem] BillboardParticleSystem 
 -- @param self
+-- @return BillboardParticleSystem#BillboardParticleSystem self (return value: cc.BillboardParticleSystem)
         
 return nil

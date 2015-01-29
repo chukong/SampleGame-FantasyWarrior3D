@@ -20,6 +20,7 @@
 -- @function [parent=#DrawNode3D] setBlendFunc 
 -- @param self
 -- @param #cc.BlendFunc blendFunc
+-- @return DrawNode3D#DrawNode3D self (return value: cc.DrawNode3D)
         
 --------------------------------
 -- Draw 3D Line
@@ -28,11 +29,13 @@
 -- @param #vec3_table from
 -- @param #vec3_table to
 -- @param #color4f_table color
+-- @return DrawNode3D#DrawNode3D self (return value: cc.DrawNode3D)
         
 --------------------------------
 --  Clear the geometry in the node's buffer. 
 -- @function [parent=#DrawNode3D] clear 
 -- @param self
+-- @return DrawNode3D#DrawNode3D self (return value: cc.DrawNode3D)
         
 --------------------------------
 -- 
@@ -40,6 +43,7 @@
 -- @param self
 -- @param #mat4_table transform
 -- @param #unsigned int flags
+-- @return DrawNode3D#DrawNode3D self (return value: cc.DrawNode3D)
         
 --------------------------------
 -- Draw 3D cube<br>
@@ -57,6 +61,7 @@
 -- @param self
 -- @param #vec3_table vertices
 -- @param #color4f_table color
+-- @return DrawNode3D#DrawNode3D self (return value: cc.DrawNode3D)
         
 --------------------------------
 --  creates and initialize a DrawNode3D node 
@@ -71,5 +76,6 @@
 -- @param #cc.Renderer renderer
 -- @param #mat4_table transform
 -- @param #unsigned int flags
+-- @return DrawNode3D#DrawNode3D self (return value: cc.DrawNode3D)
         
 return nil

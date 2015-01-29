@@ -9,5 +9,6 @@
 -- @function [parent=#GreyShader] setGreyShader 
 -- @param self
 -- @param #cc.Sprite s
+-- @return GreyShader#GreyShader self (return value: cc.GreyShader)
         
 return nil

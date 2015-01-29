@@ -9,13 +9,15 @@
 -- @function [parent=#EffectSprite] setEffect 
 -- @param self
 -- @param #cc.Effect effect
+-- @return EffectSprite#EffectSprite self (return value: cc.EffectSprite)
         
 --------------------------------
 -- 
 -- @function [parent=#EffectSprite] addEffect 
 -- @param self
 -- @param #cc.Effect effect
--- @param #int order
+-- @param #long order
+-- @return EffectSprite#EffectSprite self (return value: cc.EffectSprite)
         
 --------------------------------
 -- 

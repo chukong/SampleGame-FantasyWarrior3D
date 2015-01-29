@@ -19,6 +19,7 @@
 -- @function [parent=#JumpTo3D] startWithTarget 
 -- @param self
 -- @param #cc.Node target
+-- @return JumpTo3D#JumpTo3D self (return value: cc.JumpTo3D)
         
 --------------------------------
 -- 

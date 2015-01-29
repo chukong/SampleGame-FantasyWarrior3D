@@ -231,7 +231,7 @@ end
 function MageIceSpikes.create(pos, facing, attackInfo, owner)
     local ret = MageIceSpikes.new()
     ret:initData(pos,facing,attackInfo)
-    ret.sp = cc.Sprite:createWithSpriteFrameName("shadow.png")
+    ret.sp = cc.ShadowSprite:createWithSpriteFrameName("shadow.png")
     ret.sp:setGlobalZOrder(-ret:getPositionY()+FXZorder)
     ret.sp:setOpacity(100)
     ret.sp:setPosition3D(cc.V3(0,0,1))
