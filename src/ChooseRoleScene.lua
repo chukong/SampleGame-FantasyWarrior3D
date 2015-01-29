@@ -159,7 +159,7 @@ function ChooseRoleScene:addBackground()
     background:setPosition(self.origin.x + self.visibleSize.width/2, self.origin.y + self.visibleSize.height/2)
     background:setPositionZ(-250)
     background:setScale(1.5)
-
+    background:setGlobalZOrder(-1)
     node3d:addChild(background)
     self.layer:addChild(node3d)
 end
