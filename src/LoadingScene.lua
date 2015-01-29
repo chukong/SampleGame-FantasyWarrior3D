@@ -48,6 +48,7 @@ function LoadingScene:init()
     background:setPosition(self.size.width/2,self.size.height/2)
     background:setPositionZ(-250)
     background:setScale(1.5)
+    background:setGlobalZOrder(-1)
 
     node3d:addChild(background)
     layer:addChild(node3d)

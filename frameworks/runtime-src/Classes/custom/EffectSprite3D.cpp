@@ -351,6 +351,7 @@ void EffectSprite3D::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &tran
 {
     _groupCmd.init(_globalZOrder);
     _groupCmd.set3D(true);
+    _groupCmd.setTransparent(false);
     renderer->addCommand(&_groupCmd);
     renderer->pushGroup(_groupCmd.getRenderQueueID());
     
