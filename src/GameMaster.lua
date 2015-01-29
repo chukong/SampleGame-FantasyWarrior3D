@@ -437,6 +437,7 @@ function GameMaster:showDialog()
     local text = cc.Label:createWithTTF(BossTaunt,"fonts/britanic bold.ttf",24)
 --    local text = cc.Label:createWithSystemFont(BossTaunt,"arial",24)
     text:setPosition(G.winSize.width*0.68,G.winSize.height*0.27)
+    text:setGlobalZOrder(UIZorder+1)
     dialog:addChild(text)
     --set dialog
     dialog:setScale(0.1)
