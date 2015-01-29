@@ -236,6 +236,7 @@ function MageIceSpikes.create(pos, facing, attackInfo, owner)
     ret.sp:setOpacity(100)
     ret.sp:setPosition3D(cc.V3(0,0,1))
     ret.sp:setScale(ret.maxRange/12)
+    ret.sp:setGlobalZOrder(-1)
     ret:addChild(ret.sp)
     ret.owner = owner
 
