@@ -259,7 +259,7 @@ function MageIceSpikes.create(pos, facing, attackInfo, owner)
         spike:setOpacity(165)
         spike:setFlippedX(not(math.floor(math.random()*2)))
         spike:setPosition3D(cc.V3(math.random(-ret.maxRange/1.5, ret.maxRange/1.5),math.random(-ret.maxRange/1.5, ret.maxRange/1.5),1))
-        spike:setGlobalZOrder(-ret:getPositionY()-spike:getPositionY()+FXZorder)
+        spike:setGlobalZOrder(0)
         x:setScale(0)
         x:setPositionZ(-210)
     end
