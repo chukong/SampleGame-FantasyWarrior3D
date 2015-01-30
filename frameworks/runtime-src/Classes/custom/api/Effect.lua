@@ -9,11 +9,13 @@
 -- @function [parent=#Effect] setTarget 
 -- @param self
 -- @param #cc.EffectSprite sprite
+-- @return Effect#Effect self (return value: cc.Effect)
         
 --------------------------------
 -- 
 -- @function [parent=#Effect] updateUniforms 
 -- @param self
+-- @return Effect#Effect self (return value: cc.Effect)
         
 --------------------------------
 -- 

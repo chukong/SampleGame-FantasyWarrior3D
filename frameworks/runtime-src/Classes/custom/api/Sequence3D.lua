@@ -21,6 +21,7 @@
 -- @function [parent=#Sequence3D] startWithTarget 
 -- @param self
 -- @param #cc.Node target
+-- @return Sequence3D#Sequence3D self (return value: cc.Sequence3D)
         
 --------------------------------
 -- 
@@ -38,17 +39,20 @@
 -- 
 -- @function [parent=#Sequence3D] stop 
 -- @param self
+-- @return Sequence3D#Sequence3D self (return value: cc.Sequence3D)
         
 --------------------------------
 -- 
 -- @function [parent=#Sequence3D] update 
 -- @param self
 -- @param #float t
+-- @return Sequence3D#Sequence3D self (return value: cc.Sequence3D)
         
 --------------------------------
 -- 
 -- @function [parent=#Sequence3D] step 
 -- @param self
 -- @param #float dt
+-- @return Sequence3D#Sequence3D self (return value: cc.Sequence3D)
         
 return nil

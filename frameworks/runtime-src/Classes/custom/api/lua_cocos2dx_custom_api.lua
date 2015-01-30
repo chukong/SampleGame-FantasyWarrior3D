@@ -2,6 +2,11 @@
 -- @module cc
 
 --------------------------------------------------------
+-- the cc ShadowSprite
+-- @field [parent=#cc] ShadowSprite#ShadowSprite ShadowSprite preloaded module
+
+
+--------------------------------------------------------
 -- the cc Effect3D
 -- @field [parent=#cc] Effect3D#Effect3D Effect3D preloaded module
 
@@ -54,11 +59,6 @@
 --------------------------------------------------------
 -- the cc EffectSprite
 -- @field [parent=#cc] EffectSprite#EffectSprite EffectSprite preloaded module
-
-
---------------------------------------------------------
--- the cc BillBoardLable
--- @field [parent=#cc] BillBoardLable#BillBoardLable BillBoardLable preloaded module
 
 
 --------------------------------------------------------

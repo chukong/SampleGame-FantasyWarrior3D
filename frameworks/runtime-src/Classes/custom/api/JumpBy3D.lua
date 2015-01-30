@@ -19,6 +19,7 @@
 -- @function [parent=#JumpBy3D] startWithTarget 
 -- @param self
 -- @param #cc.Node target
+-- @return JumpBy3D#JumpBy3D self (return value: cc.JumpBy3D)
         
 --------------------------------
 -- 
@@ -37,5 +38,6 @@
 -- @function [parent=#JumpBy3D] update 
 -- @param self
 -- @param #float time
+-- @return JumpBy3D#JumpBy3D self (return value: cc.JumpBy3D)
         
 return nil

@@ -40,7 +40,7 @@ LOCAL_SRC_FILES := \
 ../../Classes/custom/JumpTo3D.cpp \
 ../../Classes/custom/Water.cpp \
 ../../Classes/custom/EffectSprite.cpp \
-../../Classes/custom/BillBoardLable.cpp \
+../../Classes/custom/ShadowSprite.cpp \
 ../../Classes/custom/CCSequence3D.cpp \
 ../../Classes/custom/GreyShader.cpp \
 ../../Classes/custom/lua_cocos2dx_custom.cpp \

@@ -1,4 +1,5 @@
 #include "lua_cocos2dx_custom.hpp"
+#include "ShadowSprite.h"
 #include "EffectSprite3D.h"
 #include "DrawNode3D.h"
 #include "BillboardParticleSystem.h"
@@ -7,13 +8,142 @@
 #include "JumpBy3D.h"
 #include "Water.h"
 #include "EffectSprite.h"
-#include "BillBoardLable.h"
 #include "CCSequence3D.h"
 #include "GreyShader.h"
 #include "tolua_fix.h"
 #include "LuaBasicConversions.h"
 
 
+
+int lua_cocos2dx_custom_ShadowSprite_create(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"cc.ShadowSprite",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        std::string arg0;
+        ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.ShadowSprite:create");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_custom_ShadowSprite_create'", nullptr);
+            return 0;
+        }
+        cocos2d::ShadowSprite* ret = cocos2d::ShadowSprite::create(arg0);
+        object_to_luaval<cocos2d::ShadowSprite>(tolua_S, "cc.ShadowSprite",(cocos2d::ShadowSprite*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "cc.ShadowSprite:create",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_ShadowSprite_create'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_cocos2dx_custom_ShadowSprite_createWithSpriteFrameName(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"cc.ShadowSprite",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        std::string arg0;
+        ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.ShadowSprite:createWithSpriteFrameName");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_custom_ShadowSprite_createWithSpriteFrameName'", nullptr);
+            return 0;
+        }
+        cocos2d::ShadowSprite* ret = cocos2d::ShadowSprite::createWithSpriteFrameName(arg0);
+        object_to_luaval<cocos2d::ShadowSprite>(tolua_S, "cc.ShadowSprite",(cocos2d::ShadowSprite*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "cc.ShadowSprite:createWithSpriteFrameName",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_ShadowSprite_createWithSpriteFrameName'.",&tolua_err);
+#endif
+    return 0;
+}
+int lua_cocos2dx_custom_ShadowSprite_createWithSpriteFrame(lua_State* tolua_S)
+{
+    int argc = 0;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertable(tolua_S,1,"cc.ShadowSprite",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    argc = lua_gettop(tolua_S) - 1;
+
+    if (argc == 1)
+    {
+        cocos2d::SpriteFrame* arg0;
+        ok &= luaval_to_object<cocos2d::SpriteFrame>(tolua_S, 2, "cc.SpriteFrame",&arg0);
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_custom_ShadowSprite_createWithSpriteFrame'", nullptr);
+            return 0;
+        }
+        cocos2d::ShadowSprite* ret = cocos2d::ShadowSprite::createWithSpriteFrame(arg0);
+        object_to_luaval<cocos2d::ShadowSprite>(tolua_S, "cc.ShadowSprite",(cocos2d::ShadowSprite*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "cc.ShadowSprite:createWithSpriteFrame",argc, 1);
+    return 0;
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_ShadowSprite_createWithSpriteFrame'.",&tolua_err);
+#endif
+    return 0;
+}
+static int lua_cocos2dx_custom_ShadowSprite_finalize(lua_State* tolua_S)
+{
+    printf("luabindings: finalizing LUA object (ShadowSprite)");
+    return 0;
+}
+
+int lua_register_cocos2dx_custom_ShadowSprite(lua_State* tolua_S)
+{
+    tolua_usertype(tolua_S,"cc.ShadowSprite");
+    tolua_cclass(tolua_S,"ShadowSprite","cc.ShadowSprite","cc.Sprite",nullptr);
+
+    tolua_beginmodule(tolua_S,"ShadowSprite");
+        tolua_function(tolua_S,"create", lua_cocos2dx_custom_ShadowSprite_create);
+        tolua_function(tolua_S,"createWithSpriteFrameName", lua_cocos2dx_custom_ShadowSprite_createWithSpriteFrameName);
+        tolua_function(tolua_S,"createWithSpriteFrame", lua_cocos2dx_custom_ShadowSprite_createWithSpriteFrame);
+    tolua_endmodule(tolua_S);
+    std::string typeName = typeid(cocos2d::ShadowSprite).name();
+    g_luaType[typeName] = "cc.ShadowSprite";
+    g_typeCast["ShadowSprite"] = "cc.ShadowSprite";
+    return 1;
+}
 
 int lua_cocos2dx_custom_Effect3D_draw(lua_State* tolua_S)
 {
@@ -52,7 +182,8 @@ int lua_cocos2dx_custom_Effect3D_draw(lua_State* tolua_S)
             return 0;
         }
         cobj->draw(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.Effect3D:draw",argc, 1);
     return 0;
@@ -104,7 +235,8 @@ int lua_cocos2dx_custom_Effect3D_setTarget(lua_State* tolua_S)
             return 0;
         }
         cobj->setTarget(arg0, arg1);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.Effect3D:setTarget",argc, 2);
     return 0;
@@ -174,7 +306,8 @@ int lua_cocos2dx_custom_Effect3DOutline_setOutlineWidth(lua_State* tolua_S)
             return 0;
         }
         cobj->setOutlineWidth(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.Effect3DOutline:setOutlineWidth",argc, 1);
     return 0;
@@ -223,7 +356,8 @@ int lua_cocos2dx_custom_Effect3DOutline_setOutlineColor(lua_State* tolua_S)
             return 0;
         }
         cobj->setOutlineColor(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.Effect3DOutline:setOutlineColor",argc, 1);
     return 0;
@@ -328,7 +462,8 @@ int lua_cocos2dx_custom_EffectSprite3D_setEffect3D(lua_State* tolua_S)
             return 0;
         }
         cobj->setEffect3D(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.EffectSprite3D:setEffect3D",argc, 1);
     return 0;
@@ -383,7 +518,8 @@ int lua_cocos2dx_custom_EffectSprite3D_addEffect(lua_State* tolua_S)
             return 0;
         }
         cobj->addEffect(arg0, arg1, arg2);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.EffectSprite3D:addEffect",argc, 3);
     return 0;
@@ -665,15 +801,15 @@ int lua_cocos2dx_custom_DrawNode3D_setBlendFunc(lua_State* tolua_S)
     {
         cocos2d::BlendFunc arg0;
 
-        #pragma warning NO CONVERSION TO NATIVE FOR BlendFunc
-		ok = false;
+        ok &= luaval_to_blendfunc(tolua_S, 2, &arg0, "cc.DrawNode3D:setBlendFunc");
         if(!ok)
         {
             tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_custom_DrawNode3D_setBlendFunc'", nullptr);
             return 0;
         }
         cobj->setBlendFunc(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.DrawNode3D:setBlendFunc",argc, 1);
     return 0;
@@ -728,7 +864,8 @@ int lua_cocos2dx_custom_DrawNode3D_drawLine(lua_State* tolua_S)
             return 0;
         }
         cobj->drawLine(arg0, arg1, arg2);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.DrawNode3D:drawLine",argc, 3);
     return 0;
@@ -774,7 +911,8 @@ int lua_cocos2dx_custom_DrawNode3D_clear(lua_State* tolua_S)
             return 0;
         }
         cobj->clear();
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.DrawNode3D:clear",argc, 0);
     return 0;
@@ -826,7 +964,8 @@ int lua_cocos2dx_custom_DrawNode3D_onDraw(lua_State* tolua_S)
             return 0;
         }
         cobj->onDraw(arg0, arg1);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.DrawNode3D:onDraw",argc, 2);
     return 0;
@@ -878,7 +1017,8 @@ int lua_cocos2dx_custom_DrawNode3D_drawCube(lua_State* tolua_S)
             return 0;
         }
         cobj->drawCube(arg0, arg1);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.DrawNode3D:drawCube",argc, 2);
     return 0;
@@ -1128,7 +1268,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setPosVar(lua_State* tolua_S)
             return 0;
         }
         cobj->setPosVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setPosVar",argc, 1);
     return 0;
@@ -1224,7 +1365,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setRotatePerSecondVar(lua_State*
             return 0;
         }
         cobj->setRotatePerSecondVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setRotatePerSecondVar",argc, 1);
     return 0;
@@ -1414,7 +1556,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setRotation(lua_State* tolua_S)
             return 0;
         }
         cobj->setRotation(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setRotation",argc, 1);
     return 0;
@@ -1463,7 +1606,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setTangentialAccel(lua_State* to
             return 0;
         }
         cobj->setTangentialAccel(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setTangentialAccel",argc, 1);
     return 0;
@@ -1512,7 +1656,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setScaleY(lua_State* tolua_S)
             return 0;
         }
         cobj->setScaleY(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setScaleY",argc, 1);
     return 0;
@@ -1561,7 +1706,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setScaleX(lua_State* tolua_S)
             return 0;
         }
         cobj->setScaleX(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setScaleX",argc, 1);
     return 0;
@@ -1657,7 +1803,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setStartRadius(lua_State* tolua_
             return 0;
         }
         cobj->setStartRadius(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setStartRadius",argc, 1);
     return 0;
@@ -1706,7 +1853,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setRotatePerSecond(lua_State* to
             return 0;
         }
         cobj->setRotatePerSecond(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setRotatePerSecond",argc, 1);
     return 0;
@@ -1755,7 +1903,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setEndSize(lua_State* tolua_S)
             return 0;
         }
         cobj->setEndSize(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setEndSize",argc, 1);
     return 0;
@@ -1898,7 +2047,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setEndRadius(lua_State* tolua_S)
             return 0;
         }
         cobj->setEndRadius(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setEndRadius",argc, 1);
     return 0;
@@ -2041,7 +2191,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setEndColor(lua_State* tolua_S)
             return 0;
         }
         cobj->setEndColor(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setEndColor",argc, 1);
     return 0;
@@ -2090,7 +2241,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setStartSpin(lua_State* tolua_S)
             return 0;
         }
         cobj->setStartSpin(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setStartSpin",argc, 1);
     return 0;
@@ -2139,7 +2291,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setDuration(lua_State* tolua_S)
             return 0;
         }
         cobj->setDuration(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setDuration",argc, 1);
     return 0;
@@ -2188,7 +2341,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setTexture(lua_State* tolua_S)
             return 0;
         }
         cobj->setTexture(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setTexture",argc, 1);
     return 0;
@@ -2378,7 +2532,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setPositionType(lua_State* tolua
             return 0;
         }
         cobj->setPositionType(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setPositionType",argc, 1);
     return 0;
@@ -2424,7 +2579,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_stopSystem(lua_State* tolua_S)
             return 0;
         }
         cobj->stopSystem();
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:stopSystem",argc, 0);
     return 0;
@@ -2520,7 +2676,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setLifeVar(lua_State* tolua_S)
             return 0;
         }
         cobj->setLifeVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setLifeVar",argc, 1);
     return 0;
@@ -2569,7 +2726,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setTotalParticles(lua_State* tol
             return 0;
         }
         cobj->setTotalParticles(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setTotalParticles",argc, 1);
     return 0;
@@ -2618,7 +2776,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setEndColorVar(lua_State* tolua_
             return 0;
         }
         cobj->setEndColorVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setEndColorVar",argc, 1);
     return 0;
@@ -2764,7 +2923,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setTextureWithRect(lua_State* to
             return 0;
         }
         cobj->setTextureWithRect(arg0, arg1);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setTextureWithRect",argc, 2);
     return 0;
@@ -2813,7 +2973,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setStartSpinVar(lua_State* tolua
             return 0;
         }
         cobj->setStartSpinVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setStartSpinVar",argc, 1);
     return 0;
@@ -2859,7 +3020,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_resetSystem(lua_State* tolua_S)
             return 0;
         }
         cobj->resetSystem();
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:resetSystem",argc, 0);
     return 0;
@@ -2908,7 +3070,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setAtlasIndex(lua_State* tolua_S
             return 0;
         }
         cobj->setAtlasIndex(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setAtlasIndex",argc, 1);
     return 0;
@@ -2957,7 +3120,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setTangentialAccelVar(lua_State*
             return 0;
         }
         cobj->setTangentialAccelVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setTangentialAccelVar",argc, 1);
     return 0;
@@ -3100,7 +3264,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setDepthTestEnabled(lua_State* t
             return 0;
         }
         cobj->setDepthTestEnabled(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setDepthTestEnabled",argc, 1);
     return 0;
@@ -3149,7 +3314,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setRadialAccelVar(lua_State* tol
             return 0;
         }
         cobj->setRadialAccelVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setRadialAccelVar",argc, 1);
     return 0;
@@ -3198,7 +3364,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setStartSize(lua_State* tolua_S)
             return 0;
         }
         cobj->setStartSize(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setStartSize",argc, 1);
     return 0;
@@ -3247,7 +3414,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setSpeed(lua_State* tolua_S)
             return 0;
         }
         cobj->setSpeed(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setSpeed",argc, 1);
     return 0;
@@ -3390,7 +3558,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setEmitterMode(lua_State* tolua_
             return 0;
         }
         cobj->setEmitterMode(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setEmitterMode",argc, 1);
     return 0;
@@ -3439,7 +3608,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setEndRadiusVar(lua_State* tolua
             return 0;
         }
         cobj->setEndRadiusVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setEndRadiusVar",argc, 1);
     return 0;
@@ -3535,7 +3705,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setSourcePosition(lua_State* tol
             return 0;
         }
         cobj->setSourcePosition(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setSourcePosition",argc, 1);
     return 0;
@@ -3631,7 +3802,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setBlendAdditive(lua_State* tolu
             return 0;
         }
         cobj->setBlendAdditive(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setBlendAdditive",argc, 1);
     return 0;
@@ -3680,7 +3852,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setLife(lua_State* tolua_S)
             return 0;
         }
         cobj->setLife(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setLife",argc, 1);
     return 0;
@@ -3729,7 +3902,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setAngleVar(lua_State* tolua_S)
             return 0;
         }
         cobj->setAngleVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setAngleVar",argc, 1);
     return 0;
@@ -3778,7 +3952,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setRotationIsDir(lua_State* tolu
             return 0;
         }
         cobj->setRotationIsDir(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setRotationIsDir",argc, 1);
     return 0;
@@ -3827,7 +4002,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setEndSizeVar(lua_State* tolua_S
             return 0;
         }
         cobj->setEndSizeVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setEndSizeVar",argc, 1);
     return 0;
@@ -3876,7 +4052,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setAngle(lua_State* tolua_S)
             return 0;
         }
         cobj->setAngle(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setAngle",argc, 1);
     return 0;
@@ -4019,7 +4196,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setEndSpinVar(lua_State* tolua_S
             return 0;
         }
         cobj->setEndSpinVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setEndSpinVar",argc, 1);
     return 0;
@@ -4115,7 +4293,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setStartColor(lua_State* tolua_S
             return 0;
         }
         cobj->setStartColor(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setStartColor",argc, 1);
     return 0;
@@ -4305,7 +4484,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setSpeedVar(lua_State* tolua_S)
             return 0;
         }
         cobj->setSpeedVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setSpeedVar",argc, 1);
     return 0;
@@ -4354,7 +4534,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setGravity(lua_State* tolua_S)
             return 0;
         }
         cobj->setGravity(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setGravity",argc, 1);
     return 0;
@@ -4403,7 +4584,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setEmissionRate(lua_State* tolua
             return 0;
         }
         cobj->setEmissionRate(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setEmissionRate",argc, 1);
     return 0;
@@ -4546,7 +4728,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setScale(lua_State* tolua_S)
             return 0;
         }
         cobj->setScale(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setScale",argc, 1);
     return 0;
@@ -4736,7 +4919,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setCamera(lua_State* tolua_S)
             return 0;
         }
         cobj->setCamera(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setCamera",argc, 1);
     return 0;
@@ -4785,7 +4969,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setStartSizeVar(lua_State* tolua
             return 0;
         }
         cobj->setStartSizeVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setStartSizeVar",argc, 1);
     return 0;
@@ -4834,7 +5019,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setOpacityModifyRGB(lua_State* t
             return 0;
         }
         cobj->setOpacityModifyRGB(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setOpacityModifyRGB",argc, 1);
     return 0;
@@ -5024,7 +5210,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setStartColorVar(lua_State* tolu
             return 0;
         }
         cobj->setStartColorVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setStartColorVar",argc, 1);
     return 0;
@@ -5073,7 +5260,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setEndSpin(lua_State* tolua_S)
             return 0;
         }
         cobj->setEndSpin(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setEndSpin",argc, 1);
     return 0;
@@ -5122,7 +5310,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setRadialAccel(lua_State* tolua_
             return 0;
         }
         cobj->setRadialAccel(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setRadialAccel",argc, 1);
     return 0;
@@ -5171,7 +5360,8 @@ int lua_cocos2dx_custom_BillboardParticleSystem_setStartRadiusVar(lua_State* tol
             return 0;
         }
         cobj->setStartRadiusVar(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillboardParticleSystem:setStartRadiusVar",argc, 1);
     return 0;
@@ -5702,7 +5892,8 @@ int lua_cocos2dx_custom_Effect_setTarget(lua_State* tolua_S)
             return 0;
         }
         cobj->setTarget(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.Effect:setTarget",argc, 1);
     return 0;
@@ -5748,7 +5939,8 @@ int lua_cocos2dx_custom_Effect_updateUniforms(lua_State* tolua_S)
             return 0;
         }
         cobj->updateUniforms();
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.Effect:updateUniforms",argc, 0);
     return 0;
@@ -5866,7 +6058,8 @@ int lua_cocos2dx_custom_EffectNormalMapped_setKBump(lua_State* tolua_S)
             return 0;
         }
         cobj->setKBump(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.EffectNormalMapped:setKBump",argc, 1);
     return 0;
@@ -5915,7 +6108,8 @@ int lua_cocos2dx_custom_EffectNormalMapped_setPointLight(lua_State* tolua_S)
             return 0;
         }
         cobj->setPointLight(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.EffectNormalMapped:setPointLight",argc, 1);
     return 0;
@@ -6079,7 +6273,8 @@ int lua_cocos2dx_custom_EffectSprite_setEffect(lua_State* tolua_S)
             return 0;
         }
         cobj->setEffect(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.EffectSprite:setEffect",argc, 1);
     return 0;
@@ -6131,7 +6326,8 @@ int lua_cocos2dx_custom_EffectSprite_addEffect(lua_State* tolua_S)
             return 0;
         }
         cobj->addEffect(arg0, arg1);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.EffectSprite:addEffect",argc, 2);
     return 0;
@@ -6198,297 +6394,6 @@ int lua_register_cocos2dx_custom_EffectSprite(lua_State* tolua_S)
     std::string typeName = typeid(cocos2d::EffectSprite).name();
     g_luaType[typeName] = "cc.EffectSprite";
     g_typeCast["EffectSprite"] = "cc.EffectSprite";
-    return 1;
-}
-
-int lua_cocos2dx_custom_BillBoardLable_getMode(lua_State* tolua_S)
-{
-    int argc = 0;
-    cocos2d::BillBoardLable* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"cc.BillBoardLable",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (cocos2d::BillBoardLable*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_BillBoardLable_getMode'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 0) 
-    {
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_custom_BillBoardLable_getMode'", nullptr);
-            return 0;
-        }
-        int ret = (int)cobj->getMode();
-        tolua_pushnumber(tolua_S,(lua_Number)ret);
-        return 1;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillBoardLable:getMode",argc, 0);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_BillBoardLable_getMode'.",&tolua_err);
-#endif
-
-    return 0;
-}
-int lua_cocos2dx_custom_BillBoardLable_setMode(lua_State* tolua_S)
-{
-    int argc = 0;
-    cocos2d::BillBoardLable* cobj = nullptr;
-    bool ok  = true;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertype(tolua_S,1,"cc.BillBoardLable",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    cobj = (cocos2d::BillBoardLable*)tolua_tousertype(tolua_S,1,0);
-
-#if COCOS2D_DEBUG >= 1
-    if (!cobj) 
-    {
-        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_custom_BillBoardLable_setMode'", nullptr);
-        return 0;
-    }
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-    if (argc == 1) 
-    {
-        cocos2d::BillBoardLable::Mode arg0;
-
-        ok &= luaval_to_int32(tolua_S, 2,(int *)&arg0, "cc.BillBoardLable:setMode");
-        if(!ok)
-        {
-            tolua_error(tolua_S,"invalid arguments in function 'lua_cocos2dx_custom_BillBoardLable_setMode'", nullptr);
-            return 0;
-        }
-        cobj->setMode(arg0);
-        return 0;
-    }
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "cc.BillBoardLable:setMode",argc, 1);
-    return 0;
-
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_BillBoardLable_setMode'.",&tolua_err);
-#endif
-
-    return 0;
-}
-int lua_cocos2dx_custom_BillBoardLable_createWithTTF(lua_State* tolua_S)
-{
-    int argc = 0;
-    bool ok  = true;
-#if COCOS2D_DEBUG >= 1
-    tolua_Error tolua_err;
-#endif
-
-#if COCOS2D_DEBUG >= 1
-    if (!tolua_isusertable(tolua_S,1,"cc.BillBoardLable",0,&tolua_err)) goto tolua_lerror;
-#endif
-
-    argc = lua_gettop(tolua_S)-1;
-
-    do 
-    {
-        if (argc == 2)
-        {
-            cocos2d::_ttfConfig arg0;
-            ok &= luaval_to_ttfconfig(tolua_S, 2, &arg0, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            std::string arg1;
-            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1);
-            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
-            return 1;
-        }
-    } while (0);
-    ok  = true;
-    do 
-    {
-        if (argc == 3)
-        {
-            cocos2d::_ttfConfig arg0;
-            ok &= luaval_to_ttfconfig(tolua_S, 2, &arg0, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            std::string arg1;
-            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::TextHAlignment arg2;
-            ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1, arg2);
-            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
-            return 1;
-        }
-    } while (0);
-    ok  = true;
-    do 
-    {
-        if (argc == 4)
-        {
-            cocos2d::_ttfConfig arg0;
-            ok &= luaval_to_ttfconfig(tolua_S, 2, &arg0, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            std::string arg1;
-            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::TextHAlignment arg2;
-            ok &= luaval_to_int32(tolua_S, 4,(int *)&arg2, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            int arg3;
-            ok &= luaval_to_int32(tolua_S, 5,(int *)&arg3, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1, arg2, arg3);
-            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
-            return 1;
-        }
-    } while (0);
-    ok  = true;
-    do 
-    {
-        if (argc == 3)
-        {
-            std::string arg0;
-            ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            std::string arg1;
-            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            double arg2;
-            ok &= luaval_to_number(tolua_S, 4,&arg2, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1, arg2);
-            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
-            return 1;
-        }
-    } while (0);
-    ok  = true;
-    do 
-    {
-        if (argc == 4)
-        {
-            std::string arg0;
-            ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            std::string arg1;
-            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            double arg2;
-            ok &= luaval_to_number(tolua_S, 4,&arg2, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::Size arg3;
-            ok &= luaval_to_size(tolua_S, 5, &arg3, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1, arg2, arg3);
-            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
-            return 1;
-        }
-    } while (0);
-    ok  = true;
-    do 
-    {
-        if (argc == 5)
-        {
-            std::string arg0;
-            ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            std::string arg1;
-            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            double arg2;
-            ok &= luaval_to_number(tolua_S, 4,&arg2, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::Size arg3;
-            ok &= luaval_to_size(tolua_S, 5, &arg3, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::TextHAlignment arg4;
-            ok &= luaval_to_int32(tolua_S, 6,(int *)&arg4, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1, arg2, arg3, arg4);
-            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
-            return 1;
-        }
-    } while (0);
-    ok  = true;
-    do 
-    {
-        if (argc == 6)
-        {
-            std::string arg0;
-            ok &= luaval_to_std_string(tolua_S, 2,&arg0, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            std::string arg1;
-            ok &= luaval_to_std_string(tolua_S, 3,&arg1, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            double arg2;
-            ok &= luaval_to_number(tolua_S, 4,&arg2, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::Size arg3;
-            ok &= luaval_to_size(tolua_S, 5, &arg3, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::TextHAlignment arg4;
-            ok &= luaval_to_int32(tolua_S, 6,(int *)&arg4, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::TextVAlignment arg5;
-            ok &= luaval_to_int32(tolua_S, 7,(int *)&arg5, "cc.BillBoardLable:createWithTTF");
-            if (!ok) { break; }
-            cocos2d::Label* ret = cocos2d::BillBoardLable::createWithTTF(arg0, arg1, arg2, arg3, arg4, arg5);
-            object_to_luaval<cocos2d::Label>(tolua_S, "cc.Label",(cocos2d::Label*)ret);
-            return 1;
-        }
-    } while (0);
-    ok  = true;
-    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d", "cc.BillBoardLable:createWithTTF",argc, 3);
-    return 0;
-#if COCOS2D_DEBUG >= 1
-    tolua_lerror:
-    tolua_error(tolua_S,"#ferror in function 'lua_cocos2dx_custom_BillBoardLable_createWithTTF'.",&tolua_err);
-#endif
-    return 0;
-}
-static int lua_cocos2dx_custom_BillBoardLable_finalize(lua_State* tolua_S)
-{
-    printf("luabindings: finalizing LUA object (BillBoardLable)");
-    return 0;
-}
-
-int lua_register_cocos2dx_custom_BillBoardLable(lua_State* tolua_S)
-{
-    tolua_usertype(tolua_S,"cc.BillBoardLable");
-    tolua_cclass(tolua_S,"BillBoardLable","cc.BillBoardLable","cc.Label",nullptr);
-
-    tolua_beginmodule(tolua_S,"BillBoardLable");
-        tolua_function(tolua_S,"getMode",lua_cocos2dx_custom_BillBoardLable_getMode);
-        tolua_function(tolua_S,"setMode",lua_cocos2dx_custom_BillBoardLable_setMode);
-        tolua_function(tolua_S,"createWithTTF", lua_cocos2dx_custom_BillBoardLable_createWithTTF);
-    tolua_endmodule(tolua_S);
-    std::string typeName = typeid(cocos2d::BillBoardLable).name();
-    g_luaType[typeName] = "cc.BillBoardLable";
-    g_typeCast["BillBoardLable"] = "cc.BillBoardLable";
     return 1;
 }
 
@@ -6573,7 +6478,8 @@ int lua_cocos2dx_custom_GreyShader_setGreyShader(lua_State* tolua_S)
             return 0;
         }
         cocos2d::GreyShader::setGreyShader(arg0);
-        return 0;
+        lua_settop(tolua_S, 1);
+        return 1;
     }
     luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d\n ", "cc.GreyShader:setGreyShader",argc, 1);
     return 0;
@@ -6609,7 +6515,6 @@ TOLUA_API int register_all_cocos2dx_custom(lua_State* tolua_S)
 	tolua_module(tolua_S,"cc",0);
 	tolua_beginmodule(tolua_S,"cc");
 
-	lua_register_cocos2dx_custom_BillBoardLable(tolua_S);
 	lua_register_cocos2dx_custom_JumpBy3D(tolua_S);
 	lua_register_cocos2dx_custom_JumpTo3D(tolua_S);
 	lua_register_cocos2dx_custom_Effect3D(tolua_S);
@@ -6621,6 +6526,7 @@ TOLUA_API int register_all_cocos2dx_custom(lua_State* tolua_S)
 	lua_register_cocos2dx_custom_BillboardParticleSystem(tolua_S);
 	lua_register_cocos2dx_custom_Effect3DOutline(tolua_S);
 	lua_register_cocos2dx_custom_DrawNode3D(tolua_S);
+	lua_register_cocos2dx_custom_ShadowSprite(tolua_S);
 	lua_register_cocos2dx_custom_EffectSprite3D(tolua_S);
 	lua_register_cocos2dx_custom_Sequence3D(tolua_S);
 
