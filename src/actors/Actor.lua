@@ -41,7 +41,7 @@ function Actor:initPuff()
     local puffFrame = cc.SpriteFrameCache:getInstance():getSpriteFrame("walkingPuff.png")
     puff:setTextureWithRect(puffFrame:getTexture(), puffFrame:getRect())
     puff:setScale(1.5)
-    puff:setGlobalZOrder(-self:getPositionY()+FXZorder)
+    puff:setGlobalZOrder(0)
     puff:setPositionZ(10)
     self._puff = puff
     self._effectNode:addChild(puff)

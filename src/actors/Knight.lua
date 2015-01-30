@@ -151,8 +151,8 @@ do
         walk = createAnimation(file,227,246,0.7),
         attack1 = createAnimation(file,103,129,0.7),
         attack2 = createAnimation(file,130,154,0.7),
-        specialattack1 = createAnimation(file,160,190,0.3),
-        specialattack2 = createAnimation(file,191,220,0.4),
+        specialattack1 = createAnimation(file,160,190,1),
+        specialattack2 = createAnimation(file,191,220,1),
         defend = createAnimation(file,92,96,0.7),
         knocked = createAnimation(file,254,260,0.7),
         dead = createAnimation(file,0,77,1)
