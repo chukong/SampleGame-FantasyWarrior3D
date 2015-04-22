@@ -182,7 +182,6 @@ copy "$(ProjectDir)..\..\..\config.json" "$(LocalDebuggerWorkingDirectory)\confi
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\ConfigParser.h" />
-    <ClInclude Include="..\Classes\custom\BillBoardLable.h" />
     <ClInclude Include="..\Classes\custom\BillboardParticleSystem.h" />
     <ClInclude Include="..\Classes\custom\CCSequence3D.h" />
     <ClInclude Include="..\Classes\custom\DrawNode3D.h" />
@@ -192,6 +191,7 @@ copy "$(ProjectDir)..\..\..\config.json" "$(LocalDebuggerWorkingDirectory)\confi
     <ClInclude Include="..\Classes\custom\JumpBy3D.h" />
     <ClInclude Include="..\Classes\custom\JumpTo3D.h" />
     <ClInclude Include="..\Classes\custom\lua_cocos2dx_custom.hpp" />
+    <ClInclude Include="..\Classes\custom\ShadowSprite.h" />
     <ClInclude Include="..\Classes\custom\Water.h" />
     <ClInclude Include="..\Classes\protobuf-lite\google\protobuf\extension_set.h" />
     <ClInclude Include="..\Classes\protobuf-lite\google\protobuf\generated_message_util.h" />
@@ -229,7 +229,6 @@ copy "$(ProjectDir)..\..\..\config.json" "$(LocalDebuggerWorkingDirectory)\confi
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\ConfigParser.cpp" />
-    <ClCompile Include="..\Classes\custom\BillBoardLable.cpp" />
     <ClCompile Include="..\Classes\custom\BillboardParticleSystem.cpp" />
     <ClCompile Include="..\Classes\custom\CCSequence3D.cpp" />
     <ClCompile Include="..\Classes\custom\DrawNode3D.cpp" />
@@ -239,6 +238,7 @@ copy "$(ProjectDir)..\..\..\config.json" "$(LocalDebuggerWorkingDirectory)\confi
     <ClCompile Include="..\Classes\custom\JumpBy3D.cpp" />
     <ClCompile Include="..\Classes\custom\JumpTo3D.cpp" />
     <ClCompile Include="..\Classes\custom\lua_cocos2dx_custom.cpp" />
+    <ClCompile Include="..\Classes\custom\ShadowSprite.cpp" />
     <ClCompile Include="..\Classes\custom\Water.cpp" />
     <ClCompile Include="..\Classes\protobuf-lite\google\protobuf\extension_set.cc" />
     <ClCompile Include="..\Classes\protobuf-lite\google\protobuf\generated_message_util.cc" />

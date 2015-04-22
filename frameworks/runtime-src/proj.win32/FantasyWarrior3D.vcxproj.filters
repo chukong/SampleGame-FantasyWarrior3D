@@ -121,9 +121,6 @@
     <ClInclude Include="..\Classes\runtime\FileServer.h">
       <Filter>Classes\runtime</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\custom\BillBoardLable.h">
-      <Filter>Classes\custom</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\custom\BillboardParticleSystem.h">
       <Filter>Classes\custom</Filter>
     </ClInclude>
@@ -152,6 +149,9 @@
       <Filter>Classes\custom</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\custom\Water.h">
+      <Filter>Classes\custom</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\custom\ShadowSprite.h">
       <Filter>Classes\custom</Filter>
     </ClInclude>
   </ItemGroup>
@@ -243,9 +243,6 @@
     <ClCompile Include="..\Classes\runtime\FileServer.cpp">
       <Filter>Classes\runtime</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\custom\BillBoardLable.cpp">
-      <Filter>Classes\custom</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\custom\BillboardParticleSystem.cpp">
       <Filter>Classes\custom</Filter>
     </ClCompile>
@@ -274,6 +271,9 @@
       <Filter>Classes\custom</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\custom\Water.cpp">
+      <Filter>Classes\custom</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\custom\ShadowSprite.cpp">
       <Filter>Classes\custom</Filter>
     </ClCompile>
   </ItemGroup>
