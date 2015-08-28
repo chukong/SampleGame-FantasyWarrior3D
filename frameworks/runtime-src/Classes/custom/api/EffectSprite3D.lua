@@ -17,7 +17,7 @@
 -- @param self
 -- @param #vec3_table outlineColor
 -- @param #float width
--- @param #long order
+-- @param #int order
 -- @return EffectSprite3D#EffectSprite3D self (return value: cc.EffectSprite3D)
         
 --------------------------------
