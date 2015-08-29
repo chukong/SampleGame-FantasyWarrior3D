@@ -32,6 +32,7 @@ animationCache:addAnimation(fireBallAnim,"fireBallAnim")
 UIZorder = 2000
 FXZorder = 1999
 CelLine = 0.009
+UserCameraFlagMask = 2
 
 BossTaunt = "How dare you???"
 

@@ -419,6 +419,7 @@ function BattlefieldUI:showVictoryUI()
     local eventDispatcher = layer:getEventDispatcher()
     eventDispatcher:addEventListenerWithSceneGraphPriority(listener,layer)
     
+    layer:setCameraMask(UserCameraFlagMask)
     self:addChild(layer)
 end
 

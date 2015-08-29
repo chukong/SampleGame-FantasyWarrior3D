@@ -293,6 +293,7 @@ function Knight:hurt(collider, dirKnockMode)
 
         --three param judge if crit
         local blood = self._hpCounter:showBloodLossNum(damage,self,critical)
+        blood:setCameraMask(UserCameraFlagMask)
         self:addEffect(blood)
         local bloodMinus = {_name = self._name, _maxhp= self._maxhp, _hp = self._hp, _bloodBar=self._bloodBar, _bloodBarClone=self._bloodBarClone,_avatar =self._avatar}
         MessageDispatchCenter:dispatchMessage(MessageDispatchCenter.MessageType.BLOOD_MINUS, bloodMinus)

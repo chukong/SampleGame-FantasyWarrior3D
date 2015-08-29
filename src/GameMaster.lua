@@ -326,6 +326,7 @@ end
 
 function GameMaster:showBoss()
     local boss = Rat:create()
+    boss:setCameraMask(UserCameraFlagMask)
     currentLayer:addChild(boss)
     boss:reset()
     local appearPos = cc.V3(500,200,300)
@@ -403,6 +404,7 @@ function GameMaster:showDialog()
     colorLayer:ignoreAnchorPointForPosition(false)
     colorLayer:setPositionZ(-cc.Director:getInstance():getZEye()/5)
     colorLayer:setGlobalZOrder(0)
+    colorLayer:setCameraMask(UserCameraFlagMask)
     camera:addChild(colorLayer)
     
     --create dialog
@@ -444,6 +446,7 @@ function GameMaster:showDialog()
     dialog:ignoreAnchorPointForPosition(false)
     dialog:setPositionZ(-cc.Director:getInstance():getZEye()/3)
     dialog:setGlobalZOrder(UIZorder)
+    dialog:setCameraMask(UserCameraFlagMask)
     camera:addChild(dialog)
     local function pausegame()
         for var = HeroManager.first, HeroManager.last do
