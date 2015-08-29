@@ -86,6 +86,8 @@
 		59D22AAE1A7AC209003C5713 /* BillboardParticleSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 59D22AAB1A7AC209003C5713 /* BillboardParticleSystem.cpp */; };
 		59D22AB01A7AC222003C5713 /* BillboardParticleSystem.lua in Resources */ = {isa = PBXBuildFile; fileRef = 59D22AAF1A7AC222003C5713 /* BillboardParticleSystem.lua */; };
 		59D22AB11A7AC222003C5713 /* BillboardParticleSystem.lua in Resources */ = {isa = PBXBuildFile; fileRef = 59D22AAF1A7AC222003C5713 /* BillboardParticleSystem.lua */; };
+		858BDC5E1B906BB2008E1B34 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 858BDC5D1B906BB2008E1B34 /* libiconv.dylib */; };
+		858BDC601B906BB8008E1B34 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 858BDC5F1B906BB8008E1B34 /* libiconv.dylib */; };
 		85A6558F1A48177C00ACE24D /* DrawNode3D.lua in Resources */ = {isa = PBXBuildFile; fileRef = 85A655681A48177C00ACE24D /* DrawNode3D.lua */; };
 		85A655901A48177C00ACE24D /* DrawNode3D.lua in Resources */ = {isa = PBXBuildFile; fileRef = 85A655681A48177C00ACE24D /* DrawNode3D.lua */; };
 		85A655911A48177C00ACE24D /* Effect.lua in Resources */ = {isa = PBXBuildFile; fileRef = 85A655691A48177C00ACE24D /* Effect.lua */; };
@@ -322,6 +324,8 @@
 		59D22AAB1A7AC209003C5713 /* BillboardParticleSystem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BillboardParticleSystem.cpp; sourceTree = "<group>"; };
 		59D22AAC1A7AC209003C5713 /* BillboardParticleSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BillboardParticleSystem.h; sourceTree = "<group>"; };
 		59D22AAF1A7AC222003C5713 /* BillboardParticleSystem.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = BillboardParticleSystem.lua; sourceTree = "<group>"; };
+		858BDC5D1B906BB2008E1B34 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		858BDC5F1B906BB8008E1B34 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.4.sdk/usr/lib/libiconv.dylib; sourceTree = DEVELOPER_DIR; };
 		85A655681A48177C00ACE24D /* DrawNode3D.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DrawNode3D.lua; sourceTree = "<group>"; };
 		85A655691A48177C00ACE24D /* Effect.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Effect.lua; sourceTree = "<group>"; };
 		85A6556A1A48177C00ACE24D /* Effect3D.lua */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Effect3D.lua; sourceTree = "<group>"; };
@@ -399,6 +403,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				858BDC5E1B906BB2008E1B34 /* libiconv.dylib in Frameworks */,
 				15427CEE198F24AF00DC375D /* libcocos2d Mac.a in Frameworks */,
 				15427CEC198F24A600DC375D /* libluacocos2d Mac.a in Frameworks */,
 				15A8A4881834C90F00142BE0 /* libcurl.dylib in Frameworks */,
@@ -419,6 +424,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				858BDC601B906BB8008E1B34 /* libiconv.dylib in Frameworks */,
 				59587A241A5C92B400CFEC03 /* Security.framework in Frameworks */,
 				15427CD5198F222200DC375D /* libluacocos2d iOS.a in Frameworks */,
 				15427CD3198F221400DC375D /* libcocos2d iOS.a in Frameworks */,
@@ -694,6 +700,8 @@
 		F293B3CB15EB7BE500256477 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				858BDC5F1B906BB8008E1B34 /* libiconv.dylib */,
+				858BDC5D1B906BB2008E1B34 /* libiconv.dylib */,
 				59587A231A5C92B400CFEC03 /* Security.framework */,
 				3EEEDB60197107C0006A9FF8 /* MediaPlayer.framework */,
 				3EB51526195187AF006966AA /* CFNetwork.framework */,

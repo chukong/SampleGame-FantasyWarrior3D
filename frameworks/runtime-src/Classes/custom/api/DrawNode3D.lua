@@ -46,6 +46,12 @@
 -- @return DrawNode3D#DrawNode3D self (return value: cc.DrawNode3D)
         
 --------------------------------
+-- 
+-- @function [parent=#DrawNode3D] init 
+-- @param self
+-- @return bool#bool ret (return value: bool)
+        
+--------------------------------
 -- Draw 3D cube<br>
 -- param point to a vertex array who has 8 element.<br>
 -- vertices[0]:Left-top-front,<br>
@@ -76,6 +82,12 @@
 -- @param #cc.Renderer renderer
 -- @param #mat4_table transform
 -- @param #unsigned int flags
+-- @return DrawNode3D#DrawNode3D self (return value: cc.DrawNode3D)
+        
+--------------------------------
+-- 
+-- @function [parent=#DrawNode3D] DrawNode3D 
+-- @param self
 -- @return DrawNode3D#DrawNode3D self (return value: cc.DrawNode3D)
         
 return nil

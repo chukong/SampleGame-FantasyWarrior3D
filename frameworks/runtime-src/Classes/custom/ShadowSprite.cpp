@@ -76,9 +76,9 @@ void ShadowSprite::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transf
         _beforeDrawCmd.func = CC_CALLBACK_0(ShadowSprite::onBeforeDraw, this);
         renderer->addCommand(&_beforeDrawCmd);
 
-        _quadCommand.init(_globalZOrder, _texture->getName(), getGLProgramState(), _blendFunc, &_quad, 1, transform, flags);
-        _quadCommand.setSkipBatching(true);
-        renderer->addCommand(&_quadCommand);
+        _trianglesCommand.init(_globalZOrder, _texture->getName(), getGLProgramState(), _blendFunc, _polyInfo.triangles, transform, flags);
+        _trianglesCommand.setSkipBatching(true);
+        renderer->addCommand(&_trianglesCommand);
         
         _afterDrawCmd.init(_globalZOrder, transform, flags);
         _afterDrawCmd.func = CC_CALLBACK_0(ShadowSprite::onAfterDraw, this);

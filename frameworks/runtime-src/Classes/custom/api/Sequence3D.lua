@@ -5,6 +5,13 @@
 -- @parent_module cc
 
 --------------------------------
+--  initializes the action 
+-- @function [parent=#Sequence3D] initWithActions 
+-- @param self
+-- @param #array_table arrayOfActions
+-- @return bool#bool ret (return value: bool)
+        
+--------------------------------
 --  helper constructor to create an array of sequenceable actions given an array<br>
 -- code<br>
 -- When this funtion bound to the js or lua,the input params changed<br>
@@ -53,6 +60,12 @@
 -- @function [parent=#Sequence3D] step 
 -- @param self
 -- @param #float dt
+-- @return Sequence3D#Sequence3D self (return value: cc.Sequence3D)
+        
+--------------------------------
+-- 
+-- @function [parent=#Sequence3D] Sequence3D 
+-- @param self
 -- @return Sequence3D#Sequence3D self (return value: cc.Sequence3D)
         
 return nil

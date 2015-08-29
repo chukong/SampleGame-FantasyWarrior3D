@@ -1,6 +1,7 @@
 require "Helper"
 require "Manager"
 require "MessageDispatchCenter"
+require "GlobalVariables"
 
 currentLayer = nil
 uiLayer = nil
@@ -62,7 +63,9 @@ end
 local function setCamera()
     camera = cc.Camera:createPerspective(60.0, size.width/size.height, 10.0, 4000.0)
     camera:setGlobalZOrder(10)
+    camera:setCameraFlag(UserCameraFlagMask)
     currentLayer:addChild(camera)
+    currentLayer:setCameraMask(UserCameraFlagMask)
 
     for val = HeroManager.first, HeroManager.last do
         local sprite = HeroManager[val]
@@ -71,6 +74,7 @@ local function setCamera()
         end
     end      
     
+    uiLayer:setCameraMask(UserCameraFlagMask)
     camera:addChild(uiLayer)
 end
 

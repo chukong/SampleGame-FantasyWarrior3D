@@ -33,4 +33,10 @@
 -- @param self
 -- @return JumpTo3D#JumpTo3D ret (return value: cc.JumpTo3D)
         
+--------------------------------
+-- 
+-- @function [parent=#JumpTo3D] JumpTo3D 
+-- @param self
+-- @return JumpTo3D#JumpTo3D self (return value: cc.JumpTo3D)
+        
 return nil
